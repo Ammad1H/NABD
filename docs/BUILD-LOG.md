@@ -151,3 +151,29 @@ NABD-UAE-v1 beat persistence in flu 4/4 seasons and RSV 3/4 (it loses on RSV 202
 - **FluSight:** docs/FLUSIGHT-PARTICIPATION.md. Non-US teams already submit (U. Guelph). Drafts (not submitted): metadata YAML, a stale draft 2026-11-14 file, and `eval/flusight_round.py`.
 - **docs/PREREG-US-V2.md:** draft only. US v2 is not built, not locked and not scored.
 - **Open:** the user decides on the FluSight submission and on whether to lock US v2. external/hub is now a no-cone sparse checkout (run_all's pin check still applies).
+
+## App, round 2 (replacement agent), 8 Nov
+- **G14:** `app/cardcheck.py` builds every weekly card.
+  - Direction facts come from vendor `nabd_kit.card` (P rise/fall/stable).
+  - The playbook band is chosen by level and forecast path.
+  - `card_problems` re-derives the card. A contradiction blocks the action and the approval form.
+  - The live round now gives `rsv_elevated_falling` / `flu_elevated_falling`; the old "rsv_rising" contradiction is gone.
+  - `tests/test_app_cardcheck.py` includes contradictory cards that must fail.
+- **Playbook v0.2** (trajectory-aware, with falling/plateau bands) now validates: `*_not_rising` was renamed `*_steady_or_falling`.
+- **US proof:** red NOT MET badge from `primary_verdict` / `primary_text`, plus the S1 line and the endpoints table.
+  - League table: NABD v1 ranks 13/41 (2024/25) and 40/46 (2025/26), all models included.
+  - Sensitivity, G13 diagnostics and EXPLORATORY (E1) sections sit in labelled expanders.
+- **New pages:**
+  - **Alerts** (US D3 metrics flagged diagnostic per D5; UAE alerts).
+  - **GCC out-of-sample:** verdict, included countries and season wins, all read from results/gcc.
+  - **Feed removal:** reads `results/uae/tables/ablation.csv` and reports feeds that did not help (NS, CAL, TV) honestly.
+  - **"Why this forecast":** `results/uae/explain`, with plain-language feature names and leave-one-out percentage-point effects.
+- **Data and labels:**
+  - Results panels show "not yet computed" and never demo numbers. Demo data remains only for the card and ledger fallbacks, behind a banner.
+  - Horizons are issue-relative to the middle of the target week (nowcast/+0.5/+1.5/+2.5).
+  - About page: a live real / simulated / not-built table.
+- **Tests and tooling:** `tests/test_app_audit.py` + `tests/test_app_cardcheck.py`: 31 pass, including all 8 pages rendering in EN and AR. Screenshots of all 9 views were regenerated with `app/take_screenshots.py`.
+- **Open:**
+  - No explain file exists for the live issue date (2026-11-08). The card shows the latest LOSO example, labelled. The data agent should write `results/uae/explain/2026-11-08_*`.
+  - The ledger meta still labels horizons with the end-of-week convention (+1.0/+2.0/+3.0).
+  - Docker is still unbuilt (no daemon).

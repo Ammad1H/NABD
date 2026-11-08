@@ -183,10 +183,10 @@ def explain_panel(col: str, ex: pd.DataFrame | None, ex_date: str | None, issue:
                    + (f" (target week ending {g['target_end_date'].iloc[0]})" if "target_end_date" in g.columns else ""))
     if not sig.empty:
         ch = alt.Chart(sig).mark_bar().encode(
-            y=alt.Y("label:N", sort=list(sig.label), title=None),
+            y=alt.Y("label:N", sort=list(sig.label), title=None, axis=alt.Axis(labelLimit=320, labelFontSize=11)),
             x=alt.X("contribution:Q", title=f"contribution ({unit})" if unit else "contribution"),
             color=alt.Color("direction:N", scale=alt.Scale(domain=["pushes up", "pushes down"], range=[ROSE, TEAL]), legend=None),
-            tooltip=["feature", "value", alt.Tooltip("contribution:Q", format="+.3f")]).properties(height=26 * max(len(sig), 3))
+            tooltip=["feature", "value", alt.Tooltip("contribution:Q", format="+.3f")]).properties(height=34 * max(len(sig), 3))
         st.altair_chart(ch, width="stretch")
     for r in list(sig.itertuples())[:3]:
         pp = getattr(r, "pp_effect_loo", np.nan)
@@ -382,7 +382,7 @@ elif page == "nav_us":
         g["who"] = np.where(g.model.astype(str).str.startswith("NABD"), "NABD v1",
                             np.where(g.model.astype(str).isin(["FluSight-ensemble", "FluSight-baseline"]), g.model.astype(str), "other hub model"))
         ch = alt.Chart(g).mark_bar().encode(
-            y=alt.Y("model:N", sort=list(g.model), title=None),
+            y=alt.Y("model:N", sort=list(g.model), title=None, axis=alt.Axis(labelLimit=260)),
             x=alt.X("rel_wis:Q", title="relative WIS vs FluSight-baseline (lower is better)"),
             color=alt.Color("who:N", scale=alt.Scale(domain=["NABD v1", "FluSight-ensemble", "FluSight-baseline", "other hub model"],
                                                    range=[ROSE, TEAL, SLATE, "#cbd5e1"])),
@@ -476,22 +476,50 @@ elif page == "nav_gcc":
     if summary is None and not tabs:
         not_computed("GCC out-of-sample test", "results/gcc/summary.json")
     else:
-        if isinstance(summary, dict):
-            v = summary.get("primary_verdict") or summary.get("verdict")
-            txt = summary.get("primary_text") or summary.get("text")
-            if v or txt:
-                good = str(v).strip().upper() in {"MET", "PASS", "SUCCESS"}
-                st.markdown(f'<div class="{"nabd-verdict-good" if good else "nabd-verdict-bad"}">'
-                            + (f'<span class="nabd-pill {"nabd-pill-good" if good else ""}">{v}</span>' if v else "")
-                            + f'{txt or ""}</div>', unsafe_allow_html=True)
-            st.caption("Shown verbatim from results/gcc/summary.json. WHO FluNet values are final, revised data "
-                       "(no vintages exist), so this is retrospective.")
-            st.json(summary, expanded=False)
-        for name, df in tabs.items():
-            st.markdown(f"**{name}**")
-            st.dataframe(df, hide_index=True, width="stretch")
+        summary = summary if isinstance(summary, dict) else {}
+        res = summary.get("results") if isinstance(summary.get("results"), dict) else summary
+        v = res.get("PRIMARY_verdict") or summary.get("primary_verdict") or summary.get("verdict")
+        prim_key = next((k for k in res if k.upper().startswith("PRIMARY") and isinstance(res[k], dict)), None)
+        txt = summary.get("primary_text")
+        if txt is None and prim_key:
+            p_ = res[prim_key]
+            ci = p_.get("ci95") or [np.nan, np.nan]
+            txt = (f"Primary ({prim_key.replace('PRIMARY_', '').replace('_', ' ')}): relative WIS {p_['rel_wis']:.3f} "
+                   f"(95% CI {ci[0]:.3f}–{ci[1]:.3f}), {p_.get('n_country_seasons', '?')} country-seasons, "
+                   f"{p_.get('n_cells', '?')} forecasts. Below 1 = better than persistence.")
+        if v or txt:
+            good = str(v).strip().upper() in {"MET", "PASS", "SUCCESS"}
+            st.markdown(f'<div class="{"nabd-verdict-good" if good else "nabd-verdict-bad"}" style="font-size:1.1rem">'
+                        + (f'<span class="nabd-pill {"nabd-pill-good" if good else ""}">{v}</span>' if v else "")
+                        + f'{txt or ""}</div>', unsafe_allow_html=True)
+        inc = summary.get("included_countries")
+        if inc:
+            st.markdown(f"**Included countries (by the pre-declared rule):** {', '.join(inc)}. Countries that failed the "
+                        "inclusion rule are listed in the inclusion table below.")
+        wins = summary.get("season_wins_v1_vs_persistence")
+        if isinstance(wins, dict):
+            st.markdown("**Seasons where the frozen UAE method beat persistence:** "
+                        + "; ".join(f"{k} {v_}" for k, v_ in wins.items()) + ".")
+        rows = [{"comparison": k, "rel_wis": d.get("rel_wis"), "ci95_low": (d.get("ci95") or [None, None])[0],
+                 "ci95_high": (d.get("ci95") or [None, None])[1], "country_seasons": d.get("n_country_seasons"),
+                 "forecasts": d.get("n_cells")} for k, d in res.items() if isinstance(d, dict) and "rel_wis" in d]
+        if rows:
+            st.dataframe(pd.DataFrame(rows), hide_index=True, width="stretch")
+        st.caption("Shown verbatim from results/gcc/summary.json. WHO FluNet values are final, revised data "
+                   "(no vintages exist), so this is retrospective, but the method, rules and inclusion criteria were "
+                   "locked before the data was downloaded (docs/PREREG-GCC.md).")
         for fig in figs:
             st.image(str(fig), caption=fig.name)
+        if "per_country" in tabs:
+            st.markdown("**Per country (mean WIS; ratio below 1 = better than the comparator)**")
+            st.dataframe(tabs["per_country"], hide_index=True, width="stretch")
+        for name, df in tabs.items():
+            if name == "per_country":
+                continue
+            with st.expander(f"Table: {name}"):
+                st.dataframe(df, hide_index=True, width="stretch")
+        with st.expander("summary.json"):
+            st.json(summary, expanded=False)
 
 elif page == "nav_ledger":
     rounds, scored, l_demo = data_io.load_ledger(observed)
@@ -538,7 +566,7 @@ elif page == "nav_ablation":
         metric = str(g["metric"].iloc[0]) if "metric" in g.columns else "score"
         g = g.assign(effect=np.where(g.delta > 0, "worse without (feed helped)", "better or equal without (feed did not help)"))
         ch = alt.Chart(g).mark_bar().encode(
-            y=alt.Y("feed_label:N", sort="-x", title=None),
+            y=alt.Y("feed_label:N", sort="-x", title=None, axis=alt.Axis(labelLimit=320)),
             x=alt.X("delta:Q", title=f"change in {metric} without the feed"),
             color=alt.Color("effect:N", scale=alt.Scale(domain=["worse without (feed helped)", "better or equal without (feed did not help)"],
                                                      range=[TEAL, "#94a3b8"])),
