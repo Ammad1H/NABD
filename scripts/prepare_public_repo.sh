@@ -14,7 +14,12 @@ ERR=0
 if [[ -n "$(git status --porcelain --untracked-files=no)" ]]; then
   echo "WARNING: uncommitted changes to tracked files will NOT be in the public copy. Commit them first." >&2
 fi
-rm -rf "$OUT"
+OUT_ABS="$(cd "$(dirname "$OUT")" && pwd)/$(basename "$OUT")"
+case "$OUT_ABS" in
+  "$SRC"|"$SRC"/*|"$HOME"|"/"|"$(dirname "$SRC")") echo "Refusing to delete $OUT_ABS (unsafe OUT_DIR)" >&2; exit 2;;
+esac
+if [[ -e "$OUT_ABS" && ! -d "$OUT_ABS/.git" ]]; then echo "Refusing: $OUT_ABS exists and is not a previous public clone" >&2; exit 2; fi
+rm -rf "$OUT_ABS"
 git clone -q --no-local "$SRC" "$OUT"
 git -C "$OUT" remote remove origin
 echo "== clean clone: $OUT  (HEAD $(git -C "$OUT" rev-parse --short HEAD), $(git -C "$OUT" rev-list --count HEAD) commits)"
