@@ -248,3 +248,19 @@ NABD-UAE-v1 beat persistence in flu 4/4 seasons and RSV 3/4 (it loses on RSV 202
   - The About page is rewritten with positioning.md's do-not-claim list, a real/simulated/not-built table and the new card rules.
 - **Fix:** the explain caption names the model from the file (the live file is v1).
 - **Tests and screenshots:** 120/120 tests pass, all 10 pages render in EN and AR, and 11 screenshots were regenerated.
+
+## Round 4: pitch and docs (8 Nov)
+- **Restructured to put impact first (BUILD-SPEC v1.7):**
+  - Files: deck-script (12 slides), video-script (401 words, about 2:46), demo-script, one-pager.
+  - Order: Monday decision + season shape → 2,189 burden → who decides and the cost of a wrong call → gap → NABD → Gulf test (46% vs past-season patterns, secondary; 9% vs persistence, primary) → CDC "missed our bar; 7th of 21 (13th of 41 incl. ensembles)" → UAE parity, with the post-hoc training-history reading → workforce slide → requirements → ask + ledger.
+- **R3 audit fixes across pitch/ and TECHNICAL.md** (registration.md untouched):
+  - Ledger: no "published/public/anchored" (it is one round re-issued; 0 scored).
+  - Removed: "blind", "verified row-for-row", "fewer false alarms", unqualified "calibrated".
+  - "To our knowledge" added; RSV demoted to secondary (clustered CI crosses 1); UAE "3/3 onsets" retired.
+  - Horizon labels: R0/R1 = +1/+2/+3, later rounds issue-relative.
+  - The hub-pin enforcement claim was removed from TECHNICAL.md.
+  - The 2.9%→16% pandemic caveat was added in outreach.
+- **qa.md:** all 10 of the judges' hardest questions answered first, plus workforce, data sovereignty, Gulf CDC, pricing hypothesis and ROFR. US alert late/timely counts were recomputed from `results/tables/alerts_us_detail.csv`.
+- **outreach.md:** personalised to the Tawam RSV study (UAEU Pediatrics; Dr Alsuwaidi per the publication record; the corresponding author must be confirmed) and to DoH/ADPHC surveillance (public channels only). Bodies are 125–143 words.
+- **Claims ledger:** rewritten to v1.7, with new sections G (workforce/business) and F13–F18 bans.
+- **Open:** winter planner, bulletin and public repo/anchor are ⟦IF BUILT/IF DONE⟧ slots, so cut them on 19 Nov if they are absent. `docs/SPEC.md:80` (R2 m27) is outside the pitch scope and still needs fixing.

@@ -1,174 +1,217 @@
-# Judge Q&A prep, round 3: hostile questions with answers that trace to files
+# Judge Q&A prep, round 4: hostile questions with answers that trace to files
 
 **Rules:**
 - Every number cites a file in `results/`, `research/` or `docs/`. Never improvise a number on stage.
-- ⟦IF BUILT: file⟧ marks something still in build. If it isn't there on the day, say "in build" and stop.
+- ⟦IF BUILT: …⟧ / ⟦IF DONE: …⟧ mark round-4 work in progress. If it isn't there on the day, say "in build" and stop.
 - Keep each answer under about 30 seconds.
-- **Evidence order (BUILD-SPEC v1.6):** (1) blind Gulf test → (2) public, anchored ledger → (3) US CDC benchmark and league placement → (4) the UAE record is at parity, which is why the ledger exists.
-- The stop list in `research/positioning.md` §4.6 is binding.
+- **Order (BUILD-SPEC v1.7):** impact first; then the Gulf test (46% vs past-season patterns, secondary; 9% vs persistence, primary, met) → US "missed our bar; 7th of 21" → UAE parity caveat → live ledger as the pilot ask.
+- The stop list (`research/positioning.md` §4.6) and the v1.7 BANNED list are binding. Never say: "published" or "public" ledger (until it is), "blind", "verified row-for-row", "fewer false alarms", unqualified "calibrated", "nobody publishes" without "to our knowledge", or the UAE "3/3 onsets".
 
 **Numbers to know cold:**
-- **Blind Gulf test (G12), primary MET:** frozen UAE method vs "next week = this week" (persistence), influenza, Oman + Qatar + Saudi Arabia, forward-in-time. Relative WIS **0.914 (95% CI 0.843–0.983)**, 9 of 12 country-seasons won. RSV **0.798 (0.719–0.894)**, 9 of 10 (`results/gcc/SUMMARY.md`).
-- **US primary, NOT MET:** NABD v1 vs the CDC FluSight ensemble, relative WIS **1.22 (95% CI 1.01–1.52)**, margin 1.15 (`results/SUMMARY.md`).
-- **US league (pairwise relative WIS vs FluSight-baseline, single models only):** **7th of 21 in 2024/25** (0.693), **19th of 25 in 2025/26** (0.997) (`results/tables/league_table.csv`).
-- **UAE own record, forward-in-time:** v1 vs persistence **1.002 (flu), 1.002 (RSV)**, i.e. parity (`results/uae/SUMMARY-v2.md`).
+- **2,189:** RSV admissions of children ≤5 at Tawam (SEHA), 2018–22 [S1] (`research/burden.md` #1).
+- **Gulf test, flu** (`results/gcc/SUMMARY.md`):
+  - vs seasonal analog (past-season patterns) **0.536 (0.464–0.616)**, i.e. **−46%** (pre-registered secondary);
+  - vs persistence **0.914 (0.843–0.983)**, i.e. **−9%** (pre-registered primary, MET); 9 of 12 country-seasons won.
+- **US** (`results/SUMMARY.md`; `results/tables/league_table.csv`):
+  - vs CDC FluSight ensemble **1.22 (1.01–1.52)**, margin 1.15: **NOT MET**;
+  - league, single models: **7th of 21** (2024/25), **19th of 25** (2025/26).
+- **UAE own record, forward in time:** v1 vs persistence **1.002** (flu and RSV) (`results/uae/SUMMARY-v2.md`).
 
 ---
 
-## A. The blind Gulf test (our headline evidence)
+## A. The ten questions judges will ask first (from `docs/REVIEW-R3-judges.md` §6)
 
-**1. "What exactly did you test on the Gulf?"**
-- We froze the UAE method and wrote the test plan, including country inclusion rules and the pass bar, before downloading any other Gulf country's WHO data (`docs/PREREG-GCC.md`, locked in `docs/LOCK-GCC.json`).
-- Then we ran it forward in time: each season, the model learns only from that country's earlier seasons.
-- **Influenza:** 0.914 vs persistence (CI 0.843–0.983), so the pre-set bar (upper bound < 1) is **MET**.
-- **RSV:** 0.798 (0.719–0.894).
-- **Against a seasonal-average forecast:** 0.536 (flu) and 0.685 (RSV) (`results/gcc/SUMMARY.md`).
+**1. "Your product ties with 'next week = this week' on the UAE, the one place you want to deploy. Why should Abu Dhabi use it?"**
+- **The record:** on the UAE's own data, forward in time, v1 ties with persistence: 1.002 (`results/uae/SUMMARY-v2.md`).
+- **Our reading, post hoc, so labelled:** UAE sentinel data in FluNet start in 2022.
+  - The first forward fold (2023/24) trained on one season and lost badly: flu WIS 4.75 vs 2.21.
+  - With ≥2 training seasons, flu won both folds (2.54 vs 2.66; 1.94 vs 3.08), and RSV split (1.31 vs 2.14 won; 2.30 vs 1.89 lost) (`results/uae/v2/tables/forward_wis_by_season.csv`).
+- **The Gulf countries had history from 2015.** There, with the method frozen and the plan locked before download, it beat past-season patterns by 46% and last week by 9% for influenza.
+- **The UAE now has four seasons**, and the live ledger tests that forward, every week.
 
-**2. "Where did it lose?"**
-- **Influenza:** Oman 2022/23 and 2024/25, plus a tie in Qatar 2023/24.
-- **RSV:** Saudi Arabia 2025/26 (`results/gcc/SUMMARY.md`, per country-season table).
-- **Calibration:** RSV intervals are too narrow outside the UAE, with 95% coverage of 0.83. We report that.
+**2. "Persistence is a straw man. Planners use last year's pattern. How do you do against that?"**
+- **Influenza:** against a seasonal-analog forecast (training-season values at the target week; `docs/PREREG-GCC.md` §5), 0.536 (95% CI 0.464–0.616), i.e. 46% less error. This was a pre-registered secondary comparison, and it held below 0.6 in each of Oman, Qatar and Saudi Arabia.
+- **RSV:** 0.685 (0.605–0.781). It is secondary and less robust, so we don't headline it (`results/gcc/SUMMARY.md`).
+- **The primary bar** was the harder baseline, last week carried forward: 0.914, met.
 
-**3. "Why only three countries?"**
-- The inclusion rule was set before download: at least 2 scorable influenza seasons with enough weekly testing.
-- Bahrain and Kuwait each had one scorable season, so the rule excluded them. Their results are not used (`results/gcc/SUMMARY.md`, inclusion table).
+**3. "The 80% band is 4.6–21.4%. What does my bed manager actually do differently on Monday?"**
+- **They read one line, not the band.** In the 8 Nov round at +0.5 weeks, the card shows:
+  - RSV: P(> 10%) = 51%, P(> 20%) = 13%, forecast path falling;
+  - flu: P(> 10%) = 94%, P(> 20%) = 27%, falling.
+- **The playbook output:** "elevated, falling". For the bed manager that means no surge roster; plan stand-down of extra paediatric capacity if next week confirms the decline (`app/screenshots/01_weekly_card_en.png`; `playbook/playbook.yaml` v0.3, illustrative).
+- **The value is not over-staffing into a declining wave**, and not under-preparing for a rising one.
 
-**4. "How blind was 'blind'? You chose v1 after seeing UAE results."**
-- **True, and disclosed.** We picked v1 as the primary method after the UAE v2 and forward-in-time results were known. The exposure declaration says so (`docs/PREREG-GCC.md` §1).
-- **Nobody on the team had looked at the Gulf countries' data.** We searched our repo and notes for prior use and found none (same section).
-- **The lock is self-attested.** It is a local git commit made about 1.5 minutes before the data commit (`docs/FREEZE.md`; commits `91005ce` then `d013228`).
-- **Data provenance:** the data came from WHO's full export through a public mirror and were checked row-for-row against the official WHO API (deviation G1).
+**4. "Statement 06 is early warning. Your lead time is zero. Wrong statement?"**
+- **Our lead is on size, not onset:** a range up to +2.5 weeks after issue (skill measured at an 11-day lag).
+- **Onset in the US:** at the primary threshold (3 per 100k), median onset lead is 0 weeks for every rule, the CDC ensemble's included (`results/tables/alerts_us.csv`).
+- **Onset detection is already Tableegh and UMOC's job** in Abu Dhabi. How big the wave gets, and for how long, is the gap.
+- **Alerts at 3 per 100k** (diagnostic, because the thresholds were informed by pre-freeze probes, `docs/DEVIATIONS.md` D3, D5):
+  - every rule had 0 false alarms;
+  - NABD's first alerts were less often late;
+  - a simple census threshold caught more onsets in time in 2024/25 (28 vs 17 of 51), and NABD caught more in 2025/26 (29 vs 24 of 52) (`results/tables/alerts_us_detail.csv`).
 
-**5. "Retrospective data. Isn't this just a back-test?"**
-- **Yes.** These are revised FluNet values, so it is retrospective, and every result says so.
-- **What makes it more than a back-test:** the countries were unseen and the plan was fixed before download.
-- **The truly prospective evidence** is the public ledger, which grows every week (`ledger/`).
+**5. "Who in Abu Dhabi has looked at this? Has a clinician reviewed the playbook?"**
+- **Honest status:** ⟨as of the day: no letter of interest yet / letter from …⟩.
+- **The playbook is marked ILLUSTRATIVE** until a clinician and a public-health reviewer sign it off.
+- **Requests are out:** to the Tawam RSV study authors (UAEU Department of Pediatrics) and to an ADPHC surveillance contact (`pitch/outreach.md`).
+- **We won't imply an endorsement** we haven't been given.
 
-## B. The UAE's own record
+**6. "Half the statement is *workforce*. Where is it?"**
+- **We forecast the population wave and translate it into the hospital's two constraints, beds and staff.**
+- ⟦IF BUILT⟧ The winter-planner page works from the hospital's own admissions, length of stay, beds, nursing headcount and the winter sickness-absence baseline its HR sets. It shows scenario bed-days, % of ward capacity, a staff-absence range and the net roster gap in AED, with an occupational-health role in the playbook.
+- **Every number is labelled SCENARIO.**
+- **The employer path is designed, not live:** a secure aggregation of sickness-absence counts across ≥10 employers, demonstrated on synthetic data and watermarked SIMULATED (`app/workforce.py`).
+- **We don't fake absence data.** No credible public UAE respiratory-absence figure exists (`research/positioning.md` §1.6).
+- **No individual, employment or disciplinary use.**
 
-**6. "Your UAE model only ties with 'next week = this week'. Why should Abu Dhabi care?"**
-- **On the UAE's own four seasons, forward in time, it ties:** 1.002 for both flu and RSV (`results/uae/SUMMARY-v2.md`).
-- **The earlier 0.76/0.78 figures are retired.** They came from leave-one-season-out folds that trained on later seasons.
-- **Four seasons is too short to learn the UAE's season shapes.** That's why we tested the method on Gulf neighbours with longer records, where it beat persistence, and why we publish every live forecast.
-- The value we claim is a calibrated range with a checkable record. We don't claim a proven UAE edge.
+**7. "National sentinel positivity isn't hospital load. What evidence links the two?"**
+- **None yet for Abu Dhabi, and we claim none.**
+- **The same discipline runs on real hospital admissions in the US:** NHSN state admissions, where NABD ranked 7th of 21 single models in 2024/25 (`results/tables/league_table.csv`).
+- **The pilot's job is to test the link on the hospital's own census,** with the exit criterion set now: relative WIS < 0.9 vs census carried forward (`docs/PILOT-DATA-SPEC.md`).
 
-**7. "Did the multi-signal version help?"**
-- **No.** UAE v2 adds non-sentinel lab data, testing volume, school breaks and Ramadan, under a protocol locked before scoring.
-- **It was worse than v1:** pooled 1.059 (moving-block CI 1.016–1.111) (`results/uae/SUMMARY-v2.md`).
-- **Feed removal:** dropping non-sentinel data or the calendar slightly improved v2. Testing volume made no difference. Removing the seasonal climatology term hurt the most (`results/uae/tables/ablation.csv`).
-- **What we do with it:** v2 runs alongside v1 in the ledger as a challenger. It is not the headline.
+**8. "Your 'pre-registration' is a local git commit you made yourselves. Why believe the Gulf test?"**
+- **The lock is self-attested today.**
+- **What the record shows:**
+  - the Gulf plan lock (`91005ce`, 12:08:47 UTC) precedes the data commit (`d013228`, 12:10:18 UTC);
+  - the scorer refuses to run if any locked file changed (`assert_locked`);
+  - an independent audit found no Gulf data anywhere in the workspace before the lock, and no leakage in the scorer (`docs/REVIEW-R3-audit.md` §0).
+- ⟦IF DONE⟧ **The manifests were anchored on ⟨date⟩, after the result.** We say "after" because it is.
+- **From now on, the live ledger is anchored before WHO publishes each target week.**
 
-**8. "Four seasons is nothing."**
-- **Agreed:** n = 4, and v1 was designed with all four visible (`results/uae/SUMMARY.md`, integrity note).
-- **The two tests we can't tune for** are the Gulf test above and the live ledger.
+**9. "Your multi-signal model got *worse*. Doesn't that fail requirement 1?"**
+- **We tested fusion under a locked protocol:** non-sentinel lab data, testing volume, school breaks and Ramadan.
+- **It didn't help on four seasons:** 1.059 (CI 1.016–1.111) (`results/uae/SUMMARY-v2.md`). Removing non-sentinel or calendar inputs slightly *improved* it (`results/uae/tables/ablation.csv`).
+- **We ship what works.** Shipping the worse model to tick a box would be the irresponsible choice.
+- **v2 keeps running in the ledger as a challenger**, and Rasid's wastewater signal is the next input to test, published either way.
 
-**9. "No Abu Dhabi hospital data?"**
-- **Correct.** WHO FluNet positivity is laboratory surveillance, not bed load, and we claim no Abu Dhabi operational result.
-- **The pilot is how we find out:** a 12-week shadow run on one hospital's aggregate counts, with exit criteria set in advance (`pitch/assumptions-limitations.md`).
+**10. "Who pays, how much, and don't WHO's non-commercial terms and the organiser's right of first refusal kill this?"**
+- **Pricing hypothesis, not a quote:**
+  - a public-health forecast-feed licence per country per season;
+  - a hospital-operations seat per facility.
+  - The bar for a hospital seat is that it costs less than a handful of avoided paediatric admissions per season. The median RSV admission cost is US$2,241 in Dubai claims data [S3].
+- **WHO data:** FluNet powers only the public-health feed and the evaluation. A hospital product runs on the hospital's own aggregate data.
+- **Right of first refusal:** the code is under an open, non-exclusive licence. Any *exclusive* deal must first go to the organiser for 6 months after the Hackathon (T&C ROFR, `research/tc.md`).
+
+---
+
+## B. The Gulf test (our headline evidence)
+
+**11. "What exactly did you test on the Gulf?"**
+- **Setup:** we froze the UAE method, then wrote and locked the plan: country inclusion rules, comparators and the pass bar. Only then did we download Oman, Qatar, Saudi Arabia, Bahrain and Kuwait data (`docs/PREREG-GCC.md`; `docs/LOCK-GCC.json`).
+- **Forward in time:** each season learns only from that country's own earlier seasons. There is no UAE data and no pooling.
+- **Influenza results:**
+  - primary, vs persistence: 0.914 (0.843–0.983), **met**;
+  - secondary, vs seasonal analog: 0.536.
+- **Robustness:** leave-one-country-out gives 0.904–0.929; a country-clustered bootstrap gives 0.841–0.984 (`docs/REVIEW-R3-audit.md` §0).
+
+**12. "Where did it lose?"**
+- **Influenza:** Oman 2022/23 and 2024/25, and a tie in Qatar 2023/24.
+- **RSV:** Saudi Arabia 2025/26 (1.088 for the country) (`results/gcc/SUMMARY.md`).
+
+**13. "And RSV?"**
+- **It is a secondary outcome:** 0.798 vs persistence on the registered country-season bootstrap.
+- **Clustered by country, its interval crosses 1** (0.712–1.026), and its 95% interval coverage is 0.83, which is too narrow (`docs/REVIEW-R3-audit.md` finding 9; `results/gcc/SUMMARY.md`).
+- **So we don't headline it.**
+
+**14. "Why only three countries?"**
+- The inclusion rule was set before download. Bahrain and Kuwait each had one scorable influenza season, so the rule excluded them (`results/gcc/SUMMARY.md`).
+- Oman and Qatar report a combined stream rather than separate sentinel data, and we note that (`pitch/assumptions-limitations.md` A7).
+
+**15. "Was it really blind? You chose v1 after seeing the UAE results."**
+- **True, and disclosed** (`docs/PREREG-GCC.md` §1). We call it *out-of-sample with the plan locked before download*, not "blind".
+- **Our records show no one on the team had used the Gulf countries' data before.** An independent filesystem and git search found none (`docs/REVIEW-R3-audit.md` §0).
+
+**16. "The data came from a GitHub mirror?"**
+- **What it is:** WHO's full FluNet export (3 Oct 2026), obtained through a public mirror.
+- **Cross-checks:** it matches our independently fetched UAE rows exactly (419/419), and 23 of 23 spot-checked Gulf rows (`docs/DEVIATIONS.md` G1, G1b).
+- **A full official re-pull** is pending, via `python -m adapters.gcc_verify` (`docs/RUNBOOK.md`). ⟦IF DONE: "re-pulled ⟨date⟩, identical"⟧
+
+**17. "Retrospective data. Isn't this just a back-test?"**
+- **Yes:** these are revised FluNet values, so it is retrospective.
+- **What makes it more than an ordinary back-test:** the countries were unseen and the plan was fixed before download.
+- **The truly prospective test** is the live ledger.
 
 ## C. The US stress test
 
-**10. "You didn't meet your own bar against the CDC. Why are you here?"**
-- **We set the bar at the best public forecaster and froze the test first.** NABD v1 scored 1.22 vs the CDC FluSight ensemble (CI 1.01–1.52) against a 1.15 margin: NOT MET (`results/SUMMARY.md`).
-- **There is nothing comparable in the UAE.** Locally, the alternative is no forecast at all.
-- **Our losses are on the record,** which is how you know our other numbers weren't tuned until they looked good.
+**18. "You didn't meet your own bar against the CDC. Why are you here?"**
+- **We set the bar at the best public forecaster and froze the test first:** 1.22 (1.01–1.52) vs a 1.15 margin, NOT MET (`results/SUMMARY.md`).
+- **Among individual CDC-hub models:**
+  - 2024/25: 7th of 21 (0.693; the CDC ensemble scored 0.673);
+  - 2025/26: 19th of 25 (level with the baseline).
+  - Including ensembles: 13th of 41 and 40th of 46 (`results/tables/league_table.csv`).
+- **Our losses are on the record,** which is how you know the other numbers weren't tuned until they looked good.
 
-**11. "Where does that put you among real forecasters?"**
-- **Method:** we declared it before computing. It is pairwise relative WIS against the FluSight baseline, scored on cells common to the models, for hub models with at least 50% coverage (`docs/DEVIATIONS.md` D7, D11).
-- **2024/25:** 7th of 21 single models (0.693). The CDC ensemble scored 0.673.
-- **2025/26:** 19th of 25 single models (0.997), level with the baseline (`results/tables/league_table.csv`).
-- **Including ensembles:** 13th of 41 and 40th of 46.
+**19. "Be specific: where did it lose?"**
+- **By season:** 2024/25 1.03; 2025/26 1.52.
+- **By location:** it beat the ensemble in 18 of 53 locations in 2024/25 and in 0 of 53 in 2025/26 (`results/SUMMARY.md` D6).
+- **By as-of phase:** 1.27 rising, 0.97 flat, 1.29 falling. Under-prediction is the largest error component (D10).
 
-**12. "Be specific: where did it lose?"**
-- **By season:** 2024/25 1.03 (0.89–1.25); 2025/26 1.52 (1.09–2.03).
-- **By state:** NABD beat the ensemble in 18 of 53 locations in 2024/25 and in 0 of 53 in 2025/26 (`results/SUMMARY.md`, D6).
-- **By phase, assigned at forecast time:** relative WIS 1.27 rising, 0.97 flat, 1.29 falling. Under-prediction is the largest error component (`results/SUMMARY.md`, D10).
+**20. "The national series dominates your metric."**
+- It is 46.0% of NABD's WIS. Excluding it: 1.198 (1.014–1.449), still NOT MET (D6).
 
-**13. "The national series dominates your metric."**
-- **The protocol defines the metric, so we report it as is.** The national series is 46.0% of NABD's WIS and 44.9% of the ensemble's.
-- **Excluding it changes nothing:** 1.198 (CI 1.014–1.449), still NOT MET (`results/SUMMARY.md`, D6).
+**21. "Will you tweak and re-run until it passes?"**
+- **No.** The protocol was frozen before any test score (`docs/FREEZE.md`), and every change since is in `docs/DEVIATIONS.md`.
+- **Disclosed:** early probes touched the US test seasons before the freeze (D5).
+- **Any US v2 is judged only prospectively,** after a lock (`docs/PREREG-US-V2.md`, draft).
 
-**14. "Did NABD even beat the naive baseline in the US?"**
-- **On average yes, but not convincingly:** 0.82 (0.66–1.02). The CDC ensemble scored 0.67 on the same cells (`results/SUMMARY.md`).
+## D. Method
 
-**15. "Isn't 'better during surges' just spin?"**
-- **We don't claim it.** That split (E1) used the realised truth, and its gain came from wider intervals.
-- It is exploratory, and it appears in no headline (`docs/DEVIATIONS.md` E1).
+**22. "How do you know nothing leaks?"**
+- **US vintage rule:** each forecast uses only the hub data version available at the Wednesday deadline. A test injects future data and must fail (`tests/test_vintage.py`).
+- **UAE:** the leakage test caught and fixed a real boundary leak in our first build (`results/uae/SUMMARY.md`).
+- **Gulf scorer:** an independent audit perturbed every post-origin value in 2,112 cases, and 0 forecasts changed (`docs/REVIEW-R3-audit.md` §0).
+- **Scorer cross-check:** our WIS equals an independent implementation exactly (D9).
 
-**16. "Will you tweak and re-run until it passes?"**
-- **No.** The protocol was frozen before any test score (`docs/FREEZE.md`, commit `ac16901`), and every change since is in `docs/DEVIATIONS.md`.
-- **We disclose that early probes touched the test seasons before the freeze** (D5).
-- **Any US v2 is judged only on forecasts made after it is locked** (`docs/PREREG-US-V2.md`, draft).
+**23. "Are your intervals calibrated?"**
+- **We check and report coverage; it isn't perfect.**
+- **95% intervals actually contain the outcome:**
+  - US: 0.92 for NABD vs 0.86 for the ensemble (`results/summary.json`);
+  - Gulf influenza: 0.96;
+  - Gulf RSV: 0.83, which is too narrow (`results/gcc/SUMMARY.md`).
+- **v1 uses no online conformal step.**
 
-## D. Early warning and alerts
+**24. "Is there any AI here beyond regression?"**
+- **v1 is deliberately simple and auditable.** The Chronos-2 wrapper exists but was not run (no weights in our build environment), so we claim nothing from it.
+- **The hard parts:**
+  - leakage-free, vintage-correct evaluation;
+  - transfer to three countries under a locked plan;
+  - a hashed forecast record;
+  - an approval workflow with consistency checks.
+- **The MBZUAI-level contribution** is that evaluation and transfer discipline, not the model.
 
-**17. "Lead time is zero. Where's the early warning?"**
-- **Correct.** In the US, the median onset lead is 0 weeks for every rule: ours, the CDC ensemble's and a census threshold (`results/tables/alerts_us.csv`).
-- **We don't sell "earlier".** We sell how big and how long, with a calibrated range.
+**25. "Your horizons say three weeks, but WHO data are late."**
+- **Horizons run from the nowcast to +2.5 weeks after issue,** with skill measured at an 11-day publication lag. The measured lag on 8 Nov was 7 days (`data/raw/PROVENANCE.md`).
+- **Rounds R0/R1 carry the older "+1/+2/+3" labels** and stay unchanged because they are hashed. Rounds from R2 on carry issue-relative labels (`docs/RUNBOOK.md`).
 
-**18. "Then what do the alerts buy? Alert fatigue?"**
-- **US precision** (share of alerts followed by a real onset, at 3 per 100k, 2024/25 / 2025/26):
-  - NABD 0.65 / 0.76;
-  - CDC ensemble 0.41 / 0.67;
-  - census rule 0.60 / 0.46.
-- **UAE** (n = 4 seasons, descriptive):
-  - influenza: NABD caught 3/3 onsets with 3/3 precision and 0 false alarms, against 2/3 for a census rule;
-  - RSV: about 1/3 for every rule (`results/uae/tables/alerts_uae.csv`).
-- **Caveat:** alert thresholds were informed by probes that had seen these seasons, so all alert metrics are diagnostic (`docs/DEVIATIONS.md` D3, D5; `docs/PROTOCOL-UAE-v2.md` §1).
+## E. Positioning, governance and business
 
-**19. "What happens when a feed is late?"**
-- **US:** one missing week raises error 1.41-fold (`results/tables/dropout_us.csv`).
-- **UAE:** a missing latest week raises mean WIS by 0.14–0.26 percentage points. A missing non-sentinel week makes v2 fall back automatically to a smaller sub-model (`results/uae/tables/ablation.csv`).
-- **The card shows a freshness badge with the exact lag.**
-
-## E. Method
-
-**20. "How do you know nothing leaks?"**
-- **US:** each forecast uses only the hub data version available by the Wednesday deadline.
-- **Tests:** a test injects future data and must fail (`tests/test_vintage.py`). The UAE test caught and fixed a real leak in our first build (`results/uae/SUMMARY.md`, integrity note).
-- **Scorer check:** our WIS matches an independent implementation exactly on every cell (D9).
-- **Locks:** UAE v2 and the Gulf scorer refuse to run if the locked code or plan changed (`assert_locked`).
-
-**21. "How are your intervals calibrated?"**
-- **US:** 95% coverage 0.92 vs the ensemble's 0.86 (`results/summary.json`). There is no online conformal step in v1; intervals use a fixed widening factor tuned on 2023/24.
-- **Gulf:** influenza 95% coverage 0.96; RSV 0.83, which is too narrow (`results/gcc/SUMMARY.md`).
-
-**22. "Is there any AI here beyond regression?"**
-- **v1 is deliberately simple and auditable.** The Chronos-2 foundation-model wrapper exists but was not run, because its weights were unavailable in our build environment, so we claim nothing from it (`results/summary.json`).
-- **The hard part is the rest:** leakage-free evaluation, calibration, transfer across countries, and a public record.
-
-**23. "Your horizons say up to three weeks, but WHO data is about 10 days late."**
-- **Horizons count from the issue date:** nowcast, +0.5, +1.5 and +2.5 weeks, and every ledger row carries the label. The measured lag on 8 Nov was 7 days for W44 (`data/raw/PROVENANCE.md`).
-
-## F. Positioning and business
-
-**24. "Abu Dhabi already has Tableegh, UMOC, Rasid and an ADPHC AI tender. Why you?"**
-- **Those answer "is something emerging?"**: Tableegh notifies, UMOC runs early warning, Rasid watches wastewater, and the 2024 tender scope is outbreak detection.
+**26. "Abu Dhabi already has Tableegh, UMOC, Rasid and an ADPHC AI tender. Why you?"**
+- **Those answer "is something emerging?"**
 - **NABD answers "how big will the known seasonal RSV and flu wave be over the next weeks, and how good has this forecast been?"** It is a feed they can host (`research/positioning.md` §3; `research/competitors.md`).
-- **Rasid offer:** add its wastewater signal as an input and publish whether it helps.
+- **Rasid:** we offer to add its wastewater signal as an input and publish whether it helps.
 
-**25. "Hospital command-centre tools already predict census."**
-- **They work from inside-hospital data, up to about 72 hours ahead.** We forecast weeks ahead from community surveillance the hospital can't see. The two are complementary (`research/competitors.md`).
+**27. "Hospital command-centre tools already predict census."**
+- **They work from inside-hospital data, up to about 72 hours ahead.** We forecast weeks ahead from community surveillance (`research/competitors.md`). The two are complementary.
 
-**26. "WHO FluNet is non-commercial. Is your business blocked?"**
-- **No.** FluNet powers the public-health feed and the evaluation. A hospital product would run on the hospital's own aggregate data. Every source is declared (`pitch/registration.md`).
+**28. "Data sovereignty?"**
+- **Aggregate weekly counts only.** No identifiers, with k ≥ 10 complementary suppression enforced by the connector's schema.
+- **Built for in-country hosting**, with an ADHICS / DoH data-standards checklist (`docs/PILOT-DATA-SPEC.md` §4).
+- **Nothing person-level enters any path** (`tests/test_adapters.py`).
 
-**27. "Who pays, and why would SEHA say yes?"**
-- **Who pays:** hospital operations for winter bed and roster planning, and public health for a regional feed.
-- **First step:** a 12-week shadow run on aggregate counts with no change to care. Success, defined in advance, is beating the hospital's own census carried forward.
-- **Honest status:** no letter of interest yet.
+**29. "Why not leave this to the Gulf CDC or WHO EMRO?"**
+- **Complementary.** The Gulf CDC's regional system is at the pilot stage, with acute respiratory infection as a weekly-reported pilot disease [S23].
+- **NABD is FluNet-native and has transferred to three Gulf countries under a locked test.** It is a forecast layer any regional system can consume.
 
-**28. "What's defensible? Anyone can fit a regression."**
-- **Not copyable:**
-  - a dated, outside-anchored track record;
+**30. "What's defensible? Anyone can fit a regression."**
+- **What can't be copied:**
+  - a dated forecast record that can't be backdated, once it is anchored outside the team ⟦IF DONE⟧;
   - frozen protocols with their deviation logs;
-  - a method already tested blind on three Gulf countries;
+  - a method tested out of sample on three Gulf countries;
   - the approval and audit workflow a hospital signs off on.
-- **The record gets more valuable every week it runs.**
 
 ## Curveballs
-- **"Is this season unusual?"** DoH said in September that activity looks similar to the previous two seasons (`research/burden.md` #8). We sell variability, not crisis.
-- **"Do you use patient data?"** No. We use aggregates only, the adapters reject person-level fields, and a test checks this (`tests/test_adapters.py`).
-- **"Conflict of interest? MBZUAI is a co-creator."** The T&C has no conflict clause (`research/tc.md`). Institutional permission is ours to confirm: ⟨team status⟩.
-- **"Are the timestamps real?"** Today they are local git commits we made ourselves. Outside anchors (OpenTimestamps, Zenodo) are set up in `ledger/ANCHOR.md` ⟦IF DONE: anchor receipt⟧. Until then, say "self-attested".
-- **"Does NABD predict when to start infant RSV immunisation?"** No. The fact that RSV passed 10% before 1 Sep in 2 of 4 seasons is context from WHO data (`research/positioning.md` §1.4), not a prediction.
+- **"Is this season unusual?"** DoH said in September that activity looks similar to the previous two seasons [S7]. We sell recurring variability, not crisis.
+- **"Do you use patient data?"** No. We use aggregates only, the adapters reject person-level fields, and a test checks this.
+- **"Conflict of interest? MBZUAI is a co-creator."** The T&C has no conflict clause (`research/tc.md`). Institutional permission: ⟨team status⟩.
+- **"Does NABD predict when to start infant RSV immunisation?"** No. RSV passing 10% before 1 Sep in 2 of 4 seasons is context from WHO data, not a prediction [S4 secondary; DATA].
+- **"Is the ledger public?"** ⟦IF DONE: "Yes, at ⟨URL⟩, anchored ⟨date⟩."⟧ Otherwise: "Not yet. It is hashed and committed locally, and it will be public and externally timestamped from ⟨date⟩."

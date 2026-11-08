@@ -1,7 +1,7 @@
 # NABD: Technical documentation
 
 **Future Health Digital Innovation Challenge 2026 · Statement 06 (Population and Workforce Health Early Warning)**
-**Version:** round 3, 8 Nov 2026, to be refreshed on 19–20 Nov.
+**Version:** round 4, 8 Nov 2026, to be refreshed on 19–20 Nov.
 **Repository:** this repo (the git history is the provenance record).
 
 Every number below is copied from a file in `results/` and cited inline. Status labels used throughout: **PRE-REGISTERED** (plan locked before scoring), **RETROSPECTIVE** (data or earlier results had been seen), **DIAGNOSTIC** (thresholds informed by earlier exposure), **SIMULATED** (synthetic data) and **NOT RUN**. Protocol locks are local git commits. They are **self-attested until anchored outside the team** (§8).
@@ -10,7 +10,7 @@ Every number below is copied from a file in `results/` and cited inline. Status 
 
 ## 1. What NABD is
 
-NABD (نبض, "pulse") is an open forecasting layer for seasonal RSV and influenza. It issues calibrated probabilistic forecasts of weekly respiratory activity for the next 1–3 weeks. A bilingual (Arabic/English) decision card proposes a proportionate action for a named role, and only a person can approve, modify or dismiss it; a hash-chained audit log records the decision. Every forecast round is hashed and published before its target week is observed.
+NABD (نبض, "pulse") is an open forecasting layer for seasonal RSV and influenza. It issues probabilistic forecasts of weekly respiratory activity, from the nowcast to +2.5 weeks after issue, with interval coverage measured and reported (§6). A bilingual (Arabic/English) decision card proposes a proportionate action for a named role, and only a person can approve, modify or dismiss it; a hash-chained audit log records the decision. Every forecast round is hashed and committed before its target week is observed. The record becomes public and externally timestamped once the repository is pushed and the manifests are anchored (§8). Until then it is self-attested.
 
 It is built to sit on top of Abu Dhabi's existing detection systems (Tableegh/Malaffi notifications, UMOC early warning, Rasid wastewater), not to replace them (`research/positioning.md` §0, §3).
 
@@ -78,8 +78,8 @@ flowchart LR
 | Source | Use | Access, vintages | Licence |
 |---|---|---|---|
 | WHO FluNet `VIW_FNT`, ARE, sentinel + non-sentinel, 2022-W01 → 2026-W44 | UAE inputs and truth | xMart OData; refreshed via WebFetch on 8 Nov. Lag at retrieval: 7 days for W44 (`data/raw/PROVENANCE.md`). No vintages exist, so retrospectives use revised values | WHO: public-health, non-commercial use, with citation |
-| WHO FluNet, OMN/QAT/SAU (BHR, KWT screened out by rule) | GCC test | Downloaded **after** the lock (commit d013228 after lock 91005ce). WHO full export via a public mirror, verified row-for-row against the official API (419/419 ARE rows, 7/7 OMN rows; deviation G1) | WHO terms |
-| CDC FluSight hub `cdcepi/FluSight-forecast-hub`, pinned commit `d035740…` | US target data (102 `as_of` vintages, 2023-09-23 → 2026-11-04), FluSight-ensemble, FluSight-baseline and all hub models (league table) | Sparse git checkout in `external/hub`. `run_all` fails if the hub is not at the pinned commit | MIT (hub); US Government data |
+| WHO FluNet, OMN/QAT/SAU (BHR, KWT screened out by rule) | GCC test | Downloaded **after** the lock (commit d013228 after lock 91005ce). WHO's full export (3 Oct 2026) via a public mirror. It matches our independently fetched UAE rows exactly (419/419) and 23/23 Gulf rows spot-checked against the official API (deviations G1, G1b). A full official re-pull (`python -m adapters.gcc_verify`) is pending | WHO terms |
+| CDC FluSight hub `cdcepi/FluSight-forecast-hub`, pinned commit `d035740…` | US target data (102 `as_of` vintages, 2023-09-23 → 2026-11-04), FluSight-ensemble, FluSight-baseline and all hub models (league table) | Sparse git checkout in `external/hub`, pinned commit recorded in `eval/run_all.py` (HUB_SHA). Enforcement of the pin is tracked in `docs/DEVIATIONS.md` (D8(d) and its correction) | MIT (hub); US Government data |
 | UAE MoE academic calendars (verified seasons only), Ramadan (tabular calendar ± 2 days) | v2 covariates (known-future) | `data/raw/uae_calendar.csv`, with source URLs per row | Public fact |
 | NOAA GHCN / ERA5 weather | Planned covariate | **Not used.** Blocked in the build environment; `adapters/weather.py --fetch` works locally | Public domain |
 
@@ -99,7 +99,7 @@ $$
 
 where $\bar y_{w}$ is the training-season mean logit by ISO week (circularly smoothed ± 2 weeks), and $\Delta\log\text{spec}_t$ is the 1-week change in log specimens processed (testing volume). Predictive quantiles are $y_t + \hat{(\cdot)} + Q_\tau(\hat\varepsilon)$, where the residuals come from **nested** leave-one-season-out fits within the training seasons, so the spread is out-of-sample. They are back-transformed to percent.
 
-**Information rule:** a forecast issued after the last published week L uses only rows with week_end ≤ week_end(L). Targets are L+1 … L+4. With WHO's lag of about 7–11 days, these sit at the **nowcast, +0.5, +1.5 and +2.5 weeks after issue**, and every ledger row carries that label.
+**Information rule:** a forecast issued after the last published week L uses only rows with week_end ≤ week_end(L). Targets are L+1 … L+4. With WHO's lag of about 7–11 days, these sit at the **nowcast, +0.5, +1.5 and +2.5 weeks after issue**. All skill numbers assume issue at L_end + 11 days. Ledger rounds from round 3 on carry these labels. R0/R1 (issued at L_end + 7 days) carry "+1/+2/+3 wk" and stay unchanged because they are hashed (`docs/RUNBOOK.md`).
 
 **Comparators:**
 - **persistence:** median = the last logit; spread = the empirical h-step changes;
@@ -203,7 +203,19 @@ $$
 
 **95% coverage:** flu 0.96, RSV 0.83 (RSV intervals are too narrow outside the UAE).
 
-**Caveats:** n = 3 countries, about 4 seasons each, on revised data. v1 was chosen as the primary method after the UAE results were known, and this is disclosed in PREREG §1.
+**Robustness** (independent audit reruns, `docs/REVIEW-R3-audit.md` §0):
+- Influenza: leave-one-country-out 0.904–0.929; country-clustered bootstrap 0.841–0.984; within-country-season moving block (L = 4) 0.855–0.985. **The influenza verdict is robust.**
+- RSV: the country-clustered bootstrap crosses 1 (0.712–1.026), so **RSV is a secondary, non-robust result** and is never headlined.
+- Leak test: 2,112 future-perturbation cases, 0 forecasts changed.
+
+**How we phrase it:**
+- **vs seasonal analog = "planning from past-season patterns":** influenza −46% (0.536). Below 0.6 in each country (OMN 0.574, QAT 0.446, SAU 0.594). Pre-registered secondary.
+- **vs persistence = "last week carried forward":** −9% (0.914). Pre-registered primary.
+
+**Caveats:**
+- n = 3 countries, about 4 seasons each, on revised data.
+- The lock is self-attested (local git) until anchored. We call it "out-of-sample, plan locked before download", not "blind".
+- v1 was chosen as the primary method after the UAE results were known (disclosed in PREREG §1).
 
 ### 6.2 UAE track (`results/uae/SUMMARY-v2.md`), RETROSPECTIVE, n = 4 seasons
 
@@ -227,12 +239,20 @@ So only climatology helps. The non-sentinel and calendar feeds slightly overfit.
 
 **Missing latest week:** mean WIS rises by 0.14–0.26 percentage points.
 
-**UAE alerts** (DIAGNOSTIC: thresholds of 15% for flu and 10% for RSV came from earlier probes; `results/uae/tables/alerts_uae.csv`):
+**UAE alerts: RETIRED from claims.** They were computed on the leave-one-season-out design, which trains on later seasons, with n = 3 onsets per series and thresholds from earlier probes (`results/uae/tables/alerts_uae.csv`; `docs/REVIEW-R3-audit.md` finding 8). Influenza median lead was 1.4 weeks for both v1 and the census rule, i.e. parity. No forward-in-time alert table exists yet.
 
-| | Flu | RSV |
-|---|---|---|
-| v1 | 3/3 onsets caught in time, PPV 3/3, 0 false alarms, median lead 1.4 weeks | 1/3 |
-| Census rule | 2/3 | 1/3 |
+**Forward-in-time folds, per season** (mean WIS, percentage points; `results/uae/v2/tables/forward_wis_by_season.csv`):
+
+| Series | Test season | Training seasons | v1 | Persistence |
+|---|---|---|---|---|
+| Flu | 2023/24 | 1 | 4.75 | 2.21 |
+| Flu | 2024/25 | 2 | 2.54 | 2.66 |
+| Flu | 2025/26 | 3 | 1.94 | 3.08 |
+| RSV | 2023/24 | 1 | 2.50 | 2.07 |
+| RSV | 2024/25 | 2 | 1.31 | 2.14 |
+| RSV | 2025/26 | 3 | 2.30 | 1.89 |
+
+**Reading (POST HOC; not a pre-registered analysis):** UAE sentinel data in FluNet start in 2022, so the first forward fold learned from one season and lost badly. With ≥2 training seasons, influenza won both folds and RSV split. The Gulf countries had history from 2015. The live ledger tests this reading forward.
 
 ### 6.3 US benchmark (`results/SUMMARY.md`), PRE-REGISTERED
 | Analysis | Relative WIS (95% CI) |
@@ -262,7 +282,9 @@ So only climatology helps. The non-sentinel and calendar feeds slightly overfit.
 - **Relative economic value at +2.5 weeks, event ≥ 3/100k:** NABD is above the CDC ensemble at cost/loss ≤ 0.1, about equal at 0.2, and below at ≥ 0.3 (no CIs).
 - **US alerts at 3/100k** (DIAGNOSTIC, thresholds informed by pre-freeze probes, D5):
   - median onset lead is 0 weeks for every rule;
-  - PPV: NABD 0.65/0.76, ensemble 0.41/0.67, census 0.60/0.46 (2024/25 / 2025/26).
+  - **0 false alarms for every rule**, so the PPV differences (NABD 0.65/0.76, ensemble 0.41/0.67, census 0.60/0.46; 2024/25 / 2025/26) come from **late** first alerts, not false ones;
+  - first alerts after onset, 2024/25: NABD 9, ensemble 13, census 19;
+  - timely detections: census 28 vs NABD 17 of 51 (2024/25); NABD 29 vs census 24 of 52 (2025/26) (`results/tables/alerts_us_detail.csv`).
 - **Feed dropout:** one missing week multiplies NABD's WIS by 1.41, two weeks by 1.82 (`results/tables/dropout_us.csv`).
 - **Latency:** median input age at issue is 4 days.
 
@@ -280,7 +302,9 @@ Figures: `results/figures/fig1_rel_wis_season_horizon.png`, `fig2_league_table.p
   - the persistence forecast alongside, as an automation-bias guard;
   - exact per-signal contributions;
   - a playbook action for a named role (bed and roster manager; ADPHC duty officer).
-  - ⟦IF BUILT⟧ exceedance probabilities $P(Y > \text{threshold})$ from the issued quantiles, and an as-of trend arrow.
+  - exceedance probabilities $P(Y > \text{threshold})$ from the issued quantiles (values at the edges are shown as <1% / >99%), plus the forecast-path direction. The playbook band follows the highest threshold with ≥30% probability, combined with the direction (playbook v0.3);
+  - the season-shape page (every UAE season aligned at ISO week 27, with the live forecast overlaid) and a paediatric bed-days SCENARIO page;
+  - ⟦IF BUILT⟧ the hospital winter planner (SCENARIO: bed-days, % of ward, staff-absence range, roster gap in AED; occupational-health role), and a weekly bilingual bulletin PDF per ledger round.
 - **Card consistency (G14):** `app/cardcheck.py` blocks any card whose band, trend and action contradict each other. A test feeds in a deliberately contradictory card and must fail.
 - **Playbook:** `playbook/playbook.yaml` is versioned and schema-validated, and is **ILLUSTRATIVE** until clinicians and public-health officials review it.
 - **Human approval and audit:** Approve, Modify or Dismiss each needs a reason code. Each decision is appended to `app/audit/audit.jsonl`, with each record carrying the hash of the previous one, so tampering is detectable (`tests/test_app_audit.py`).
@@ -294,7 +318,7 @@ Figures: `results/figures/fig1_rel_wis_season_horizon.png`, `fig2_league_table.p
 - `python3 -m ledger.issue --fetch --round Rn` pulls the newest WHO week and issues v1 (headline), v2 (challenger) and persistence forecasts. Each file gets a SHA-256, and the round gets a Merkle manifest (vendored kit `nabd_kit.ledger`).
 - `python3 -m ledger.score --fetch` scores past rounds once their target weeks are published. It verifies each file's hash first, and tampered files are excluded.
 - **Status on 8 Nov:**
-  - rounds R0 (06:51 UTC) and R1 (12:12 UTC) have been issued;
+  - **one forecast round** (data through W44) has been issued: R0 (06:51 UTC), then re-issued as R1 (12:12 UTC) with the v2 challenger added. The v1 and persistence files are byte-identical across R0 and R1;
   - **0 rows scored**, because no target week has been published yet (`ledger/SCOREBOARD.md`).
 - **Anchoring is NOT done.** OpenTimestamps and RFC 3161 services are blocked from the build environment. The team must run `vendor/nabd_v2_kit/scripts/anchor.sh <MANIFEST.sha256>` locally for the US freeze, the UAE-v2 lock, the GCC lock and each ledger round, then push. Steps are in `ledger/ANCHOR.md`.
 - Every anchor made after results existed must be described that way (`docs/FREEZE.md` addendum).
@@ -312,7 +336,7 @@ Figures: `results/figures/fig1_rel_wis_season_horizon.png`, `fig2_league_table.p
 | GCC test | `python3 -m uae.gcc --score` (refuses without `assert_locked`) | seconds–minutes |
 | Ledger | `python3 -m ledger.issue --cached --round Rn`; `python3 -m ledger.score --cached` | seconds |
 | App / API | `streamlit run app/streamlit_app.py`; `uvicorn app.api:app --port 8000` | — |
-| Tests | `make test` (98 tests at the round-2 close) | ≈ 30 s |
+| Tests | `make test` (120 tests at the round-3 close) | ≈ 30 s |
 
 Seeds are fixed (US bootstrap 20261108; GCC bootstrap seed 0). The Docker files (`Dockerfile`, `docker-compose.yml`) are written but not built, because the build environment has no daemon.
 
@@ -328,10 +352,11 @@ Seeds are fixed (US bootstrap 20261108; GCC bootstrap seed 0). The Docker files 
    - revised data;
    - a self-attested lock;
    - v1 chosen after the UAE results;
-   - RSV under-coverage (95% coverage 0.83).
+   - RSV is secondary, with a country-clustered CI crossing 1 and 95% coverage of 0.83;
+   - data via a mirror of WHO's export, with only a spot-check against the official API (full re-pull pending).
 5. **No Abu Dhabi hospital, district or daily data.** Positivity is not bed load, and that link is the pilot's question.
-6. **No earlier onset warning:** median lead is 0 weeks. All alert metrics are diagnostic.
-7. **The workforce module is SIMULATED.** Chronos-2 was NOT RUN, and ACI is not used.
+6. **No earlier onset warning:** at the US primary threshold, median lead is 0 weeks. All alert metrics are diagnostic, and the UAE alert table is retired (LOSO).
+7. **The workforce module is SIMULATED.** ⟦IF BUILT⟧ The hospital winter planner is a SCENARIO on hospital-supplied inputs. No absence figure is claimed. Chronos-2 was NOT RUN, and ACI is not used.
 8. **Timestamps are self-attested until anchored.** Exploratory probes touched the US test seasons before the freeze (D5).
 9. **The WHO FluNet licence is non-commercial,** so a commercial product would run on partner data.
 
@@ -354,7 +379,7 @@ Full statement: `pitch/assumptions-limitations.md`.
 | D9 | Scorer cross-check with an independent implementation | declared before computing | PASS (exact) |
 | D10 | Phase decomposition and relative economic value | declared before computing | descriptive |
 | E1 | Realised-phase split | post hoc | EXPLORATORY; never a claim |
-| G1 | GCC data from a public mirror of WHO's full export, verified against the official API | after lock, before scoring | provenance note |
+| G1, G1b | GCC data from a public mirror of WHO's full export. It matches the independently fetched UAE rows exactly (419/419), and 23/23 Gulf rows were spot-checked against the official API. A full re-pull is pending | after lock, before scoring | provenance note |
 
 ---
 
