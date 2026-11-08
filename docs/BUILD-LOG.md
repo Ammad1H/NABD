@@ -130,3 +130,24 @@ NABD-UAE-v1 beat persistence in flu 4/4 seasons and RSV 3/4 (it loses on RSV 202
   4. Bed-days SCENARIO translator.
   5. GCC panel.
 - Not found: Abu Dhabi ED/bed series, a UAE flu hospitalisation estimate, a credible UAE absence figure, any public UAE/GCC respiratory forecast.
+
+## Round 2 — US modelling (replacement builder), 8 Nov 2026
+- **Vendored** the remaining nabd_v2_kit modules, tests and examples verbatim from the Project. Kit tests: 26/26 pass.
+- **D9 scorer cross-check: PASS.** Our WIS equals the independent kit WIS exactly (max diff 0.0) on all cells for NABD, the FluSight-ensemble and the FluSight-baseline, with no crossing quantiles.
+- **D6 (declared earlier):**
+  - **Primary circular block bootstrap (L=4):** 1.223 (CI 0.979–1.573). L=6 gives 0.965–1.553. **Still NOT MET.**
+  - **National series share of WIS:** NABD 46.0%, ensemble 44.9%.
+  - **Excluding US:** 1.198 (cluster CI 1.014–1.449). S1 excluding US: 0.818 (0.675–0.998).
+  - **Per-location wins vs ensemble:** 18/53 (2024/25), 0/53 (2025/26), 0/53 pooled. Vs baseline: 49/53, 18/53 and 47/53.
+- **D7 league table** (D11 fixes the implementation; 80 hub models sparse-fetched, about 1.2 GB):
+  - NABD v1 rank 13/41 in 2024/25 (rel 0.693; the CDC ensemble is 12th at 0.673) and 40/46 in 2025/26 (rel 1.007).
+  - Single models only: 7/21 and 19/25.
+- **D10 / G13 (descriptive):**
+  - **Relative WIS vs ensemble by as-of phase:** rising 1.27, flat 0.97, falling 1.29.
+  - **Decision value at +2.5 wk (≥3/100k):** NABD is higher than the CDC ensemble at low cost-loss ratios (C/L 0.02–0.1: 0.08/0.22/0.37 vs −0.13/0.11/0.26), about equal at 0.2, and lower at ≥0.3. No CIs.
+- **Figure pack:** results/figures/fig1–fig4.
+- **summary.json:** gains `primary_verdict`, `primary_text`, `round2`, and `exploratory` (flagged).
+- **Pipeline:** run_all now calls eval.round2, with `--skip-league` available.
+- **FluSight:** docs/FLUSIGHT-PARTICIPATION.md. Non-US teams already submit (U. Guelph). Drafts (not submitted): metadata YAML, a stale draft 2026-11-14 file, and `eval/flusight_round.py`.
+- **docs/PREREG-US-V2.md:** draft only. US v2 is not built, not locked and not scored.
+- **Open:** the user decides on the FluSight submission and on whether to lock US v2. external/hub is now a no-cone sparse checkout (run_all's pin check still applies).
