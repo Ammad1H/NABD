@@ -43,3 +43,25 @@ NABD-UAE-v1 beat persistence in flu 4/4 seasons and RSV 3/4 (it loses on RSV 202
   - the DoH Circular 37/2026 PDF (robots-blocked, so read it in a browser);
   - fill the ⟦RESULT⟧ slots after the modelling run;
   - abstract word counts run slightly over (56/160/310), so trim if the form enforces limits.
+
+## App workstream, round 1 (8 Nov)
+- **Built:**
+  - `playbook/playbook.yaml` (v0.1.0, ILLUSTRATIVE; 7 bands, 2 roles, EN/AR) with `playbook/validate.py`, a schema validator with an overlap check.
+  - `app/audit.py`: append-only SHA-256 hash-chained JSONL.
+  - `app/data_io.py`: contract-only loaders. The live ledger round is preferred, then retrospective, then DEMO.
+  - `app/demo_data.py`: number-free demo tables.
+  - `app/workforce.py`: SIMULATED additive secret sharing with k-anonymity.
+  - `app/streamlit_app.py`, bilingual (EN/AR RTL), with 6 pages.
+  - `app/api.py`: FastAPI `/forecast` and `/health`, with OpenAPI.
+  - Dockerfile, docker-compose.yml, requirements-app.txt and app/README.md.
+- **Verified:**
+  - `pytest tests/test_app_audit.py`: 21 passed.
+  - AppTest renders all 6 pages × 2 languages with no exceptions.
+  - Live `streamlit run` returns 200 and `/forecast` serves the R0 ledger round. Horizons are measured from the issue date: nowcast, then +1 to +3 wk.
+  - 5 screenshots in `app/screenshots/`.
+- **Gates:** G5 is met, except the US proof panel still shows DEMO until `results/summary.json` and `results/tables/` exist. The audit part of G6 is met.
+- **Open:**
+  - The Docker image was not built, because there is no Docker daemon in the sandbox.
+  - Playbook thresholds are placeholders pending review.
+  - Ablation shows DEMO until `results/tables/ablation*.csv` exists.
+  - The weekly card's driver panel is descriptive context, not model attributions.

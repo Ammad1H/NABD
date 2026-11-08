@@ -257,9 +257,15 @@ elif page == "nav_ledger":
     st.subheader(t("nav_ledger", lang))
     st.markdown("Every forecast round is committed publicly **before** its target weeks are published. "
                 "The hash below is recomputed from the file now; it must match the recorded hash and the public commit.")
-    st.dataframe(rounds, hide_index=True, width="stretch")
+    st.dataframe(rounds[[c for c in ["model", "issued_utc", "hash_matches", "git_commit_time", "sha256", "round_file"]
+                         if c in rounds.columns]], hide_index=True, width="stretch")
+    st.caption("hash_matches = recomputed SHA-256 equals the hash recorded at issue. Publishing the repo makes the commit time public.")
     if not scored.empty:
         sc = scored.copy()
+        for c in ("q10", "median", "q90"):
+            sc[c] = pd.to_numeric(sc[c], errors="coerce").round(1)
+        sc.insert(0, "model", sc.round_file.str.extract(r"Z_(.+)\.csv$")[0])
+        sc = sc.drop(columns=["round_file"])
         sc["status"] = sc.inside_80pct_band.map({True: "inside 80% band", False: "outside 80% band", None: "awaiting data"})
         st.dataframe(sc, hide_index=True, width="stretch")
         n = sc.inside_80pct_band.notna().sum()
