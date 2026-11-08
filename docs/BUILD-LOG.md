@@ -65,3 +65,39 @@ NABD-UAE-v1 beat persistence in flu 4/4 seasons and RSV 3/4 (it loses on RSV 202
   - Playbook thresholds are placeholders pending review.
   - Ablation shows DEMO until `results/tables/ablation*.csv` exists.
   - The weekly card's driver panel is descriptive context, not model attributions.
+
+## Round 1: Modelling workstream (8 Nov 2026)
+
+**Built**
+- **Data and vintages:** `models/data.py` (vintage rule PROTOCOL §2; exact duplicate rows in vintage 2026-05-27 dropped, D4).
+- **Point model:** `models/point.py` (damped pooled log-linear growth).
+- **Members:** `models/members.py` (NB GLM, EEQ with level strata, D1), with stale-vintage handling (D2) and feed-dropout (diagnostic only) in `models/engine.py`.
+- **Chronos-2 wrapper:** `models/chronos2.py`. NOT RUN here because Hugging Face is blocked.
+- **Evaluation:** `eval/{wis,tune,backtest,score,alerts,exploratory,run_all}.py`, `Makefile`.
+- **Tests:** `tests/test_wis.py` (interval form = pinball form, hand-computed example, point mass) and `tests/test_vintage.py` (vintage deadline, cutoff, injected future point does not leak, negative control).
+- **Protocol:** `docs/PROTOCOL.md` frozen at commit `ac16901`, SHA-256 `2846533f…`, 06:47Z (`docs/FREEZE.md`). Pre-test deviations D1, D2 and D3 (alert rule, before any test forecast); D4 (data bug, before scoring). Exploratory E1 is labelled.
+- **Config:** `models/config.yaml` was tuned on 2023/24 only. Re-running tuning reproduces it exactly.
+
+**Results (single test run, frozen config)** in `results/SUMMARY.md`, `results/summary.json`, `results/tables/*`, `results/figures/*`:
+- **PRIMARY:** NABD-ensemble vs FluSight-ensemble, rel. WIS **1.223 (95% CI 1.011–1.521)**. Non-inferiority (margin 1.15) is **NOT MET**.
+  - 2024/25: 1.026 (0.885–1.255).
+  - 2025/26: 1.516 (1.093–2.026).
+- **S1:** vs FluSight-baseline 0.816 (0.655–1.023). The point estimate is below 1, but the CI includes 1.
+- **S2:** 95% coverage 0.918 (FluSight-ensemble 0.861); 50% coverage 0.480.
+- **Members:** EEQ 1.198, GLM 1.315. Log-scale 1.225 (1.147–1.321). First-release truth 1.295.
+- **G10 US alerts** (`results/tables/alerts_us.csv`, T = 3 per 100k): timely-alert sensitivity (lead 0–4 wk) NABD 0.33 / 0.56 vs FluSight-ensemble 0.18 / 0.54 vs census 0.55 / 0.46 (2024/25 / 2025/26). PPV NABD 0.65 / 0.76 vs FS 0.41 / 0.67 vs census 0.60 / 0.46. Median lead of timely alerts is 0 weeks for all rules (lead parity, as the probe predicted). There were no false-alarm location-seasons at T = 3.
+- **Latency:** inputs are 4 days old at issue (11 days in 5 stale rounds). Feed dropout of 1 week raises WIS ×1.41; 2 weeks ×1.82.
+- **E1 (exploratory):** in rising phases NABD beats the FluSight-ensemble at 0.893 (0.821–0.984). It loses in flat or falling phases at 1.86–1.96.
+
+**Gates:**
+- **G1 PASS:** protocol frozen before any test score; deviations logged.
+- **G2 PASS:** `python -m eval.run_all --cached` takes 22 s with the frozen config; about 4.5 min with `--retune`. Deterministic.
+- **G3 PASS (computed honestly):** the verdict is NOT MET.
+- **G6 (vintage and WIS parts) PASS:** 52/52 tests pass repo-wide.
+- **G10:** the US part is done. The UAE part is not mine.
+
+**Open**
+- Chronos-2 must run on a laptop or Colab: `NABD_CHRONOS=1 python -m eval.backtest --with-chronos`, then `python -m eval.score`. Its contribution is unknown. Adding it to the primary ensemble would be a post-freeze change and must be logged as a deviation.
+- A v2 member aware of turning points (from E1) should be pre-registered for the prospective 2026/27 ledger only.
+- `results/forecasts/` is about 64 MB in git. Consider Git LFS or zipping before pushing.
+- The pitch must say plainly that NABD did not match the CDC ensemble. Defensible claims are: beats persistence (point estimate; CI touches 1), better 95% calibration, and better than the ensemble during surges (exploratory).
