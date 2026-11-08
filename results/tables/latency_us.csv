@@ -1,0 +1,2 @@
+rounds,stale_rounds,median_input_age_at_issue_days,max_input_age_at_issue_days,forecast_horizons_after_issue_weeks,note
+56,5,4.0,11,"+0.5, +1.5, +2.5, +3.5",US NHSN: week ending Saturday R-7 is available by the Wednesday deadline R-3 (4 days). Stale rounds = missing hub vintage; model forecasts from older data (PROTOCOL §2.3).

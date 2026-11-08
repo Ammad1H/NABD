@@ -31,8 +31,13 @@ class Prepared:
         return [self.R + pd.Timedelta(days=7 * h) for h in range(4)]
 
 
-def prepare(R) -> Prepared:
+def prepare(R, drop_weeks: int = 0) -> Prepared:
+    """drop_weeks > 0 simulates a delayed feed (robustness diagnostic only; default 0)."""
     w, meta = series_as_of(R)
+    if drop_weeks:
+        w = w.iloc[:, :-drop_weeks]
+        meta = {**meta, "stale_weeks": meta["stale_weeks"] + drop_weeks,
+                "last_week": w.columns.max().date().isoformat(), "simulated_dropout_weeks": drop_weeks}
     Y = w.to_numpy(dtype=float)
     Z = np.log1p(Y)
     locs = list(w.index)

@@ -41,11 +41,13 @@ def main():
     t0 = time.time()
     if a.fetch or not (ROOT / "external" / "hub").exists():
         fetch_hub()
-    from eval import backtest, score, tune
+    from eval import alerts, backtest, score, tune
     if a.retune or not (ROOT / "models" / "config.yaml").exists():
         tune.main(a.procs)
     backtest.main(procs=a.procs, with_chronos=a.with_chronos)
     score.main()
+    alerts.main()
+    import runpy; runpy.run_module('eval.exploratory', run_name='__main__')
     print(f"run_all done in {time.time()-t0:.0f}s")
 
 

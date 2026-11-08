@@ -129,7 +129,12 @@ def main(procs: int = 2) -> dict:
         "aci": "not used in v1 frozen run; fixed widening k only (PROTOCOL §8)",
         "tuning_runtime_sec": round(time.time() - t0, 1),
     }
-    (ROOT / "models" / "config.yaml").write_text(yaml.safe_dump(cfg, sort_keys=False))
+    import os
+    out_cfg = Path(os.environ.get("NABD_CONFIG_OUT", ROOT / "models" / "config.yaml"))
+    if out_cfg == ROOT / "models" / "config.yaml":
+        cfg["notes"] = ["Selected values w=3, lam_n=0.5, g_max=0.5 and GLM c=2.0 sit on grid edges; the grid is kept as pre-registered (no extension).",
+                        "Frozen before any test-season forecast was produced."]
+    out_cfg.write_text(yaml.safe_dump(cfg, sort_keys=False))
     print(json.dumps(cfg, indent=1, default=str))
     return cfg
 

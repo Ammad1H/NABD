@@ -1,0 +1,64 @@
+{
+ "rule": "docs/DEVIATIONS.md D3 (pre-specified before test-season forecasts)",
+ "primary_T_per_100k": 3.0,
+ "by_rule_pooled": {
+  "FluSight-ensemble": {
+   "onsets": 51.5,
+   "sensitivity_lead0to4": 0.357,
+   "premature_gt4": 0.0,
+   "missed_or_late": 0.643,
+   "median_lead_weeks_timely": 0.0,
+   "false_alarm_loc_seasons": 0.0,
+   "ppv": 0.538
+  },
+  "NABD-ensemble": {
+   "onsets": 51.5,
+   "sensitivity_lead0to4": 0.446,
+   "premature_gt4": 0.0,
+   "missed_or_late": 0.554,
+   "median_lead_weeks_timely": 0.0,
+   "false_alarm_loc_seasons": 0.0,
+   "ppv": 0.709
+  },
+  "census": {
+   "onsets": 51.5,
+   "sensitivity_lead0to4": 0.505,
+   "premature_gt4": 0.0,
+   "missed_or_late": 0.495,
+   "median_lead_weeks_timely": 0.0,
+   "false_alarm_loc_seasons": 0.0,
+   "ppv": 0.529
+  }
+ },
+ "latency": {
+  "rounds": 56,
+  "stale_rounds": 5,
+  "median_input_age_at_issue_days": 4.0,
+  "max_input_age_at_issue_days": 11,
+  "forecast_horizons_after_issue_weeks": "+0.5, +1.5, +2.5, +3.5",
+  "note": "US NHSN: week ending Saturday R-7 is available by the Wednesday deadline R-3 (4 days). Stale rounds = missing hub vintage; model forecasts from older data (PROTOCOL \u00a72.3)."
+ },
+ "dropout": [
+  {
+   "dropped_weeks": 0,
+   "cells": 11660,
+   "nabd_wis_total": 2073648.8257,
+   "rel_to_no_dropout": 1.0,
+   "rel_to_FluSight_ensemble": 1.2232
+  },
+  {
+   "dropped_weeks": 1,
+   "cells": 11660,
+   "nabd_wis_total": 2924936.9378,
+   "rel_to_no_dropout": 1.4105,
+   "rel_to_FluSight_ensemble": 1.7254
+  },
+  {
+   "dropped_weeks": 2,
+   "cells": 11660,
+   "nabd_wis_total": 3772130.9233,
+   "rel_to_no_dropout": 1.8191,
+   "rel_to_FluSight_ensemble": 2.2251
+  }
+ ]
+}
