@@ -135,6 +135,26 @@ def context_lines(col: str) -> list[str]:
             f"Peak week (ISO) in previous seasons: {', '.join(map(str, hist_peak.tolist()[-4:]))}"]
 
 
+FEATURE_TXT = {
+    "last_observed_logit": {"en": "Starting point: last published positivity", "ar": "نقطة البداية: آخر نسبة إيجابية منشورة"},
+    "intercept": {"en": "Model constant", "ar": "ثابت النموذج"},
+    "dy1": {"en": "Change over the last published week", "ar": "التغير خلال آخر أسبوع منشور"},
+    "anom": {"en": "Above/below the usual level for this week of the season", "ar": "أعلى/أدنى من المستوى المعتاد لهذا الأسبوع من الموسم"},
+    "dclim": {"en": "Usual seasonal change from now to the target week", "ar": "التغير الموسمي المعتاد من الآن حتى الأسبوع المستهدف"},
+    "dlogspec": {"en": "Change in testing volume", "ar": "التغير في حجم الفحوصات"},
+    "ns_dy1": {"en": "Change in non-sentinel (hospital lab) positivity", "ar": "التغير في إيجابية المختبرات غير الرصدية (المستشفيات)"},
+    "ns_gap": {"en": "Gap: non-sentinel vs sentinel positivity", "ar": "الفجوة بين الإيجابية غير الرصدية والرصدية"},
+    "school_win": {"en": "School break in the target window", "ar": "عطلة مدرسية ضمن الفترة المستهدفة"},
+    "ram_win": {"en": "Ramadan in the target window", "ar": "رمضان ضمن الفترة المستهدفة"},
+    "residual_median_offset": {"en": "Calibration offset (median of past errors)", "ar": "إزاحة المعايرة (وسيط الأخطاء السابقة)"},
+}
+BASE_TERMS = {"last_observed_logit", "intercept", "residual_median_offset"}
+
+
+def feature_name(f: str) -> str:
+    return FEATURE_TXT.get(str(f), {}).get(lang, str(f))
+
+
 def explain_panel(col: str, ex: pd.DataFrame | None, ex_date: str | None, issue: dt.date, default_wk: float):
     st.markdown(f"**{t('why', lang)}**")
     if ex is None or ex.empty:
@@ -142,38 +162,39 @@ def explain_panel(col: str, ex: pd.DataFrame | None, ex_date: str | None, issue:
                      "results/uae/explain/<issue_date>_<target>.csv")
         return
     if ex_date != issue.isoformat():
-        st.caption(f"Explanation file is for issue date {ex_date}, not this card's issue date {issue.isoformat()}.")
+        st.caption(f"No explanation file exists yet for this card's issue date ({issue.isoformat()}). Showing the latest "
+                   f"available example, issue date {ex_date}"
+                   + (f" ({ex['design'].iloc[0]})" if "design" in ex.columns else "") + ", to illustrate the method.")
     ex = ex.copy()
     horizons = list(pd.unique(ex["horizon"]))
-    # Default to the horizon matching the card's level horizon when the file stores weeks; else the first.
-    default = 0
-    for i, h in enumerate(horizons):
-        try:
-            if float(h) == default_wk or (float(h) == 0 and default == 0):
-                default = i
-        except (TypeError, ValueError):
-            continue
-    h = st.selectbox("Horizon", horizons, index=default, key=f"exh_{col}")
+    default = horizons.index(0) if 0 in horizons else 0
+    h = st.selectbox("Horizon (model step; 0 = first target week after issue)", horizons, index=default, key=f"exh_{col}")
     g = ex[ex["horizon"] == h].copy()
     g["contribution"] = pd.to_numeric(g["contribution"], errors="coerce")
     g = g.dropna(subset=["contribution"])
-    g["abs"] = g.contribution.abs()
-    g = g.sort_values("abs", ascending=False)
     unit = str(g["unit"].iloc[0]) if "unit" in g.columns and len(g) else ""
-    g["direction"] = np.where(g.contribution >= 0, "pushes up", "pushes down")
-    ch = alt.Chart(g).mark_bar().encode(
-        y=alt.Y("feature:N", sort=list(g.feature), title=None),
-        x=alt.X("contribution:Q", title=f"contribution ({unit})" if unit else "contribution"),
-        color=alt.Color("direction:N", scale=alt.Scale(domain=["pushes up", "pushes down"], range=[ROSE, TEAL]), legend=None),
-        tooltip=["feature", "value", alt.Tooltip("contribution:Q", format="+.3f")]).properties(height=28 * max(len(g), 3))
-    st.altair_chart(ch, width="stretch")
-    skip = ("intercept", "const", "baseline", "base")
-    top = [r for r in g.itertuples() if not str(r.feature).lower().startswith(skip)][:3]
-    for r in top:
+    sig = g[~g.feature.isin(BASE_TERMS)].copy()
+    sig["abs"] = sig.contribution.abs()
+    sig = sig.sort_values("abs", ascending=False)
+    sig["label"] = sig.feature.map(feature_name)
+    sig["direction"] = np.where(sig.contribution >= 0, "pushes up", "pushes down")
+    if "median_pct" in g.columns and len(g):
+        st.caption(f"Model median for this step: {float(g['median_pct'].iloc[0]):.1f}%"
+                   + (f" (target week ending {g['target_end_date'].iloc[0]})" if "target_end_date" in g.columns else ""))
+    if not sig.empty:
+        ch = alt.Chart(sig).mark_bar().encode(
+            y=alt.Y("label:N", sort=list(sig.label), title=None),
+            x=alt.X("contribution:Q", title=f"contribution ({unit})" if unit else "contribution"),
+            color=alt.Color("direction:N", scale=alt.Scale(domain=["pushes up", "pushes down"], range=[ROSE, TEAL]), legend=None),
+            tooltip=["feature", "value", alt.Tooltip("contribution:Q", format="+.3f")]).properties(height=26 * max(len(sig), 3))
+        st.altair_chart(ch, width="stretch")
+    for r in list(sig.itertuples())[:3]:
+        pp = getattr(r, "pp_effect_loo", np.nan)
         verb = "pushed the forecast up" if r.contribution >= 0 else "pushed the forecast down"
-        st.markdown(f"- **{r.feature}** (value {r.value}) {verb} by {abs(r.contribution):.2f}{(' ' + unit) if unit else ''}.")
-    st.caption("Exact additive contributions of each signal to the model's linear predictor; they sum to the forecast "
-               "median on the model scale. They describe the model, not causes.")
+        extra = f"; without it the median would move by {-float(pp):+.1f} percentage points" if pd.notna(pp) else ""
+        st.markdown(f"- **{r.label}** {verb} ({r.contribution:+.2f} {unit}{extra}).")
+    st.caption("Exact additive terms of the UAE v2 linear model: starting point + constant + signal terms + calibration "
+               "offset = forecast median on the logit scale. They describe the model, not causes.")
 
 
 # ------------------------------------------------------------------ pages
@@ -337,28 +358,71 @@ elif page == "nav_us":
         st.markdown("#### All pre-registered endpoints")
         cols = [c for c in ["analysis", "A", "B", "n_cells", "rel_wis", "ci_lo", "ci_hi", "cov50_A", "cov95_A"] if c in ep.columns]
         st.dataframe(ep[cols].round(3), hide_index=True, width="stretch")
-    figs = [f for f in data_io.list_figures() if not f.name.startswith("league")]
+    figs = [f for f in data_io.list_figures() if "league" not in f.name]
     for fig in figs:
         st.image(str(fig), caption=fig.name)
 
     st.markdown("#### Where NABD v1 ranks among individual CDC FluSight hub models")
-    league, lfigs = data_io.load_league()
-    if not league:
-        not_computed("league table (method declared before computing: docs/DEVIATIONS.md D7)", "results/tables/league*.csv")
-    for name, df in league.items():
-        st.markdown(f"**{name}**")
-        st.dataframe(df, hide_index=True, width="stretch")
-    for fig in lfigs:
+    league, _ = data_io.load_league()
+    lt = league.get("league_table")
+    if lt is None:
+        not_computed("league table (method declared before computing: docs/DEVIATIONS.md D7)", "results/tables/league_table.csv")
+    else:
+        nab = lt[lt.model.astype(str).str.startswith("NABD")]
+        for r in nab.itertuples():
+            st.markdown(f"- **{r.season}, {r.variant}:** NABD v1 ranks **{int(r.rank)} of {int(r.n_models)}** "
+                        f"(relative WIS vs FluSight-baseline {r.rel_wis:.2f}; lower is better).")
+        st.caption("Pairwise relative WIS (Cramer et al. 2022) on common cells; inclusion rule declared before any hub "
+                   "model was downloaded (DEVIATIONS D7). Context, not an endpoint.")
+        seasons = list(pd.unique(lt.season))
+        ss = st.radio("Season", seasons, horizontal=True, key="league_season")
+        variants = list(pd.unique(lt[lt.season == ss].variant))
+        vv = st.radio("Models included", variants, horizontal=True, key="league_variant")
+        g = lt[(lt.season == ss) & (lt.variant == vv)].sort_values("rel_wis").copy()
+        g["who"] = np.where(g.model.astype(str).str.startswith("NABD"), "NABD v1",
+                            np.where(g.model.astype(str).isin(["FluSight-ensemble", "FluSight-baseline"]), g.model.astype(str), "other hub model"))
+        ch = alt.Chart(g).mark_bar().encode(
+            y=alt.Y("model:N", sort=list(g.model), title=None),
+            x=alt.X("rel_wis:Q", title="relative WIS vs FluSight-baseline (lower is better)"),
+            color=alt.Color("who:N", scale=alt.Scale(domain=["NABD v1", "FluSight-ensemble", "FluSight-baseline", "other hub model"],
+                                                   range=[ROSE, TEAL, SLATE, "#cbd5e1"])),
+            tooltip=["model", alt.Tooltip("rel_wis:Q", format=".3f"), "rank", "coverage"]).properties(height=14 * len(g))
+        rule = alt.Chart(pd.DataFrame({"x": [1.0]})).mark_rule(strokeDash=[4, 4], color=SLATE).encode(x="x:Q")
+        st.altair_chart(ch + rule, width="stretch")
+    for fig in [f for f in data_io.list_figures() if "league" in f.name]:
         st.image(str(fig), caption=fig.name)
 
-    sens = {k: v for k, v in tables.items() if any(s in k for s in ("sensitivity", "block", "per_location", "national", "sens_"))}
-    if sens:
-        with st.expander("Sensitivity analyses (declared in docs/DEVIATIONS.md D6; they do not change the verdict)"):
+    r2 = (summary or {}).get("round2")
+    sens = {k: v for k, v in tables.items() if any(x in k for x in ("sensitivity", "block", "per_location", "national"))}
+    if sens or r2:
+        with st.expander("Sensitivity analyses (declared in docs/DEVIATIONS.md D6/D11; they do not change the verdict)"):
+            if isinstance(r2, dict):
+                b4 = (r2.get("sensitivity_block_bootstrap_L4") or {}).get("PRIMARY pooled")
+                if b4:
+                    st.markdown(f"- Moving-block bootstrap (L = 4): primary relative WIS {b4[0]:.3f}, 95% CI {b4[1]:.3f}–{b4[2]:.3f}.")
+                ns = r2.get("national_share_of_WIS") or {}
+                if ns:
+                    st.markdown("- Share of total WIS from the national US series: "
+                                + ", ".join(f"{k} {v:.0%}" for k, v in ns.items()) + ".")
+                ex = (r2.get("excl_US_national") or {}).get("PRIMARY excl. US national")
+                if ex:
+                    st.markdown(f"- Excluding the national series: relative WIS {ex['rel_wis']:.3f} "
+                                f"(cluster CI {ex['cluster_ci_lo']:.3f}–{ex['cluster_ci_hi']:.3f}).")
+                for w in r2.get("per_location_wins") or []:
+                    st.markdown(f"- vs {w['comparator']}, {w['season']}: NABD better in {w['nabd_wins']} of {w['locations']} locations.")
             for name, df in sens.items():
                 st.markdown(f"**{name}**")
                 st.dataframe(df, hide_index=True, width="stretch")
+    diag = {k: v for k, v in tables.items() if k.startswith(("phase_decomposition", "rev_curves", "scorer_crosscheck", "league_cells"))}
+    if diag:
+        with st.expander("Diagnostics (G13: where the error comes from; decision value; scorer cross-check)"):
+            st.markdown("Phases here are **as-of** phases (computed only from data available at forecast time), "
+                        "declared in DEVIATIONS D10 before computing. Descriptive, not an endpoint.")
+            for name, df in diag.items():
+                st.markdown(f"**{name}**")
+                st.dataframe(df, hide_index=True, width="stretch")
     expl = {k: v for k, v in tables.items() if "exploratory" in k}
-    expl_summary = {k: v for k, v in (summary or {}).items() if isinstance(v, dict) and v.get("exploratory")}
+    expl_summary = (summary or {}).get("exploratory")
     if expl or expl_summary:
         with st.expander("EXPLORATORY analyses (post hoc; not pre-registered; never a claim)"):
             exploratory_note()
@@ -368,7 +432,7 @@ elif page == "nav_us":
                 st.dataframe(df, hide_index=True, width="stretch")
             if expl_summary:
                 st.json(expl_summary, expanded=False)
-    skip = set(sens) | set(expl) | set(league) | {"endpoints"} | {k for k in tables if k.startswith(("alerts_us", "latency_us", "dropout_us"))}
+    skip = set(sens) | set(expl) | set(league) | set(diag) | {"endpoints"} | {k for k in tables if k.startswith(("alerts_us", "latency_us", "dropout_us"))}
     tech = {k: v for k, v in tables.items() if k not in skip}
     if tech:
         with st.expander("Technical tables (cell coverage, vintage flags, tuning)"):
@@ -455,33 +519,42 @@ elif page == "nav_ledger":
 
 elif page == "nav_ablation":
     st.subheader(t("nav_ablation", lang))
-    st.markdown("What does each signal family add? The UAE model is re-run without one feed at a time "
-                "(same protocol, leave-one-season-out), and the change in score is shown.")
+    st.markdown("What does each signal family add, and what happens when a feed is missing? The UAE model is re-run "
+                "without one feed at a time (same leave-one-season-out protocol), and the change in score is shown.")
     abl = data_io.load_uae_ablation()
     if abl is None or abl.empty:
         not_computed("UAE feed-removal ablation", "results/uae/tables/ablation.csv")
     else:
-        metrics = list(pd.unique(abl["metric"])) if "metric" in abl.columns else []
-        m = st.radio("Metric", metrics, horizontal=True) if metrics else None
-        g = abl[abl.metric == m].copy() if m is not None else abl.copy()
-        g["delta"] = pd.to_numeric(g.get("delta"), errors="coerce")
-        if "full" in g.columns and "without" in g.columns:
-            full = pd.to_numeric(g["full"], errors="coerce")
-            g["pct_change"] = 100 * (pd.to_numeric(g["without"], errors="coerce") - full) / full
+        FEED_TXT = {"CORE": "recent change", "CLIM": "seasonal climatology", "TV": "testing volume",
+                    "NS": "non-sentinel (hospital lab) positivity", "CAL": "school calendar and Ramadan"}
+        a = abl.copy()
+        a["delta"] = pd.to_numeric(a["delta"], errors="coerce")
+        a["full"] = pd.to_numeric(a.get("full"), errors="coerce")
+        a["pct_change"] = 100 * a["delta"] / a["full"]
+        a["feed_label"] = a.feed.map(lambda f: f"{f}: {FEED_TXT[f]}" if f in FEED_TXT else str(f))
+        series = list(pd.unique(a["series"])) if "series" in a.columns else [None]
+        sel = st.radio("Series", series, horizontal=True) if series != [None] else None
+        g = a[a.series == sel] if sel is not None else a
+        metric = str(g["metric"].iloc[0]) if "metric" in g.columns else "score"
+        g = g.assign(effect=np.where(g.delta > 0, "worse without (feed helped)", "better or equal without (feed did not help)"))
         ch = alt.Chart(g).mark_bar().encode(
-            y=alt.Y("feed:N", sort="-x", title="feed removed"),
-            x=alt.X("delta:Q", title=f"change in {m} when removed" if m else "change when removed"),
-            color=alt.condition("datum.delta > 0", alt.value(ROSE), alt.value(TEAL)),
-            tooltip=list(g.columns)).properties(height=40 * max(len(g), 3))
+            y=alt.Y("feed_label:N", sort="-x", title=None),
+            x=alt.X("delta:Q", title=f"change in {metric} without the feed"),
+            color=alt.Color("effect:N", scale=alt.Scale(domain=["worse without (feed helped)", "better or equal without (feed did not help)"],
+                                                     range=[TEAL, "#94a3b8"])),
+            tooltip=["feed", "kind", "full", "without", alt.Tooltip("delta:Q", format="+.3f"),
+                     alt.Tooltip("pct_change:Q", format="+.1f")]).properties(height=40 * max(len(g), 3))
         st.altair_chart(ch, width="stretch")
         for r in g.itertuples():
-            pct = getattr(r, "pct_change", np.nan)
-            if pd.notna(r.delta):
-                st.markdown(f"- Removing **{r.feed}** changes {m or 'the score'} by {r.delta:+.3f}"
-                            + (f" ({pct:+.1f}%)" if pd.notna(pct) else "") + ".")
-        st.caption("For error metrics such as WIS, a positive change means the forecast got worse without that feed, "
-                   "so the feed was useful. Four seasons only.")
-        st.dataframe(abl, hide_index=True, width="stretch")
+            if pd.isna(r.delta):
+                continue
+            verdict = "the forecast gets worse, so the feed helps" if r.delta > 0 else "the forecast does not get worse, so the feed adds nothing measurable here"
+            st.markdown(f"- **{r.feed_label}** ({getattr(r, 'kind', '')}): {metric} {r.full:.3f} → {r.without:.3f} "
+                        f"({r.delta:+.3f}, {r.pct_change:+.1f}%): {verdict}.")
+        st.caption("For WIS, lower is better: a positive change means the forecast is worse without that feed. "
+                   "Four seasons only; small differences are within noise. Feeds that do not help are reported, not hidden.")
+        with st.expander("Full table"):
+            st.dataframe(abl, hide_index=True, width="stretch")
 
 elif page == "nav_workforce":
     sim_watermark()
