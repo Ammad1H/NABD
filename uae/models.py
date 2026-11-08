@@ -59,11 +59,12 @@ def _features(d: pd.DataFrame, clim: pd.Series, h: int) -> pd.DataFrame:
     y = d.y
     cw = d.iso_week.map(clim)
     tw = d.iso_week.shift(-h).map(clim)
+    same = d.season == d.season.shift(1)  # never let a lag feature reach into another season (LOSO boundary)
     f = pd.DataFrame({
-        "dy1": y - y.shift(1),
+        "dy1": (y - y.shift(1)).where(same),
         "anom": y - cw,
         "dclim": tw - cw,
-        "dlogspec": d.logspec - d.logspec.shift(1),
+        "dlogspec": (d.logspec - d.logspec.shift(1)).where(same),
         "target": y.shift(-h) - y,
         "season": d.season,
         "tseason": d.season.shift(-h),

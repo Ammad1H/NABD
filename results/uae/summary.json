@@ -13,68 +13,68 @@
     "flu_vs_persistence": {
       "rel_wis": 0.76,
       "ci95": [
-        0.703,
-        0.825
+        0.701,
+        0.824
       ],
-      "n_reference_dates": 190
+      "n_reference_dates": 186
     },
     "flu_vs_seasonal-analog": {
-      "rel_wis": 0.702,
+      "rel_wis": 0.703,
       "ci95": [
         0.647,
-        0.766
+        0.77
       ],
-      "n_reference_dates": 190
+      "n_reference_dates": 186
     },
     "rsv_vs_persistence": {
-      "rel_wis": 0.789,
+      "rel_wis": 0.783,
       "ci95": [
-        0.721,
-        0.864
+        0.711,
+        0.867
       ],
-      "n_reference_dates": 190
+      "n_reference_dates": 186
     },
     "rsv_vs_seasonal-analog": {
-      "rel_wis": 0.699,
+      "rel_wis": 0.691,
       "ci95": [
-        0.656,
-        0.751
+        0.646,
+        0.74
       ],
-      "n_reference_dates": 190
+      "n_reference_dates": 186
     }
   },
   "rel_wis_nabd_excluding_2022_23": {
     "flu_vs_persistence": {
-      "rel_wis": 0.76,
+      "rel_wis": 0.755,
       "ci95": [
-        0.694,
-        0.834
+        0.689,
+        0.832
       ],
-      "n_reference_dates": 144
+      "n_reference_dates": 141
     },
     "flu_vs_seasonal-analog": {
-      "rel_wis": 0.638,
+      "rel_wis": 0.639,
       "ci95": [
-        0.586,
-        0.698
+        0.589,
+        0.701
       ],
-      "n_reference_dates": 144
+      "n_reference_dates": 141
     },
     "rsv_vs_persistence": {
-      "rel_wis": 0.816,
+      "rel_wis": 0.813,
       "ci95": [
-        0.729,
-        0.914
+        0.727,
+        0.913
       ],
-      "n_reference_dates": 144
+      "n_reference_dates": 141
     },
     "rsv_vs_seasonal-analog": {
-      "rel_wis": 0.661,
+      "rel_wis": 0.654,
       "ci95": [
-        0.613,
-        0.715
+        0.608,
+        0.708
       ],
-      "n_reference_dates": 144
+      "n_reference_dates": 141
     }
   },
   "seasons_nabd_better": {
@@ -91,10 +91,10 @@
     {
       "series": "flu",
       "model": "NABD-UAE-v1",
-      "mean_wis": 2.04,
-      "n": 756,
-      "cov50": 0.554,
-      "cov95": 0.964
+      "mean_wis": 2.046,
+      "n": 740,
+      "cov50": 0.555,
+      "cov95": 0.965
     },
     {
       "series": "flu",
@@ -115,10 +115,10 @@
     {
       "series": "rsv",
       "model": "NABD-UAE-v1",
-      "mean_wis": 1.508,
-      "n": 756,
-      "cov50": 0.519,
-      "cov95": 0.958
+      "mean_wis": 1.498,
+      "n": 740,
+      "cov50": 0.516,
+      "cov95": 0.953
     },
     {
       "series": "rsv",
@@ -138,7 +138,7 @@
     }
   ],
   "rsv_peak_week_mae_wk": {
-    "NABD-UAE-v1": 1.31,
+    "NABD-UAE-v1": 1.38,
     "persistence": 2.81,
     "seasonal-analog": 1.75
   },
