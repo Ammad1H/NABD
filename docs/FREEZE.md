@@ -11,3 +11,7 @@
 At the time of this freeze, no test-season (2024/25, 2025/26) score of any NABD model has been computed.
 For a public timestamp, the team should push this repo (or post the SHA-256 above) before results are shown.
 Later changes are allowed only via docs/DEVIATIONS.md.
+
+## Addendum (round 2, 8 Nov 2026)
+- **Prior exposure:** before this freeze, probes touched the test seasons (see DEVIATIONS D5). No NABD model was scored on them, but the point-model family and the D3 alert thresholds were chosen with that exposure.
+- **Anchoring:** this freeze is an *internal pre-registration in local git* (single author, commits 06:43–07:04Z on 8 Nov). Nothing was pushed or externally timestamped before results existed. Any public anchor (GitHub push, OSF or Zenodo, FluSight PR) post-dates the results and must be described that way. Future protocols (v2, the live ledger) must be externally anchored **before** issuing.
