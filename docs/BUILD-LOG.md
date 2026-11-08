@@ -208,3 +208,10 @@ NABD-UAE-v1 beat persistence in flu 4/4 seasons and RSV 3/4 (it loses on RSV 202
 - v2 must not be marketed as an improvement.
 - Pitch should lead with GCC + live ledger, not UAE LOSO (which the forward-in-time test shows ≈ persistence).
 - After this commit, ledger/issue.py gained a live-explain writer. The R1 v2 forecast file was re-generated in a temp dir and reproduces byte-for-byte (sha 2e7979c4…).
+
+## Round 3: pitch and docs (retry after rate limit), 8 Nov
+- Committed the previous attempt's qa.md rewrite after checking it against results/ (GCC first, UAE parity, league line, v2 challenger, alerts diagnostic).
+- Rewrote deck-script (v1.6 evidence order: GCC → ledger → US/league → UAE parity), demo-script, and assumptions-limitations; rebuilt research/claims-ledger.md (sections A–F; LOSO 7/8 = RET; "about 40 models" banned in favour of league counts).
+- New: docs/TECHNICAL.md (mermaid architecture, model equations, protocol and lock provenance table, results tables, reproducibility, governance, limitations, deviations), pitch/video-script.md (336-word voiceover), pitch/one-pager.md.
+- ⟦IF BUILT⟧ slots remain for round-3 app items (exceedance probabilities, season-shape panel, bed-days scenario), PILOT-DATA-SPEC and the anchor receipt. Cut them if absent on 19 Nov.
+- Not touched: pitch/registration.md (final, coordinator c887edc).
