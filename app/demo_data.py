@@ -82,21 +82,18 @@ def us_summary() -> dict:
 
 
 def us_rel_wis_table() -> pd.DataFrame:
-    rng = np.random.default_rng(7)
-    rows = []
-    for season in ["2024/25", "2025/26"]:
-        for h in range(4):
-            rows.append({"season": season, "horizon": h,
-                         "rel_wis_vs_ensemble (DEMO)": round(float(1.0 + rng.normal(0.05, 0.04)), 3),
-                         "rel_wis_vs_baseline (DEMO)": round(float(0.8 + rng.normal(0, 0.04)), 3)})
+    """No numbers: placeholder rows only, so nothing can be mistaken for a result."""
+    rows = [{"season": season, "horizon": h, "rel_wis_vs_ensemble": "awaiting results/",
+             "rel_wis_vs_baseline": "awaiting results/"} for season in ["2024/25", "2025/26"] for h in range(4)]
     return pd.DataFrame(rows)
 
 
 def ablation_table() -> pd.DataFrame:
+    """No numbers: placeholder rows only."""
     return pd.DataFrame({
         "feed_removed": ["none (full)", "ED syndromic (NSSP)", "weather", "school calendar", "testing volume"],
-        "rel_wis_vs_full (DEMO)": [1.00, 1.06, 1.01, 1.02, 1.03],
-        "mean_80pct_interval_width_change_pct (DEMO)": [0.0, 9.0, 1.5, 2.5, 4.0],
+        "rel_wis_vs_full": ["awaiting results/"] * 5,
+        "mean_80pct_interval_width_change_pct": ["awaiting results/"] * 5,
     })
 
 

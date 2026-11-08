@@ -75,22 +75,28 @@ def fan_frame(fc: pd.DataFrame, target: str) -> pd.DataFrame:
     return piv
 
 
+def _qcols(df: pd.DataFrame) -> pd.DataFrame:
+    """Vega-Lite treats dots in field names as nested access, so rename 0.025 -> q025 etc."""
+    return df.rename(columns={c: f"q{int(round(c * 1000)):03d}" for c in df.columns if isinstance(c, float)})
+
+
 def fan_chart(col: str, target: str, fc: pd.DataFrame, pers: pd.DataFrame, issue: dt.date):
-    hist = observed[["week_end", col]].dropna().tail(26).rename(columns={col: "value"})
+    hist = observed[["week_end", col]].dropna().tail(16).rename(columns={col: "value"})
     hist["week_end"] = pd.to_datetime(hist.week_end)
-    f = fan_frame(fc, target)
+    f = _qcols(fan_frame(fc, target))
     f["target_end_date"] = pd.to_datetime(f.target_end_date)
     f["horizon"] = [data_io.horizon_label(d.date(), issue) for d in f.target_end_date]
-    p = fan_frame(pers, target)
+    p = _qcols(fan_frame(pers, target))
     p["target_end_date"] = pd.to_datetime(p.target_end_date)
     base = alt.Chart(f).encode(x=alt.X("target_end_date:T", title="Week ending"))
-    band95 = base.mark_area(opacity=0.18, color=TEAL).encode(y=alt.Y("0.025:Q", title="%"), y2="0.975:Q")
-    band80 = base.mark_area(opacity=0.35, color=TEAL).encode(y="0.1:Q", y2="0.9:Q")
+    band95 = base.mark_area(opacity=0.18, color=TEAL).encode(y=alt.Y("q025:Q", title="%"), y2="q975:Q")
+    band80 = base.mark_area(opacity=0.35, color=TEAL).encode(y="q100:Q", y2="q900:Q")
     med = base.mark_line(color=TEAL, strokeWidth=3, point=True).encode(
-        y="0.5:Q", tooltip=[alt.Tooltip("target_end_date:T", title="week end"), "horizon:N",
-                            alt.Tooltip("0.1:Q", format=".1f"), alt.Tooltip("0.5:Q", format=".1f"),
-                            alt.Tooltip("0.9:Q", format=".1f")])
-    pers_line = alt.Chart(p).mark_line(color=SLATE, strokeDash=[6, 4]).encode(x="target_end_date:T", y="0.5:Q")
+        y="q500:Q", tooltip=[alt.Tooltip("target_end_date:T", title="week end"), "horizon:N",
+                             alt.Tooltip("q100:Q", format=".1f", title="10%"), alt.Tooltip("q500:Q", format=".1f", title="median"),
+                             alt.Tooltip("q900:Q", format=".1f", title="90%")])
+    pers_line = alt.Chart(p).mark_line(color=SLATE, strokeDash=[6, 4], point=True).encode(
+        x="target_end_date:T", y="q500:Q", tooltip=[alt.Tooltip("q500:Q", format=".1f", title="persistence median")])
     h = alt.Chart(hist).mark_line(color=SLATE, point=alt.OverlayMarkDef(size=18)).encode(
         x="week_end:T", y="value:Q", tooltip=[alt.Tooltip("week_end:T"), alt.Tooltip("value:Q", format=".1f")])
     issue_rule = alt.Chart(pd.DataFrame({"d": [pd.Timestamp(issue)]})).mark_rule(color=ROSE, strokeDash=[2, 2]).encode(x="d:T")
@@ -105,9 +111,10 @@ def drivers(col: str) -> list[str]:
     hist_peak = (observed.assign(season=np.where(observed.ISO_WEEK >= 27, observed.ISO_YEAR, observed.ISO_YEAR - 1))
                  .dropna(subset=[col]).groupby("season").apply(lambda g: int(g.loc[g[col].idxmax(), "ISO_WEEK"]),
                                                               include_groups=False))
+    hist_peak = hist_peak.iloc[:-1]  # drop the current, incomplete season
     out = [f"Last 3 weeks: {' → '.join(map(str, last3))}%",
            f"Testing volume change (last week): {spec_chg:+.0f}%" + (" ⚠ >30%: interpret positivity with care" if abs(spec_chg) > 30 else ""),
-           f"Past seasonal peak weeks (ISO): {', '.join(map(str, hist_peak.tolist()[-4:]))}",
+           f"Peak week (ISO) in previous seasons: {', '.join(map(str, hist_peak.tolist()[-4:]))}",
            "School term in session since 31 Aug 2026 (UAE MoE calendar)"]
     return out
 
@@ -143,7 +150,7 @@ if page == "nav_card":
                 "week end": f.target_end_date.astype(str),
                 t("median", lang): f[0.5].round(1),
                 t("band80", lang): [f"{a:.1f}–{b:.1f}" for a, b in zip(f[0.1], f[0.9])],
-                t("persistence", lang): pe[0.5].round(1).values[:len(f)],
+                t("persistence_short", lang): f.target_end_date.map(dict(zip(pe.target_end_date, pe[0.5].round(1)))).values,
             })
             st.dataframe(tbl, hide_index=True, width="stretch")
         with right:

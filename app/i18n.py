@@ -27,6 +27,7 @@ STRINGS = {
     "band80": {"en": "80% band", "ar": "نطاق 80%"},
     "band95": {"en": "95% band", "ar": "نطاق 95%"},
     "persistence": {"en": "Persistence (no-change) forecast", "ar": "توقع الاستمرارية (بلا تغيير)"},
+    "persistence_short": {"en": "No-change", "ar": "بلا تغيير"},
     "drivers": {"en": "Drivers", "ar": "العوامل المؤثرة"},
     "action": {"en": "Proposed playbook action", "ar": "الإجراء المقترح من دليل العمل"},
     "illustrative": {"en": "ILLUSTRATIVE playbook: pending clinical and public-health review",

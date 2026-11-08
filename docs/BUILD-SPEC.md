@@ -50,3 +50,8 @@ Turn NABD (see docs/SPEC.md) into a **winning-calibre, working, reproducible sub
     - `results/tables/*.csv`, `results/figures/*.png`, `results/SUMMARY.md` (headline numbers, machine-readable `results/summary.json`)
     - `ledger/<UTC>_<model>.csv` + `.sha256`
   - The app reads ONLY these paths and must fall back to labelled demo data if they're missing.
+- v1.2 8 Nov (from the evidence workstream, research/tc.md): the official Statement 06 requirements add two gates.
+  - **G10 Alert-performance metrics (req 5):** for an alert layer derived from the forecasts (pre-specified threshold rule, documented in PROTOCOL.md or DEVIATIONS.md if added after freeze), report alert lead time, sensitivity, PPV, false alarms per location-season, data latency, and behaviour under missing feeds (feed-dropout test). Do this on US (state admissions surges) and on UAE (n=4, descriptive). It must be honest that onset lead ≈ parity with census rules (per the probe).
+  - **G11 Alert explainability (req 2):** each alert/card shows the drivers (signals, locations, time windows) that drove it: feed-removal deltas and/or per-feature contributions, rendered in the app.
+  - T&C facts: team 1–5, one team per person; a working prototype, technical docs and an assumptions/dependencies/limitations statement are due 20 Nov; all data sources must be declared; existing prototypes allowed with maturity stated; IP stays with the team, with a 6-month right of first refusal to the organiser for an exclusive licence.
+  - Pitch tone: DoH said in Sep 2026 that this season looks similar to the previous two, so pitch VARIABILITY and planning value, not crisis.
