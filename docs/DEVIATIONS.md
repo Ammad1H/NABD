@@ -34,3 +34,9 @@
 
 - **D9 scorer cross-check (computed 2026-11-08):** PASS. Our `eval.wis.wis` and the vendored independent `nabd_kit.scoring.wis` agree exactly (max abs difference 0.0) on all scored cells: NABD-ensemble 11,872, FluSight-ensemble 11,660, FluSight-baseline 11,660. There are no crossing quantiles in any of the three. Table: results/tables/scorer_crosscheck.csv. The kit's own test suite passes 26/26.
 - **D6/D7/D10:** computed by `eval/round2.py`; numbers in results/SUMMARY.md ("Round 2" section) and results/summary.json `round2`. None changes the PRIMARY verdict (NOT MET).
+
+## GCC out-of-sample test (G12)
+
+| ID | Date (UTC) | Stage | Deviation from docs/PREREG-GCC.md | Reason | Effect on interpretation |
+|---|---|---|---|---|---|
+| G1 | 2026-11-08 | Data acquisition (after lock, before scoring) | Data came from a public GitHub mirror of WHO's full FluNet export (VIW_FNT_20261003.csv), not from a live xMart pull. Checked: 419/419 overlapping UAE rows identical to our official-API cache; 7/7 Oman rows identical to a live official-API WebFetch. | The xMart API is blocked from the shell, and WebFetch returns one country at a time at prohibitive length. | Data are WHO's own export, verified against the official API; data to about 2026-W39 (the 2025/26 evaluation season ends at W26, so it is complete). This is recorded in PREREG §10 terms here because editing the locked plan file would break the lock. |
