@@ -233,3 +233,18 @@ NABD-UAE-v1 beat persistence in flu 4/4 seasons and RSV 3/4 (it loses on RSV 202
   - `adapters/gcc_verify.py` lets the user close G1 locally.
 - **docs/RUNBOOK.md:** weekly ledger, FluSight, app, pilot and pre-publish checks, with a dry-run record.
 - **Tests:** 120 passed.
+
+## Round 3, app (retry), 8 Nov
+- **R3-1:** playbook v0.3. The card's band comes from exceedance probabilities: the highest tier threshold with max over future target weeks of P(Y > T) ≥ 30%, from the issued quantiles (kit `quantiles.exceedance_prob`), crossed with the forecast-path trend.
+  - The card shows P(> each threshold) per horizon (<1% / >99% at the clip) and the observed 3-week as-of trend (kit `phase`), which is context only.
+  - G14 adds over-call and under-call contradiction checks, with tests.
+- **R3-2:** a Season shape page. All complete UAE seasons are aligned on ISO wk 27, with this season and NABD's fan overlaid, plus a per-season peak/onset table.
+- **R3-4:** a Bed-days SCENARIO page, permanently labelled "not a forecast of admissions".
+  - Sourced defaults: 438/yr from Tawam (2,189 over 5 years), LOS 4.0 days (sourced range 4–6), cost US$2,241 from the Dubai claims.
+  - The proportional-to-positivity assumption is shown and labelled unvalidated.
+- **v1.6 evidence order:**
+  - A sidebar "Evidence, in order" box on every page, read live from the results files: GCC blind test, then ledger, then US NOT MET with league ranks, then UAE forward-in-time parity.
+  - The US page leads its UAE section with forward-in-time parity; LOSO is labelled context only.
+  - The About page is rewritten with positioning.md's do-not-claim list, a real/simulated/not-built table and the new card rules.
+- **Fix:** the explain caption names the model from the file (the live file is v1).
+- **Tests and screenshots:** 120/120 tests pass, all 10 pages render in EN and AR, and 11 screenshots were regenerated.

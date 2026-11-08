@@ -52,9 +52,47 @@ st.markdown(f"""
   {"section.main .block-container, .stMarkdown, .stRadio, .stSelectbox, .stTextInput {direction: rtl; text-align: right;}" if rtl else ""}
 </style>""", unsafe_allow_html=True)
 
-PAGES = ["nav_card", "nav_alerts", "nav_us", "nav_gcc", "nav_ledger", "nav_ablation", "nav_workforce", "nav_about"]
+PAGES = ["nav_card", "nav_shape", "nav_scenario", "nav_gcc", "nav_ledger", "nav_us", "nav_alerts", "nav_ablation",
+         "nav_workforce", "nav_about"]
 page = st.sidebar.radio("Page", PAGES, format_func=lambda k: t(k, lang))
 st.sidebar.caption("NABD prototype · Future Health Digital Innovation Challenge 2026 · Statement 06")
+
+
+@st.cache_data(ttl=300)
+def _evidence_lines() -> list[str]:
+    """BUILD-SPEC v1.6 evidence order, read from results files (never hard-coded numbers)."""
+    lines = []
+    gcc, _, _ = data_io.load_gcc()
+    res = (gcc or {}).get("results", {}) if isinstance(gcc, dict) else {}
+    pf, pr = res.get("PRIMARY_flu_v1_vs_persistence"), res.get("rsv_NABD-UAE-v1_vs_persistence")
+    if pf:
+        lines.append(f"**1. Blind GCC test** ({', '.join((gcc or {}).get('included_countries') or [])}; locked before "
+                     f"download): {res.get('PRIMARY_verdict', '?')}. Flu {pf['rel_wis']:.3f} "
+                     f"({pf['ci95'][0]:.2f}–{pf['ci95'][1]:.2f})"
+                     + (f", RSV {pr['rel_wis']:.3f} ({pr['ci95'][0]:.2f}–{pr['ci95'][1]:.2f})" if pr else "")
+                     + " vs last-week persistence (<1 = better).")
+    else:
+        lines.append("**1. Blind GCC test:** not yet computed.")
+    rounds = data_io.ledger_round_files()
+    lines.append(f"**2. Live ledger:** {len(rounds)} hashed round file(s); self-attested until pushed and anchored.")
+    v, _ = data_io.us_verdict(data_io.load_us_summary())
+    league, _ = data_io.load_league()
+    lt = league.get("league_table")
+    rank = ""
+    if lt is not None:
+        nab = lt[lt.model.astype(str).str.startswith("NABD") & (lt.variant == "excluding ensembles")]
+        rank = "; " + ", ".join(f"{r.season}: {int(r.rank)} of {int(r.n_models)} single models" for r in nab.itertuples())
+    lines.append(f"**3. US vs CDC FluSight ensemble:** {v or 'not yet computed'}{rank}.")
+    fit = data_io.load_uae_forward_in_time()
+    if fit:
+        lines.append("**4. UAE own record (forward-in-time, v1 vs persistence):** "
+                     + ", ".join(f"{k} {d['rel_wis']:.3f}" for k, d in fit.items()) + " = parity; short record.")
+    return lines
+
+
+with st.sidebar.expander("📊 " + ("Evidence, in order" if lang == "en" else "الأدلة بالترتيب"), expanded=True):
+    for _ln in _evidence_lines():
+        st.markdown(_ln)
 
 st.title(t("title", lang))
 st.caption(t("subtitle", lang))
@@ -193,8 +231,9 @@ def explain_panel(col: str, ex: pd.DataFrame | None, ex_date: str | None, issue:
         verb = "pushed the forecast up" if r.contribution >= 0 else "pushed the forecast down"
         extra = f"; without it the median would move by {-float(pp):+.1f} percentage points" if pd.notna(pp) else ""
         st.markdown(f"- **{r.label}** {verb} ({r.contribution:+.2f} {unit}{extra}).")
-    st.caption("Exact additive terms of the UAE v2 linear model: starting point + constant + signal terms + calibration "
-               "offset = forecast median on the logit scale. They describe the model, not causes.")
+    model_name = str(ex["model"].iloc[0]) if "model" in ex.columns and len(ex) else "the UAE linear model"
+    st.caption(f"Exact additive terms of {model_name} (linear on the logit scale): starting point + constant + signal "
+               "terms + calibration offset = forecast median on the logit scale. They describe the model, not causes.")
 
 
 # ------------------------------------------------------------------ pages
@@ -238,9 +277,19 @@ if page == "nav_card":
         with right:
             st.markdown(f"**{t('card_facts', lang)}**")
             st.markdown(f'<div class="nabd-card">{cardcheck.card_sentence(res, lang)}'
-                        + (f'<br><small>P(above the high-pressure level {res.high_threshold:g}%) at '
-                           f'+{res.level_horizon_wk:g} wk: {res.p_high:.0%}</small>' if res.p_high is not None else "")
-                        + '</div>', unsafe_allow_html=True)
+                        f'<br><small>{t("obs_trend", lang)}: <b>{cardcheck.TREND_TXT[res.observed_trend][lang]}</b> '
+                        f'(log-slope {res.observed_slope:+.2f}/wk over the last 3 published weeks; context only)</small>'
+                        '</div>', unsafe_allow_html=True)
+            if res.exceed is not None:
+                st.markdown(f"**{t('exceed_title', lang)}**")
+                ex_tbl = pd.DataFrame({
+                    t("horizon", lang): [f"+{h:g} wk" for h in res.exceed.index],
+                    **{f"P(> {T:g}%)": [cardcheck.fmt_p(v) for v in res.exceed[T]] for T in res.exceed.columns}})
+                st.dataframe(ex_tbl, hide_index=True, width="stretch")
+                lvl_txt = (f"{res.level:g}%" if res.level > 0 else t("below_tiers", lang))
+                st.caption(f"{t('decision_rule', lang)} {res.p_act:.0%}. "
+                           f"{t('effective_level', lang)}: {lvl_txt}. "
+                           + "Probabilities at the edge of the forecast are shown as <1% / >99%.")
             st.markdown(f"**{t('action', lang)}**")
             st.caption(f"⚠ {t('illustrative', lang)} · playbook v{pb['version']}")
             if not res.renderable:
@@ -248,7 +297,7 @@ if page == "nav_card":
             else:
                 band = res.band
                 st.markdown(f'<div class="nabd-card">Tier {band["tier"]} · band <code>{band["id"]}</code> '
-                            f'(median {res.level_row[0.5]:.1f}% at +{res.level_horizon_wk:g} wk; forecast path '
+                            f'(effective level {res.level:g}% from exceedance probabilities; forecast path '
                             f'{cardcheck.TREND_TXT[res.trend][lang]}, ratio {res.trend_ratio:.2f})<br><br>'
                             f'<b>{pb["roles"]["hospital_ops"][lang]}:</b> {band["actions"]["hospital_ops"][lang]}<br>'
                             f'<b>{pb["roles"]["adphc_duty"][lang]}:</b> {band["actions"]["adphc_duty"][lang]}</div>',
@@ -272,6 +321,8 @@ if page == "nav_card":
                                 forecast_ref={"model": meta.get("model"), "reference_date": issue.isoformat(),
                                               "target": target, "target_end_date": str(res.level_row.target_end_date),
                                               "median": round(float(res.level_row[0.5]), 2), "trend": res.trend,
+                                              "effective_level": res.level,
+                                              "max_p_exceed": {f"{k:g}": round(v, 3) for k, v in res.max_p.items()},
                                               "forecast_key": res.kit.forecast_key, "demo": is_demo},
                                 playbook_version=pb["version"], valid_reason_codes=set(codes))
                             st.success(f"{t('recorded', lang)} · #{rec['seq']} · {rec['hash'][:16]}…")
@@ -441,13 +492,22 @@ elif page == "nav_us":
                 st.dataframe(df, hide_index=True, width="stretch")
 
     st.divider()
-    st.subheader("UAE retrospective (leave-one-season-out, n = 4 seasons)")
+    st.subheader("UAE's own record (n = 4 seasons)")
+    fit = data_io.load_uae_forward_in_time()
+    if fit:
+        st.markdown("**Forward-in-time (each season forecast using only earlier seasons), NABD-UAE-v1 vs persistence:** "
+                    + "; ".join(f"{k} **{d['rel_wis']:.3f}** (block 95% CI {d['ci95_moving_block_L4'][0]:.2f}–"
+                                f"{d['ci95_moving_block_L4'][1]:.2f})" for k, d in fit.items())
+                    + ". **Parity with persistence:** the UAE record is too short to show skill on its own. That is why "
+                    "the blind GCC test (GCC page) and the live ledger carry the evidence.")
+        st.caption("The multi-signal UAE v2 challenger did not improve on v1 (results/uae/SUMMARY-v2.md); it is reported, "
+                   "not promoted.")
     uae = data_io.load_uae_summary()
     if uae is None:
         not_computed("UAE retrospective", "results/uae/summary.json")
     else:
-        st.caption("Shown verbatim from results/uae/summary.json. Only 4 seasons: indicative, not definitive. "
-                   "This is a retrospective evaluation, not pre-registered.")
+        st.caption("Leave-one-season-out results below (verbatim from results/uae/summary.json) let each forecast learn "
+                   "from LATER seasons too, so they flatter the model. Context only, not a headline.")
         for key in [k for k in uae if k.startswith("rel_wis")]:
             block = uae[key]
             if not isinstance(block, dict):
@@ -584,6 +644,77 @@ elif page == "nav_ablation":
         with st.expander("Full table"):
             st.dataframe(abl, hide_index=True, width="stretch")
 
+elif page == "nav_shape":
+    st.subheader(t("nav_shape", lang))
+    st.markdown("**No two UAE seasons share a shape.** WHO FluNet UAE sentinel positivity for every complete season "
+                "in our data, aligned on the season start (ISO week 27), with this season and NABD's latest issued "
+                "forecast overlaid. A planner using last year as the template would have been wrong in timing and size.")
+    fc, pers, meta, is_demo = data_io.load_uae_forecasts(observed)
+    if is_demo:
+        demo_banner()
+    issue = dt.date.fromisoformat(str(meta.get("issue_date") or meta.get("reference_date")))
+    pb = load_playbook()
+    which = st.radio("Series", ["rsv", "flu"], horizontal=True, format_func=lambda c: t(c, lang))
+    target = data_io.UAE_TARGETS[which]
+    seasons = data_io.season_frame(observed, which)
+    thr = (cardcheck.tier_thresholds(pb, target, "ARE") or [None])[0]
+    cur = seasons.season.max()
+    seasons["this season"] = np.where(seasons.season == cur, "this season", "earlier seasons")
+    f = fan_frame(fc, target)
+    f = _qcols(f)
+    f["x"] = [data_io.season_week_index(pd.Timestamp(d).date()) for d in f.target_end_date]
+    base = alt.Chart(seasons).encode(x=alt.X("x:Q", title="Weeks since season start (ISO week 27)",
+                                             scale=alt.Scale(domain=[0, 52])))
+    lines = base.mark_line(point=alt.OverlayMarkDef(size=12)).encode(
+        y=alt.Y("value:Q", title="sentinel positivity (%)"),
+        color=alt.Color("label:N", title="season", scale=alt.Scale(scheme="tableau10")),
+        strokeWidth=alt.condition(alt.datum.season == int(cur), alt.value(4), alt.value(1.6)),
+        tooltip=["label:N", "ISO_WEEK:Q", alt.Tooltip("value:Q", format=".1f")])
+    band = alt.Chart(f).mark_area(opacity=0.25, color=TEAL).encode(x="x:Q", y="q100:Q", y2="q900:Q")
+    med = alt.Chart(f).mark_line(color=TEAL, strokeDash=[5, 3], strokeWidth=3).encode(x="x:Q", y="q500:Q")
+    layers = lines + band + med
+    if thr is not None:
+        layers += alt.Chart(pd.DataFrame({"y": [thr]})).mark_rule(color=ROSE, strokeDash=[3, 3]).encode(y="y:Q")
+    st.altair_chart(layers.properties(height=380), width="stretch")
+    st.caption(f"Thick line: this season. Teal dashed line and band: NABD forecast median and 80% band issued "
+               f"{issue.isoformat()} (model {meta.get('model')}). Red rule: first playbook threshold"
+               + (f" ({thr:g}%)" if thr is not None else "") + ". Sentinel positivity is share of tests positive, not admissions.")
+    st.markdown("#### Season by season")
+    st.dataframe(data_io.season_stats(seasons, thr), hide_index=True, width="stretch")
+    st.caption("Peak and onset weeks are ISO weeks. 'First week ≥ threshold' uses the playbook's first tier threshold. "
+               "The current season is incomplete. Context only: NABD does not claim to predict onset earlier than a "
+               "threshold on the latest counts (Alerts page).")
+
+elif page == "nav_scenario":
+    st.markdown('<div class="nabd-sim">SCENARIO · NOT A FORECAST OF ADMISSIONS · سيناريو</div>', unsafe_allow_html=True)
+    st.subheader(t("nav_scenario", lang))
+    st.markdown("What could the RSV forecast mean in paediatric bed-days for **one hospital**? This page translates "
+                "NABD's sentinel RSV positivity forecast into an **illustrative** range, under an assumption you can "
+                "see and change. It is **not validated**: no Abu Dhabi hospital data are used. A pilot would replace "
+                "the assumption with the hospital's own census.")
+    fc, pers, meta, is_demo = data_io.load_uae_forecasts(observed)
+    if is_demo:
+        demo_banner()
+    issue = dt.date.fromisoformat(str(meta.get("issue_date") or meta.get("reference_date")))
+    c1, c2, c3 = st.columns(3)
+    annual = c1.number_input("Baseline RSV admissions per year (children ≤5)", 50, 3000, 438, step=10,
+                             help="Default 438 = 2,189 RSV admissions over 2018–2022 at Tawam Hospital, Al Ain "
+                                  "(research/burden.md §1), divided by 5 years. Years were very uneven.")
+    los = c2.slider("Mean length of stay (days)", 3.0, 7.0, 4.0, 0.1,
+                    help="Sourced range 4–6 days (research/positioning.md [S1][S3]); Tawam infants under 6 months "
+                         "averaged 5.8 days. Default is the conservative 4.0.")
+    cost = c3.number_input("Cost per admission (US$)", 0, 20000, 2241, step=50,
+                           help="Default US$2,241 = median RSV hospitalisation cost, Dubai insurance claims 2014–23 "
+                                "(research/positioning.md [S3]). Optional.")
+    sc = data_io.rsv_scenario(observed, fc[fc.target == data_io.UAE_TARGETS["rsv"]], issue, annual, los, cost)
+    st.markdown(f"**Assumption (unvalidated):** weekly admissions = annual baseline × this week's sentinel RSV "
+                f"positivity ÷ the average seasonal sum of weekly positivity ({sc.attrs['season_sum']:.0f} "
+                f"percentage-point-weeks over {sc.attrs['n_seasons']} complete seasons). Bed-days = admissions × length of stay.")
+    st.dataframe(sc.drop(columns=["target_end_date"]), hide_index=True, width="stretch")
+    st.caption("Ranges are the forecast's 10%–90% band carried through the same arithmetic. Positivity is national "
+               "sentinel data, not one hospital's catchment, so the scale is illustrative only. Nothing on this page is a "
+               "claim about any real hospital's occupancy.")
+
 elif page == "nav_workforce":
     sim_watermark()
     st.subheader(t("nav_workforce", lang))
@@ -604,22 +735,40 @@ elif page == "nav_workforce":
 else:
     st.subheader(t("nav_about", lang))
     st.markdown("""
-**What NABD is.** The UAE has no public respiratory forecasting hub. NABD is one: probabilistic RSV and influenza
-forecasts for the UAE, with horizons stated relative to the issue date, held to the CDC FluSight standard in public,
-and playbook actions that a named person must approve.
+**What NABD is.** Every winter RSV and influenza fill Abu Dhabi's children's beds, but no two seasons share a shape,
+and nobody in the UAE publishes a forecast of how big or how long. NABD is an open forecasting hub: calibrated RSV and
+influenza forecasts from WHO FluNet surveillance, the chance of crossing each pressure threshold, and playbook actions
+that a named person must approve. It is the forecast layer that Abu Dhabi's existing detection systems
+(Tableegh/Malaffi notifications, UMOC early warning, Rasid) could host. It does not replace them.
+
+**Evidence, in order.** (1) A blind test on Oman, Qatar and Saudi Arabia, locked before their data were downloaded
+(GCC page). (2) The live, hashed forecast ledger (Ledger page). (3) The US benchmark against the CDC FluSight ensemble,
+NOT MET, with league placement (US proof page). (4) The UAE's own four-season record: parity with persistence
+forward-in-time, which is why the live ledger exists.
 
 **What NABD does not claim.**
-- It does not warn of surge *onset* earlier than a simple threshold on the latest counts (US alert analysis: median lead
-  about 0 weeks).
-- It did **not** meet its pre-registered US bar: non-inferiority to the CDC FluSight ensemble was NOT MET.
-- No Abu Dhabi hospital, district or daily data are used. Every Abu Dhabi operational claim is a pilot hypothesis.
+- It does not warn of surge *onset* earlier than a simple threshold on the latest counts (median lead about 0 weeks).
+- It did **not** meet its pre-registered US bar (non-inferiority to the CDC FluSight ensemble).
+- The 21–36% error reduction seen in the CDC archive is the **CDC ensemble's**, not NABD's.
+- No ED, weather or geospatial signal is used by any scored model. No online calibration (ACI) is used. The
+  foundation model was not run.
+- The multi-signal UAE v2 did **not** improve on v1, and the leave-one-season-out UAE results are context only.
+- No SEHA operational numbers, ED volumes or bed occupancy. The bed-days page is a labelled scenario.
+- No workforce-absence figures: that module is SIMULATED.
+- No crisis framing: DoH has described this season as similar to the previous two.
+- NABD does not predict the nirsevimab immunisation window. Season-shape context is context only.
+- Tableegh, UMOC and Rasid are not inadequate: NABD adds a forecast layer they can host.
 """)
     uae = data_io.load_uae_summary() or {}
     has = lambda p: (ROOT / p).exists()  # noqa: E731
     explain_built = has("results/uae/explain") and any((ROOT / "results/uae/explain").glob("*.csv"))
     rows = [
         ("WHO FluNet UAE sentinel flu and RSV positivity", "REAL", "data/raw (cached WHO FluNet)"),
-        ("NABD-UAE forecasts, leave-one-season-out (n = 4 seasons)", "REAL", "results/uae/"),
+        ("NABD-UAE v1 forecasts: forward-in-time parity with persistence (n = 4 seasons); LOSO as context", "REAL", "results/uae/"),
+        ("NABD-UAE v2 multi-signal challenger (did not improve on v1)", "REAL, reported not promoted", "results/uae/SUMMARY-v2.md"),
+        ("Exceedance probabilities on the card (chance of crossing each threshold)", "REAL", "app/cardcheck.py"),
+        ("Season-shape view (this season vs the last 4)", "REAL", "Season shape page"),
+        ("Paediatric bed-days translator", "SCENARIO (unvalidated assumption, sourced inputs)", "Bed-days scenario page"),
         ("US back-test vs the CDC FluSight ensemble (verdict NOT MET)", "REAL", "results/summary.json"),
         ("Live forecast ledger round with SHA-256", "REAL (local until pushed and anchored)", "ledger/"),
         ("Hash-chained audit log of approve/modify/dismiss decisions", "REAL", "app/audit/audit.jsonl"),
@@ -647,9 +796,13 @@ public-health evaluation only (non-commercial terms); a hospital product would r
 Publication lags (FluNet about 10–11 days; NHSN weekly) are estimates. The ledger has few scored points at submission:
 it is an integrity device, not statistical evidence.
 
-**Card rules.** Direction labels need at least 60% probability (otherwise "uncertain"); "stable" means within ±10%
-(minimum 1 percentage point) of the last published value. The playbook band uses the forecast level at the first
-target week after issue and the forecast path (furthest median vs last value: rising ≥ 1.15×, falling ≤ 0.87×).
+**Card rules (playbook v0.3).** For every future target week, the card computes the chance of exceeding each
+playbook threshold from the issued forecast quantiles. The action uses the highest threshold with at least a 30%
+chance in any of the next three target weeks, plus the forecast path (furthest median vs the last value: rising ≥ 1.15×,
+falling ≤ 0.87×). Probabilities at the edge of the forecast are shown as <1% / >99%. Direction labels need at least 60%
+probability (otherwise "uncertain"). "Stable" means within ±10% (minimum 1 percentage point) of the last published value.
+The observed 3-week trend is shown as context only. Every card is re-checked; a contradictory card cannot render an
+action.
 
 **Governance.** Aggregate data only; adapters reject person-level fields. Every decision is written to an append-only,
 hash-chained audit log. Simulated layers carry a permanent watermark.

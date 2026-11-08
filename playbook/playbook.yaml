@@ -1,11 +1,13 @@
-# NABD playbook: maps forecast LEVEL + TRAJECTORY to PROPOSED actions.
+# NABD playbook: maps forecast EXCEEDANCE PROBABILITY + TRAJECTORY to PROPOSED actions.
 # STATUS: ILLUSTRATIVE. It has not been reviewed by a clinician or a public-health official.
 # Nothing here is released without a named human approver (see app/audit.py).
 #
-# v0.2.0 (build round 2): bands are keyed on level AND direction. Never "rising" when the
-# forecast median falls (fixes REVIEW-R2 judges §1.5 and audit G5). Thresholds are placeholders
-# to be set with the pilot site from local history.
-version: "0.2.0-illustrative"
+# v0.3.0 (build round 3, BUILD-SPEC v1.5 R3-1): the band is chosen from the CHANCE of exceeding the
+# tier thresholds over the next three target weeks, not from the median alone. A wide forecast band
+# (e.g. 4.6-21.4%) becomes a decision: "is there at least a 30% chance of crossing the high-pressure
+# threshold in the next three weeks?" Direction still comes from the forecast path, so a card can never
+# say "rising" while the forecast falls (G14). Thresholds are placeholders to be set with the pilot site.
+version: "0.3.0-illustrative"
 status: ILLUSTRATIVE
 review:
   required_reviewers:
@@ -14,19 +16,27 @@ review:
   reviewed: false
   reviewed_by: null
   reviewed_on: null
-# How a card is classified (see playbook/validate.py: classify_trend, select_band).
+# How a card is classified (see playbook/validate.py and app/cardcheck.py).
 rules:
+  decision:
+    statistic: "P(value > threshold), read from the issued forecast quantiles (vendor kit quantiles.exceedance_prob), at every future target week (+0.5, +1.5, +2.5 wk); the card uses the maximum over those weeks"
+    p_act: 0.30
+    thresholds: "the lower bounds of each target's tier-2 (elevated) and tier-3 (high) bands below"
+    effective_level: "the highest threshold T with max_h P(Y_h > T) >= p_act; 0 if none. The band is then chosen by effective level x forecast-path trend."
+    reporting: "probabilities at the edge of the forecast (<= 1% or >= 99%) are shown as '<1%' / '>99%', never as exact numbers"
   level:
-    statistic: "forecast median"
-    horizon: "first target week ending after the issue date (about +0.5 wk, measured to the middle of the target week)"
+    statistic: "effective level from the decision rule above (replaces the median-only level of v0.2)"
   trend:
     statistic: "forecast median at the furthest horizon / last observed value"
     rising_if_ratio_at_least: 1.15
     falling_if_ratio_at_most: 0.87
     otherwise: plateau
-  exceedance:
-    statistic: "P(value > the band's upper threshold) at the level horizon, interpolated from the forecast quantiles"
-    note: "Shown as decision support next to the band; it does not change the band."
+  observed_trend:
+    statistic: "least-squares slope of log(positivity + 1) over the last 3 published weeks (vendor kit phase.asof_log_slope + classify)"
+    window: 3
+    offset: 1.0
+    band: 0.1
+    note: "Context only, shown on the card. The action keys off the forecast path so it cannot contradict the forecast."
 roles:
   hospital_ops:
     en: "Hospital bed and roster manager"

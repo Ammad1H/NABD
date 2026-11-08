@@ -18,13 +18,15 @@ PORT = 8599
 SHOTS = [  # (file, language label, page label)
     ("01_weekly_card_en.png", "English", "Weekly card"),
     ("02_weekly_card_ar.png", "العربية", "البطاقة الأسبوعية"),
-    ("03_alerts.png", "English", "Alerts"),
-    ("04_us_proof.png", "English", "US proof"),
+    ("03_season_shape.png", "English", "Season shape"),
+    ("04_bed_days_scenario.png", "English", "Bed-days scenario"),
     ("05_gcc.png", "English", "GCC out-of-sample"),
     ("06_ledger.png", "English", "Ledger receipt"),
-    ("07_feed_removal.png", "English", "Feed removal"),
-    ("08_workforce_simulated.png", "English", "Workforce (simulated)"),
-    ("09_about.png", "English", "About & limitations"),
+    ("07_us_proof.png", "English", "US proof"),
+    ("08_alerts.png", "English", "Alerts"),
+    ("09_feed_removal.png", "English", "Feed removal"),
+    ("10_workforce_simulated.png", "English", "Workforce (simulated)"),
+    ("11_about.png", "English", "About & limitations"),
 ]
 
 

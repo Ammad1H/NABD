@@ -115,7 +115,8 @@ def test_validator_rejects_rising_band_on_falling_trend(pb):
 def test_all_pages_render(lang):
     pytest.importorskip("streamlit.testing.v1")
     from streamlit.testing.v1 import AppTest
-    pages = ["nav_card", "nav_alerts", "nav_us", "nav_gcc", "nav_ledger", "nav_ablation", "nav_workforce", "nav_about"]
+    pages = ["nav_card", "nav_shape", "nav_scenario", "nav_gcc", "nav_ledger", "nav_us", "nav_alerts", "nav_ablation",
+             "nav_workforce", "nav_about"]
     for p in pages:
         at = AppTest.from_file(str(ROOT / "app" / "streamlit_app.py"), default_timeout=60)
         at.run()
@@ -123,3 +124,70 @@ def test_all_pages_render(lang):
         at.sidebar.radio[1].set_value(p)
         at.run()
         assert not at.exception, (lang, p, [e.value for e in at.exception])
+
+
+# ---------------------------------------------------------------- round 3: exceedance-driven bands (R3-1, G14)
+def test_band_follows_exceedance_not_median(pb):
+    """Median below 10% but a wide forecast with >=30% chance of crossing 10% -> elevated band, not low."""
+    fc = _fc([9, 9.2, 9.4, 9.5], sd=3.0)
+    res = cardcheck.build_card(pb, TARGET, "ARE", fc, _obs(9, 9.0), ISSUE)
+    assert res.max_p[10.0] >= 0.30 and res.level == 10.0
+    assert res.band["lower"] == 10 and res.problems == []
+
+
+def test_narrow_low_forecast_stays_low(pb):
+    fc = _fc([5, 5, 5, 5], sd=0.5)
+    res = cardcheck.build_card(pb, TARGET, "ARE", fc, _obs(5, 5.0), ISSUE)
+    assert res.level == 0.0 and res.band["id"] == "rsv_low" and res.problems == []
+
+
+def test_overcall_band_fails(pb):
+    """An elevated band when P(> 10%) is tiny is a contradiction."""
+    fc = _fc([5, 5, 5, 5], sd=0.5)
+    res = cardcheck.build_card(pb, TARGET, "ARE", fc, _obs(5, 5.0), ISSUE)
+    elevated = next(b for b in pb["bands"] if b["id"] == "rsv_elevated_plateau")
+    probs = cardcheck.band_consistency(elevated, res.kit, res.path_medians, res.last_value, res.p_high,
+                                       res.max_p, res.p_act)
+    assert any("chance of exceeding" in p for p in probs)
+
+
+def test_undercall_band_fails(pb):
+    """A low band when P(> 20%) >= 30% is an under-call."""
+    fc = _fc([24, 25, 26, 27], sd=2.0)
+    res = cardcheck.build_card(pb, TARGET, "ARE", fc, _obs(22, 23.0), ISSUE)
+    assert res.level == 20.0 and res.band["tier"] == 3 and res.problems == []
+    low = next(b for b in pb["bands"] if b["id"] == "rsv_low")
+    probs = cardcheck.band_consistency(low, res.kit, res.path_medians, res.last_value, res.p_high,
+                                       res.max_p, res.p_act)
+    assert any("under-calls" in p for p in probs)
+
+
+def test_exceedance_clipped_display():
+    assert cardcheck.fmt_p(0.01) == "<1%" and cardcheck.fmt_p(0.99) == ">99%" and cardcheck.fmt_p(0.4) == "40%"
+
+
+def test_scenario_is_proportional_and_labelled():
+    obs = data_io.load_uae_observed()
+    fc, _, meta, _ = data_io.load_uae_forecasts(obs)
+    issue = dt.date.fromisoformat(str(meta["issue_date"]))
+    rsv = fc[fc.target == data_io.UAE_TARGETS["rsv"]]
+    a = data_io.rsv_scenario(obs, rsv, issue, 400, 4.0, 1000)
+    b = data_io.rsv_scenario(obs, rsv, issue, 800, 4.0, 1000)
+    assert a.attrs["n_seasons"] >= 3 and len(a) >= 1
+    first = lambda s: float(s.split(" ")[-1].rstrip(")"))  # noqa: E731  median admissions
+    assert abs(first(b.iloc[0]["scenario admissions / week"]) - 2 * first(a.iloc[0]["scenario admissions / week"])) <= 1
+    src = (ROOT / "app" / "streamlit_app.py").read_text()
+    assert "SCENARIO · NOT A FORECAST OF ADMISSIONS" in src
+
+
+def test_season_frame_aligns_on_week27():
+    obs = data_io.load_uae_observed()
+    s = data_io.season_frame(obs, "rsv")
+    assert s.x.min() >= 0 and s.x.max() < 54
+    assert s.season.nunique() >= 4
+
+
+def test_no_retired_claim_in_app():
+    for f in (ROOT / "app").glob("*.py"):
+        txt = f.read_text()
+        assert "7 of 8" not in txt and "7/8" not in txt, f

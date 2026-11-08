@@ -1,8 +1,11 @@
 """Schema validation, trend classification and band lookup for playbook/playbook.yaml.
 
-A band is selected by the forecast LEVEL (median at the level horizon) and the forecast
-TRAJECTORY (median at the furthest horizon vs the last observed value). This guarantees the card
-never proposes a "rising" action while the forecast median falls.
+v0.3 (round 3): a band is selected by the EFFECTIVE LEVEL and the forecast TRAJECTORY.
+- Effective level = the highest tier threshold T with max over future target weeks of
+  P(value > T) >= p_act (default 0.30), read from the issued forecast quantiles; 0 if none.
+- Trajectory = median at the furthest horizon vs the last observed value (classify_trend).
+This guarantees the card never proposes a "rising" action while the forecast median falls, and
+never proposes an elevated or surge action unless the forecast gives it a material chance.
 """
 from __future__ import annotations
 
@@ -17,6 +20,7 @@ REQUIRED_ROLES = {"hospital_ops", "adphc_duty"}
 REQUIRED_LANGS = {"en", "ar"}
 TRENDS = ("rising", "plateau", "falling")
 DEFAULT_RULES = {"rising_if_ratio_at_least": 1.15, "falling_if_ratio_at_most": 0.87}
+DEFAULT_P_ACT = 0.30
 
 
 class PlaybookError(ValueError):
@@ -60,6 +64,9 @@ def validate_playbook(pb: dict[str, Any]) -> None:
         if not REQUIRED_LANGS <= set(rc):
             raise PlaybookError(f"reason code {rc.get('code')} needs en and ar")
     rules = (pb.get("rules") or {}).get("trend", DEFAULT_RULES)
+    dec = (pb.get("rules") or {}).get("decision")
+    if dec is not None and not 0 < float(dec.get("p_act", DEFAULT_P_ACT)) < 1:
+        raise PlaybookError("rules.decision.p_act must be in (0, 1)")
     if not float(rules["falling_if_ratio_at_most"]) < 1 < float(rules["rising_if_ratio_at_least"]):
         raise PlaybookError("trend rule must satisfy falling_if_ratio_at_most < 1 < rising_if_ratio_at_least")
     ids = set()
@@ -138,6 +145,25 @@ def match_band(pb: dict[str, Any], target: str, location: str, value: float,
         if trend is not None and trend in _trend_set(b):
             return b
     return None
+
+
+def p_act(pb: dict[str, Any] | None) -> float:
+    dec = ((pb or {}).get("rules") or {}).get("decision") or {}
+    return float(dec.get("p_act", DEFAULT_P_ACT))
+
+
+def tier_thresholds(pb: dict[str, Any], target: str, location: str,
+                    horizon_label: str = "level horizon") -> list[float]:
+    """Sorted band lower bounds above zero for one target: the tier thresholds (e.g. RSV 10, 20)."""
+    return sorted({float(b["lower"]) for b in pb["bands"]
+                   if b["target"] == target and b["location"] == location
+                   and b["horizon_label"] == horizon_label and float(b["lower"]) > 0})
+
+
+def effective_level(max_probs: dict[float, float], p_threshold: float) -> float:
+    """Highest threshold T with max_h P(Y_h > T) >= p_threshold; 0.0 if none."""
+    hits = [T for T, p in max_probs.items() if p >= p_threshold]
+    return max(hits) if hits else 0.0
 
 
 def prob_exceed(quantiles: dict[float, float], threshold: float) -> float:

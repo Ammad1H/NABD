@@ -382,3 +382,89 @@ def load_ledger(observed: pd.DataFrame | None = None) -> tuple[pd.DataFrame, pd.
                            "realised": None if pd.isna(realised) else round(float(realised), 2),
                            "inside_80pct_band": inside})
     return pd.DataFrame(rounds), pd.DataFrame(scored), False
+
+
+# ---------------------------------------------------------------- round 3 helpers (season shape, scenario, evidence)
+def load_uae_forward_in_time() -> dict:
+    """Forward-in-time NABD-UAE-v1 vs persistence per series from results/uae/v2/summary.json ({} if absent)."""
+    d = _read_json(ROOT / "results" / "uae" / "v2" / "summary.json")
+    fit = (d or {}).get("rel_wis_forward_in_time") or {}
+    out = {}
+    for series, block in fit.items():
+        v = (block or {}).get("NABD-UAE-v1_vs_persistence")
+        if isinstance(v, dict) and v.get("rel_wis") is not None:
+            out[series] = v
+    return out
+
+
+def season_of(d: dt.date) -> int:
+    """Season start year: ISO week >= 27 belongs to that year's season, earlier weeks to the previous one."""
+    y, w, _ = d.isocalendar()
+    return y if w >= 27 else y - 1
+
+
+def season_week_index(d: dt.date) -> float:
+    """Weeks since the end of ISO week 27 of the season start year (exact, handles 53-week years)."""
+    s = season_of(d)
+    start = dt.date.fromisocalendar(s, 27, 7)
+    return (d - start).days / 7.0
+
+
+def season_frame(observed: pd.DataFrame, col: str, min_weeks: int = 20) -> pd.DataFrame:
+    """Long frame of one series by season. Seasons that start after ISO week 35 in our data (partial) are dropped,
+    except the current season."""
+    o = observed.dropna(subset=[col]).copy()
+    o["d"] = pd.to_datetime(o.week_end).dt.date
+    o["season"] = [season_of(d) for d in o.d]
+    o["x"] = [season_week_index(d) for d in o.d]
+    o["value"] = o[col].astype(float)
+    cur = o.season.max()
+    keep = [s for s, g in o.groupby("season") if s == cur or (g.x.min() <= 8 and len(g) >= min_weeks)]
+    o = o[o.season.isin(keep)]
+    o["label"] = [f"{s}/{str(s + 1)[-2:]}" + (" (this season)" if s == cur else "") for s in o.season]
+    return o[["season", "label", "ISO_YEAR", "ISO_WEEK", "week_end", "x", "value"]].reset_index(drop=True)
+
+
+def season_stats(seasons: pd.DataFrame, threshold: float | None) -> pd.DataFrame:
+    rows = []
+    for s, g in seasons.groupby("season"):
+        g = g.sort_values("x")
+        pk = g.loc[g.value.idxmax()]
+        row = {"season": g.label.iloc[0], "weeks observed": len(g), "peak (ISO week)": int(pk.ISO_WEEK),
+               "peak positivity (%)": round(float(pk.value), 1)}
+        if threshold is not None:
+            above = g[g.value >= threshold]
+            row[f"first week ≥ {threshold:g}% (ISO)"] = int(above.ISO_WEEK.iloc[0]) if len(above) else None
+            row[f"weeks ≥ {threshold:g}%"] = int(len(above))
+        rows.append(row)
+    return pd.DataFrame(rows)
+
+
+def rsv_scenario(observed: pd.DataFrame, fc_rsv: pd.DataFrame, issue: dt.date, annual_admissions: float,
+                 los_days: float, cost_per_admission: float) -> pd.DataFrame:
+    """ILLUSTRATIVE scenario: weekly admissions = annual x positivity / mean seasonal sum of weekly positivity.
+
+    Uses complete seasons only for the seasonal sum. Returns 10%/50%/90% ranges per future horizon.
+    """
+    sf = season_frame(observed, "rsv")
+    cur = sf.season.max()
+    complete = sf[sf.season != cur].groupby("season").value.sum()
+    season_sum = float(complete.mean())
+    wide = fc_rsv.pivot_table(index="target_end_date", columns="q", values="value").sort_index()
+    wide.columns = [round(float(c), 3) for c in wide.columns]
+    rows = []
+    for ted, r in wide.iterrows():
+        d = pd.Timestamp(ted).date()
+        h = horizon_weeks(d, issue)
+        if h <= 0:
+            continue
+        adm = {k: annual_admissions * float(r[k]) / season_sum for k in (0.1, 0.5, 0.9)}
+        rows.append({"target_end_date": d, "horizon": horizon_label(d, issue),
+                     "RSV positivity forecast (%) 10–90%": f"{r[0.1]:.1f}–{r[0.9]:.1f} (median {r[0.5]:.1f})",
+                     "scenario admissions / week": f"{adm[0.1]:.0f}–{adm[0.9]:.0f} (median {adm[0.5]:.0f})",
+                     "scenario bed-days generated": f"{adm[0.1] * los_days:.0f}–{adm[0.9] * los_days:.0f}",
+                     "scenario cost (US$)": f"{adm[0.1] * cost_per_admission:,.0f}–{adm[0.9] * cost_per_admission:,.0f}"})
+    out = pd.DataFrame(rows)
+    out.attrs["season_sum"] = season_sum
+    out.attrs["n_seasons"] = int(len(complete))
+    return out
