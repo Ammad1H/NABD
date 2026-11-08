@@ -1,0 +1,10 @@
+start,end,event,school_closed,verified,source
+2026-08-31,2026-08-31,School year 2026/27 begins,False,True,https://gulfnews.com/living-in-uae/education/uae-school-calendar-2026-27-term-dates-and-holidays-1.500637553
+2026-10-12,2026-10-16,Mid-term break (term 1),True,True,https://gulfnews.com/living-in-uae/education/uae-school-calendar-2026-27-term-dates-and-holidays-1.500637553
+2026-12-14,2027-01-03,Winter break,True,True,https://gulfnews.com/living-in-uae/education/uae-school-calendar-2026-27-term-dates-and-holidays-1.500637553
+2027-04-05,2027-04-11,Spring break,True,True,https://gulfnews.com/living-in-uae/education/uae-school-calendar-2026-27-term-dates-and-holidays-1.500637553
+2027-07-02,2027-07-02,School year 2026/27 ends,False,True,https://gulfnews.com/living-in-uae/education/uae-school-calendar-2026-27-term-dates-and-holidays-1.500637553
+2022-12-12,2023-01-01,Winter break (approximate; past-year dates not verified),True,False,approximate pattern; verify against MoE calendar
+2023-12-11,2023-12-31,Winter break (approximate; past-year dates not verified),True,False,approximate pattern; verify against MoE calendar
+2024-12-16,2025-01-05,Winter break (approximate; past-year dates not verified),True,False,approximate pattern; verify against MoE calendar
+2025-12-08,2026-01-04,Winter break (approximate; past-year dates not verified),True,False,approximate pattern; verify against MoE calendar
