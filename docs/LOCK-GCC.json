@@ -1,0 +1,95 @@
+{
+ "config": {
+  "bootstrap": {
+   "B": 2000,
+   "seed": 0,
+   "unit": "country-season"
+  },
+  "countries": [
+   "OMN",
+   "QAT",
+   "BHR",
+   "KWT",
+   "SAU"
+  ],
+  "eval_seasons": [
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "exclude_training_seasons": [
+   2020
+  ],
+  "horizons": [
+   1,
+   2,
+   3,
+   4
+  ],
+  "min_scored_eval_seasons": 2,
+  "min_training_seasons": 2,
+  "min_year": 2015,
+  "primary": {
+   "comparator": "persistence",
+   "model": "NABD-UAE-v1 method",
+   "pathogen": "flu",
+   "success": "pooled rel WIS < 1 and bootstrap 95% upper < 1"
+  },
+  "qualify": {
+   "min_median_specimens": 20,
+   "min_reported_frac": 0.8
+  },
+  "quantiles": [
+   0.01,
+   0.025,
+   0.05,
+   0.1,
+   0.15,
+   0.2,
+   0.25,
+   0.3,
+   0.35,
+   0.4,
+   0.45,
+   0.5,
+   0.55,
+   0.6,
+   0.65,
+   0.7,
+   0.75,
+   0.8,
+   0.85,
+   0.9,
+   0.95,
+   0.975,
+   0.99
+  ],
+  "secondary": [
+   "vs seasonal-analog",
+   "per country",
+   "RSV",
+   "NABD-UAE-v2-GCC (school_win=0)",
+   "coverage 50/95"
+  ],
+  "sentinel_min_qualifying_eval_seasons": 3
+ },
+ "digest": {
+  "config": "c2667c49744f49702fb11f255b5767997e1d5bd21e0ec8dd17a779e094341f74",
+  "files": {
+   "docs/PREREG-GCC.md": "d45f262a1f0e264bd3a479d9a3b4657732f748c6c939c068ebfe167b556d0a86",
+   "uae/features_v2.py": "f0b0b75552b931a5b6906ee7143ee6263b358324d1b376f81b306e3a74ba7230",
+   "uae/gcc.py": "2e3905f2d8b5f070e389d305976bf5c55bdac585e89689a4e8bc2a2b0acf5af1",
+   "uae/models.py": "e7a2843c6e6128a0fc76110151b1d576f9550f6f3a18eb105e73f4280cef2da5",
+   "uae/models_v2.py": "08cb1c8f9dd7c6f8e84a8b953931c73a685156c06638a30a9f6ad7d1147bf4ed",
+   "uae/scoring.py": "ab2f632a338ce2d8e9c0b1cda48ff125dbc65e613b882667321ad3af243d95bf"
+  },
+  "root": "741b36a9d3a4d9991d3dc35eadb8a7812c58e58784599635558524961a334608"
+ },
+ "hypotheses": [
+  "PRIMARY: flu rel WIS NABD-UAE-v1 vs persistence pooled <1 with 95% upper <1"
+ ],
+ "label": "GCC out-of-sample test of the frozen UAE method (PREREG-GCC)",
+ "locked_utc_self_attested": "2026-11-08T12:08:47.076035+00:00",
+ "schema": "nabd-lock/1"
+}

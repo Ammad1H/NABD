@@ -1,0 +1,44 @@
+{
+ "base_dir": ".",
+ "created_utc": "2026-11-08T12:08:47.416518+00:00",
+ "files": [
+  {
+   "bytes": 2042,
+   "path": "docs/LOCK-GCC.json",
+   "sha256": "c9ffead11a157e507becef8461a8620f0961e1c16706cd483dda2b96f06657fe"
+  },
+  {
+   "bytes": 5390,
+   "path": "docs/PREREG-GCC.md",
+   "sha256": "d45f262a1f0e264bd3a479d9a3b4657732f748c6c939c068ebfe167b556d0a86"
+  },
+  {
+   "bytes": 4876,
+   "path": "uae/features_v2.py",
+   "sha256": "f0b0b75552b931a5b6906ee7143ee6263b358324d1b376f81b306e3a74ba7230"
+  },
+  {
+   "bytes": 13625,
+   "path": "uae/gcc.py",
+   "sha256": "2e3905f2d8b5f070e389d305976bf5c55bdac585e89689a4e8bc2a2b0acf5af1"
+  },
+  {
+   "bytes": 6652,
+   "path": "uae/models.py",
+   "sha256": "e7a2843c6e6128a0fc76110151b1d576f9550f6f3a18eb105e73f4280cef2da5"
+  },
+  {
+   "bytes": 7395,
+   "path": "uae/models_v2.py",
+   "sha256": "08cb1c8f9dd7c6f8e84a8b953931c73a685156c06638a30a9f6ad7d1147bf4ed"
+  },
+  {
+   "bytes": 1102,
+   "path": "uae/scoring.py",
+   "sha256": "ab2f632a338ce2d8e9c0b1cda48ff125dbc65e613b882667321ad3af243d95bf"
+  }
+ ],
+ "merkle_root": "b52c5d5ed32620e8448138cebea6ad809bccd542d149484e56feebf5dc47f590",
+ "meta": {},
+ "schema": "nabd-ledger/1"
+}
