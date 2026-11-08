@@ -1,10 +1,18 @@
 start,end,event,school_closed,verified,source
+2021-12-12,2021-12-30,Winter break 2021/22 (MoE calendar announced Sep 2020),True,True,https://www.khaleejtimes.com/uae/government/new-uae-school-calendar-announced-here-are-the-holidays
+2022-03-27,2022-04-14,Spring break 2021/22 public MoE schools (announced Sep 2020),True,True,https://www.khaleejtimes.com/uae/government/new-uae-school-calendar-announced-here-are-the-holidays
+2022-12-12,2023-01-01,Winter break 2022/23 (The National 5 Dec 2022; MoE same number of days),True,True,https://www.thenationalnews.com/uae/education/2022/12/05/when-do-uae-schools-close-for-winter-break-and-when-does-the-new-term-start
+2023-03-27,2023-04-14,Spring break 2022/23 MoE curriculum schools (Gulf News 14 Mar 2023),True,True,https://gulfnews.com/uae/ramadan/why-ramadan-2023-will-be-extra-special-for-schoolchildren-in-uae-1.94010487
+2023-12-11,2024-01-01,Winter break 2023/24 (Cabinet-adopted calendar 2023-26),True,True,https://www.arabianbusiness.com/industries/education/uae-school-holidays-every-term-date-until-2026-revealed
+2024-03-25,2024-04-14,Spring break 2023/24 (Cabinet-adopted calendar 2023-26),True,True,https://www.arabianbusiness.com/industries/education/uae-school-holidays-every-term-date-until-2026-revealed
+2024-12-16,2025-01-05,Winter break 2024/25 (Cabinet-adopted calendar 2023-26),True,True,https://www.arabianbusiness.com/industries/education/uae-school-holidays-every-term-date-until-2026-revealed
+2025-03-24,2025-04-13,Spring break 2024/25 (Cabinet-adopted calendar 2023-26),True,True,https://www.arabianbusiness.com/industries/education/uae-school-holidays-every-term-date-until-2026-revealed
+2025-12-08,2026-01-04,Winter break 2025/26 (MoE unified calendar; Gulf News updated 23 Jul 2025),True,True,https://gulfnews.com/uae/education/uae-announces-2025-2026-school-calendar-here-are-key-dates-and-breaks-1.500208652
+2026-03-16,2026-03-29,Spring break 2025/26 (MoE unified calendar; Gulf News updated 23 Jul 2025),True,True,https://gulfnews.com/uae/education/uae-announces-2025-2026-school-calendar-here-are-key-dates-and-breaks-1.500208652
+2025-10-13,2025-10-19,Mid-term break term 1 2025/26 (MoE curriculum; NOT used in model features: mid-terms unverified for earlier years),True,True,https://gulfnews.com/uae/education/uae-announces-2025-2026-school-calendar-here-are-key-dates-and-breaks-1.500208652
+2026-02-11,2026-02-15,Mid-term break term 2 2025/26 (MoE curriculum; NOT used in model features),True,True,https://gulfnews.com/uae/education/uae-announces-2025-2026-school-calendar-here-are-key-dates-and-breaks-1.500208652
 2026-08-31,2026-08-31,School year 2026/27 begins,False,True,https://gulfnews.com/living-in-uae/education/uae-school-calendar-2026-27-term-dates-and-holidays-1.500637553
-2026-10-12,2026-10-16,Mid-term break (term 1),True,True,https://gulfnews.com/living-in-uae/education/uae-school-calendar-2026-27-term-dates-and-holidays-1.500637553
-2026-12-14,2027-01-03,Winter break,True,True,https://gulfnews.com/living-in-uae/education/uae-school-calendar-2026-27-term-dates-and-holidays-1.500637553
-2027-04-05,2027-04-11,Spring break,True,True,https://gulfnews.com/living-in-uae/education/uae-school-calendar-2026-27-term-dates-and-holidays-1.500637553
+2026-10-12,2026-10-16,Mid-term break term 1 2026/27 (NOT used in model features),True,True,https://gulfnews.com/living-in-uae/education/uae-school-calendar-2026-27-term-dates-and-holidays-1.500637553
+2026-12-14,2027-01-03,Winter break 2026/27,True,True,https://gulfnews.com/living-in-uae/education/uae-school-calendar-2026-27-term-dates-and-holidays-1.500637553
+2027-04-05,2027-04-11,Spring break 2026/27,True,True,https://gulfnews.com/living-in-uae/education/uae-school-calendar-2026-27-term-dates-and-holidays-1.500637553
 2027-07-02,2027-07-02,School year 2026/27 ends,False,True,https://gulfnews.com/living-in-uae/education/uae-school-calendar-2026-27-term-dates-and-holidays-1.500637553
-2022-12-12,2023-01-01,Winter break (approximate; past-year dates not verified),True,False,approximate pattern; verify against MoE calendar
-2023-12-11,2023-12-31,Winter break (approximate; past-year dates not verified),True,False,approximate pattern; verify against MoE calendar
-2024-12-16,2025-01-05,Winter break (approximate; past-year dates not verified),True,False,approximate pattern; verify against MoE calendar
-2025-12-08,2026-01-04,Winter break (approximate; past-year dates not verified),True,False,approximate pattern; verify against MoE calendar
