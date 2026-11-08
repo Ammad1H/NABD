@@ -1,3 +1,5 @@
+> **SUPERSEDED (8 Nov 2026).** This is the original concept spec from 5 Nov. Several claims in it (e.g. Chronos-2 as a tested ensemble member, ED/weather fusion, 'early warning of onset') were never built or were retired after testing. The current, checked description is `docs/TECHNICAL.md`; claims are governed by `research/claims-ledger.md` and BUILD-SPEC v1.7.
+
 # NABD: Final Winning Spec (Statement 06: Population and Workforce Health Early Warning)
 
 **Future Health Digital Innovation Challenge 2026.** Round 7 of the idea loop. Built from R5-Y and fixed against the R6 judges (J1 public health, J2 AI/tech, J3 partnerships). Date: 5 Nov 2026.
