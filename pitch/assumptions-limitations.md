@@ -1,66 +1,78 @@
 # NABD: Assumptions, dependencies and limitations
 
-Required by the Challenge submission rules (FAQ: a working prototype with "technical documentation and a clear statement of assumptions, dependencies and limitations"; see `research/tc.md`). This statement is part of the submission. Status as of 8 Nov 2026; update on 19–20 Nov.
+Required by the Challenge submission rules (FAQ: a working prototype with "technical documentation and a clear statement of assumptions, dependencies and limitations"; see `research/tc.md`). This statement is part of the submission. Status as of 8 Nov 2026 (round 3); update on 19–20 Nov. Full method detail is in `docs/TECHNICAL.md`.
 
-## 1. What NABD v1 is, exactly
-- **UAE model (NABD-UAE-v1):**
-  - **What it forecasts:** weekly sentinel RSV and influenza positivity, at the nowcast and +0.5, +1.5 and +2.5 weeks after issue.
-  - **Inputs:** WHO FluNet UAE sentinel positivity and testing volume only.
-  - **Method:** a pooled linear growth model on the logit scale with a seasonal-climatology term, and intervals from nested out-of-season residuals.
-  - Source: `uae/models.py`.
-- **US model (NABD-ensemble v1):**
-  - **What it forecasts:** weekly state influenza admissions (NHSN), +0.5 to +3.5 weeks after issue.
+## 1. What NABD is, exactly
+- **UAE headline model: NABD-UAE-v1** (`uae/models.py`, frozen at commit da045ee).
+  - **Forecasts:** weekly sentinel RSV and influenza positivity, at the nowcast and +0.5, +1.5 and +2.5 weeks after issue.
+  - **Inputs:** WHO FluNet UAE sentinel positivity and testing volume.
+  - **Method:** a pooled linear growth model on the logit scale with a seasonal-climatology term. Intervals come from nested out-of-season residuals.
+- **UAE challenger: NABD-UAE-v2** (`uae/models_v2.py`, locked protocol `docs/PROTOCOL-UAE-v2.md`).
+  - **Inputs:** v1 plus non-sentinel positivity, the school winter/spring breaks and Ramadan. It falls back to a smaller sub-model when a feed is missing.
+  - **Status:** it ran alongside v1 in the ledger and was **worse than v1** retrospectively.
+- **US benchmark model: NABD-ensemble v1** (`models/`, `docs/PROTOCOL.md`).
+  - **Forecasts:** weekly state influenza admissions (NHSN), +0.5 to +3.5 weeks after issue.
   - **Inputs:** admissions only.
-  - **Method:** an equal-weight quantile average of a damped log-linear negative-binomial GLM and an empirical error-quantile model.
-  - **Tuning:** on 2023/24 only (`models/config.yaml`).
+  - **Method:** an equal-weight quantile average of a damped log-linear negative-binomial GLM and an empirical error-quantile model, tuned on 2023/24 only.
 - **Decision layer:**
-  - the bilingual Streamlit card;
-  - an ILLUSTRATIVE playbook mapping forecast bands to proposed actions for named roles;
+  - a bilingual Streamlit card that always shows persistence alongside the forecast;
+  - exact per-signal explanations;
+  - an ILLUSTRATIVE playbook for named roles;
   - Approve / Modify / Dismiss with a reason;
+  - a card consistency check, so contradictory cards can't render;
   - a hash-chained, append-only audit log;
   - a FastAPI endpoint.
-- **Ledger:** hashed forecast rounds (`ledger/`).
+- **Ledger:** hashed forecast rounds R0 and R1 with a Merkle manifest (`ledger/`). As of 8 Nov, none has been scored, because no target week has been published.
 
 ## 2. Assumptions
-- **A1.** WHO FluNet UAE sentinel positivity is a usable indicator of community RSV and influenza activity. It is laboratory surveillance from sentinel sites, not hospital load, and testing practice can change.
-- **A2.** Publication lag is roughly 7–11 days. It was measured at 7 days on 8 Nov (`data/raw/PROVENANCE.md`). Horizons are defined relative to the issue date on this basis.
-- **A3.** First-release FluNet values may be revised. The UAE retrospective uses latest-revised values (no vintages exist), which flatters it relative to live use.
-- **A4.** Hospital load in Abu Dhabi moves with community positivity closely enough for a positivity forecast to be decision-relevant. This is **untested**: it is the pilot's question.
-- **A5.** The US benchmark (NHSN admissions, CDC FluSight hub) is a fair stress test of the method, but not of UAE performance.
-- **A6.** Playbook thresholds and actions are placeholders until reviewed by clinicians and public-health officials.
+- **A1. Surveillance as a signal.** WHO FluNet sentinel positivity is a usable indicator of community RSV and influenza activity in the UAE and in the Gulf test countries. It is laboratory surveillance, not hospital load, and testing practice can change.
+- **A2. Publication lag.** WHO's lag is about 7–11 days; it was measured at 7 days on 8 Nov (`data/raw/PROVENANCE.md`). Horizons are defined relative to the issue date on that basis.
+- **A3. Data revisions.** First-release FluNet values may be revised. The UAE and Gulf retrospectives use revised values (no vintages exist), which flatters them relative to live use. The ledger is the live test.
+- **A4. Positivity and hospital load.** Hospital load in Abu Dhabi moves with community positivity closely enough for a positivity forecast to be decision-relevant. This is **untested** and is the pilot's question.
+- **A5. Scope of the US benchmark.** The US benchmark (NHSN admissions, CDC FluSight hub) is a fair stress test of forecasting method and discipline. It is not a test of UAE performance.
+- **A6. The playbook.** Thresholds and actions are placeholders until reviewed by clinicians and public-health officials.
+- **A7. Gulf countries' data.** The Gulf test assumes their FluNet reporting is comparable enough for a frozen method to transfer. Oman and Qatar report a single combined stream rather than separate sentinel data.
 
 ## 3. Dependencies
 - **D1. Data:**
-  - WHO FluNet (public-health, non-commercial terms);
-  - CDC FluSight hub (MIT; US Government data);
-  - UAE Ministry of Education calendar (public).
-  - NOAA weather is planned but not used: it was blocked in our build environment.
-- **D2. Software:** Python 3.10+, pandas, numpy, scipy, statsmodels, streamlit and fastapi (see `requirements-app.txt`). It runs on a laptop CPU.
+  - WHO FluNet: UAE, Oman, Qatar and Saudi Arabia. Public-health, non-commercial terms. The Gulf data came via a public mirror of WHO's full export and were verified against the official API (deviation G1).
+  - CDC FluSight hub: MIT licence; US Government data.
+  - UAE Ministry of Education calendars and Ramadan dates: public.
+  - NOAA/ERA5 weather is planned but not used, because it was blocked in our build environment.
+- **D2. Software:** Python 3.10+, pandas, numpy, scipy, statsmodels, streamlit and fastapi (`requirements-app.txt`). It runs on a laptop CPU. The third-party kit `vendor/nabd_v2_kit` was cross-checked: its WIS matches ours exactly (`results/tables/scorer_crosscheck.csv`).
 - **D3. Foundation model:** Chronos-2 needs Hugging Face access and ideally a GPU. Its wrapper exists, but it was **not run** and is excluded from every reported result.
-- **D4. For the pilot:** one hospital's aggregate daily or weekly paediatric/ED counts and admissions, under a data-sharing agreement. There is no patient-level data.
-- **D5. For an outside timestamp:** a public repository and an external anchor (OpenTimestamps, Zenodo or OSF), which the team must create.
+- **D4. For the pilot:** one hospital's aggregate weekly paediatric/ED respiratory counts, under a data-sharing agreement. No patient-level data. ⟦IF BUILT: `docs/PILOT-DATA-SPEC.md`⟧
+- **D5. For an outside timestamp:** a public repository and an external anchor (OpenTimestamps, Zenodo or OSF), which the team must create (`ledger/ANCHOR.md`).
 
 ## 4. Limitations (stated plainly)
 1. **The US primary test was NOT MET.** Relative WIS against the CDC FluSight ensemble was 1.22 (95% CI 1.01–1.52), against a pre-registered margin of 1.15.
-   - NABD was worse than the ensemble in every state when pooled, and in all of them in 2025/26.
+   - Per location, NABD beat the ensemble in 18 of 53 locations in 2024/25 and in 0 of 53 in 2025/26.
+   - Excluding the national series still fails (1.198).
    - Against the naive baseline, 0.82 (0.66–1.02) is not a convincing win.
-   - Sources: `results/SUMMARY.md`, `docs/REVIEW-R2-audit.md`.
-2. **UAE evidence is thin and retrospective.**
-   - There are only 4 seasons, and the design was settled with all four visible (design-stage, not pre-registered).
-   - The leave-one-season-out folds train on later seasons when testing earlier ones.
-   - RSV lost to persistence in 2025/26, the only fold that is forward in time.
-3. **No Abu Dhabi hospital, district or daily data.** NABD makes no Abu Dhabi operational claim.
-4. **No earlier onset warning.** Median onset lead is 0 weeks for every rule tested, including the CDC ensemble's (`results/tables/alerts_us.csv`).
-   - The alert thresholds were informed by probes that touched the test seasons before the freeze (`docs/DEVIATIONS.md` D3, D5).
-   - The alert metrics are therefore diagnostic only.
-5. **Single-signal v1.** One missing input week raises US error 1.41-fold, and two weeks 1.82-fold (`results/tables/dropout_us.csv`). The multi-signal UAE v2 is in build.
-6. **Simulated workforce module.** The employer sickness-absence feed is a secure-aggregation design demonstrated on synthetic data, and it is watermarked SIMULATED. The workforce half of Statement 06 is only partly met.
-7. **Self-attested timestamps until anchored.** Protocol and ledger hashes are local git commits until the team publishes and anchors them externally.
-8. **Prior exposure.** Exploratory probes on 5 Nov touched the US test seasons before the protocol freeze. This is disclosed in `docs/DEVIATIONS.md` (D5).
-9. **The WHO FluNet licence** is non-commercial. A commercial hospital product would need to run on the hospital's own data.
-10. **Generalisation beyond the UAE is untested** until the GCC out-of-sample test reports ⟦RESULT: results/gcc/ (G12)⟧.
+   - Among individual hub models it ranked 7th of 21 in 2024/25, but 19th of 25 in 2025/26, level with the baseline (`results/SUMMARY.md`).
+2. **The UAE's own record shows no edge.** Trained only on earlier seasons, v1 ties with persistence (1.002 for flu and RSV).
+   - The earlier leave-one-season-out figures (0.76/0.78) trained on later seasons and are retired as headline evidence.
+   - n = 4 seasons, and v1 was designed with all four visible (`results/uae/SUMMARY-v2.md`).
+3. **More signals did not help.** The multi-signal v2 was worse than v1 (1.059, CI 1.016–1.111). Removing non-sentinel or calendar inputs did not hurt.
+4. **The Gulf test is retrospective and small.**
+   - It covers 3 countries with about 4 seasons each, on revised data.
+   - The influenza bar was met: 0.914 (0.843–0.983).
+   - It lost in 3 of 12 flu country-seasons and 1 of 10 RSV.
+   - RSV intervals are too narrow outside the UAE (95% coverage 0.83).
+   - v1 was chosen as the primary method after the UAE v2 and forward-in-time results were known. This is disclosed (`docs/PREREG-GCC.md` §1).
+5. **No Abu Dhabi hospital, district or daily data.** NABD makes no Abu Dhabi operational claim.
+6. **No earlier onset warning.** Median onset lead is 0 weeks for every US rule tested, including the CDC ensemble's.
+   - Alert thresholds were informed by probes that saw the test seasons (`docs/DEVIATIONS.md` D3, D5; `docs/PROTOCOL-UAE-v2.md` §1).
+   - All alert metrics are diagnostic only.
+   - UAE alert counts are tiny (3 onsets per series).
+7. **Missing data hurts.** One missing input week raises US error 1.41-fold, and two weeks 1.82-fold. In the UAE, a missing latest week raises mean WIS by 0.14–0.26 percentage points.
+8. **The workforce module is simulated.** The employer sickness-absence feed is a secure-aggregation design on synthetic data, watermarked SIMULATED. No credible UAE respiratory-absence figure was found. The workforce half of Statement 06 is only partly met.
+9. **Timestamps are self-attested until anchored.** Protocol locks (US, UAE v2, Gulf) and ledger hashes are local git commits. Nothing was externally anchored before results existed, and any later anchor must be described that way.
+10. **Prior exposure.** Exploratory probes on 5 Nov touched the US test seasons before the protocol freeze (D5).
+11. **The WHO FluNet licence** is non-commercial. A commercial hospital product would run on the hospital's own data.
 
 ## 5. What would change these conclusions
-- A locked UAE method that beats persistence on other Gulf countries' unseen data (G12).
-- Prospective ledger scores during 2026/27.
-- A shadow pilot on one hospital's counts, judged on pre-set exit criteria.
+- Prospective ledger scores through 2026/27, anchored outside the team.
+- A shadow pilot on one hospital's counts, judged on its pre-set exit criterion (relative WIS < 0.9 vs the census carried forward).
+- A prospective US v2, locked before its first forecast (`docs/PREREG-US-V2.md`, draft).
+- Weather, wastewater (Rasid) or hospital signals added as a new locked version, published whether or not they help.
