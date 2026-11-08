@@ -101,3 +101,15 @@ NABD-UAE-v1 beat persistence in flu 4/4 seasons and RSV 3/4 (it loses on RSV 202
 - A v2 member aware of turning points (from E1) should be pre-registered for the prospective 2026/27 ledger only.
 - `results/forecasts/` is about 64 MB in git. Consider Git LFS or zipping before pushing.
 - The pitch must say plainly that NABD did not match the CDC ensemble. Defensible claims are: beats persistence (point estimate; CI touches 1), better 95% calibration, and better than the ensemble during surges (exploratory).
+
+## Round 2: pitch workstream (8 Nov)
+- **registration.md (FINAL for 10 Nov):** v1.3 headline. Word counts measured by `pitch/wordcount.py`: summary 98/100, a50 49/50, a150 149/150, a300 293/300. Every in-build item is labelled. Data-source table and maturity statement included (T&C). Audit CRITICAL 1 fixed.
+- **qa.md:** rewritten as 21 questions plus curveballs. Audit CRITICAL 2 fixed (ACI, "matched the ensemble", the ED track, "102 weekly"). Every answer cites a results file.
+- **assumptions-limitations.md:** new (T&C requirement).
+- **deck-script.md / demo-script.md:** rewritten to the v1.3 headline. Slide 7 NOT MET wording follows the judges. Numbers are filled from results/. Pending ⟦RESULT⟧ slots name their exact files (UAE v2 explain/ablation, UAE alerts, GCC, league table, anchor). The demo drops the non-existent Explain and ED-toggle beats unless built (audit MAJOR 10).
+- **research/claims-ledger.md:** new; 41 claims with source and status. Banned claims listed (audit MAJOR 13, E1).
+- **outreach.md A2:** corrected wording.
+- **Open:**
+  - research/positioning.md did not exist at the end of this run; slides 2 and 3 should be re-checked against it.
+  - The pending slots must be filled or cut on 19 Nov.
+  - The team names and the MBZUAI permission status are still unfilled.
