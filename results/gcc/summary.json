@@ -1,0 +1,146 @@
+{
+  "label": "GCC out-of-sample, forward-in-time, revised FluNet data; locked before download",
+  "included_countries": [
+    "OMN",
+    "QAT",
+    "SAU"
+  ],
+  "results": {
+    "PRIMARY_flu_v1_vs_persistence": {
+      "rel_wis": 0.914,
+      "ci95": [
+        0.843,
+        0.983
+      ],
+      "n_cells": 2214,
+      "n_country_seasons": 12
+    },
+    "PRIMARY_verdict": "MET",
+    "flu_NABD-UAE-v1_vs_seasonal-analog": {
+      "rel_wis": 0.536,
+      "ci95": [
+        0.464,
+        0.616
+      ],
+      "n_cells": 2214,
+      "n_country_seasons": 12
+    },
+    "flu_NABD-UAE-v2-GCC_vs_persistence": {
+      "rel_wis": 0.92,
+      "ci95": [
+        0.85,
+        0.987
+      ],
+      "n_cells": 2214,
+      "n_country_seasons": 12
+    },
+    "flu_NABD-UAE-v2-GCC_vs_NABD-UAE-v1": {
+      "rel_wis": 1.006,
+      "ci95": [
+        0.995,
+        1.021
+      ],
+      "n_cells": 2214,
+      "n_country_seasons": 12
+    },
+    "flu_NABD-UAE-v1_vs_persistence": {
+      "rel_wis": 0.914,
+      "ci95": [
+        0.843,
+        0.983
+      ],
+      "n_cells": 2214,
+      "n_country_seasons": 12
+    },
+    "rsv_NABD-UAE-v1_vs_seasonal-analog": {
+      "rel_wis": 0.685,
+      "ci95": [
+        0.605,
+        0.781
+      ],
+      "n_cells": 1795,
+      "n_country_seasons": 10
+    },
+    "rsv_NABD-UAE-v2-GCC_vs_persistence": {
+      "rel_wis": 0.796,
+      "ci95": [
+        0.714,
+        0.895
+      ],
+      "n_cells": 1795,
+      "n_country_seasons": 10
+    },
+    "rsv_NABD-UAE-v2-GCC_vs_NABD-UAE-v1": {
+      "rel_wis": 0.998,
+      "ci95": [
+        0.992,
+        1.003
+      ],
+      "n_cells": 1795,
+      "n_country_seasons": 10
+    },
+    "rsv_NABD-UAE-v1_vs_persistence": {
+      "rel_wis": 0.798,
+      "ci95": [
+        0.719,
+        0.894
+      ],
+      "n_cells": 1795,
+      "n_country_seasons": 10
+    }
+  },
+  "coverage": [
+    {
+      "series": "flu",
+      "model": "NABD-UAE-v1",
+      "cov50": 0.493,
+      "cov95": 0.96
+    },
+    {
+      "series": "flu",
+      "model": "NABD-UAE-v2-GCC",
+      "cov50": 0.493,
+      "cov95": 0.958
+    },
+    {
+      "series": "flu",
+      "model": "persistence",
+      "cov50": 0.486,
+      "cov95": 0.944
+    },
+    {
+      "series": "flu",
+      "model": "seasonal-analog",
+      "cov50": 0.358,
+      "cov95": 0.796
+    },
+    {
+      "series": "rsv",
+      "model": "NABD-UAE-v1",
+      "cov50": 0.453,
+      "cov95": 0.825
+    },
+    {
+      "series": "rsv",
+      "model": "NABD-UAE-v2-GCC",
+      "cov50": 0.45,
+      "cov95": 0.826
+    },
+    {
+      "series": "rsv",
+      "model": "persistence",
+      "cov50": 0.396,
+      "cov95": 0.816
+    },
+    {
+      "series": "rsv",
+      "model": "seasonal-analog",
+      "cov50": 0.362,
+      "cov95": 0.655
+    }
+  ],
+  "season_wins_v1_vs_persistence": {
+    "flu": "9/12",
+    "rsv": "9/10"
+  }
+}
