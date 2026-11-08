@@ -1,0 +1,85 @@
+subset,model,curve,alpha,REV,cases,base_rate
+h2 (primary),NABD-ensemble,act if p>alpha (primary),0.02,0.08257437765634489,2915,0.43499142367066895
+h2 (primary),NABD-ensemble,act if p>alpha (primary),0.05,0.21736490588949617,2915,0.43499142367066895
+h2 (primary),NABD-ensemble,act if p>alpha (primary),0.1,0.36672738312082576,2915,0.43499142367066895
+h2 (primary),NABD-ensemble,act if p>alpha (primary),0.2,0.4820886460230722,2915,0.43499142367066895
+h2 (primary),NABD-ensemble,act if p>alpha (primary),0.3,0.5543412264723739,2915,0.43499142367066895
+h2 (primary),NABD-ensemble,act if p>alpha (primary),0.5,0.6167192429022081,2915,0.43499142367066895
+h2 (primary),NABD-ensemble,act if p>alpha (primary),0.7,0.45425867507886436,2915,0.43499142367066895
+h2 (primary),NABD-ensemble,envelope (potential),0.02,0.08257437765634489,2915,0.43499142367066895
+h2 (primary),NABD-ensemble,envelope (potential),0.05,0.3557984213721918,2915,0.43499142367066895
+h2 (primary),NABD-ensemble,envelope (potential),0.1,0.4584092289010324,2915,0.43499142367066895
+h2 (primary),NABD-ensemble,envelope (potential),0.2,0.5701275045537342,2915,0.43499142367066895
+h2 (primary),NABD-ensemble,envelope (potential),0.3,0.6547257640153814,2915,0.43499142367066895
+h2 (primary),NABD-ensemble,envelope (potential),0.5,0.6924290220820188,2915,0.43499142367066895
+h2 (primary),NABD-ensemble,envelope (potential),0.7,0.5557308096740272,2915,0.43499142367066895
+h2 (primary),FluSight-ensemble,act if p>alpha (primary),0.02,-0.13418336369156023,2915,0.43499142367066895
+h2 (primary),FluSight-ensemble,act if p>alpha (primary),0.05,0.11171827565270177,2915,0.43499142367066895
+h2 (primary),FluSight-ensemble,act if p>alpha (primary),0.1,0.25986642380085023,2915,0.43499142367066895
+h2 (primary),FluSight-ensemble,act if p>alpha (primary),0.2,0.490588949605343,2915,0.43499142367066895
+h2 (primary),FluSight-ensemble,act if p>alpha (primary),0.3,0.6075693179518317,2915,0.43499142367066895
+h2 (primary),FluSight-ensemble,act if p>alpha (primary),0.5,0.6703470031545741,2915,0.43499142367066895
+h2 (primary),FluSight-ensemble,act if p>alpha (primary),0.7,0.5470557308096737,2915,0.43499142367066895
+h2 (primary),FluSight-ensemble,envelope (potential),0.02,0.0,2915,0.43499142367066895
+h2 (primary),FluSight-ensemble,envelope (potential),0.05,0.3211900425015181,2915,0.43499142367066895
+h2 (primary),FluSight-ensemble,envelope (potential),0.1,0.4820886460230722,2915,0.43499142367066895
+h2 (primary),FluSight-ensemble,envelope (potential),0.2,0.593806921675774,2915,0.43499142367066895
+h2 (primary),FluSight-ensemble,envelope (potential),0.3,0.6492612831410648,2915,0.43499142367066895
+h2 (primary),FluSight-ensemble,envelope (potential),0.5,0.7003154574132492,2915,0.43499142367066895
+h2 (primary),FluSight-ensemble,envelope (potential),0.7,0.5757097791798109,2915,0.43499142367066895
+h2 (primary),FluSight-baseline,act if p>alpha (primary),0.02,-0.07164541590771085,2915,0.43499142367066895
+h2 (primary),FluSight-baseline,act if p>alpha (primary),0.05,-0.39162112932604715,2915,0.43499142367066895
+h2 (primary),FluSight-baseline,act if p>alpha (primary),0.1,-0.40740740740740733,2915,0.43499142367066895
+h2 (primary),FluSight-baseline,act if p>alpha (primary),0.2,0.026108075288403206,2915,0.43499142367066895
+h2 (primary),FluSight-baseline,act if p>alpha (primary),0.3,0.3252378061121229,2915,0.43499142367066895
+h2 (primary),FluSight-baseline,act if p>alpha (primary),0.5,0.49999999999999994,2915,0.43499142367066895
+h2 (primary),FluSight-baseline,act if p>alpha (primary),0.7,0.31046267087276547,2915,0.43499142367066895
+h2 (primary),FluSight-baseline,envelope (potential),0.02,0.0,2915,0.43499142367066895
+h2 (primary),FluSight-baseline,envelope (potential),0.05,0.0,2915,0.43499142367066895
+h2 (primary),FluSight-baseline,envelope (potential),0.1,0.001214329083181573,2915,0.43499142367066895
+h2 (primary),FluSight-baseline,envelope (potential),0.2,0.058894960534304694,2915,0.43499142367066895
+h2 (primary),FluSight-baseline,envelope (potential),0.3,0.3280712406395467,2915,0.43499142367066895
+h2 (primary),FluSight-baseline,envelope (potential),0.5,0.5283911671924291,2915,0.43499142367066895
+h2 (primary),FluSight-baseline,envelope (potential),0.7,0.41482649842271313,2915,0.43499142367066895
+all horizons (secondary),NABD-ensemble,act if p>alpha (primary),0.02,0.13429438543247332,11660,0.434819897084048
+all horizons (secondary),NABD-ensemble,act if p>alpha (primary),0.05,0.27223065250379364,11660,0.434819897084048
+all horizons (secondary),NABD-ensemble,act if p>alpha (primary),0.1,0.40834597875569045,11660,0.434819897084048
+all horizons (secondary),NABD-ensemble,act if p>alpha (primary),0.2,0.5352048558421852,11660,0.434819897084048
+all horizons (secondary),NABD-ensemble,act if p>alpha (primary),0.3,0.6145675265553868,11660,0.434819897084048
+all horizons (secondary),NABD-ensemble,act if p>alpha (primary),0.5,0.6642998027613413,11660,0.434819897084048
+all horizons (secondary),NABD-ensemble,act if p>alpha (primary),0.7,0.5296515450361603,11660,0.434819897084048
+all horizons (secondary),NABD-ensemble,envelope (potential),0.02,0.13429438543247332,11660,0.434819897084048
+all horizons (secondary),NABD-ensemble,envelope (potential),0.05,0.4074355083459787,11660,0.434819897084048
+all horizons (secondary),NABD-ensemble,envelope (potential),0.1,0.5112291350531107,11660,0.434819897084048
+all horizons (secondary),NABD-ensemble,envelope (potential),0.2,0.6148710166919575,11660,0.434819897084048
+all horizons (secondary),NABD-ensemble,envelope (potential),0.3,0.6917046029337378,11660,0.434819897084048
+all horizons (secondary),NABD-ensemble,envelope (potential),0.5,0.7285996055226824,11660,0.434819897084048
+all horizons (secondary),NABD-ensemble,envelope (potential),0.7,0.6092702169625245,11660,0.434819897084048
+all horizons (secondary),FluSight-ensemble,act if p>alpha (primary),0.02,0.04734446130500744,11660,0.434819897084048
+all horizons (secondary),FluSight-ensemble,act if p>alpha (primary),0.05,0.23793626707132035,11660,0.434819897084048
+all horizons (secondary),FluSight-ensemble,act if p>alpha (primary),0.1,0.39681335356600916,11660,0.434819897084048
+all horizons (secondary),FluSight-ensemble,act if p>alpha (primary),0.2,0.5600910470409711,11660,0.434819897084048
+all horizons (secondary),FluSight-ensemble,act if p>alpha (primary),0.3,0.6617602427921093,11660,0.434819897084048
+all horizons (secondary),FluSight-ensemble,act if p>alpha (primary),0.5,0.7173570019723865,11660,0.434819897084048
+all horizons (secondary),FluSight-ensemble,act if p>alpha (primary),0.7,0.5945430637738325,11660,0.434819897084048
+all horizons (secondary),FluSight-ensemble,envelope (potential),0.02,0.04734446130500744,11660,0.434819897084048
+all horizons (secondary),FluSight-ensemble,envelope (potential),0.05,0.4206373292867982,11660,0.434819897084048
+all horizons (secondary),FluSight-ensemble,envelope (potential),0.1,0.5506828528072837,11660,0.434819897084048
+all horizons (secondary),FluSight-ensemble,envelope (potential),0.2,0.6423368740515932,11660,0.434819897084048
+all horizons (secondary),FluSight-ensemble,envelope (potential),0.3,0.6990895295902881,11660,0.434819897084048
+all horizons (secondary),FluSight-ensemble,envelope (potential),0.5,0.738067061143984,11660,0.434819897084048
+all horizons (secondary),FluSight-ensemble,envelope (potential),0.7,0.6278106508875735,11660,0.434819897084048
+all horizons (secondary),FluSight-baseline,act if p>alpha (primary),0.02,-0.10606980273141138,11660,0.434819897084048
+all horizons (secondary),FluSight-baseline,act if p>alpha (primary),0.05,-0.2338391502276175,11660,0.434819897084048
+all horizons (secondary),FluSight-baseline,act if p>alpha (primary),0.1,-0.18467374810318665,11660,0.434819897084048
+all horizons (secondary),FluSight-baseline,act if p>alpha (primary),0.2,0.16646433990895299,11660,0.434819897084048
+all horizons (secondary),FluSight-baseline,act if p>alpha (primary),0.3,0.42038442083965605,11660,0.434819897084048
+all horizons (secondary),FluSight-baseline,act if p>alpha (primary),0.5,0.5751479289940826,11660,0.434819897084048
+all horizons (secondary),FluSight-baseline,act if p>alpha (primary),0.7,0.411176857330703,11660,0.434819897084048
+all horizons (secondary),FluSight-baseline,envelope (potential),0.02,0.0,11660,0.434819897084048
+all horizons (secondary),FluSight-baseline,envelope (potential),0.05,0.0,11660,0.434819897084048
+all horizons (secondary),FluSight-baseline,envelope (potential),0.1,0.032928679817905745,11660,0.434819897084048
+all horizons (secondary),FluSight-baseline,envelope (potential),0.2,0.18588770864946894,11660,0.434819897084048
+all horizons (secondary),FluSight-baseline,envelope (potential),0.3,0.42372281234193226,11660,0.434819897084048
+all horizons (secondary),FluSight-baseline,envelope (potential),0.5,0.5988165680473372,11660,0.434819897084048
+all horizons (secondary),FluSight-baseline,envelope (potential),0.7,0.4942143326758709,11660,0.434819897084048

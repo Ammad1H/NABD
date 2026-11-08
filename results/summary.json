@@ -28,5 +28,238 @@
   "flusight_ensemble_cov95": 0.861492281303602
  },
  "chronos2": "NOT RUN HERE (weights unavailable in build environment)",
- "tables": "results/tables/endpoints.csv, overview_common_cells.csv, cell_coverage.csv, vintage_flags.csv"
+ "tables": "results/tables/endpoints.csv, overview_common_cells.csv, cell_coverage.csv, vintage_flags.csv",
+ "primary_verdict": "NOT MET",
+ "primary_text": "Pre-registered primary endpoint NOT MET: NABD v1 relative WIS vs the CDC FluSight-ensemble = 1.22 (95% CI 1.01-1.52); the non-inferiority margin was 1.15. NABD v1 is less accurate than the CDC ensemble on US state flu admissions in 2024/25-2025/26.",
+ "round2": {
+  "declared_in": "docs/DEVIATIONS.md D6, D7, D9, D10, D11 (declared before computing)",
+  "sensitivity_block_bootstrap_L4": {
+   "PRIMARY pooled": [
+    1.223,
+    0.979,
+    1.573
+   ],
+   "S1 pooled vs baseline": [
+    0.816,
+    0.6,
+    1.03
+   ],
+   "S3 season 2024/25": [
+    1.026,
+    0.916,
+    1.36
+   ],
+   "S3 season 2024/25 vs baseline": [
+    0.69,
+    0.438,
+    0.844
+   ],
+   "S3 season 2025/26": [
+    1.516,
+    0.979,
+    2.027
+   ],
+   "S3 season 2025/26 vs baseline": [
+    0.998,
+    0.571,
+    1.403
+   ]
+  },
+  "sensitivity_block_bootstrap_L6_primary": [
+   0.965,
+   1.553
+  ],
+  "national_share_of_WIS": {
+   "NABD-ensemble": 0.46,
+   "FluSight-ensemble": 0.449
+  },
+  "excl_US_national": {
+   "PRIMARY excl. US national": {
+    "rel_wis": 1.198,
+    "cluster_ci_lo": 1.014,
+    "cluster_ci_hi": 1.449,
+    "block4_ci_lo": 0.992,
+    "block4_ci_hi": 1.488
+   },
+   "S1 excl. US national": {
+    "rel_wis": 0.818,
+    "cluster_ci_lo": 0.675,
+    "cluster_ci_hi": 0.998,
+    "block4_ci_lo": 0.624,
+    "block4_ci_hi": 0.999
+   }
+  },
+  "per_location_wins": [
+   {
+    "comparator": "FluSight-ensemble",
+    "season": "2024/25",
+    "locations": 53,
+    "nabd_wins": 18,
+    "median_ratio": 1.0349982983066528
+   },
+   {
+    "comparator": "FluSight-ensemble",
+    "season": "2025/26",
+    "locations": 53,
+    "nabd_wins": 0,
+    "median_ratio": 1.4383963272718685
+   },
+   {
+    "comparator": "FluSight-ensemble",
+    "season": "pooled",
+    "locations": 53,
+    "nabd_wins": 0,
+    "median_ratio": 1.2184764551425795
+   },
+   {
+    "comparator": "FluSight-baseline",
+    "season": "2024/25",
+    "locations": 53,
+    "nabd_wins": 49,
+    "median_ratio": 0.7105411146751093
+   },
+   {
+    "comparator": "FluSight-baseline",
+    "season": "2025/26",
+    "locations": 53,
+    "nabd_wins": 18,
+    "median_ratio": 1.0849245345166871
+   },
+   {
+    "comparator": "FluSight-baseline",
+    "season": "pooled",
+    "locations": 53,
+    "nabd_wins": 47,
+    "median_ratio": 0.8588235385749204
+   }
+  ],
+  "scorer_crosscheck": [
+   {
+    "model": "NABD-ensemble",
+    "cells": 11872,
+    "max_abs_diff": 0.0,
+    "cells_over_tol": 0,
+    "cells_with_crossing_quantiles": 0,
+    "pass": true
+   },
+   {
+    "model": "FluSight-ensemble",
+    "cells": 11660,
+    "max_abs_diff": 0.0,
+    "cells_over_tol": 0,
+    "cells_with_crossing_quantiles": 0,
+    "pass": true
+   },
+   {
+    "model": "FluSight-baseline",
+    "cells": 11660,
+    "max_abs_diff": 0.0,
+    "cells_over_tol": 0,
+    "cells_with_crossing_quantiles": 0,
+    "pass": true
+   }
+  ],
+  "league_table": [
+   {
+    "season": "2024/25",
+    "variant": "all included",
+    "rank": 13,
+    "n_models": 41,
+    "rel_wis": 0.693
+   },
+   {
+    "season": "2024/25",
+    "variant": "excluding ensembles",
+    "rank": 7,
+    "n_models": 21,
+    "rel_wis": 0.693
+   },
+   {
+    "season": "2025/26",
+    "variant": "all included",
+    "rank": 40,
+    "n_models": 46,
+    "rel_wis": 1.007
+   },
+   {
+    "season": "2025/26",
+    "variant": "excluding ensembles",
+    "rank": 19,
+    "n_models": 25,
+    "rel_wis": 0.997
+   }
+  ],
+  "league_cells_summary": [
+   {
+    "season": "2024/25",
+    "possible_cells": 5936,
+    "models_with_any": 51,
+    "models_included": 41,
+    "nabd_included": true
+   },
+   {
+    "season": "2025/26",
+    "possible_cells": 5936,
+    "models_with_any": 59,
+    "models_included": 46,
+    "nabd_included": true
+   }
+  ],
+  "g13_phase_rel_wis_vs_FS_ensemble": {
+   "rising": 1.272,
+   "flat": 0.974,
+   "falling": 1.293,
+   "ALL": 1.223
+  },
+  "g13_rev_h2_primary": {
+   "FluSight-baseline": {
+    "0.02": -0.072,
+    "0.05": -0.392,
+    "0.1": -0.407,
+    "0.2": 0.026,
+    "0.3": 0.325,
+    "0.5": 0.5,
+    "0.7": 0.31
+   },
+   "FluSight-ensemble": {
+    "0.02": -0.134,
+    "0.05": 0.112,
+    "0.1": 0.26,
+    "0.2": 0.491,
+    "0.3": 0.608,
+    "0.5": 0.67,
+    "0.7": 0.547
+   },
+   "NABD-ensemble": {
+    "0.02": 0.083,
+    "0.05": 0.217,
+    "0.1": 0.367,
+    "0.2": 0.482,
+    "0.3": 0.554,
+    "0.5": 0.617,
+    "0.7": 0.454
+   }
+  }
+ },
+ "exploratory": {
+  "exploratory": true,
+  "note": "E1 splits test cells by REALISED phase (uses future truth). Hypothesis-generating only; must never be used as a claim. See docs/DEVIATIONS.md E1.",
+  "E1_rel_wis_by_realised_phase": {
+   "rising": [
+    0.893,
+    0.813,
+    1.029
+   ],
+   "flat": [
+    1.859,
+    1.476,
+    2.31
+   ],
+   "falling": [
+    1.96,
+    1.18,
+    2.434
+   ]
+  }
+ }
 }

@@ -1,0 +1,7 @@
+comparator,season,locations,nabd_wins,median_ratio
+FluSight-ensemble,2024/25,53,18,1.0349982983066528
+FluSight-ensemble,2025/26,53,0,1.4383963272718685
+FluSight-ensemble,pooled,53,0,1.2184764551425795
+FluSight-baseline,2024/25,53,49,0.7105411146751093
+FluSight-baseline,2025/26,53,18,1.0849245345166871
+FluSight-baseline,pooled,53,47,0.8588235385749204

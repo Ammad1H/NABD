@@ -1,0 +1,4 @@
+model,cells,max_abs_diff,cells_over_tol,cells_with_crossing_quantiles,pass
+NABD-ensemble,11872,0.0,0,0,True
+FluSight-ensemble,11660,0.0,0,0,True
+FluSight-baseline,11660,0.0,0,0,True

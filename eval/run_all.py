@@ -36,6 +36,7 @@ def main():
     ap.add_argument("--retune", action="store_true", help="re-run 2023/24 tuning (overwrites models/config.yaml)")
     ap.add_argument("--skip-tune", action="store_true", help="(default) reuse frozen models/config.yaml")
     ap.add_argument("--with-chronos", action="store_true")
+    ap.add_argument("--skip-league", action="store_true", help="skip the D7 league table (needs hub model-output checkout or cache)")
     ap.add_argument("--procs", type=int, default=2)
     a = ap.parse_args()
     t0 = time.time()
@@ -48,6 +49,8 @@ def main():
     score.main()
     alerts.main()
     import runpy; runpy.run_module('eval.exploratory', run_name='__main__')
+    from eval import round2   # D6/D7/D9/D10 (declared in docs/DEVIATIONS.md); league uses cache or hub model-output
+    round2.main(skip_league=a.skip_league)
     print(f"run_all done in {time.time()-t0:.0f}s")
 
 

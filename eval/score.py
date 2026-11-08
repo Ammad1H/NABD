@@ -161,6 +161,10 @@ def main() -> dict:
                            "better_than_baseline": s1["ci_hi"] < 1.0},
         "S2_coverage": {"cov50": prim["cov50_A"], "cov95": prim["cov95_A"], "cov95_in_0.90_0.98": bool(s2_ok),
                         "flusight_ensemble_cov50": prim["cov50_B"], "flusight_ensemble_cov95": prim["cov95_B"]},
+        "primary_verdict": verdict,
+        "primary_text": (f"Pre-registered primary endpoint {verdict}: NABD v1 relative WIS vs the CDC FluSight-ensemble = "
+                         f"{prim['rel_wis']:.2f} (95% CI {prim['ci_lo']:.2f}-{prim['ci_hi']:.2f}); the non-inferiority "
+                         f"margin was {MARGIN}."),
         "chronos2": "NOT RUN HERE (weights unavailable in build environment)",
         "tables": "results/tables/endpoints.csv, overview_common_cells.csv, cell_coverage.csv, vintage_flags.csv",
     }
