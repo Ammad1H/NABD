@@ -29,6 +29,7 @@ from adapters import flunet
 from uae.models import NabdUAE, Persistence, QUANTILES, SERIES, H, prepare, expit
 from uae.features_v2 import prepare_v2
 from uae.models_v2 import NabdUAEv2
+from uae.explain_v1 import explain_frame
 
 DESIGNATION = {"NABD-UAE-v1": "headline (frozen as-is, see docs/FREEZE.md)",
                "NABD-UAE-v2": "challenger (locked, docs/LOCK-UAE-v2.json)", "persistence": "baseline"}
@@ -39,7 +40,24 @@ COLS = ["reference_date", "target", "horizon", "target_end_date", "location", "o
         "value", "model"]
 
 
-def issue(mode="cached", round_label="R0", now=None, with_v2=True):
+HORIZON_CONVENTION = ("weeks from the issue date to the MIDDLE of the target week, rounded to 0.5 "
+                      "(same as app/data_io.horizon_weeks and docs/SPEC.md 5.1: nowcast, +0.5, +1.5, +2.5 wk)")
+
+
+def horizon_weeks(target_end, issue) -> float:
+    """Issue-relative horizon to the target-week midpoint, rounded to 0.5 (matches the card)."""
+    mid = pd.Timestamp(target_end) - pd.Timedelta(days=3.5)
+    wk = (mid - pd.Timestamp(issue)).total_seconds() / (7 * 86400)
+    return round(wk * 2) / 2
+
+
+def horizon_label(wk: float) -> str:
+    return "nowcast" if wk <= 0 else f"+{wk:g} wk"
+
+
+def issue(mode="cached", round_label="R0", now=None, with_v2=True, explain_only=False):
+    """Issue a ledger round. explain_only=True regenerates ONLY the per-signal explanation files for the
+    live issue date (same data, same fits) and writes no ledger file, so hashed rounds are never touched."""
     now = now or dt.datetime.now(dt.timezone.utc)
     stamp = now.strftime("%Y-%m-%dT%H%MZ")
     raw = flunet.load(mode)
@@ -70,10 +88,17 @@ def issue(mode="cached", round_label="R0", now=None, with_v2=True):
         for M, frame in cands:
             m = M(frame, train)
             pq = m.predict(i)
-            if M is NabdUAEv2:  # G11: exact per-signal explanation of the live v2 forecast
-                ex_dir = ROOT / "results" / "uae" / "explain"
+            ex_root = ROOT / "results" / "uae" / "explain"
+            slug = {"flu": "flu_pos_pct_sentinel", "rsv": "rsv_pos_pct_sentinel"}[key]
+            tends = {h: str((L_end + pd.Timedelta(weeks=h)).date()) for h in H}
+            if M is NabdUAE:  # G11: exact explanation of the HEADLINE model shown on the card
+                ex_root.mkdir(parents=True, exist_ok=True)
+                exf = explain_frame(m, i, key, str(now.date()), f"live ledger {round_label}", tends)
+                if len(exf):
+                    exf.to_csv(ex_root / f"{now.date()}_{slug}.csv", index=False)
+            if M is NabdUAEv2:  # challenger explanation, kept separate so the card never mixes models
+                ex_dir = ex_root / "challenger_v2"
                 ex_dir.mkdir(parents=True, exist_ok=True)
-                slug = {"flu": "flu_pos_pct_sentinel", "rsv": "rsv_pos_pct_sentinel"}[key]
                 parts = []
                 for h, v in m.predict_detail(i).items():
                     if v is None:
@@ -87,10 +112,11 @@ def issue(mode="cached", round_label="R0", now=None, with_v2=True):
                     e["unit"] = "logit"
                     e["series"] = key
                     e["target"] = target_name
+                    e["model"] = m.name
                     e["submodel"] = v["sub"]
                     e["median_pct"] = 100 * expit(tot)
                     e["issue_date"] = str(now.date())
-                    e["target_end_date"] = str((L_end + pd.Timedelta(weeks=h)).date())
+                    e["target_end_date"] = tends[h]
                     e["design"] = f"live ledger {round_label}"
                     parts.append(e)
                 if parts:
@@ -105,9 +131,12 @@ def issue(mode="cached", round_label="R0", now=None, with_v2=True):
                     rows.append([str(ref), target_name, h - 2, str(tgt_end), "ARE", "quantile", q,
                                  round(float(v), 4), m.name])
                 meta_rows.append(dict(model=m.name, target=target_name, horizon=h - 2, target_end_date=str(tgt_end),
-                                      weeks_ahead_of_issue=round((pd.Timestamp(tgt_end) - pd.Timestamp(now.date())).days / 7, 1)))
+                                      weeks_ahead_of_issue=horizon_weeks(tgt_end, now.date()),
+                                      weeks_to_target_week_end=round((pd.Timestamp(tgt_end) - pd.Timestamp(now.date())).days / 7, 2)))
             frames.setdefault(m.name, []).extend(rows)
         data_through[target_name] = f"{int(d.iso_year.iloc[i])}-W{int(d.iso_week.iloc[i]):02d}"  # per series (audit m19)
+    if explain_only:
+        return []
     LEDGER.mkdir(exist_ok=True)
     for name, rows in frames.items():
         df = pd.DataFrame(rows, columns=COLS)
@@ -118,8 +147,8 @@ def issue(mode="cached", round_label="R0", now=None, with_v2=True):
         base.with_suffix(".sha256").write_text(f"{h}  {csv.name}\n")
         mrows = [r for r in meta_rows if r["model"] == name]
         for r in mrows:
-            r["horizon_label"] = "nowcast (target week already ended at issue)" if r["weeks_ahead_of_issue"] <= 0 \
-                else f"+{r['weeks_ahead_of_issue']} wk after issue"
+            r["horizon_label"] = horizon_label(r["weeks_ahead_of_issue"])
+            r["horizon_convention"] = HORIZON_CONVENTION
         meta = dict(round=round_label, issued_utc=now.isoformat(timespec="seconds"), model=name,
                     data_source="WHO FluNet xMart live" if mode == "fetch" else "data/raw/flunet_are.csv (cached)",
                     data_through_week=data_through, designation=DESIGNATION.get(name, ""), sha256=h, horizons=mrows,
@@ -152,9 +181,17 @@ def main():
     g.add_argument("--cached", action="store_true")
     g.add_argument("--fetch", action="store_true")
     ap.add_argument("--round", default="R0")
+    ap.add_argument("--explain-only", action="store_true",
+                    help="regenerate per-signal explanation files for the live issue date only (no ledger write)")
+    ap.add_argument("--issue-date", default=None, help="UTC date to stamp explanation files with (explain-only)")
     a = ap.parse_args()
     if not (LEDGER / "LEDGER.md").exists():
         (LEDGER / "LEDGER.md").write_text("# NABD forecast ledger\n\n| Round | Issued (UTC) | File | SHA-256 | Data | Source |\n|---|---|---|---|---|---|\n")
+    if a.explain_only:
+        now = dt.datetime.fromisoformat(a.issue_date + "T12:00:00+00:00") if a.issue_date else None
+        issue("fetch" if a.fetch else "cached", a.round, now=now, explain_only=True)
+        print("explanations written to results/uae/explain/ (v1 headline) and results/uae/explain/challenger_v2/")
+        return
     for csv, h in issue("fetch" if a.fetch else "cached", a.round):
         print(f"{csv.relative_to(ROOT)}  sha256={h}")
     print("Next: git add ledger && git commit -m 'ledger round' && git push  (public commit time = timestamp); post the hash.")
