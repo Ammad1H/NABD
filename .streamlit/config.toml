@@ -1,0 +1,16 @@
+# Streamlit config for local runs and Streamlit Community Cloud (docs/PUBLISH.md §4).
+[server]
+headless = true
+runOnSave = false
+maxUploadSize = 5
+
+[browser]
+gatherUsageStats = false
+
+[theme]
+base = "light"
+primaryColor = "#1f6f78"
+backgroundColor = "#f7f8f9"
+secondaryBackgroundColor = "#ffffff"
+textColor = "#1d2b36"
+font = "sans serif"

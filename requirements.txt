@@ -1,0 +1,7 @@
+# Streamlit Community Cloud installs this file (app only). Versions tested on 8 Nov 2026 (Python 3.13).
+# Full research pipeline (backtests, GCC, tests): requirements-dev.txt.
+streamlit>=1.40,<2
+pandas>=2.2
+numpy>=1.26
+altair>=5
+pyyaml>=6

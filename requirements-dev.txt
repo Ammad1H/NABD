@@ -1,0 +1,10 @@
+# Everything needed to reproduce results and run the test suite (python -m eval.run_all --fetch; pytest -q).
+-r requirements.txt
+-r requirements-app.txt
+scipy>=1.11
+statsmodels>=0.14
+pandera>=0.20
+duckdb>=1.0
+jsonschema>=4
+pytest>=8
+matplotlib>=3.8
