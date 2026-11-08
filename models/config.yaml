@@ -1,0 +1,38 @@
+frozen_for: PROTOCOL v1.0 (docs/FREEZE.md)
+tuned_on: 2023/24 reference dates 2023-10-14..2024-05-04 (30); truth vintage as_of
+  2024-11-16
+n_cells_tuning: 6354
+glm:
+  w: 3
+  phi: 0.9
+  lam_n: 0.5
+  lam_s: 0.25
+  level: last
+  g_max: 0.5
+  c: 2.0
+  wis_total_2023_24: 469669.5552173913
+eeq:
+  w: 3
+  phi: 0.9
+  lam_n: 0.5
+  lam_s: 0.25
+  level: last
+  g_max: 0.5
+  H: 104
+  strata: level3
+  wis_total_2023_24: 435614.7834671187
+ensemble:
+  combine: vincentisation (quantile mean) of available members
+  k: 1.1
+  wis_total_2023_24: 423919.85905499454
+  members_wis_total_2023_24:
+    glm: 469669.5552173913
+    eeq: 435614.7834671186
+chronos2: wrapper present (models/chronos2.py); NOT RUN in build environment; excluded
+  from ensemble
+aci: "not used in v1 frozen run; fixed widening k only (PROTOCOL \xA78)"
+tuning_runtime_sec: 281.7
+notes:
+- Selected values w=3, lam_n=0.5, g_max=0.5 and GLM c=2.0 sit on grid edges; the grid
+  is kept as pre-registered (no extension).
+- Frozen before any test-season forecast was produced.
