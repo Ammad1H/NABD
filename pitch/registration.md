@@ -1,52 +1,88 @@
-# Registration text (for 10 Nov). No result claims; burden figures VERIFIED (see research/burden.md)
+# Registration text: FINAL for 10 Nov 2026 (round 2)
 
-**Statement:** 06, Population and Workforce Health Early Warning (Population Health)
+Rules this text obeys (BUILD-SPEC v1.3 CLAIM RULE):
+- It describes only (a) what is built and scored in this repo, or (b) items marked "in build for 20 Nov" that are in the round-2 plan.
+- Every number traces to `results/` or `research/burden.md`. See `research/claims-ledger.md`.
+- Word counts are measured by `pitch/wordcount.py`; the output is pasted at the bottom.
 
-**Title:** NABD: Calibrated RSV and Flu Surge Forecasts for Abu Dhabi Hospitals
+**Statement:** 06, Population and Workforce Health Early Warning (Population Health focus area)
 
-**One-liner:** NABD fuses surveillance, ED, environmental and administrative signals into calibrated 1–3-week RSV and flu surge forecasts. A named officer approves each recommended action, and every forecast is publicly timestamped before its outcome is known.
+**Title (≤ 100 characters):**
+NABD: An Open RSV and Flu Forecasting Hub for Abu Dhabi, Held to the CDC's Standard
 
-**Maturity statement** (the FAQ asks for current maturity and what will be built):
-Concept, pre-registered evaluation protocol and data pipelines in progress. Preliminary analyses on public data are complete. During the Challenge we will build the forecasting ensemble, the vintage-correct back-test, the UAE track, the bilingual decision card with approval and audit, and the public forecast ledger.
+**One-liner:**
+The UAE publishes no respiratory forecasts. NABD is an open forecasting hub that issues calibrated RSV and influenza forecasts up to three weeks ahead, routes each proposed action to a named human approver, and keeps a public, tamper-evident record of every forecast.
+
+---
+
+## Solution summary (≤ 100 words)
+<!-- WC:summary -->
+NABD is an open RSV and influenza forecasting hub for Abu Dhabi. It turns WHO FluNet UAE surveillance into calibrated forecasts up to three weeks ahead. A bilingual Arabic/English card proposes a proportionate action for a named role, a person approves, modifies or dismisses it, and a hash-chained audit log records the decision. Every forecast round is hashed and published before its outcome exists. In a four-season retrospective, NABD's UAE model beat carrying the latest week forward in 7 of 8 season-series. We also benchmark it, in public and with all results reported, against the CDC FluSight ensemble.
+<!-- /WC -->
+
+## Abstract (≤ 50 words)
+<!-- WC:a50 -->
+The UAE publishes no respiratory forecasts. NABD is an open RSV and influenza forecasting hub for Abu Dhabi: calibrated forecasts up to three weeks ahead from WHO surveillance, a bilingual card whose actions a named officer approves, and a tamper-evident public record, benchmarked openly against the CDC FluSight ensemble.
+<!-- /WC -->
+
+## Abstract (≤ 150 words)
+<!-- WC:a150 -->
+RSV and influenza reach Abu Dhabi's hospitals every winter, but never on a fixed calendar. One Abu Dhabi tertiary hospital admitted 2,189 young children with RSV over 2018–2022, while yearly positivity swung from 2.9% to 16%. The UAE publishes no flu case counts and no respiratory forecasts. NABD fills that gap with an open forecasting hub. It turns WHO FluNet surveillance into calibrated RSV and influenza forecasts up to three weeks ahead. A bilingual card proposes an action that a named officer must approve, and a tamper-evident log records every decision. In a four-season retrospective, the UAE model beat carrying the latest week forward in 7 of 8 season-series. We benchmark NABD publicly against the CDC FluSight ensemble and report every result. In build for 20 November: a multi-signal UAE model with per-signal explanations, alert metrics, a test on other Gulf countries' data, and an externally timestamped forecast ledger.
+<!-- /WC -->
+
+## Abstract (≤ 300 words)
+<!-- WC:a300 -->
+Every winter, respiratory syncytial virus (RSV) and influenza reach Abu Dhabi's emergency and paediatric services together, but never on a fixed calendar. In the last four UAE seasons, sentinel RSV positivity peaked anywhere between ISO weeks 41 and 47. One Abu Dhabi tertiary hospital admitted 2,189 children aged five or under with RSV over 2018–2022, while yearly positivity swung from 2.9% to 16%. The UAE publishes no influenza case counts and no respiratory forecasts, so planners see last week, not the coming weeks.
+
+NABD ("pulse") is an open respiratory forecasting hub for Abu Dhabi. It turns WHO FluNet UAE surveillance (laboratory positivity and testing volume) into calibrated probabilistic forecasts of RSV and influenza positivity up to three weeks ahead. A bilingual Arabic/English card shows the forecast range, data freshness and a proportionate playbook action for a named role, such as a hospital bed manager or a public-health duty officer. Only a person can approve, modify or dismiss it, and a hash-chained audit log records every decision. Each forecast round is hashed and published before its outcome exists, so the track record cannot be edited afterwards.
+
+In a four-season retrospective, NABD's UAE model beat carrying the latest week forward in 7 of 8 season-series. We hold NABD to the CDC's standard in public: a pre-registered US test against the CDC FluSight ensemble, using only data available at each forecast date, with every result reported, including where version 1 falls short.
+
+In build for 20 November:
+- a multi-signal UAE model (non-sentinel surveillance, testing volume, school calendar) with per-signal explanations of each forecast;
+- surge-alert lead time, sensitivity, precision and false alarms;
+- a test of the frozen method on other Gulf countries' WHO data;
+- an externally timestamped forecast ledger.
+
+All data are aggregate; no individual is tracked.
+<!-- /WC -->
 
 ---
 
-## Abstract, 50 words
-NABD forecasts the size and duration of RSV and influenza surges for Abu Dhabi, fusing clinical, emergency-department, environmental and administrative signals into calibrated forecasts. A bilingual card proposes staffing and bed actions that a named officer approves. Every forecast is publicly timestamped and benchmarked, using only data available at the time, against the CDC FluSight ensemble.
+## Current maturity and what we will build (the FAQ asks for this)
+**Maturity today (8 Nov): working prototype, version 1.**
+- **Built and scored:**
+  - data adapters with privacy guards;
+  - the UAE forecasting model, with a four-season retrospective;
+  - the US forecasting model, with a pre-registered back-test against the CDC FluSight ensemble (primary bar not met; reported);
+  - the bilingual Streamlit decision card with approval and a hash-chained audit;
+  - a FastAPI endpoint;
+  - a hashed forecast ledger round, not yet published;
+  - 50+ automated tests.
+- **Built during the Challenge (by 20 Nov):** the items listed "in build" above, plus the deck, video and technical documentation.
+- **Not in scope for 20 Nov:** Abu Dhabi hospital or district data (requires a pilot partner), a live employer-absence feed (simulated design only), and the foundation-model member (the wrapper exists; weights were unavailable in our build environment).
 
-## Abstract, 150 words
-RSV and influenza reach Abu Dhabi's hospitals together every winter, but their timing and size vary: one Abu Dhabi tertiary hospital recorded 2,189 RSV admissions of young children over five years, with yearly positivity ranging from 2.9% to 16%. NABD ("pulse") is a population early-warning system for Statement 06. It fuses five kinds of signal into calibrated forecasts of the size of the next one to three weeks:
-- clinical (WHO FluNet UAE laboratory data; US hospital admissions);
-- emergency-department syndromic;
-- geospatial;
-- environmental (weather);
-- administrative (school calendar, testing volume).
+## Data sources (the T&C asks for every source to be declared)
+| Source | Used for | Status | Licence / terms |
+|---|---|---|---|
+| WHO FluNet (xMart `VIW_FNT`), United Arab Emirates, sentinel and non-sentinel | UAE model inputs and truth | Used | WHO terms: public-health, non-commercial use, with citation |
+| CDC FluSight forecast hub (`cdcepi/FluSight-forecast-hub`): target data (NHSN state influenza admissions, real-time versions) and the FluSight-ensemble / FluSight-baseline forecasts | US benchmark | Used | Hub MIT; underlying US Government data |
+| UAE Ministry of Education 2026/27 academic calendar (as reported by Gulf News) | UAE v2 covariate | In build | Public fact |
+| WHO FluNet, other GCC/EMRO countries | Out-of-sample test | In build (to be downloaded after the test plan is locked) | WHO terms as above |
+| NOAA GHCN-Daily, Abu Dhabi International (AE000041217) | Weather covariate | Planned; not used in v1 (blocked in our build environment) | Public domain |
+| Synthetic employer sickness-absence counts | Workforce module demo | Simulated, labelled | Generated by the team |
+| Published studies (Tawam Hospital RSV and paediatric influenza; Dubai RSV claims) and ADPHC, DoH and press releases | Burden context only | Cited | Fair-use citation |
 
-A bilingual card explains what drove each forecast and proposes playbook actions that a named officer must approve, with a full audit trail. Our evaluation is pre-registered:
-- non-inferiority to the CDC FluSight ensemble on US data, using only the data available at each forecast date;
-- UAE retrospective skill against persistence;
-- surge-alert lead time, sensitivity and false alarms.
+No personal or patient-level data is used anywhere.
 
-Every live forecast is committed publicly before its outcome exists. All data are aggregate.
-
-## Abstract, 300 words
-Every winter, respiratory syncytial virus (RSV) and influenza converge on Abu Dhabi's emergency and paediatric services, but not on a fixed calendar. In the last four UAE seasons, sentinel RSV positivity peaked anywhere between ISO weeks 41 and 47. At one Abu Dhabi tertiary hospital, 2,189 children aged five or under were admitted with RSV over 2018–2022, and yearly positivity ranged from 2.9% to 16%. In Dubai, about one in five infants with RSV was hospitalised, and fewer than 2% had a known risk factor. Hospitals need to know how large and how long the coming weeks will be, but public surveillance mostly describes the past.
-
-NABD ("pulse") responds to Statement 06 by fusing signals where real data exist:
-- clinical: WHO FluNet UAE laboratory surveillance; US hospital admissions;
-- service and geospatial: emergency-department syndromic data by region;
-- environmental: Abu Dhabi weather;
-- administrative: school calendar, testing volume.
-
-An occupational sickness-absence feed is delivered as a privacy-preserving secure-aggregation design on clearly labelled synthetic data. An interpretable statistical core and a time-series foundation model are combined into a calibrated quantile ensemble, with horizons reported honestly relative to publication lags. A bilingual (Arabic/English) card shows forecasts, the signals, weeks and regions that drove them, and data freshness. It proposes playbook actions, such as surge rosters, bed opening and advisories, that only a named approver can release, and every decision is audited.
-
-Our evaluation is pre-registered before testing:
-- non-inferiority to the CDC FluSight ensemble on US data, using only the data available at each forecast date;
-- UAE retrospective skill against persistence (four seasons, stated as such);
-- surge-alert lead time, sensitivity, positive predictive value and false alarms;
-- behaviour when inputs are missing.
-
-Every live forecast is committed publicly before its outcome exists. NABD uses aggregate data only, plugs into existing public-health platforms, and proposes a 12-week shadow pilot on one hospital's aggregate admissions.
+## Team
+⟨Names (1–5), lead aged 18+, MBZUAI⟩. Fill in before submitting. Check MBZUAI's own policy on sponsor-run competitions; the T&C has no conflict-of-interest clause.
 
 ---
-Word counts (measured): 50-word = 56; 150-word = 160; 300-word = 310. Trim the last clause of each if the form enforces hard limits.
+## Measured word counts (pitch/wordcount.py)
+```
+summary: 98 words (limit 100) OK
+a50: 49 words (limit 50) OK
+a150: 149 words (limit 150) OK
+a300: 293 words (limit 300) OK
+```
