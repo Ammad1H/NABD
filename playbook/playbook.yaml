@@ -1,7 +1,11 @@
-# NABD playbook: maps forecast bands to PROPOSED actions.
+# NABD playbook: maps forecast LEVEL + TRAJECTORY to PROPOSED actions.
 # STATUS: ILLUSTRATIVE. It has not been reviewed by a clinician or a public-health official.
 # Nothing here is released without a named human approver (see app/audit.py).
-version: "0.1.0-illustrative"
+#
+# v0.2.0 (build round 2): bands are keyed on level AND direction. Never "rising" when the
+# forecast median falls (fixes REVIEW-R2 judges §1.5 and audit G5). Thresholds are placeholders
+# to be set with the pilot site from local history.
+version: "0.2.0-illustrative"
 status: ILLUSTRATIVE
 review:
   required_reviewers:
@@ -10,6 +14,19 @@ review:
   reviewed: false
   reviewed_by: null
   reviewed_on: null
+# How a card is classified (see playbook/validate.py: classify_trend, select_band).
+rules:
+  level:
+    statistic: "forecast median"
+    horizon: "first forecast week at least +1 wk after the issue date"
+  trend:
+    statistic: "forecast median at the furthest horizon / last observed value"
+    rising_if_ratio_at_least: 1.15
+    falling_if_ratio_at_most: 0.87
+    otherwise: plateau
+  exceedance:
+    statistic: "P(value > the band's upper threshold) at the level horizon, interpolated from the forecast quantiles"
+    note: "Shown as decision support next to the band; it does not change the band."
 roles:
   hospital_ops:
     en: "Hospital bed and roster manager"
@@ -36,15 +53,17 @@ reason_codes:
   - code: OTHER
     en: "Other (explain in note)"
     ar: "أخرى (يرجى التوضيح)"
-# A band rule fires when the forecast median at the given horizon falls in [lower, upper).
-# Tier thresholds are placeholders to be set with the pilot site from local history.
+# A band fires when the level-horizon median is in [lower, upper) AND the trend is in `trend`
+# ("any" = rising, plateau or falling). Bands for one target must not overlap in level x trend.
 bands:
+  # ----------------------------------------------------------------- RSV (sentinel %)
   - id: rsv_low
     target: "wk rsv pos pct sentinel"
     location: ARE
-    horizon_label: "+1.5 wk"
+    horizon_label: "level horizon"
     lower: 0
     upper: 10
+    trend: [any]
     tier: 1
     actions:
       hospital_ops:
@@ -53,12 +72,13 @@ bands:
       adphc_duty:
         en: "No public action. Continue weekly monitoring."
         ar: "لا إجراء عام. مواصلة المراقبة الأسبوعية."
-  - id: rsv_rising
+  - id: rsv_elevated_rising
     target: "wk rsv pos pct sentinel"
     location: ARE
-    horizon_label: "+1.5 wk"
+    horizon_label: "level horizon"
     lower: 10
     upper: 20
+    trend: [rising]
     tier: 2
     actions:
       hospital_ops:
@@ -67,12 +87,43 @@ bands:
       adphc_duty:
         en: "Review infant RSV immunisation uptake messaging; brief hospital network leads."
         ar: "مراجعة رسائل الإقبال على تحصين الرضّع ضد الفيروس المخلوي التنفسي وإحاطة قادة شبكة المستشفيات."
-  - id: rsv_high
+  - id: rsv_elevated_plateau
     target: "wk rsv pos pct sentinel"
     location: ARE
-    horizon_label: "+1.5 wk"
+    horizon_label: "level horizon"
+    lower: 10
+    upper: 20
+    trend: [plateau]
+    tier: 2
+    actions:
+      hospital_ops:
+        en: "Hold heightened readiness: keep current paediatric bed plan; no new surge roster; re-check next week."
+        ar: "الإبقاء على الجاهزية المرتفعة: الحفاظ على خطة أسرّة الأطفال الحالية دون جدول مناوبات إضافي جديد، وإعادة التقييم الأسبوع المقبل."
+      adphc_duty:
+        en: "Continue immunisation messaging; no new public advisory."
+        ar: "مواصلة رسائل التحصين دون إصدار إرشاد عام جديد."
+  - id: rsv_elevated_falling
+    target: "wk rsv pos pct sentinel"
+    location: ARE
+    horizon_label: "level horizon"
+    lower: 10
+    upper: 20
+    trend: [falling]
+    tier: 1
+    actions:
+      hospital_ops:
+        en: "Step down: no surge roster needed; plan stand-down of any extra paediatric capacity if the decline is confirmed next week."
+        ar: "تخفيض الجاهزية: لا حاجة لجدول مناوبات إضافي، والتخطيط لإنهاء أي سعة إضافية لطب الأطفال إذا تأكد الانخفاض الأسبوع المقبل."
+      adphc_duty:
+        en: "No public action. Continue weekly monitoring; watch for a second wave."
+        ar: "لا إجراء عام. مواصلة المراقبة الأسبوعية وترقّب موجة ثانية."
+  - id: rsv_high_rising
+    target: "wk rsv pos pct sentinel"
+    location: ARE
+    horizon_label: "level horizon"
     lower: 20
     upper: 101
+    trend: [rising]
     tier: 3
     actions:
       hospital_ops:
@@ -81,12 +132,29 @@ bands:
       adphc_duty:
         en: "Consider public advisory on respiratory hygiene and when to seek care; coordinate inter-facility capacity."
         ar: "النظر في إصدار إرشاد عام حول النظافة التنفسية ومتى يجب طلب الرعاية، وتنسيق السعة بين المنشآت."
+  - id: rsv_high_not_rising
+    target: "wk rsv pos pct sentinel"
+    location: ARE
+    horizon_label: "level horizon"
+    lower: 20
+    upper: 101
+    trend: [plateau, falling]
+    tier: 2
+    actions:
+      hospital_ops:
+        en: "Sustain the surge plan already in place; do not expand it. Review stand-down criteria."
+        ar: "الإبقاء على خطة الطوارئ القائمة دون توسيعها، ومراجعة معايير إنهائها."
+      adphc_duty:
+        en: "Keep coordination with hospitals; no new advisory unless local signals rise."
+        ar: "مواصلة التنسيق مع المستشفيات دون إرشاد جديد ما لم ترتفع المؤشرات المحلية."
+  # ----------------------------------------------------------------- Influenza (sentinel %)
   - id: flu_low
     target: "wk flu pos pct sentinel"
     location: ARE
-    horizon_label: "+1.5 wk"
+    horizon_label: "level horizon"
     lower: 0
     upper: 15
+    trend: [any]
     tier: 1
     actions:
       hospital_ops:
@@ -95,12 +163,13 @@ bands:
       adphc_duty:
         en: "No public action. Continue weekly monitoring."
         ar: "لا إجراء عام. مواصلة المراقبة الأسبوعية."
-  - id: flu_rising
+  - id: flu_elevated_rising
     target: "wk flu pos pct sentinel"
     location: ARE
-    horizon_label: "+1.5 wk"
+    horizon_label: "level horizon"
     lower: 15
     upper: 30
+    trend: [rising]
     tier: 2
     actions:
       hospital_ops:
@@ -109,12 +178,43 @@ bands:
       adphc_duty:
         en: "Reinforce seasonal influenza vaccination messaging for high-risk groups."
         ar: "تعزيز رسائل التطعيم ضد الإنفلونزا الموسمية للفئات الأكثر عرضة للخطر."
-  - id: flu_high
+  - id: flu_elevated_plateau
     target: "wk flu pos pct sentinel"
     location: ARE
-    horizon_label: "+1.5 wk"
+    horizon_label: "level horizon"
+    lower: 15
+    upper: 30
+    trend: [plateau]
+    tier: 2
+    actions:
+      hospital_ops:
+        en: "Hold heightened readiness; keep isolation-room and antiviral checks; no extra staffing yet."
+        ar: "الإبقاء على الجاهزية المرتفعة ومتابعة غرف العزل ومضادات الفيروسات دون مناوبات إضافية حالياً."
+      adphc_duty:
+        en: "Continue vaccination messaging for high-risk groups."
+        ar: "مواصلة رسائل التطعيم للفئات الأكثر عرضة للخطر."
+  - id: flu_elevated_falling
+    target: "wk flu pos pct sentinel"
+    location: ARE
+    horizon_label: "level horizon"
+    lower: 15
+    upper: 30
+    trend: [falling]
+    tier: 1
+    actions:
+      hospital_ops:
+        en: "Step down: no extra staffing; plan stand-down of any flu surge measures if the decline is confirmed."
+        ar: "تخفيض الجاهزية: لا مناوبات إضافية، والتخطيط لإنهاء إجراءات الطوارئ للإنفلونزا إذا تأكد الانخفاض."
+      adphc_duty:
+        en: "No new public action; continue monitoring."
+        ar: "لا إجراء عام جديد؛ مواصلة المراقبة."
+  - id: flu_high_rising
+    target: "wk flu pos pct sentinel"
+    location: ARE
+    horizon_label: "level horizon"
     lower: 30
     upper: 101
+    trend: [rising]
     tier: 3
     actions:
       hospital_ops:
@@ -123,13 +223,30 @@ bands:
       adphc_duty:
         en: "Consider public advisory; coordinate inter-facility capacity."
         ar: "النظر في إصدار إرشاد عام وتنسيق السعة بين المنشآت."
+  - id: flu_high_not_rising
+    target: "wk flu pos pct sentinel"
+    location: ARE
+    horizon_label: "level horizon"
+    lower: 30
+    upper: 101
+    trend: [plateau, falling]
+    tier: 2
+    actions:
+      hospital_ops:
+        en: "Sustain measures already in place; do not expand. Review stand-down criteria."
+        ar: "الإبقاء على الإجراءات القائمة دون توسيعها، ومراجعة معايير إنهائها."
+      adphc_duty:
+        en: "Keep inter-facility coordination; no new advisory unless signals rise."
+        ar: "مواصلة التنسيق بين المنشآت دون إرشاد جديد ما لم ترتفع المؤشرات."
+  # ----------------------------------------------------------------- US analogue (demonstration only)
   - id: us_admissions_growth
     target: "wk inc flu hosp"
     location: US
-    horizon_label: "+1.5 wk"
+    horizon_label: "level horizon"
     lower: 1.25
     upper: 1000
     metric: "growth_ratio_vs_last_observed"
+    trend: [rising]
     tier: 3
     actions:
       hospital_ops:
