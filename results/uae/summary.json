@@ -99,18 +99,18 @@
     {
       "series": "flu",
       "model": "persistence",
-      "mean_wis": 2.676,
-      "n": 760,
-      "cov50": 0.525,
+      "mean_wis": 2.694,
+      "n": 740,
+      "cov50": 0.524,
       "cov95": 0.939
     },
     {
       "series": "flu",
       "model": "seasonal-analog",
-      "mean_wis": 2.897,
-      "n": 764,
-      "cov50": 0.45,
-      "cov95": 0.763
+      "mean_wis": 2.912,
+      "n": 740,
+      "cov50": 0.451,
+      "cov95": 0.764
     },
     {
       "series": "rsv",
@@ -123,18 +123,18 @@
     {
       "series": "rsv",
       "model": "persistence",
-      "mean_wis": 1.905,
-      "n": 760,
-      "cov50": 0.499,
-      "cov95": 0.961
+      "mean_wis": 1.913,
+      "n": 740,
+      "cov50": 0.503,
+      "cov95": 0.962
     },
     {
       "series": "rsv",
       "model": "seasonal-analog",
-      "mean_wis": 2.14,
-      "n": 764,
-      "cov50": 0.38,
-      "cov95": 0.717
+      "mean_wis": 2.166,
+      "n": 740,
+      "cov50": 0.378,
+      "cov95": 0.716
     }
   ],
   "rsv_peak_week_mae_wk": {
@@ -147,5 +147,52 @@
     "2022/23 sentinel volumes are low (tens of specimens/week early in 2022)",
     "LOSO uses later seasons for training when testing earlier ones (not forward-in-time)",
     "Revisions to FluNet values are not reproduced (no vintages available)"
-  ]
+  ],
+  "label": "RETROSPECTIVE, design-stage, NOT pre-registered (docs/DEVIATIONS.md U1); common cells (U4)",
+  "v2": {
+    "summary": "results/uae/v2/summary.json",
+    "markdown": "results/uae/SUMMARY-v2.md",
+    "rel_wis_loso_pooled": {
+      "NABD-UAE-v2_vs_NABD-UAE-v1": {
+        "rel_wis": 1.059,
+        "ci95_date_cluster": [
+          1.031,
+          1.087
+        ],
+        "ci95_moving_block_L4": [
+          1.016,
+          1.111
+        ],
+        "n_cells": 1480,
+        "n_reference_dates": 186
+      },
+      "NABD-UAE-v2_vs_persistence": {
+        "rel_wis": 0.815,
+        "ci95_date_cluster": [
+          0.767,
+          0.867
+        ],
+        "ci95_moving_block_L4": [
+          0.739,
+          0.892
+        ],
+        "n_cells": 1480,
+        "n_reference_dates": 186
+      },
+      "NABD-UAE-v1_vs_persistence": {
+        "rel_wis": 0.769,
+        "ci95_date_cluster": [
+          0.729,
+          0.814
+        ],
+        "ci95_moving_block_L4": [
+          0.704,
+          0.826
+        ],
+        "n_cells": 1480,
+        "n_reference_dates": 186
+      }
+    },
+    "label": "RETROSPECTIVE; protocol declared and locked before any v2 score; v1 results had already been seen"
+  }
 }

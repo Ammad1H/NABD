@@ -134,6 +134,11 @@ def main():
     (OUT / "tables").mkdir(parents=True, exist_ok=True)
     (OUT / "figures").mkdir(parents=True, exist_ok=True)
     scores.to_csv(OUT / "tables" / "scores_long.csv", index=False)
+    # audit m18: per-model / per-season / per-horizon tables on cells common to all models
+    k = ["series", "season", "reference_date", "horizon"]
+    nmod = scores.groupby(k).model.nunique()
+    keep = nmod[nmod == scores.model.nunique()].index
+    scores = scores.set_index(k).loc[keep].reset_index()
 
     by_model = scores.groupby(["series", "model"]).agg(mean_wis=("wis", "mean"), n=("wis", "size"),
                                                          cov50=("cov50", "mean"), cov95=("cov95", "mean")).reset_index()
@@ -181,7 +186,13 @@ def main():
                  "LOSO uses later seasons for training when testing earlier ones (not forward-in-time)",
                  "Revisions to FluNet values are not reproduced (no vintages available)"],
     )
-    (OUT / "summary.json").write_text(json.dumps(summary, indent=2))
+    summary["label"] = "RETROSPECTIVE, design-stage, NOT pre-registered (docs/DEVIATIONS.md U1); common cells (U4)"
+    sj = OUT / "summary.json"
+    if sj.exists():  # keep the v2 section written by uae.backtest_v2
+        old = json.loads(sj.read_text())
+        if "v2" in old:
+            summary["v2"] = old["v2"]
+    sj.write_text(json.dumps(summary, indent=2))
     make_figure(s, scores)
     write_summary_md(summary, by_model, by_season, pk)
     print(json.dumps({k: summary[k] for k in ["latest_sentinel_week", "rel_wis_nabd", "seasons_nabd_better",
@@ -228,7 +239,16 @@ def write_summary_md(summary, by_model, by_season, pk):
           "## RSV peak-week absolute error (weeks), origins 1–4 weeks before the observed peak", ""]
     if len(pk):
         L.append(pk.groupby(["model", "weeks_before_peak"]).abs_err_wk.mean().unstack().round(2).to_markdown())
-    L += ["", "Peak-week metric is descriptive only (4 seasons × 4 origins).", ""]
+    L += ["", "Peak-week metric is descriptive only (4 seasons × 4 origins).", "",
+          "## Integrity note", "",
+          "These v1 numbers are **retrospective, design-stage, not pre-registered**: NABD-UAE-v1 was designed with all "
+          "four seasons visible and re-run after a leak fix (463ab09; docs/DEVIATIONS.md U1). All tables use cells common "
+          "to all three models (U4). The blind tests of the UAE method are the GCC out-of-sample test "
+          "(results/gcc/SUMMARY.md) and the prospective ledger. v2 results: results/uae/SUMMARY-v2.md.", "",
+          "`tests/test_adapters.py::test_forecast_unchanged_when_future_data_altered` caught a leave-one-season-out "
+          "boundary leak in the first build (lag features of a training season's first week reached into the held-out "
+          "season); it was fixed by masking cross-season lags in `uae/models.py::_features`, changing relative WIS by "
+          "<= 0.01. A companion test confirms the detector fires when a leak is injected.", ""]
     (OUT / "SUMMARY.md").write_text("\n".join(L))
 
 

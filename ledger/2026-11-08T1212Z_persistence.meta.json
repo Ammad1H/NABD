@@ -1,0 +1,80 @@
+{
+  "round": "R1",
+  "issued_utc": "2026-11-08T12:12:35+00:00",
+  "model": "persistence",
+  "data_source": "data/raw/flunet_are.csv (cached)",
+  "data_through_week": {
+    "wk flu pos pct sentinel": "2026-W44",
+    "wk rsv pos pct sentinel": "2026-W44"
+  },
+  "designation": "baseline",
+  "sha256": "6347b067bde772b86261d9f01bf0759fb7bf48fca1db01aa4686326cd2e0f806",
+  "horizons": [
+    {
+      "model": "persistence",
+      "target": "wk flu pos pct sentinel",
+      "horizon": -1,
+      "target_end_date": "2026-11-08",
+      "weeks_ahead_of_issue": 0.0,
+      "horizon_label": "nowcast (target week already ended at issue)"
+    },
+    {
+      "model": "persistence",
+      "target": "wk flu pos pct sentinel",
+      "horizon": 0,
+      "target_end_date": "2026-11-15",
+      "weeks_ahead_of_issue": 1.0,
+      "horizon_label": "+1.0 wk after issue"
+    },
+    {
+      "model": "persistence",
+      "target": "wk flu pos pct sentinel",
+      "horizon": 1,
+      "target_end_date": "2026-11-22",
+      "weeks_ahead_of_issue": 2.0,
+      "horizon_label": "+2.0 wk after issue"
+    },
+    {
+      "model": "persistence",
+      "target": "wk flu pos pct sentinel",
+      "horizon": 2,
+      "target_end_date": "2026-11-29",
+      "weeks_ahead_of_issue": 3.0,
+      "horizon_label": "+3.0 wk after issue"
+    },
+    {
+      "model": "persistence",
+      "target": "wk rsv pos pct sentinel",
+      "horizon": -1,
+      "target_end_date": "2026-11-08",
+      "weeks_ahead_of_issue": 0.0,
+      "horizon_label": "nowcast (target week already ended at issue)"
+    },
+    {
+      "model": "persistence",
+      "target": "wk rsv pos pct sentinel",
+      "horizon": 0,
+      "target_end_date": "2026-11-15",
+      "weeks_ahead_of_issue": 1.0,
+      "horizon_label": "+1.0 wk after issue"
+    },
+    {
+      "model": "persistence",
+      "target": "wk rsv pos pct sentinel",
+      "horizon": 1,
+      "target_end_date": "2026-11-22",
+      "weeks_ahead_of_issue": 2.0,
+      "horizon_label": "+2.0 wk after issue"
+    },
+    {
+      "model": "persistence",
+      "target": "wk rsv pos pct sentinel",
+      "horizon": 2,
+      "target_end_date": "2026-11-29",
+      "weeks_ahead_of_issue": 3.0,
+      "horizon_label": "+3.0 wk after issue"
+    }
+  ],
+  "public": false,
+  "note": "Not public until committed, pushed to a public repo, and the hash is posted."
+}

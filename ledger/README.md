@@ -10,7 +10,7 @@ git add ledger && git commit -m "NABD ledger round R1" && git push    # to a PUB
 ```
 Then post the SHA-256 printed (also in `ledger/LEDGER.md`) publicly, e.g. on LinkedIn/X with the repo link. **The public commit time is the timestamp.** A round that has not been pushed is not public, and its timestamp proves nothing.
 
-Each round writes, for `NABD-UAE-v1` and the `persistence` baseline:
+From R1, each round writes files for `NABD-UAE-v1` (**headline**, frozen as-is), `NABD-UAE-v2` (**challenger**, locked by docs/LOCK-UAE-v2.json) and the `persistence` baseline, plus a round manifest `rounds/<UTC>_<round>/MANIFEST.{json,sha256}` (SHA-256 of every file plus a Merkle root; anchor it outside the team as described in `ANCHOR.md`) and an exact explanation of the live v2 forecast in `results/uae/explain/<issue_date>_<target>.csv`. Per model:
 - `<UTC>_<model>.csv`: FluSight-style quantiles (percent positivity), interface-contract columns;
 - `<UTC>_<model>.sha256`: hash of the CSV;
 - `<UTC>_<model>.meta.json`: issue time, the data-through week, and issue-relative horizon labels.

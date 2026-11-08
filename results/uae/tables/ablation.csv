@@ -1,0 +1,15 @@
+feed,series,metric,full,without,delta,n_cells,kind
+NS,flu,mean WIS (pct points),2.1457,2.0571,-0.0886,740,refit without block (LOSO)
+NS,rsv,mean WIS (pct points),1.6074,1.5322,-0.0753,740,refit without block (LOSO)
+CAL,flu,mean WIS (pct points),2.1457,2.0959,-0.0498,740,refit without block (LOSO)
+CAL,rsv,mean WIS (pct points),1.6074,1.5675,-0.0399,740,refit without block (LOSO)
+TV,flu,mean WIS (pct points),2.1457,2.1394,-0.0063,740,refit without block (LOSO)
+TV,rsv,mean WIS (pct points),1.6074,1.6066,-0.0008,740,refit without block (LOSO)
+CLIM,flu,mean WIS (pct points),2.1457,2.7124,0.5667,740,refit without block (LOSO)
+CLIM,rsv,mean WIS (pct points),1.6074,1.8651,0.2577,740,refit without block (LOSO)
+NS (missing at forecast time),flu,mean WIS (pct points),2.1457,2.0571,-0.0886,740,feed dropped at prediction; automatic fallback sub-model
+NS (missing at forecast time),rsv,mean WIS (pct points),1.6074,1.5322,-0.0753,740,feed dropped at prediction; automatic fallback sub-model
+latest sentinel week missing (NABD-UAE-v1),flu,mean WIS (pct points),1.9496,2.1925,0.2429,540,"stale origin (t-1, horizon+1)"
+latest sentinel week missing (NABD-UAE-v1),rsv,mean WIS (pct points),1.457,1.5929,0.1359,540,"stale origin (t-1, horizon+1)"
+latest sentinel week missing (NABD-UAE-v2),flu,mean WIS (pct points),2.0441,2.3062,0.2621,540,"stale origin (t-1, horizon+1)"
+latest sentinel week missing (NABD-UAE-v2),rsv,mean WIS (pct points),1.5401,1.7618,0.2217,540,"stale origin (t-1, horizon+1)"

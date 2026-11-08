@@ -1,0 +1,17 @@
+series,feature,mean_abs_contribution_logit
+flu,anom,0.0926
+flu,dclim,0.2544
+flu,dlogspec,0.0157
+flu,dy1,0.1202
+flu,ns_dy1,0.0174
+flu,ns_gap,0.0524
+flu,ram_win,0.0069
+flu,school_win,0.0115
+rsv,anom,0.1793
+rsv,dclim,0.305
+rsv,dlogspec,0.0393
+rsv,dy1,0.1632
+rsv,ns_dy1,0.0497
+rsv,ns_gap,0.1674
+rsv,ram_win,0.0171
+rsv,school_win,0.0324

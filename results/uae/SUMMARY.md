@@ -23,24 +23,24 @@ Data: WHO FluNet UAE sentinel, latest week **2026-W44** (`data/raw/flunet_are.cs
 | series   | model           |   mean_wis |   n |   cov50 |   cov95 |
 |:---------|:----------------|-----------:|----:|--------:|--------:|
 | flu      | NABD-UAE-v1     |      2.046 | 740 |   0.555 |   0.965 |
-| flu      | persistence     |      2.676 | 760 |   0.525 |   0.939 |
-| flu      | seasonal-analog |      2.897 | 764 |   0.45  |   0.763 |
+| flu      | persistence     |      2.694 | 740 |   0.524 |   0.939 |
+| flu      | seasonal-analog |      2.912 | 740 |   0.451 |   0.764 |
 | rsv      | NABD-UAE-v1     |      1.498 | 740 |   0.516 |   0.953 |
-| rsv      | persistence     |      1.905 | 760 |   0.499 |   0.961 |
-| rsv      | seasonal-analog |      2.14  | 764 |   0.38  |   0.717 |
+| rsv      | persistence     |      1.913 | 740 |   0.503 |   0.962 |
+| rsv      | seasonal-analog |      2.166 | 740 |   0.378 |   0.716 |
 
 ## Mean WIS by season
 
 | series   |   season |   NABD-UAE-v1 |   persistence |   seasonal-analog |
 |:---------|---------:|--------------:|--------------:|------------------:|
-| flu      |     2022 |         2.295 |         3.001 |             2.379 |
-| flu      |     2023 |         1.522 |         2.117 |             2.166 |
-| flu      |     2024 |         2.431 |         2.593 |             4.707 |
-| flu      |     2025 |         1.952 |         3.007 |             2.327 |
-| rsv      |     2022 |         1.264 |         1.802 |             1.364 |
-| rsv      |     2023 |         1.338 |         1.958 |             1.644 |
-| rsv      |     2024 |         1.405 |         2.011 |             2.306 |
-| rsv      |     2025 |         1.969 |         1.844 |             3.23  |
+| flu      |     2022 |         2.295 |         2.973 |             2.366 |
+| flu      |     2023 |         1.522 |         2.151 |             2.13  |
+| flu      |     2024 |         2.431 |         2.621 |             4.764 |
+| flu      |     2025 |         1.952 |         3.049 |             2.354 |
+| rsv      |     2022 |         1.264 |         1.85  |             1.415 |
+| rsv      |     2023 |         1.338 |         1.923 |             1.642 |
+| rsv      |     2024 |         1.405 |         2.021 |             2.291 |
+| rsv      |     2025 |         1.969 |         1.854 |             3.269 |
 
 ## RSV peak-week absolute error (weeks), origins 1–4 weeks before the observed peak
 
@@ -53,4 +53,7 @@ Data: WHO FluNet UAE sentinel, latest week **2026-W44** (`data/raw/flunet_are.cs
 Peak-week metric is descriptive only (4 seasons × 4 origins).
 
 ## Integrity note
-`tests/test_adapters.py::test_forecast_unchanged_when_future_data_altered` caught a leave-one-season-out boundary leak in the first build: lag features of the first week of a *training* season reached into the last week of the held-out test season. It was fixed by masking cross-season lags (`uae/models.py::_features`). The numbers above come from the fixed model; the earlier numbers differed by ≤0.01 in relative WIS. A companion test confirms that the leak detector fires when a leak is deliberately injected.
+
+These v1 numbers are **retrospective, design-stage, not pre-registered**: NABD-UAE-v1 was designed with all four seasons visible and re-run after a leak fix (463ab09; docs/DEVIATIONS.md U1). All tables use cells common to all three models (U4). The blind tests of the UAE method are the GCC out-of-sample test (results/gcc/SUMMARY.md) and the prospective ledger. v2 results: results/uae/SUMMARY-v2.md.
+
+`tests/test_adapters.py::test_forecast_unchanged_when_future_data_altered` caught a leave-one-season-out boundary leak in the first build (lag features of a training season's first week reached into the held-out season); it was fixed by masking cross-season lags in `uae/models.py::_features`, changing relative WIS by <= 0.01. A companion test confirms the detector fires when a leak is injected.

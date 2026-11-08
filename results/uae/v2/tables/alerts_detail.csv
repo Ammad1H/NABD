@@ -1,0 +1,33 @@
+model,series,season,eligible,onset_week_end,first_alert_issue,lead_wk,outcome
+NABD-UAE-v1,flu,2022,False,2022-10-16,2022-10-13,,ineligible
+NABD-UAE-v1,flu,2023,True,2023-10-15,2023-10-05,1.43,hit
+NABD-UAE-v1,flu,2024,True,2024-10-20,2024-10-03,2.43,hit
+NABD-UAE-v1,flu,2025,True,2025-09-21,2025-09-11,1.43,hit
+NABD-UAE-v1,rsv,2022,True,2022-09-25,2022-11-17,-7.57,late
+NABD-UAE-v1,rsv,2023,True,2023-09-24,,,missed
+NABD-UAE-v1,rsv,2024,False,2024-08-25,,,ineligible
+NABD-UAE-v1,rsv,2025,True,2025-10-19,2025-10-02,2.43,hit
+NABD-UAE-v2,flu,2022,False,2022-10-16,2022-10-13,,ineligible
+NABD-UAE-v2,flu,2023,True,2023-10-15,2023-09-28,2.43,hit
+NABD-UAE-v2,flu,2024,True,2024-10-20,2024-10-03,2.43,hit
+NABD-UAE-v2,flu,2025,True,2025-09-21,,,missed
+NABD-UAE-v2,rsv,2022,True,2022-09-25,2022-11-17,-7.57,late
+NABD-UAE-v2,rsv,2023,True,2023-09-24,2023-09-28,-0.57,late
+NABD-UAE-v2,rsv,2024,False,2024-08-25,2024-12-05,,ineligible
+NABD-UAE-v2,rsv,2025,True,2025-10-19,2025-10-02,2.43,hit
+NABD-UAE-v2 (NS feed dropped),flu,2022,False,2022-10-16,2022-10-13,,ineligible
+NABD-UAE-v2 (NS feed dropped),flu,2023,True,2023-10-15,2023-10-05,1.43,hit
+NABD-UAE-v2 (NS feed dropped),flu,2024,True,2024-10-20,2024-10-03,2.43,hit
+NABD-UAE-v2 (NS feed dropped),flu,2025,True,2025-09-21,2025-09-11,1.43,hit
+NABD-UAE-v2 (NS feed dropped),rsv,2022,True,2022-09-25,2022-11-17,-7.57,late
+NABD-UAE-v2 (NS feed dropped),rsv,2023,True,2023-09-24,,,missed
+NABD-UAE-v2 (NS feed dropped),rsv,2024,False,2024-08-25,,,ineligible
+NABD-UAE-v2 (NS feed dropped),rsv,2025,True,2025-10-19,2025-10-02,2.43,hit
+census rule (persistence),flu,2022,False,2022-10-16,2022-07-28,,ineligible
+census rule (persistence),flu,2023,True,2023-10-15,2023-10-19,-0.57,late
+census rule (persistence),flu,2024,True,2024-10-20,2024-10-03,2.43,hit
+census rule (persistence),flu,2025,True,2025-09-21,2025-09-11,1.43,hit
+census rule (persistence),rsv,2022,True,2022-09-25,2022-11-17,-7.57,late
+census rule (persistence),rsv,2023,True,2023-09-24,2023-08-10,6.43,premature
+census rule (persistence),rsv,2024,False,2024-08-25,2024-08-15,,ineligible
+census rule (persistence),rsv,2025,True,2025-10-19,2025-10-16,0.43,hit

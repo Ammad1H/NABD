@@ -1,0 +1,9 @@
+series,season,eligible,onset_week_end
+flu,2022,False,2022-10-16
+flu,2023,True,2023-10-15
+flu,2024,True,2024-10-20
+flu,2025,True,2025-09-21
+rsv,2022,True,2022-09-25
+rsv,2023,True,2023-09-24
+rsv,2024,False,2024-08-25
+rsv,2025,True,2025-10-19

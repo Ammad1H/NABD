@@ -6,7 +6,8 @@ Usage (from repo root):
   python3 -m ledger.issue --cached --round R0     # from data/raw/flunet_are.csv
   python3 -m ledger.issue --fetch  --round R1     # pull fresh WHO FluNet first (run locally)
 
-Writes, per model (NABD-UAE-v1 and the persistence baseline, so judges can compare):
+Writes, per model (NABD-UAE-v1 = frozen headline; NABD-UAE-v2 = locked challenger from R1 onwards
+[docs/PROTOCOL-UAE-v2.md]; persistence baseline, so judges can compare):
   ledger/<UTC>_<model>.csv         interface-contract format (FluSight-style quantiles, percent)
   ledger/<UTC>_<model>.sha256      SHA-256 of the CSV
   ledger/<UTC>_<model>.meta.json   issue time, data-through week, issue-relative horizon labels
@@ -26,6 +27,11 @@ import pandas as pd
 
 from adapters import flunet
 from uae.models import NabdUAE, Persistence, QUANTILES, SERIES, H, prepare, expit
+from uae.features_v2 import prepare_v2
+from uae.models_v2 import NabdUAEv2
+
+DESIGNATION = {"NABD-UAE-v1": "headline (frozen as-is, see docs/FREEZE.md)",
+               "NABD-UAE-v2": "challenger (locked, docs/LOCK-UAE-v2.json)", "persistence": "baseline"}
 
 ROOT = Path(__file__).resolve().parents[1]
 LEDGER = ROOT / "ledger"
@@ -33,11 +39,13 @@ COLS = ["reference_date", "target", "horizon", "target_end_date", "location", "o
         "value", "model"]
 
 
-def issue(mode="cached", round_label="R0", now=None):
+def issue(mode="cached", round_label="R0", now=None, with_v2=True):
     now = now or dt.datetime.now(dt.timezone.utc)
     stamp = now.strftime("%Y-%m-%dT%H%MZ")
-    s = flunet.sentinel_series(flunet.load(mode))
+    raw = flunet.load(mode)
+    s = flunet.sentinel_series(raw)
     written = []
+    data_through = {}
     frames = {}
     meta_rows = []
     for key, (_, target_name) in SERIES.items():
@@ -54,9 +62,39 @@ def issue(mode="cached", round_label="R0", now=None):
         fut["season"] = np.where(fut.iso_week >= 27, fut.iso_year, fut.iso_year - 1)
         dd = pd.concat([d.iloc[: i + 1], fut], ignore_index=True)
         ref = (L_end + pd.Timedelta(days=14)).date()
-        for M in (NabdUAE, Persistence):
-            m = M(dd, train)
+        cands = [(NabdUAE, dd), (Persistence, dd)]
+        if with_v2:
+            d2 = prepare_v2(raw, key, extend_weeks=len(H))
+            assert d2.week_end.iloc[i] == L_end
+            cands.append((NabdUAEv2, d2.iloc[: i + 1 + len(H)].reset_index(drop=True)))
+        for M, frame in cands:
+            m = M(frame, train)
             pq = m.predict(i)
+            if M is NabdUAEv2:  # G11: exact per-signal explanation of the live v2 forecast
+                ex_dir = ROOT / "results" / "uae" / "explain"
+                ex_dir.mkdir(parents=True, exist_ok=True)
+                slug = {"flu": "flu_pos_pct_sentinel", "rsv": "rsv_pos_pct_sentinel"}[key]
+                parts = []
+                for h, v in m.predict_detail(i).items():
+                    if v is None:
+                        continue
+                    e = v["explain"].copy()
+                    tot = e.contribution.sum()
+                    e["pp_effect_loo"] = [np.nan if f == "last_observed_logit" else
+                                          100 * expit(tot) - 100 * expit(tot - c)
+                                          for f, c in zip(e.feature, e.contribution)]
+                    e.insert(0, "horizon", h - 2)
+                    e["unit"] = "logit"
+                    e["series"] = key
+                    e["target"] = target_name
+                    e["submodel"] = v["sub"]
+                    e["median_pct"] = 100 * expit(tot)
+                    e["issue_date"] = str(now.date())
+                    e["target_end_date"] = str((L_end + pd.Timedelta(weeks=h)).date())
+                    e["design"] = f"live ledger {round_label}"
+                    parts.append(e)
+                if parts:
+                    pd.concat(parts, ignore_index=True).to_csv(ex_dir / f"{now.date()}_{slug}.csv", index=False)
             rows = []
             for h in H:
                 if pq.get(h) is None:
@@ -69,7 +107,7 @@ def issue(mode="cached", round_label="R0", now=None):
                 meta_rows.append(dict(model=m.name, target=target_name, horizon=h - 2, target_end_date=str(tgt_end),
                                       weeks_ahead_of_issue=round((pd.Timestamp(tgt_end) - pd.Timestamp(now.date())).days / 7, 1)))
             frames.setdefault(m.name, []).extend(rows)
-        data_through = f"{int(d.iso_year.iloc[i])}-W{int(d.iso_week.iloc[i]):02d}"
+        data_through[target_name] = f"{int(d.iso_year.iloc[i])}-W{int(d.iso_week.iloc[i]):02d}"  # per series (audit m19)
     LEDGER.mkdir(exist_ok=True)
     for name, rows in frames.items():
         df = pd.DataFrame(rows, columns=COLS)
@@ -84,13 +122,27 @@ def issue(mode="cached", round_label="R0", now=None):
                 else f"+{r['weeks_ahead_of_issue']} wk after issue"
         meta = dict(round=round_label, issued_utc=now.isoformat(timespec="seconds"), model=name,
                     data_source="WHO FluNet xMart live" if mode == "fetch" else "data/raw/flunet_are.csv (cached)",
-                    data_through_week=data_through, sha256=h, horizons=mrows,
+                    data_through_week=data_through, designation=DESIGNATION.get(name, ""), sha256=h, horizons=mrows,
                     public=False, note="Not public until committed, pushed to a public repo, and the hash is posted.")
         base.with_suffix(".meta.json").write_text(json.dumps(meta, indent=2))
         with open(LEDGER / "LEDGER.md", "a") as f:
             f.write(f"| {round_label} | {now.isoformat(timespec='seconds')} | {csv.name} | {h} | data through "
-                    f"{data_through} | {meta['data_source']} |\n")
+                    f"{'; '.join(f'{k}: {v}' for k, v in data_through.items())} | {meta['data_source']} |\n")
         written.append((csv, h))
+    # round manifest (vendor kit): SHA-256 per file + Merkle root; MANIFEST.sha256 is what gets anchored outside
+    import sys as _sys
+    _sys.path.insert(0, str(ROOT / "vendor" / "nabd_v2_kit"))
+    from nabd_kit.ledger import build_manifest, write_manifest
+    files = [c for c, _ in written] + [c.with_suffix(".meta.json") for c, _ in written] + \
+            [c.with_suffix(".sha256") for c, _ in written]
+    man = build_manifest([str(f.relative_to(ROOT)) for f in files], base_dir=ROOT,
+                         meta=dict(round=round_label, issued_utc=now.isoformat(timespec="seconds")))
+    man["base_dir"] = "."
+    mj, ms = write_manifest(man, LEDGER / "rounds" / f"{stamp}_{round_label}")
+    with open(LEDGER / "LEDGER.md", "a") as f:
+        f.write(f"| {round_label} | {now.isoformat(timespec='seconds')} | MANIFEST (Merkle root) | "
+                f"{man['merkle_root']} | {len(files)} files | anchor: {ms.relative_to(ROOT)} |\n")
+    written.append((ms, man["merkle_root"]))
     return written
 
 

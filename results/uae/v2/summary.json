@@ -1,0 +1,588 @@
+{
+  "protocol": "docs/PROTOCOL-UAE-v2.md",
+  "lock": "docs/LOCK-UAE-v2.json",
+  "lock_merkle_root": "f745efc2c618c7d669739e6da5fd49f1be9c30badd0784fa36972558a3e4115a",
+  "label": "RETROSPECTIVE; protocol declared and locked before any v2 score; v1 results had already been seen",
+  "latest_sentinel_week": "2026-W44",
+  "n_seasons": 4,
+  "design": "leave-one-season-out (primary); forward-in-time (sensitivity, 3 seasons)",
+  "rel_wis_loso": {
+    "flu": {
+      "NABD-UAE-v2_vs_NABD-UAE-v1": {
+        "rel_wis": 1.049,
+        "ci95_date_cluster": [
+          1.015,
+          1.084
+        ],
+        "ci95_moving_block_L4": [
+          0.996,
+          1.113
+        ],
+        "n_cells": 740,
+        "n_reference_dates": 186
+      },
+      "NABD-UAE-v2_vs_persistence": {
+        "rel_wis": 0.797,
+        "ci95_date_cluster": [
+          0.737,
+          0.86
+        ],
+        "ci95_moving_block_L4": [
+          0.711,
+          0.886
+        ],
+        "n_cells": 740,
+        "n_reference_dates": 186
+      },
+      "NABD-UAE-v2_vs_seasonal-analog": {
+        "rel_wis": 0.737,
+        "ci95_date_cluster": [
+          0.667,
+          0.819
+        ],
+        "ci95_moving_block_L4": [
+          0.621,
+          0.878
+        ],
+        "n_cells": 740,
+        "n_reference_dates": 186
+      },
+      "NABD-UAE-v1_vs_persistence": {
+        "rel_wis": 0.76,
+        "ci95_date_cluster": [
+          0.701,
+          0.824
+        ],
+        "ci95_moving_block_L4": [
+          0.668,
+          0.853
+        ],
+        "n_cells": 740,
+        "n_reference_dates": 186
+      },
+      "NABD-UAE-v1_vs_seasonal-analog": {
+        "rel_wis": 0.703,
+        "ci95_date_cluster": [
+          0.647,
+          0.77
+        ],
+        "ci95_moving_block_L4": [
+          0.604,
+          0.818
+        ],
+        "n_cells": 740,
+        "n_reference_dates": 186
+      }
+    },
+    "rsv": {
+      "NABD-UAE-v2_vs_NABD-UAE-v1": {
+        "rel_wis": 1.073,
+        "ci95_date_cluster": [
+          1.032,
+          1.117
+        ],
+        "ci95_moving_block_L4": [
+          1.021,
+          1.141
+        ],
+        "n_cells": 740,
+        "n_reference_dates": 186
+      },
+      "NABD-UAE-v2_vs_persistence": {
+        "rel_wis": 0.84,
+        "ci95_date_cluster": [
+          0.756,
+          0.936
+        ],
+        "ci95_moving_block_L4": [
+          0.72,
+          0.999
+        ],
+        "n_cells": 740,
+        "n_reference_dates": 186
+      },
+      "NABD-UAE-v2_vs_seasonal-analog": {
+        "rel_wis": 0.742,
+        "ci95_date_cluster": [
+          0.687,
+          0.805
+        ],
+        "ci95_moving_block_L4": [
+          0.656,
+          0.85
+        ],
+        "n_cells": 740,
+        "n_reference_dates": 186
+      },
+      "NABD-UAE-v1_vs_persistence": {
+        "rel_wis": 0.783,
+        "ci95_date_cluster": [
+          0.711,
+          0.867
+        ],
+        "ci95_moving_block_L4": [
+          0.677,
+          0.91
+        ],
+        "n_cells": 740,
+        "n_reference_dates": 186
+      },
+      "NABD-UAE-v1_vs_seasonal-analog": {
+        "rel_wis": 0.691,
+        "ci95_date_cluster": [
+          0.646,
+          0.74
+        ],
+        "ci95_moving_block_L4": [
+          0.613,
+          0.775
+        ],
+        "n_cells": 740,
+        "n_reference_dates": 186
+      }
+    },
+    "pooled": {
+      "NABD-UAE-v2_vs_NABD-UAE-v1": {
+        "rel_wis": 1.059,
+        "ci95_date_cluster": [
+          1.031,
+          1.087
+        ],
+        "ci95_moving_block_L4": [
+          1.016,
+          1.111
+        ],
+        "n_cells": 1480,
+        "n_reference_dates": 186
+      },
+      "NABD-UAE-v2_vs_persistence": {
+        "rel_wis": 0.815,
+        "ci95_date_cluster": [
+          0.767,
+          0.867
+        ],
+        "ci95_moving_block_L4": [
+          0.739,
+          0.892
+        ],
+        "n_cells": 1480,
+        "n_reference_dates": 186
+      },
+      "NABD-UAE-v1_vs_persistence": {
+        "rel_wis": 0.769,
+        "ci95_date_cluster": [
+          0.729,
+          0.814
+        ],
+        "ci95_moving_block_L4": [
+          0.704,
+          0.826
+        ],
+        "n_cells": 1480,
+        "n_reference_dates": 186
+      }
+    }
+  },
+  "season_wins_loso": {
+    "v2_vs_v1": {
+      "flu": "1/4",
+      "rsv": "0/4"
+    },
+    "v2_vs_persistence": {
+      "flu": "4/4",
+      "rsv": "3/4"
+    },
+    "v1_vs_persistence": {
+      "flu": "4/4",
+      "rsv": "3/4"
+    }
+  },
+  "rel_wis_forward_in_time": {
+    "flu": {
+      "NABD-UAE-v2_vs_NABD-UAE-v1": {
+        "rel_wis": 1.118,
+        "ci95_date_cluster": [
+          1.079,
+          1.159
+        ],
+        "ci95_moving_block_L4": [
+          1.057,
+          1.199
+        ],
+        "n_cells": 470,
+        "n_reference_dates": 141
+      },
+      "NABD-UAE-v2_vs_persistence": {
+        "rel_wis": 1.12,
+        "ci95_date_cluster": [
+          1.011,
+          1.247
+        ],
+        "ci95_moving_block_L4": [
+          0.947,
+          1.354
+        ],
+        "n_cells": 470,
+        "n_reference_dates": 141
+      },
+      "NABD-UAE-v1_vs_persistence": {
+        "rel_wis": 1.002,
+        "ci95_date_cluster": [
+          0.896,
+          1.129
+        ],
+        "ci95_moving_block_L4": [
+          0.821,
+          1.236
+        ],
+        "n_cells": 470,
+        "n_reference_dates": 141
+      }
+    },
+    "rsv": {
+      "NABD-UAE-v2_vs_NABD-UAE-v1": {
+        "rel_wis": 1.073,
+        "ci95_date_cluster": [
+          1.038,
+          1.109
+        ],
+        "ci95_moving_block_L4": [
+          1.017,
+          1.14
+        ],
+        "n_cells": 564,
+        "n_reference_dates": 141
+      },
+      "NABD-UAE-v2_vs_persistence": {
+        "rel_wis": 1.075,
+        "ci95_date_cluster": [
+          0.946,
+          1.217
+        ],
+        "ci95_moving_block_L4": [
+          0.86,
+          1.343
+        ],
+        "n_cells": 564,
+        "n_reference_dates": 141
+      },
+      "NABD-UAE-v1_vs_persistence": {
+        "rel_wis": 1.002,
+        "ci95_date_cluster": [
+          0.892,
+          1.129
+        ],
+        "ci95_moving_block_L4": [
+          0.809,
+          1.217
+        ],
+        "n_cells": 564,
+        "n_reference_dates": 141
+      }
+    }
+  },
+  "coverage": [
+    {
+      "series": "flu",
+      "model": "NABD-UAE-v1",
+      "cov50": 0.5554054054054054,
+      "cov95": 0.9648648648648649
+    },
+    {
+      "series": "flu",
+      "model": "NABD-UAE-v2",
+      "cov50": 0.5283783783783784,
+      "cov95": 0.9486486486486486
+    },
+    {
+      "series": "flu",
+      "model": "persistence",
+      "cov50": 0.5243243243243243,
+      "cov95": 0.9391891891891891
+    },
+    {
+      "series": "flu",
+      "model": "seasonal-analog",
+      "cov50": 0.45135135135135135,
+      "cov95": 0.7635135135135135
+    },
+    {
+      "series": "rsv",
+      "model": "NABD-UAE-v1",
+      "cov50": 0.5162162162162162,
+      "cov95": 0.9527027027027027
+    },
+    {
+      "series": "rsv",
+      "model": "NABD-UAE-v2",
+      "cov50": 0.5391891891891892,
+      "cov95": 0.9391891891891891
+    },
+    {
+      "series": "rsv",
+      "model": "persistence",
+      "cov50": 0.5027027027027027,
+      "cov95": 0.9621621621621622
+    },
+    {
+      "series": "rsv",
+      "model": "seasonal-analog",
+      "cov50": 0.3783783783783784,
+      "cov95": 0.7162162162162162
+    }
+  ],
+  "alerts": [
+    {
+      "model": "NABD-UAE-v1",
+      "series": "flu",
+      "n_eligible": 3,
+      "n_onsets": 3,
+      "sensitivity": "3/3",
+      "ppv": "3/3",
+      "false_alarms": 0,
+      "premature": 0,
+      "late_or_missed": 0,
+      "median_lead_wk": 1.43
+    },
+    {
+      "model": "NABD-UAE-v1",
+      "series": "rsv",
+      "n_eligible": 3,
+      "n_onsets": 3,
+      "sensitivity": "1/3",
+      "ppv": "1/2",
+      "false_alarms": 0,
+      "premature": 0,
+      "late_or_missed": 2,
+      "median_lead_wk": -2.5700000000000003
+    },
+    {
+      "model": "NABD-UAE-v2",
+      "series": "flu",
+      "n_eligible": 3,
+      "n_onsets": 3,
+      "sensitivity": "2/3",
+      "ppv": "2/2",
+      "false_alarms": 0,
+      "premature": 0,
+      "late_or_missed": 1,
+      "median_lead_wk": 2.43
+    },
+    {
+      "model": "NABD-UAE-v2",
+      "series": "rsv",
+      "n_eligible": 3,
+      "n_onsets": 3,
+      "sensitivity": "1/3",
+      "ppv": "1/3",
+      "false_alarms": 0,
+      "premature": 0,
+      "late_or_missed": 2,
+      "median_lead_wk": -0.57
+    },
+    {
+      "model": "NABD-UAE-v2 (NS feed dropped)",
+      "series": "flu",
+      "n_eligible": 3,
+      "n_onsets": 3,
+      "sensitivity": "3/3",
+      "ppv": "3/3",
+      "false_alarms": 0,
+      "premature": 0,
+      "late_or_missed": 0,
+      "median_lead_wk": 1.43
+    },
+    {
+      "model": "NABD-UAE-v2 (NS feed dropped)",
+      "series": "rsv",
+      "n_eligible": 3,
+      "n_onsets": 3,
+      "sensitivity": "1/3",
+      "ppv": "1/2",
+      "false_alarms": 0,
+      "premature": 0,
+      "late_or_missed": 2,
+      "median_lead_wk": -2.5700000000000003
+    },
+    {
+      "model": "census rule (persistence)",
+      "series": "flu",
+      "n_eligible": 3,
+      "n_onsets": 3,
+      "sensitivity": "2/3",
+      "ppv": "2/3",
+      "false_alarms": 0,
+      "premature": 0,
+      "late_or_missed": 1,
+      "median_lead_wk": 1.43
+    },
+    {
+      "model": "census rule (persistence)",
+      "series": "rsv",
+      "n_eligible": 3,
+      "n_onsets": 3,
+      "sensitivity": "1/3",
+      "ppv": "1/3",
+      "false_alarms": 0,
+      "premature": 1,
+      "late_or_missed": 1,
+      "median_lead_wk": 0.43
+    }
+  ],
+  "ablation": [
+    {
+      "feed": "NS",
+      "series": "flu",
+      "metric": "mean WIS (pct points)",
+      "full": 2.1457,
+      "without": 2.0571,
+      "delta": -0.0886,
+      "n_cells": 740,
+      "kind": "refit without block (LOSO)"
+    },
+    {
+      "feed": "NS",
+      "series": "rsv",
+      "metric": "mean WIS (pct points)",
+      "full": 1.6074,
+      "without": 1.5322,
+      "delta": -0.0753,
+      "n_cells": 740,
+      "kind": "refit without block (LOSO)"
+    },
+    {
+      "feed": "CAL",
+      "series": "flu",
+      "metric": "mean WIS (pct points)",
+      "full": 2.1457,
+      "without": 2.0959,
+      "delta": -0.0498,
+      "n_cells": 740,
+      "kind": "refit without block (LOSO)"
+    },
+    {
+      "feed": "CAL",
+      "series": "rsv",
+      "metric": "mean WIS (pct points)",
+      "full": 1.6074,
+      "without": 1.5675,
+      "delta": -0.0399,
+      "n_cells": 740,
+      "kind": "refit without block (LOSO)"
+    },
+    {
+      "feed": "TV",
+      "series": "flu",
+      "metric": "mean WIS (pct points)",
+      "full": 2.1457,
+      "without": 2.1394,
+      "delta": -0.0063,
+      "n_cells": 740,
+      "kind": "refit without block (LOSO)"
+    },
+    {
+      "feed": "TV",
+      "series": "rsv",
+      "metric": "mean WIS (pct points)",
+      "full": 1.6074,
+      "without": 1.6066,
+      "delta": -0.0008,
+      "n_cells": 740,
+      "kind": "refit without block (LOSO)"
+    },
+    {
+      "feed": "CLIM",
+      "series": "flu",
+      "metric": "mean WIS (pct points)",
+      "full": 2.1457,
+      "without": 2.7124,
+      "delta": 0.5667,
+      "n_cells": 740,
+      "kind": "refit without block (LOSO)"
+    },
+    {
+      "feed": "CLIM",
+      "series": "rsv",
+      "metric": "mean WIS (pct points)",
+      "full": 1.6074,
+      "without": 1.8651,
+      "delta": 0.2577,
+      "n_cells": 740,
+      "kind": "refit without block (LOSO)"
+    },
+    {
+      "feed": "NS (missing at forecast time)",
+      "series": "flu",
+      "metric": "mean WIS (pct points)",
+      "full": 2.1457,
+      "without": 2.0571,
+      "delta": -0.0886,
+      "n_cells": 740,
+      "kind": "feed dropped at prediction; automatic fallback sub-model"
+    },
+    {
+      "feed": "NS (missing at forecast time)",
+      "series": "rsv",
+      "metric": "mean WIS (pct points)",
+      "full": 1.6074,
+      "without": 1.5322,
+      "delta": -0.0753,
+      "n_cells": 740,
+      "kind": "feed dropped at prediction; automatic fallback sub-model"
+    },
+    {
+      "feed": "latest sentinel week missing (NABD-UAE-v1)",
+      "series": "flu",
+      "metric": "mean WIS (pct points)",
+      "full": 1.9496,
+      "without": 2.1925,
+      "delta": 0.2429,
+      "n_cells": 540,
+      "kind": "stale origin (t-1, horizon+1)"
+    },
+    {
+      "feed": "latest sentinel week missing (NABD-UAE-v1)",
+      "series": "rsv",
+      "metric": "mean WIS (pct points)",
+      "full": 1.457,
+      "without": 1.5929,
+      "delta": 0.1359,
+      "n_cells": 540,
+      "kind": "stale origin (t-1, horizon+1)"
+    },
+    {
+      "feed": "latest sentinel week missing (NABD-UAE-v2)",
+      "series": "flu",
+      "metric": "mean WIS (pct points)",
+      "full": 2.0441,
+      "without": 2.3062,
+      "delta": 0.2621,
+      "n_cells": 540,
+      "kind": "stale origin (t-1, horizon+1)"
+    },
+    {
+      "feed": "latest sentinel week missing (NABD-UAE-v2)",
+      "series": "rsv",
+      "metric": "mean WIS (pct points)",
+      "full": 1.5401,
+      "without": 1.7618,
+      "delta": 0.2217,
+      "n_cells": 540,
+      "kind": "stale origin (t-1, horizon+1)"
+    }
+  ],
+  "signals": [
+    "sentinel positivity",
+    "testing volume (sentinel specimens)",
+    "non-sentinel positivity (lag +1 wk)",
+    "school winter/spring breaks (verified calendars)",
+    "Ramadan (tabular calendar, +/-2 days)"
+  ],
+  "weather": "OMITTED: no reachable source for 2026 (NOAA/Open-Meteo/Meteostat blocked; a third-party ERA5 mirror ends 2025-12-31). Run adapters.weather --fetch locally; weather is not in v2.",
+  "caveats": [
+    "n=4 test seasons; descriptive",
+    "LOSO trains on later seasons; forward-in-time sensitivity reported",
+    "non-sentinel stream starts 2023-W15, so 2022/23 and early 2023/24 use the fallback sub-model",
+    "revisions to FluNet values are not reproduced (no vintages)"
+  ]
+}
