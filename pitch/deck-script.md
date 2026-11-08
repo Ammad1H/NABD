@@ -1,85 +1,130 @@
-# NABD: 10-slide deck script
+# NABD: 10-slide deck script (round 2, headline per BUILD-SPEC v1.3)
 
-⟦RESULT: …⟧ slots come from `results/summary.json` and `results/figures/`. Every number on a slide must trace to `results/` or `research/burden.md` (G9). Speaker notes are about 40 words each.
+**Rules:**
+- Every number traces to `results/` or `research/burden.md` (G9); see `research/claims-ledger.md`.
+- ⟦RESULT: file⟧ marks an output still in build. If it is missing on 19 Nov, the slide line is cut, never estimated.
+- If `research/positioning.md` exists, slides 2 and 9 should draw their problem and value language from it ⟦check before final⟧.
+
+**Headline (slide 1 and the video's first line):**
+> **The UAE has no respiratory forecasting hub. NABD is one: calibrated RSV and flu forecasts with a public, tamper-evident track record, held to the CDC's standard.**
 
 ---
 
 ### 1. Title
-- **On slide:** NABD (نبض, "pulse"): calibrated RSV and flu surge forecasts for Abu Dhabi hospitals. Statement 06 · MBZUAI · ⟨team names⟩.
-- **Visual:** a pulse line morphing into a forecast fan chart.
-- **Notes:** "Every winter, RSV and flu reach Abu Dhabi's hospitals together, and never on the same schedule. NABD tells a hospital how big and how long the next weeks will be, and publishes every forecast before the outcome, so you can check us."
+- **On slide:** NABD (نبض, "pulse"). An open RSV and flu forecasting hub for Abu Dhabi, held to the CDC's standard. Statement 06 · ⟨team⟩ · MBZUAI.
+- **Visual:** pulse line turning into a forecast fan.
+- **Notes (≈40 words):** "Every winter, RSV and flu reach Abu Dhabi's hospitals together, and never on the same calendar. The UAE publishes no forecast of what's coming. NABD is that forecast, with a public record of every call it has made."
 
-### 2. The problem: no two seasons are alike
-- **On slide:** UAE RSV peak in weeks 42, 41, 41 and 47 (WHO FluNet). Tawam (Al Ain): 2,189 RSV admissions of children aged 5 and under over 2018–22, with yearly positivity from 2.9% to 16%. Dubai: 22% of infants with RSV hospitalised, under 2% with known risk factors.
-- **Visual:** four seasons of UAE RSV positivity overlaid; small burden callouts with citations.
-- **Notes:** "The load is large, it falls on previously healthy infants, and its timing and size vary every year. Abu Dhabi doesn't publish flu case counts, so planners work from last week's numbers."
+### 2. The problem: same viruses, different winter every year
+- **On slide:**
+  - UAE sentinel RSV peaked in ISO weeks **42, 41, 41, 47** (2022–2025; WHO FluNet, `data/raw/flunet_are.csv`).
+  - Tawam Hospital, Al Ain: **2,189** RSV admissions of children aged ≤5 over 2018–22; yearly positivity **2.9% → 16%**.
+  - Dubai: **22%** of under-2s with RSV hospitalised; **<2%** had a known risk factor.
+  - The UAE publishes no flu case counts.
+- **Visual:** four UAE RSV seasons overlaid, with three cited callouts.
+- **Notes:** "The burden is real, it lands on previously healthy infants, and its timing moves every year. DoH says this season looks like the last two: normal, but variable. Planners still only see last week."
+- **Sources:** `research/burden.md` items 1, 3, 6, 8.
 
-### 3. What we tested first: *when* vs *how big*
-- **On slide:** two bars.
-  - (a) Onset: forecast-based alarms were no earlier than a hospital's own census threshold (155 US state-seasons).
-  - (b) Size: calibrated forecasts cut 0–3-week error 21–36% vs carrying the census forward (CDC archive, 3 seasons).
-- **Visual:** a parity bar next to a gain bar.
-- **Notes:** "We started by trying to break our own idea. Forecasting doesn't tell you *when* a surge starts any better than your census does. It does tell you *how big*. So that's all we claim."
+### 3. The gap: Abu Dhabi has detection layers, but no seasonal forecast
+- **On slide:**
+  - ADPHC's 2024 AI platform tender (outbreak detection);
+  - Rasid (wastewater);
+  - DoH–Microsoft population-health intelligence (chronic risk);
+  - 72-hour hospital command-centre tools.
+  - **Missing:** a calibrated, weeks-ahead RSV/flu forecast with a public track record.
+- **Visual:** layer diagram (detect → **forecast** → operate), with NABD in the middle layer.
+- **Notes:** "We're not rebuilding what Abu Dhabi bought. We're the forecast layer between surveillance and the bed manager, built to plug into those platforms."
+- **Source:** `research/competitors.md`.
 
-### 4. NABD: signals → calibrated forecast → approved action
-- **On slide:** inputs:
-  - clinical: WHO FluNet UAE, US NHSN;
-  - service/geospatial: NSSP ED share;
-  - environmental: Abu Dhabi weather;
-  - administrative: school calendar, testing volume;
-  - occupational: secure-aggregation design, SIMULATED.
-
-  These feed a GLM + foundation model (ablated) → quantile ensemble → online calibration → bilingual card → named approver → audit log.
-- **Visual:** architecture strip.
-- **Notes:** "Five signal families, an interpretable core, a foundation model we ablate rather than trust, and calibration on every series. The output is a card a duty officer approves, never an automatic action."
+### 4. NABD v1: what's built today
+- **On slide:** WHO FluNet UAE (positivity + testing volume) → linear growth model on the logit scale with a seasonal term → calibrated quantiles (nowcast, +0.5, +1.5, +2.5 wk) → bilingual card → playbook action for a named role → **Approve / Modify / Dismiss** → hash-chained audit → hashed ledger round.
+- **Second row, "in build for 20 Nov":**
+  - multi-signal UAE v2 (non-sentinel, testing volume, school calendar) with per-signal explanations;
+  - UAE alert metrics;
+  - Gulf out-of-sample test;
+  - outside-anchored ledger.
+- **Visual:** architecture strip. Built in solid, in-build in outline, SIMULATED workforce module in grey.
+- **Notes:** "Version one is deliberately simple and auditable. What's solid on the slide runs today; what's outlined is being built and will be marked exactly that way in our submission."
 
 ### 5. Statement 06, requirement by requirement
-- **On slide:** table of the six official requirements → artefact → real or simulated: multi-signal ✓; explainable alerts (signal, location and week contributions) ✓; decision support with named role ✓; privacy (aggregate, small-cell suppression, RBAC) ✓; operational validation (lead time, sensitivity, PPV, false alarms, latency, missing feeds) ⟦RESULT⟧; impact (scenario) ✓.
-- **Visual:** checklist table with real/simulated tags.
-- **Notes:** "This is the organisers' own checklist. Where something is simulated, the slide says so."
+- **On slide (organiser's checklist → status):**
 
-### 6. Proof I: as good as the CDC's best?
-- **On slide:**
-  - NABD vs CDC FluSight ensemble, vintage-correct, 2 test seasons × 53 locations: relative WIS ⟦RESULT⟧ [95% CI ⟦RESULT⟧]; non-inferiority margin 1.15 ⟦RESULT: met/not met⟧.
-  - vs baseline: ⟦RESULT⟧.
-  - Coverage: 50% ⟦RESULT⟧, 95% ⟦RESULT⟧.
-  - Protocol frozen ⟦RESULT: date, hash⟧.
-- **Visual:** relative-WIS forest plot by season and horizon.
-- **Notes:** "We fixed the bar before testing, against the strongest public benchmark in respiratory forecasting, using only data available at the time. Here is the result, including the horizons where we lose."
+| Requirement | Status |
+|---|---|
+| Multi-signal | v1 lab + testing volume; v2 ⟦RESULT: results/uae/tables/ablation.csv⟧ |
+| Explainable detection | ⟦RESULT: results/uae/explain/⟧ |
+| Decision support with named role | built (ILLUSTRATIVE playbook) |
+| Privacy | aggregate only, person-level fields rejected, simulated k-anonymous workforce aggregation |
+| Operational validation | US alerts built, UAE ⟦RESULT: G10 UAE table⟧; latency 4-day input age (US); missing-feed ×1.41 / ×1.82 |
+| Impact | pilot hypothesis, not a result |
 
-### 7. Proof II: UAE and the public receipt
-- **On slide:**
-  - UAE leave-one-season-out: WIS vs persistence ⟦RESULT⟧ and vs seasonal analog ⟦RESULT⟧ (n=4 seasons, descriptive).
-  - Surge-alert metrics: lead ⟦RESULT⟧, sensitivity ⟦RESULT⟧, PPV ⟦RESULT⟧, false alarms per season ⟦RESULT⟧.
-  - Live ledger: ⟦LIVE: rounds issued, points scored, coverage so far⟧, first round ⟨date⟩, hash ⟨…⟩.
-- **Visual:** a ledger table with green and red cells; GitHub commit screenshot.
-- **Notes:** "In the UAE we're honest about four seasons. What we add is a forward record: every forecast was committed before WHO published the answer."
+- **Visual:** checklist with built / in build / simulated tags.
+- **Notes:** "This is the organisers' own checklist. We show where we're complete, where we're in build, and where we're simulated."
+- **Sources:** `research/tc.md`, `results/tables/latency_us.csv`, `results/tables/dropout_us.csv`.
 
-### 8. Responsible by design
+### 6. Proof I: the UAE (headline evidence)
 - **On slide:**
-  - aggregate data only (schema rejects person-level fields);
-  - named approver plus audit log;
-  - honest horizons and freshness badge;
-  - SIMULATED watermarks;
-  - automation-bias guard (persistence shown alongside);
-  - WHO non-commercial terms respected;
-  - no employment or disciplinary use.
-- **Visual:** the card with annotations.
-- **Notes:** "Nothing leaves the system without a person approving it, and the system never pretends to know more than its data allows."
+  - Against carrying the latest week forward: relative WIS **flu 0.76 (0.70–0.82)**, **RSV 0.78 (0.71–0.87)**. Better in **7 of 8** season-series (flu 4/4, RSV 3/4).
+  - Against a seasonal-average forecast: **flu 0.70**, **RSV 0.69**.
+  - Caveat in the same font size: *4 seasons · retrospective · design-stage, not pre-registered · RSV lost the most recent season.*
+  - ⟦RESULT: results/gcc/ (G12)⟧. If it lands: "Frozen method, locked plan, other Gulf countries' data nobody had seen: ⟨result, every country shown⟩."
+- **Visual:** UAE back-test chart (`results/uae/figures/uae_backtest.png`), with the season-win grid beside it.
+- **Notes:** "In the UAE there's no ensemble to beat, because there's no forecast at all. Against what a planner would otherwise do, NABD cut error by about a quarter. Four seasons is thin, which is why we're testing it on other Gulf countries' data, locked in advance."
+- **Source:** `results/uae/SUMMARY.md`.
 
-### 9. Pilot, positioning and business model
+### 7. Stress test against the CDC: **NOT MET**
+- **Title:** *"We set our bar at the CDC's best. NABD v1 missed it, and here is exactly where."*
 - **On slide:**
-  - Pilot: 12-week shadow on one SEHA hospital's aggregate paediatric admissions; exit at rel. WIS < 0.9 vs own census.
-  - Positioning: a feed for ADPHC's platform and PHIF; a Rasid wastewater covariate offer; upstream of 72-hour command-centre tools.
-  - Revenue: hospital operations licence (own data); public-health feed.
-- **Visual:** a layer diagram (detection → NABD → operations).
-- **Notes:** "We plug into what Abu Dhabi already bought. The first step costs the hospital nothing; if we don't beat its own census by 10%, it walks away."
+  - Protocol frozen 8 Nov, before any test score (`docs/FREEZE.md`, commit `ac16901`, SHA-256 `2846533f…`). Real-time data only.
+  - **11,660** forecasts across 53 US locations, 2 seasons and horizons 0–3.
+  - Relative WIS vs the CDC FluSight ensemble (pools about 40 teams): **1.22 (95% CI 1.01–1.52)**. Bar: upper bound < 1.15. **NOT MET** (written in red by the team).
+  - 2024/25: **1.03** (0.89–1.25). 2025/26: **1.52** (1.09–2.03).
+  - vs naive baseline: **0.82** (0.66–1.02); the CDC ensemble: 0.67.
+  - Failure mode, found after the test (a hypothesis, not a claim): overshoot after the peak.
+  - ⟦RESULT: league table (D7) → "Among N individual CDC-hub models scored the same way, v1 ranks k"; method declared before computing⟧.
+- **Visual:** forest plot by season and horizon with a red margin line at 1.15 (`results/figures/rel_wis_by_horizon.png`, or the round-2 figure pack).
+- **Notes (≈25 s):** "In the US, use the CDC ensemble: in 2024/25 we came close; in 2025/26 we didn't. We froze this test before running it, and we're showing you the season we lost. That's why you can believe our UAE numbers."
+- **Source:** `results/SUMMARY.md`.
 
-### 10. Team, 90 days, ask
+### 8. What the miss taught us, and how you can check us
 - **On slide:**
-  - Team roles.
-  - 90-day plan: shadow pilot, playbook review, RSV/COVID extension, GCC adapters.
-  - **Ask:** one hospital shadow partner plus an ADPHC data conversation.
-  - ⟨Letter of interest, if obtained⟩.
+  - **No early onset warning:** median onset lead was 0 weeks for every rule, including the CDC's. So we don't sell "earlier".
+  - **Fewer false alarms:** at 3 per 100k, the share of NABD alerts followed by a real onset was 0.65 / 0.76 (2024/25 / 2025/26), vs 0.41 / 0.67 for the CDC ensemble and 0.60 / 0.46 for a census rule. *Diagnostic: the thresholds were informed by pre-freeze probes (DEVIATIONS D5).*
+  - **Missing data hurts:** a 1-week gap raises error ×1.41, so v2 adds independent signals.
+  - **How you check us:** a public hashed ledger, outside timestamps ⟦RESULT: ledger/ANCHOR.md⟧, and the deviation log.
+- **Visual:** small PPV bars with the 0-week lead stated beside them; ledger "receipt" screenshot.
+- **Notes:** "The organisers asked for warnings calibrated to avoid alert fatigue. Our alerts were right more often, but not earlier, and we say both. Every forecast we issue from here is hashed before the answer exists."
+- **Sources:** `results/tables/alerts_us.csv`, `results/tables/dropout_us.csv`, `docs/DEVIATIONS.md`.
+
+### 9. Responsible by design, and how it plugs in
+- **On slide:**
+  - Aggregate only (schema rejects person-level fields; tested).
+  - A named approver for every action, with a hash-chained audit.
+  - Freshness badge and issue-relative horizons.
+  - Persistence forecast always shown alongside (automation-bias guard).
+  - SIMULATED watermark on the workforce module.
+  - WHO non-commercial terms respected.
+  - Plugs in as a feed for ADPHC's platform and the DoH population-health platform; Rasid offer: add wastewater as an input and publish whether it helps.
+- **Visual:** annotated card screenshot (`app/screenshots/`).
+- **Notes:** "Nothing leaves NABD without a person approving it. It never claims more than its data allows, and it's built to sit inside the platforms Abu Dhabi already runs."
+
+### 10. Pilot, ask and 90 days
+- **On slide:**
+  - **Pilot:** 12-week shadow run on one hospital's aggregate paediatric/ED admissions. Exit criterion, set in advance: relative WIS < 0.9 vs the hospital's own census carried forward. No change to care.
+  - **Ask:** one hospital partner plus an ADPHC data conversation.
+  - **90 days:** shadow pilot, playbook review by clinicians and public health, the Gulf hub extension, a prospective ledger scored all season.
+  - Business: a hospital-operations licence (own data); a public-health feed.
+  - ⟨letter of interest, if obtained⟩
 - **Visual:** timeline.
-- **Notes:** "We're asking for one hospital, twelve weeks, aggregate counts. Our track record is public and grows every week, whatever you decide."
+- **Notes:** "One hospital, twelve weeks, aggregate counts. If we don't beat your own census, you walk away, and our track record stays public either way."
+
+---
+
+**Never on any slide** (BUILD-SPEC v1.3 / judges' list):
+- E1 "better during surges";
+- "near-parity with the CDC" (pooled);
+- 2024/25 alone as a headline;
+- the CDC ensemble's 21–36% gain presented as NABD's;
+- Chronos-2 or ACI as active;
+- ED or weather inputs as used in v1;
+- "pre-registered" for the UAE v1 numbers.
