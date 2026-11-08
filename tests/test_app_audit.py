@@ -18,7 +18,7 @@ CODES = {"AGREE_FORECAST", "OTHER", "DATA_QUALITY"}
 
 def _append(path, **kw):
     args = dict(approver="Dr Test", role="hospital_ops", decision="APPROVE", reason_code="AGREE_FORECAST",
-                band_id="rsv_rising", proposed_action="Pre-warn ED", forecast_ref={"median": 14.2},
+                band_id="rsv_elevated_rising", proposed_action="Pre-warn ED", forecast_ref={"median": 14.2},
                 playbook_version="0.1.0", path=path, valid_reason_codes=CODES)
     args.update(kw)
     return audit.append_decision(**args)
@@ -77,8 +77,11 @@ def test_invalid_decisions_rejected(tmp_path, kw):
 def test_playbook_valid_and_illustrative():
     pb = load_playbook()
     assert pb["status"] == "ILLUSTRATIVE" and pb["review"]["reviewed"] is False
-    assert match_band(pb, "wk rsv pos pct sentinel", "ARE", 15.6)["id"] == "rsv_rising"
-    assert match_band(pb, "wk rsv pos pct sentinel", "ARE", 25)["tier"] == 3
+    assert match_band(pb, "wk rsv pos pct sentinel", "ARE", 15.6, trend="rising")["id"] == "rsv_elevated_rising"
+    assert match_band(pb, "wk rsv pos pct sentinel", "ARE", 15.6, trend="falling")["id"] == "rsv_elevated_falling"
+    assert match_band(pb, "wk rsv pos pct sentinel", "ARE", 25, trend="rising")["tier"] == 3
+    assert match_band(pb, "wk rsv pos pct sentinel", "ARE", 25, trend="falling")["tier"] == 2
+    assert match_band(pb, "wk rsv pos pct sentinel", "ARE", 5)["id"] == "rsv_low"
 
 
 @pytest.mark.parametrize("mutate", [

@@ -2,9 +2,9 @@
 
 STRINGS = {
     "title": {"en": "NABD: Respiratory Season Forecasts", "ar": "نبض: توقعات موسم أمراض الجهاز التنفسي"},
-    "subtitle": {"en": "Calibrated RSV and influenza forecasts with human-approved actions",
-                 "ar": "توقعات معايَرة للفيروس المخلوي التنفسي والإنفلونزا مع إجراءات يعتمدها الإنسان"},
-    "demo_banner": {"en": "DEMO DATA: some panels use placeholder data because model results are not yet in results/. Not NABD output.",
+    "subtitle": {"en": "Probabilistic RSV and influenza forecasts for the UAE, with actions a named person must approve",
+                 "ar": "توقعات احتمالية للفيروس المخلوي التنفسي والإنفلونزا في الإمارات، مع إجراءات يجب أن يعتمدها شخص مسمّى"},
+    "demo_banner": {"en": "DEMO DATA: no forecast round or results file was found, so this panel shows placeholder data. Not NABD output.",
                     "ar": "بيانات تجريبية: بعض اللوحات تستخدم بيانات مؤقتة لعدم توفر نتائج النموذج بعد. ليست مخرجات نبض."},
     "simulated": {"en": "SIMULATED", "ar": "محاكاة"},
     "nav_card": {"en": "Weekly card", "ar": "البطاقة الأسبوعية"},
@@ -46,6 +46,18 @@ STRINGS = {
     "dismiss": {"en": "Dismiss", "ar": "رفض"},
     "verdict": {"en": "Pre-registered primary endpoint", "ar": "نقطة النهاية الأساسية المسجّلة مسبقاً"},
     "language": {"en": "Language", "ar": "اللغة"},
+    "nav_alerts": {"en": "Alerts", "ar": "التنبيهات"},
+    "nav_gcc": {"en": "GCC out-of-sample", "ar": "اختبار دول الخليج"},
+    "why": {"en": "Why this forecast", "ar": "لماذا هذا التوقع"},
+    "context": {"en": "Context (observed data, not model attributions)", "ar": "السياق (بيانات مرصودة، وليست إسهامات النموذج)"},
+    "not_computed": {"en": "Not yet computed", "ar": "لم يُحسب بعد"},
+    "blocked": {"en": "Card blocked by the consistency check: the proposed action is withheld until the contradiction is fixed.",
+                "ar": "تم حجب البطاقة بواسطة فحص الاتساق: يُحجب الإجراء المقترح حتى يُصحَّح التناقض."},
+    "card_facts": {"en": "Forecast facts", "ar": "حقائق التوقع"},
+    "horizon_note": {"en": "Horizons are measured from the issue date to the middle of each target week.",
+                     "ar": "تُقاس الآفاق من تاريخ الإصدار حتى منتصف كل أسبوع مستهدف."},
+    "exploratory": {"en": "EXPLORATORY: post hoc, not pre-registered. Not a claim.",
+                    "ar": "استكشافي: تحليل لاحق غير مسجّل مسبقاً. ليس ادعاءً."},
 }
 
 

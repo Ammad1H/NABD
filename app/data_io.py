@@ -58,8 +58,19 @@ def freshness(observed: pd.DataFrame, today: dt.date | None = None) -> dict:
             "expected_lag_days": FLUNET_LAG_DAYS, "stale": lag > FLUNET_LAG_DAYS + 7}
 
 
+def horizon_weeks(target_end: dt.date, issue: dt.date) -> float:
+    """Weeks from the issue date to the MIDDLE of the target week, rounded to 0.5.
+
+    A target week ending 7 days after issue is mostly in the future: its midpoint is +0.5 wk.
+    This matches the issue-relative horizons in docs/SPEC.md §5.1 (nowcast, +0.5, +1.5, +2.5 wk).
+    """
+    mid = pd.Timestamp(target_end) - pd.Timedelta(days=3.5)
+    wk = (mid - pd.Timestamp(issue)).total_seconds() / (7 * 86400)
+    return round(wk * 2) / 2
+
+
 def horizon_label(target_end: dt.date, issue: dt.date) -> str:
-    wk = round((target_end - issue).days / 7, 1)
+    wk = horizon_weeks(target_end, issue)
     return "nowcast" if wk <= 0 else f"+{wk:g} wk"
 
 
@@ -177,34 +188,126 @@ def load_uae_tables() -> dict[str, pd.DataFrame]:
 
 
 # ---------------------------------------------------------------- US proof
-def load_us_summary():
-    p = RESULTS / "summary.json"
-    if p.exists():
-        with open(p, encoding="utf-8") as f:
-            return json.load(f), False
-    return demo_data.us_summary(), True
+def load_us_summary() -> dict | None:
+    """results/summary.json, or None if not yet computed (never demo numbers)."""
+    return _read_json(RESULTS / "summary.json")
 
 
-def load_us_tables() -> tuple[dict[str, pd.DataFrame], bool]:
+def load_us_tables() -> dict[str, pd.DataFrame]:
+    """All CSV tables in results/tables/ (empty dict = not yet computed; never demo numbers)."""
     tables = {}
     for f in sorted(glob.glob(str(RESULTS / "tables" / "*.csv"))):
         name = Path(f).stem
-        if "ablation" in name:
-            continue
         try:
             tables[name] = pd.read_csv(f)
         except Exception:  # noqa: BLE001 - a malformed table should not crash the app
             continue
-    if tables:
-        return tables, False
-    return {"rel_wis_by_season_horizon (DEMO)": demo_data.us_rel_wis_table()}, True
+    return tables
 
 
-def load_ablation() -> tuple[pd.DataFrame, bool]:
-    files = sorted(glob.glob(str(RESULTS / "tables" / "ablation*.csv")))
-    if files:
-        return pd.read_csv(files[-1]), False
-    return demo_data.ablation_table(), True
+def _read_csv(path: Path) -> pd.DataFrame | None:
+    try:
+        return pd.read_csv(path) if path.exists() else None
+    except Exception:  # noqa: BLE001
+        return None
+
+
+def _read_json(path: Path):
+    try:
+        with open(path, encoding="utf-8") as f:
+            return json.load(f)
+    except Exception:  # noqa: BLE001
+        return None
+
+
+def load_uae_ablation() -> pd.DataFrame | None:
+    """results/uae/tables/ablation.csv (contract v1.3: feed, metric, full, without, delta). None = not computed."""
+    return _read_csv(RESULTS / "uae" / "tables" / "ablation.csv")
+
+
+def load_uae_explain(issue_date: str | None = None) -> tuple[dict[str, pd.DataFrame], str | None]:
+    """Per-signal contributions (contract v1.3: results/uae/explain/<issue_date>_<target>.csv,
+    columns horizon, feature, value, contribution, unit).
+
+    Returns ({'rsv'|'flu': frame}, issue_date_used). Prefers the card's issue date, else the latest.
+    """
+    d = RESULTS / "uae" / "explain"
+    if not d.exists():
+        return {}, None
+    files = sorted(d.glob("*.csv"))
+    dates = sorted({f.name[:10] for f in files if re.match(r"\d{4}-\d{2}-\d{2}", f.name)})
+    if not dates:
+        return {}, None
+    use = issue_date if issue_date in dates else dates[-1]
+    out = {}
+    for f in files:
+        if not f.name.startswith(use):
+            continue
+        key = "rsv" if "rsv" in f.name.lower() else "flu" if "flu" in f.name.lower() else None
+        df = _read_csv(f)
+        if key and df is not None:
+            out[key] = df
+    return out, use
+
+
+def load_alerts() -> dict[str, pd.DataFrame]:
+    """US alert metrics (results/tables/alerts_us*.csv, latency/dropout) and UAE alert metrics
+    (results/uae/tables/alert*.csv). Empty dict entries are simply absent."""
+    out = {}
+    for f in sorted((RESULTS / "tables").glob("*.csv")) if (RESULTS / "tables").exists() else []:
+        if f.stem.startswith(("alerts_us", "latency_us", "dropout_us")):
+            df = _read_csv(f)
+            if df is not None:
+                out["US " + f.stem] = df
+    ut = RESULTS / "uae" / "tables"
+    for f in sorted(ut.glob("alert*.csv")) if ut.exists() else []:
+        df = _read_csv(f)
+        if df is not None:
+            out["UAE " + f.stem] = df
+    return out
+
+
+def load_league() -> tuple[dict[str, pd.DataFrame], list[Path]]:
+    """League table vs individual CDC FluSight hub models (DEVIATIONS D7), if computed."""
+    tabs = {}
+    t = RESULTS / "tables"
+    for f in sorted(t.glob("league*.csv")) if t.exists() else []:
+        df = _read_csv(f)
+        if df is not None:
+            tabs[f.stem] = df
+    figs = sorted((RESULTS / "figures").glob("league*.png")) if (RESULTS / "figures").exists() else []
+    return tabs, figs
+
+
+def load_gcc() -> tuple[dict | None, dict[str, pd.DataFrame], list[Path]]:
+    """GCC out-of-sample test (BUILD-SPEC G12): results/gcc/{summary.json, tables/*.csv, figures/*.png}."""
+    g = RESULTS / "gcc"
+    summary = _read_json(g / "summary.json")
+    tabs = {}
+    for f in sorted((g / "tables").glob("*.csv")) if (g / "tables").exists() else []:
+        df = _read_csv(f)
+        if df is not None:
+            tabs[f.stem] = df
+    figs = sorted((g / "figures").glob("*.png")) if (g / "figures").exists() else []
+    if not figs and g.exists():
+        figs = sorted(g.glob("*.png"))
+    return summary, tabs, figs
+
+
+def us_verdict(summary: dict | None) -> tuple[str | None, str | None]:
+    """(verdict, text) shown verbatim: summary.json `primary_verdict`/`primary_text` (contract v1.3),
+    falling back to primary.non_inferiority from the frozen run."""
+    if not summary:
+        return None, None
+    v = summary.get("primary_verdict") or (summary.get("primary") or {}).get("non_inferiority")
+    txt = summary.get("primary_text")
+    if txt is None and isinstance(summary.get("primary"), dict):
+        p = summary["primary"]
+        ci = p.get("ci95") or [None, None]
+        if p.get("rel_wis") is not None:
+            txt = (f"{p.get('comparison', 'NABD-ensemble / FluSight-ensemble')}: relative WIS {p['rel_wis']:.3f} "
+                   f"(95% CI {ci[0]:.3f}–{ci[1]:.3f}); non-inferiority margin {p.get('margin')}.")
+    return v, txt
 
 
 def list_figures(sub: str = "") -> list[Path]:
