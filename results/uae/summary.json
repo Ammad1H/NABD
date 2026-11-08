@@ -1,0 +1,151 @@
+{
+  "generated_from": "data/raw/flunet_are.csv",
+  "latest_sentinel_week": "2026-W44",
+  "test_seasons": [
+    "2022/23",
+    "2023/24",
+    "2024/25",
+    "2025/26"
+  ],
+  "n_seasons": 4,
+  "design": "leave-one-season-out; 1-week simulated publication lag; horizons -1(nowcast),0,1,2 rel. reference date",
+  "rel_wis_nabd": {
+    "flu_vs_persistence": {
+      "rel_wis": 0.76,
+      "ci95": [
+        0.703,
+        0.825
+      ],
+      "n_reference_dates": 190
+    },
+    "flu_vs_seasonal-analog": {
+      "rel_wis": 0.702,
+      "ci95": [
+        0.647,
+        0.766
+      ],
+      "n_reference_dates": 190
+    },
+    "rsv_vs_persistence": {
+      "rel_wis": 0.789,
+      "ci95": [
+        0.721,
+        0.864
+      ],
+      "n_reference_dates": 190
+    },
+    "rsv_vs_seasonal-analog": {
+      "rel_wis": 0.699,
+      "ci95": [
+        0.656,
+        0.751
+      ],
+      "n_reference_dates": 190
+    }
+  },
+  "rel_wis_nabd_excluding_2022_23": {
+    "flu_vs_persistence": {
+      "rel_wis": 0.76,
+      "ci95": [
+        0.694,
+        0.834
+      ],
+      "n_reference_dates": 144
+    },
+    "flu_vs_seasonal-analog": {
+      "rel_wis": 0.638,
+      "ci95": [
+        0.586,
+        0.698
+      ],
+      "n_reference_dates": 144
+    },
+    "rsv_vs_persistence": {
+      "rel_wis": 0.816,
+      "ci95": [
+        0.729,
+        0.914
+      ],
+      "n_reference_dates": 144
+    },
+    "rsv_vs_seasonal-analog": {
+      "rel_wis": 0.661,
+      "ci95": [
+        0.613,
+        0.715
+      ],
+      "n_reference_dates": 144
+    }
+  },
+  "seasons_nabd_better": {
+    "flu": {
+      "persistence": 4,
+      "seasonal-analog": 4
+    },
+    "rsv": {
+      "persistence": 3,
+      "seasonal-analog": 4
+    }
+  },
+  "mean_wis": [
+    {
+      "series": "flu",
+      "model": "NABD-UAE-v1",
+      "mean_wis": 2.04,
+      "n": 756,
+      "cov50": 0.554,
+      "cov95": 0.964
+    },
+    {
+      "series": "flu",
+      "model": "persistence",
+      "mean_wis": 2.676,
+      "n": 760,
+      "cov50": 0.525,
+      "cov95": 0.939
+    },
+    {
+      "series": "flu",
+      "model": "seasonal-analog",
+      "mean_wis": 2.897,
+      "n": 764,
+      "cov50": 0.45,
+      "cov95": 0.763
+    },
+    {
+      "series": "rsv",
+      "model": "NABD-UAE-v1",
+      "mean_wis": 1.508,
+      "n": 756,
+      "cov50": 0.519,
+      "cov95": 0.958
+    },
+    {
+      "series": "rsv",
+      "model": "persistence",
+      "mean_wis": 1.905,
+      "n": 760,
+      "cov50": 0.499,
+      "cov95": 0.961
+    },
+    {
+      "series": "rsv",
+      "model": "seasonal-analog",
+      "mean_wis": 2.14,
+      "n": 764,
+      "cov50": 0.38,
+      "cov95": 0.717
+    }
+  ],
+  "rsv_peak_week_mae_wk": {
+    "NABD-UAE-v1": 1.31,
+    "persistence": 2.81,
+    "seasonal-analog": 1.75
+  },
+  "caveats": [
+    "n=4 test seasons; CIs reflect week-to-week variability only, not between-season uncertainty",
+    "2022/23 sentinel volumes are low (tens of specimens/week early in 2022)",
+    "LOSO uses later seasons for training when testing earlier ones (not forward-in-time)",
+    "Revisions to FluNet values are not reproduced (no vintages available)"
+  ]
+}
