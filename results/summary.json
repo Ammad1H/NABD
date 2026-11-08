@@ -239,7 +239,8 @@
     "0.5": 0.617,
     "0.7": 0.454
    }
-  }
+  },
+  "league_status": "recomputed"
  },
  "exploratory": {
   "exploratory": true,

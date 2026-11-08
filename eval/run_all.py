@@ -25,7 +25,25 @@ def fetch_hub():
         subprocess.run(["git", "clone", "--filter=blob:none", "--sparse", HUB_URL, str(hub)], check=True)
         subprocess.run(["git", "-C", str(hub), "sparse-checkout", "set", "target-data", "hub-config",
                         "model-output/FluSight-ensemble", "model-output/FluSight-baseline"], check=True)
-    subprocess.run(["git", "-C", str(hub), "checkout", "-q", HUB_SHA], check=False)
+    subprocess.run(["git", "-C", str(hub), "checkout", "-q", HUB_SHA], check=True)
+
+
+class HubPinError(RuntimeError):
+    """Raised when external/hub is not at the pinned commit (audit R2 m14 / R3 #5)."""
+
+
+def assert_hub_pinned(hub: Path | None = None, sha: str | None = None) -> str:
+    """Fail unless the hub clone is checked out at the pinned commit. Called unconditionally by main()."""
+    hub = hub or (ROOT / "external" / "hub")
+    sha = sha or HUB_SHA
+    try:
+        head = subprocess.check_output(["git", "-C", str(hub), "rev-parse", "HEAD"], text=True).strip()
+    except (subprocess.CalledProcessError, FileNotFoundError) as e:
+        raise HubPinError(f"cannot read hub commit at {hub}: {e}") from e
+    if head != sha:
+        raise HubPinError(f"external/hub is at {head}, pinned commit is {sha}; run "
+                          f"`git -C external/hub checkout {sha}` or `python -m eval.run_all --fetch`")
+    return head
 
 
 def main():
@@ -42,6 +60,10 @@ def main():
     t0 = time.time()
     if a.fetch or not (ROOT / "external" / "hub").exists():
         fetch_hub()
+    try:
+        assert_hub_pinned()
+    except HubPinError as e:
+        raise SystemExit(f"HUB PIN CHECK FAILED: {e}")
     from eval import alerts, backtest, score, tune
     if a.retune or not (ROOT / "models" / "config.yaml").exists():
         tune.main(a.procs)
