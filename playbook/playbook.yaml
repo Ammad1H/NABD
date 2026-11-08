@@ -1,0 +1,140 @@
+# NABD playbook: maps forecast bands to PROPOSED actions.
+# STATUS: ILLUSTRATIVE. It has not been reviewed by a clinician or a public-health official.
+# Nothing here is released without a named human approver (see app/audit.py).
+version: "0.1.0-illustrative"
+status: ILLUSTRATIVE
+review:
+  required_reviewers:
+    - "Clinical lead (paediatric ED / bed management), hospital pilot site"
+    - "Public-health officer, ADPHC surveillance"
+  reviewed: false
+  reviewed_by: null
+  reviewed_on: null
+roles:
+  hospital_ops:
+    en: "Hospital bed and roster manager"
+    ar: "مدير الأسرّة وجداول المناوبات في المستشفى"
+  adphc_duty:
+    en: "ADPHC duty officer"
+    ar: "ضابط المناوبة في مركز أبوظبي للصحة العامة"
+reason_codes:
+  - code: AGREE_FORECAST
+    en: "Agree with forecast and proposed action"
+    ar: "أوافق على التوقع والإجراء المقترح"
+  - code: LOCAL_INFO_HIGHER
+    en: "Local information suggests higher pressure"
+    ar: "المعلومات المحلية تشير إلى ضغط أعلى"
+  - code: LOCAL_INFO_LOWER
+    en: "Local information suggests lower pressure"
+    ar: "المعلومات المحلية تشير إلى ضغط أقل"
+  - code: DATA_QUALITY
+    en: "Data quality or freshness concern"
+    ar: "مخاوف بشأن جودة البيانات أو حداثتها"
+  - code: CAPACITY_CONSTRAINT
+    en: "Action not feasible due to capacity constraint"
+    ar: "الإجراء غير ممكن بسبب قيود السعة"
+  - code: OTHER
+    en: "Other (explain in note)"
+    ar: "أخرى (يرجى التوضيح)"
+# A band rule fires when the forecast median at the given horizon falls in [lower, upper).
+# Tier thresholds are placeholders to be set with the pilot site from local history.
+bands:
+  - id: rsv_low
+    target: "wk rsv pos pct sentinel"
+    location: ARE
+    horizon_label: "+1.5 wk"
+    lower: 0
+    upper: 10
+    tier: 1
+    actions:
+      hospital_ops:
+        en: "Routine operations. Keep standard paediatric bed and roster plan."
+        ar: "عمليات اعتيادية. الإبقاء على خطة الأسرّة والمناوبات المعتادة لطب الأطفال."
+      adphc_duty:
+        en: "No public action. Continue weekly monitoring."
+        ar: "لا إجراء عام. مواصلة المراقبة الأسبوعية."
+  - id: rsv_rising
+    target: "wk rsv pos pct sentinel"
+    location: ARE
+    horizon_label: "+1.5 wk"
+    lower: 10
+    upper: 20
+    tier: 2
+    actions:
+      hospital_ops:
+        en: "Pre-warn paediatric ED and ward leads. Confirm surge roster for the next 2 weeks; review elective paediatric admissions."
+        ar: "تنبيه مسبق لقادة طوارئ وأجنحة الأطفال. تأكيد جدول المناوبات الإضافية للأسبوعين القادمين ومراجعة الإدخالات الاختيارية للأطفال."
+      adphc_duty:
+        en: "Review infant RSV immunisation uptake messaging; brief hospital network leads."
+        ar: "مراجعة رسائل الإقبال على تحصين الرضّع ضد الفيروس المخلوي التنفسي وإحاطة قادة شبكة المستشفيات."
+  - id: rsv_high
+    target: "wk rsv pos pct sentinel"
+    location: ARE
+    horizon_label: "+1.5 wk"
+    lower: 20
+    upper: 101
+    tier: 3
+    actions:
+      hospital_ops:
+        en: "Activate paediatric surge plan: open flex beds, extend ED staffing at peak hours, cohort respiratory patients."
+        ar: "تفعيل خطة الطوارئ لطب الأطفال: فتح أسرّة مرنة، وتمديد مناوبات الطوارئ في ساعات الذروة، وتجميع مرضى الجهاز التنفسي."
+      adphc_duty:
+        en: "Consider public advisory on respiratory hygiene and when to seek care; coordinate inter-facility capacity."
+        ar: "النظر في إصدار إرشاد عام حول النظافة التنفسية ومتى يجب طلب الرعاية، وتنسيق السعة بين المنشآت."
+  - id: flu_low
+    target: "wk flu pos pct sentinel"
+    location: ARE
+    horizon_label: "+1.5 wk"
+    lower: 0
+    upper: 15
+    tier: 1
+    actions:
+      hospital_ops:
+        en: "Routine operations."
+        ar: "عمليات اعتيادية."
+      adphc_duty:
+        en: "No public action. Continue weekly monitoring."
+        ar: "لا إجراء عام. مواصلة المراقبة الأسبوعية."
+  - id: flu_rising
+    target: "wk flu pos pct sentinel"
+    location: ARE
+    horizon_label: "+1.5 wk"
+    lower: 15
+    upper: 30
+    tier: 2
+    actions:
+      hospital_ops:
+        en: "Pre-warn adult and paediatric ED leads; confirm isolation-room availability and antiviral stock."
+        ar: "تنبيه مسبق لقادة الطوارئ للبالغين والأطفال، وتأكيد توفر غرف العزل ومخزون مضادات الفيروسات."
+      adphc_duty:
+        en: "Reinforce seasonal influenza vaccination messaging for high-risk groups."
+        ar: "تعزيز رسائل التطعيم ضد الإنفلونزا الموسمية للفئات الأكثر عرضة للخطر."
+  - id: flu_high
+    target: "wk flu pos pct sentinel"
+    location: ARE
+    horizon_label: "+1.5 wk"
+    lower: 30
+    upper: 101
+    tier: 3
+    actions:
+      hospital_ops:
+        en: "Activate respiratory surge plan: flex beds, extended ED staffing, cohorting."
+        ar: "تفعيل خطة الطوارئ التنفسية: أسرّة مرنة، ومناوبات طوارئ ممتدة، وتجميع المرضى."
+      adphc_duty:
+        en: "Consider public advisory; coordinate inter-facility capacity."
+        ar: "النظر في إصدار إرشاد عام وتنسيق السعة بين المنشآت."
+  - id: us_admissions_growth
+    target: "wk inc flu hosp"
+    location: US
+    horizon_label: "+1.5 wk"
+    lower: 1.25
+    upper: 1000
+    metric: "growth_ratio_vs_last_observed"
+    tier: 3
+    actions:
+      hospital_ops:
+        en: "(US analogue, demonstration only) Forecast admissions >=25% above last observed week: review surge staffing."
+        ar: "(مثال أمريكي للعرض فقط) التوقع أعلى بنسبة 25% أو أكثر من آخر أسبوع: مراجعة مناوبات الطوارئ."
+      adphc_duty:
+        en: "(US analogue, demonstration only) No action; illustrative."
+        ar: "(مثال أمريكي للعرض فقط) لا إجراء؛ توضيحي."
