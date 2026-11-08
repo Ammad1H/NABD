@@ -1,0 +1,32 @@
+{
+ "protocol": "docs/PROTOCOL.md v1.0 (frozen; see docs/FREEZE.md)",
+ "primary": {
+  "comparison": "NABD-ensemble / FluSight-ensemble, pooled 2024/25+2025/26, 53 locations, h0-3, final truth",
+  "rel_wis": 1.2231980384294376,
+  "ci95": [
+   1.0113781828808528,
+   1.520894628161069
+  ],
+  "margin": 1.15,
+  "non_inferiority": "NOT MET",
+  "n_cells": 11660,
+  "n_dates": 55
+ },
+ "S1_vs_baseline": {
+  "rel_wis": 0.8157125597205374,
+  "ci95": [
+   0.6553179629964918,
+   1.0229526874548973
+  ],
+  "better_than_baseline": false
+ },
+ "S2_coverage": {
+  "cov50": 0.48001715265866207,
+  "cov95": 0.9177530017152659,
+  "cov95_in_0.90_0.98": true,
+  "flusight_ensemble_cov50": 0.5221269296740995,
+  "flusight_ensemble_cov95": 0.861492281303602
+ },
+ "chronos2": "NOT RUN HERE (weights unavailable in build environment)",
+ "tables": "results/tables/endpoints.csv, overview_common_cells.csv, cell_coverage.csv, vintage_flags.csv"
+}

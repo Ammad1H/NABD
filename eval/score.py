@@ -204,14 +204,21 @@ def _figures(models, tab, ft):
         for mname, col in [("NABD-ensemble", "C3"), ("FluSight-ensemble", "C0")]:
             m = models[mname]
             sub = m[(m.index.get_level_values(1) == loc) & (m.index.get_level_values(2) == 1)]
-            t = [r + pd.Timedelta(days=7) for r in sub.index.get_level_values(0)]
-            ax.fill_between(t, sub[0.025], sub[0.975], color=col, alpha=0.15)
-            ax.fill_between(t, sub[0.25], sub[0.75], color=col, alpha=0.3)
-            ax.plot(t, sub[0.5], color=col, lw=1, label=f"{mname} (h1)")
+            t = pd.DatetimeIndex([r + pd.Timedelta(days=7) for r in sub.index.get_level_values(0)])
+            # break the band at the off-season gap so seasons are not joined
+            seg = np.concatenate([[0], np.cumsum(np.diff(t.values).astype("timedelta64[D]").astype(int) > 7)])
+            for k_, sgi in enumerate(np.unique(seg)):
+                mm = seg == sgi
+                ax.fill_between(t[mm], sub[0.025][mm], sub[0.975][mm], color=col, alpha=0.15)
+                ax.fill_between(t[mm], sub[0.25][mm], sub[0.75][mm], color=col, alpha=0.3)
+                ax.plot(t[mm], sub[0.5][mm], color=col, lw=1, label=f"{mname} (h1)" if k_ == 0 else None)
         tr = tmap.loc[loc]
         tr = tr[(tr.index >= pd.Timestamp("2024-11-01")) & (tr.index <= pd.Timestamp("2026-06-15"))]
         ax.plot(tr.index, tr.values, "k.", ms=3, label="final truth")
         ax.set_title(f"{name}: 1-week-ahead forecasts (50%/95% bands)", fontsize=9); ax.legend(fontsize=6)
+        import matplotlib.dates as mdates
+        ax.xaxis.set_major_formatter(mdates.DateFormatter("%b %y")); ax.tick_params(axis="x", labelsize=7)
+        ax.set_ylabel("weekly flu admissions")
     fig.tight_layout(); fig.savefig(FIG / "fan_chart_CA_TX_h1.png", dpi=150); plt.close(fig)
 
 

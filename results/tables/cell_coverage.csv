@@ -1,0 +1,6 @@
+model,complete_cells,possible,share
+NABD-ensemble,11872,11872,1.0
+NABD-GLM,11872,11872,1.0
+NABD-EEQ,11872,11872,1.0
+FluSight-ensemble,11660,11872,0.9821428571428571
+FluSight-baseline,11660,11872,0.9821428571428571
