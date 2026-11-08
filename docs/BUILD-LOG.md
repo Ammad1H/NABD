@@ -264,3 +264,19 @@ NABD-UAE-v1 beat persistence in flu 4/4 seasons and RSV 3/4 (it loses on RSV 202
 - **outreach.md:** personalised to the Tawam RSV study (UAEU Pediatrics; Dr Alsuwaidi per the publication record; the corresponding author must be confirmed) and to DoH/ADPHC surveillance (public channels only). Bodies are 125–143 words.
 - **Claims ledger:** rewritten to v1.7, with new sections G (workforce/business) and F13–F18 bans.
 - **Open:** winter planner, bulletin and public repo/anchor are ⟦IF BUILT/IF DONE⟧ slots, so cut them on 19 Nov if they are absent. `docs/SPEC.md:80` (R2 m27) is outside the pitch scope and still needs fixing.
+
+## Round 4: ops & integrity (2026-11-08)
+- Audit R3 fixes, appended as DEVIATIONS C1–C7:
+  - hub-pin enforcement implemented and tested (C1; D8(d) had claimed it falsely);
+  - G1b time withdrawn, and the proxy refusal re-observed at 19:00:36Z (C2);
+  - GCC exposure disclosures (C3);
+  - SUMMARY Round-2 section now generated, with CI columns relabelled (C4);
+  - league cache keyed on forecasts + hub SHA, with a status flag (C5);
+  - GCC future-perturbation test with a positive control (C6);
+  - ledger R0/R1 described as byte-identical, legacy labels documented (C7).
+- Publish package:
+  - docs/PUBLISH.md; scripts/prepare_public_repo.sh (full-history clean clone, plus size/licence/secret/banned-claim checks); scripts/anchor_all.sh (verify all manifests, bundle Merkle manifest, OTS + RFC 3161);
+  - scripts/flusight_wednesday.sh (live hub clone via NABD_HUB) with eval/flusight_validate.py (re-implements the main hubValidations checks against tasks.json and the metadata schema) and docs/FLUSIGHT-PR.md;
+  - .streamlit/config.toml, requirements.txt (app) and requirements-dev.txt; LICENSE (MIT code + data terms); root README.md.
+- Dry runs: hub pin OK; the FluSight script on the LIVE hub wrote and validated the 2026-11-14 draft (file PASS; metadata only has placeholders left; stale weeks 1 on 8 Nov, so re-run Wed); anchor_all dry-run verified 3/3 manifests and built a 28-file bundle; prepare_public_repo produced a 110 MB clone with no secrets and flagged overclaims in docs/SPEC.md and research/positioning.md (not in this workstream's scope).
+- Tests: 142 passed.
