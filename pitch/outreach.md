@@ -29,7 +29,7 @@ With thanks,
 
 Dear Dr ⟨Name⟩,
 
-I'm an MBZUAI student entering the Future Health Digital Innovation Challenge (Statement 06). Our project, NABD, produces calibrated RSV/flu admission forecasts 1–3 weeks ahead. It is tested, without leakage, against the CDC's FluSight ensemble, and every forecast is timestamped publicly.
+I'm an MBZUAI student entering the Future Health Digital Innovation Challenge (Statement 06). Our project, NABD, produces calibrated RSV/flu positivity forecasts up to three weeks ahead for the UAE (WHO FluNet data). We benchmark the method publicly against the CDC's FluSight ensemble, using only data available at each forecast date. Our first version did not meet the bar we set, and we report that. Every forecast round is hashed before its outcome exists.
 
 Two small asks, both optional:
 1. 20 minutes to sanity-check our hospital action playbook (surge rostering, bed opening, advisories). We'll credit you as a reviewer only if you agree.
