@@ -113,3 +113,20 @@ NABD-UAE-v1 beat persistence in flu 4/4 seasons and RSV 3/4 (it loses on RSV 202
   - research/positioning.md did not exist at the end of this run; slides 2 and 3 should be re-checked against it.
   - The pending slots must be filled or cut on 19 Nov.
   - The team names and the MBZUAI permission status are still unfilled.
+
+## Positioning workstream, round 2 (8 Nov 2026)
+- Wrote research/positioning.md (single source for the pain point and value story) and research/positioning-sources.md (S1–S29, each with status).
+- New verified anchors:
+  - Season-shape table from WHO FluNet UAE [DATA]: flu peaked wk 45/45/wk 7 (Feb)/42 at 27–41% positivity; the 2024/25 season was a 5-month plateau. RSV peaked wk 41–47; RSV first reached ≥10% before 1 Sep in 2 of 4 seasons.
+  - Abu Dhabi's existing sensing layer (Tableegh/Malaffi, UMOC AI early warning) means NABD is positioned as the forecast layer on top.
+  - DoH says this season is "similar to previous two", so pitch variability, not crisis.
+  - The MoHAP climate adaptation plan 2026–31 names respiratory disease and early warnings.
+  - School break dates 14 Dec–3 Jan.
+- Chosen problem statement (40 words), "only we" claim (with "to our knowledge"), moat, NOT MET reframing, stop list.
+- Ranked solution improvements:
+  1. Exceedance probability + direction on the card.
+  2. Season-shape panel.
+  3. Tableegh-ready pilot data spec.
+  4. Bed-days SCENARIO translator.
+  5. GCC panel.
+- Not found: Abu Dhabi ED/bed series, a UAE flu hospitalisation estimate, a credible UAE absence figure, any public UAE/GCC respiratory forecast.
