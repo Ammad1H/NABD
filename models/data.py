@@ -26,6 +26,8 @@ def time_series() -> pd.DataFrame:
     t = pd.read_csv(HUB / "target-data" / "time-series.csv", dtype={"location": str},
                     usecols=["as_of", "target", "target_end_date", "location", "observation"])
     t = t[t.target == TARGET].drop(columns="target")
+    # vintage 2026-05-27 contains exact duplicate rows (identical values); drop them
+    t = t.drop_duplicates(["as_of", "location", "target_end_date"], keep="last")
     t["as_of"] = pd.to_datetime(t["as_of"])
     t["target_end_date"] = pd.to_datetime(t["target_end_date"])
     return t
