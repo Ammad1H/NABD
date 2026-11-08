@@ -1,0 +1,46 @@
+========================================================================================
+SYNTHETIC DATA: checks that the code works. Says nothing about NABD or real influenza/RSV.
+========================================================================================
+forecast rows: 19,360 (train 11,920, test 7,440); built in 2.4s
+
+[1] Toy trend-follower vs flat baseline on test seasons, by AS-OF phase
+phase          n  rel WIS   share of toy WIS: dispersion / over / under
+rising      2604     2.44   23% / 72% / 5%
+flat        2012     0.89   31% / 48% / 21%
+falling     2824     0.62   26% / 13% / 62%
+
+[2] Phase-aware blend toward persistence + spread scale (12 groups, fitted on train only)
+phase         toy   blend   (relative WIS vs flat baseline, test seasons)
+rising       2.44    0.84
+flat         0.89    0.87
+falling      0.62    0.55
+   fitted rising|h2   w(toy)=0.30  spread=1.50
+   fitted flat|h2     w(toy)=0.75  spread=1.40
+   fitted falling|h2  w(toy)=0.80  spread=1.00
+
+[3] Online calibration by quantile tracking (truth applied only after it would exist)
+   toy raw          50% PI covers 27%, 90% PI covers 59%, rel WIS 1.63
+   toy + tracking   50% PI covers 43%, 90% PI covers 75%, rel WIS 1.55
+
+[4] Global quantile GBM (20,600 training rows, fit+predict 16s)
+model                        rel WIS vs flat baseline (test)
+toy trend-follower                                      1.63
+phase-aware blend                                       0.79
+global GBM                                              0.48
+ensemble: toy+GBM+baseline                              0.81
+   ensemble vs baseline, moving-block bootstrap 95% CI: 0.81 (0.69-0.94)
+   Diebold-Mariano (per-date mean WIS difference): stat -2.90, p 0.00463
+
+[5] Relative economic value, event base rate 53% (1 = perfect, 0 = base rates)
+model                         C/L=0.05   C/L=0.1   C/L=0.2   C/L=0.3   C/L=0.5
+toy trend-follower                0.21      0.46      0.58      0.67      0.78
+flat baseline                     0.00      0.02      0.45      0.57      0.72
+global GBM                        0.55      0.66      0.75      0.81      0.88
+ensemble                          0.11      0.41      0.68      0.76      0.83
+
+[6] Card: Observed last week: rose (15 to 19). Forecast for 2 week(s) ahead: likely to rise (rise 67%, fall 23%). Prepare the surge roster: the chance of exceeding capacity is 38%. | contradictions: []
+
+[7] Ledger intact: True; goalpost guard refused the changed config, as it should
+
+done in 20s
+SYNTHETIC DATA: checks that the code works. Says nothing about NABD or real influenza/RSV.
