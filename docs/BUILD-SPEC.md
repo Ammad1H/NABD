@@ -42,3 +42,11 @@ Turn NABD (see docs/SPEC.md) into a **winning-calibre, working, reproducible sub
 
 ## Changelog
 - v1 8 Nov: created.
+- v1.1 8 Nov: INTERFACE CONTRACT (all workstreams).
+  - Forecast files use the FluSight hub quantile format, CSV columns: `reference_date,target,horizon,target_end_date,location,output_type,output_type_id,value,model`. US targets: `wk inc flu hosp`. UAE: location `ARE`, targets `wk flu pos pct sentinel` and `wk rsv pos pct sentinel`. Quantiles: the FluSight set (0.01,0.025,0.05,0.1,...,0.9,0.95,0.975,0.99).
+  - Output paths:
+    - `results/forecasts/<model>/<reference_date>.csv` (US)
+    - `results/uae/forecasts/<model>/<reference_date>.csv`
+    - `results/tables/*.csv`, `results/figures/*.png`, `results/SUMMARY.md` (headline numbers, machine-readable `results/summary.json`)
+    - `ledger/<UTC>_<model>.csv` + `.sha256`
+  - The app reads ONLY these paths and must fall back to labelled demo data if they're missing.
