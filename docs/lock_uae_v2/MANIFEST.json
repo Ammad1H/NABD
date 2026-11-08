@@ -1,0 +1,74 @@
+{
+ "base_dir": ".",
+ "created_utc": "2026-11-08T12:03:15.560635+00:00",
+ "files": [
+  {
+   "bytes": 1701,
+   "path": "adapters/calendar.py",
+   "sha256": "de88d86f29ce666b2b66f2a7faadc12b437867249b6614b3e157bcde80e5a89e"
+  },
+  {
+   "bytes": 3593,
+   "path": "adapters/flunet.py",
+   "sha256": "5ad0797855435846352d83bd87667d8b9fa8b2b1cbfea8b909fc85875d19095c"
+  },
+  {
+   "bytes": 14647,
+   "path": "data/raw/flunet_are.csv",
+   "sha256": "ab79a2d7db50313386791be0d7b406179966b7d09eebcc352378a7d1dd6583b2"
+  },
+  {
+   "bytes": 3456,
+   "path": "data/raw/uae_calendar.csv",
+   "sha256": "758dfb01c6df22e9926f9ba14d85e51d9be1777acb13cea25c682c1a82fab519"
+  },
+  {
+   "bytes": 182,
+   "path": "docs/LOCK-UAE-v2.data-manifest.txt",
+   "sha256": "ac6e90a4fb538e6b94eec32d6efe651f675bfde43d17af096a321e8e463d01b8"
+  },
+  {
+   "bytes": 2259,
+   "path": "docs/LOCK-UAE-v2.json",
+   "sha256": "719e74422df7ffa09beec8e369d20046c161fe9fbe100bde034e252ba08b94ba"
+  },
+  {
+   "bytes": 7492,
+   "path": "docs/PROTOCOL-UAE-v2.md",
+   "sha256": "e2e2c926dc66470d76d28843706d2f71681c166c7bb9a463c4c21dfd14349443"
+  },
+  {
+   "bytes": 4098,
+   "path": "uae/alerts.py",
+   "sha256": "af084dc76568c0b0af99b026987579c494811c935abba866aa0a0fbac53a31bb"
+  },
+  {
+   "bytes": 23646,
+   "path": "uae/backtest_v2.py",
+   "sha256": "5998ef997154fbd6b694c75cac3521cbede0e57c2dd73a33eb92d5dfc4af1dcd"
+  },
+  {
+   "bytes": 4876,
+   "path": "uae/features_v2.py",
+   "sha256": "f0b0b75552b931a5b6906ee7143ee6263b358324d1b376f81b306e3a74ba7230"
+  },
+  {
+   "bytes": 6652,
+   "path": "uae/models.py",
+   "sha256": "e7a2843c6e6128a0fc76110151b1d576f9550f6f3a18eb105e73f4280cef2da5"
+  },
+  {
+   "bytes": 7395,
+   "path": "uae/models_v2.py",
+   "sha256": "08cb1c8f9dd7c6f8e84a8b953931c73a685156c06638a30a9f6ad7d1147bf4ed"
+  },
+  {
+   "bytes": 1102,
+   "path": "uae/scoring.py",
+   "sha256": "ab2f632a338ce2d8e9c0b1cda48ff125dbc65e613b882667321ad3af243d95bf"
+  }
+ ],
+ "merkle_root": "5ad8e85e7a609653abcd5e08213c5302fa7011c811db9cb82e7476937cf4937d",
+ "meta": {},
+ "schema": "nabd-ledger/1"
+}

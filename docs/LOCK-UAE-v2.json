@@ -1,0 +1,101 @@
+{
+ "config": {
+  "ablation_drop": [
+   "NS",
+   "CAL",
+   "TV",
+   "CLIM"
+  ],
+  "alert_T": {
+   "flu": 15.0,
+   "rsv": 10.0
+  },
+  "alert_target_data_horizon": 2,
+  "blocks": [
+   "CORE",
+   "CLIM",
+   "TV",
+   "NS",
+   "CAL"
+  ],
+  "bootstrap": {
+   "B": 2000,
+   "block_len": 4,
+   "seed": 20261108,
+   "within": "season"
+  },
+  "census_frac": 0.6,
+  "forward_test_seasons": [
+   2023,
+   2024,
+   2025
+  ],
+  "horizons": [
+   1,
+   2,
+   3,
+   4
+  ],
+  "model": "NABD-UAE-v2",
+  "ns_extra_lag_weeks": 1,
+  "quantiles": [
+   0.01,
+   0.025,
+   0.05,
+   0.1,
+   0.15,
+   0.2,
+   0.25,
+   0.3,
+   0.35,
+   0.4,
+   0.45,
+   0.5,
+   0.55,
+   0.6,
+   0.65,
+   0.7,
+   0.75,
+   0.8,
+   0.85,
+   0.9,
+   0.95,
+   0.975,
+   0.99
+  ],
+  "stale_week_test_horizons": [
+   1,
+   2,
+   3
+  ],
+  "test_seasons": [
+   2022,
+   2023,
+   2024,
+   2025
+  ]
+ },
+ "digest": {
+  "config": "852ac68ee78421ad75a847a4d1605afe7122980d4d37c6ed6a92bbf05816357a",
+  "data_manifest": "ac6e90a4fb538e6b94eec32d6efe651f675bfde43d17af096a321e8e463d01b8",
+  "files": {
+   "adapters/calendar.py": "de88d86f29ce666b2b66f2a7faadc12b437867249b6614b3e157bcde80e5a89e",
+   "adapters/flunet.py": "5ad0797855435846352d83bd87667d8b9fa8b2b1cbfea8b909fc85875d19095c",
+   "docs/PROTOCOL-UAE-v2.md": "e2e2c926dc66470d76d28843706d2f71681c166c7bb9a463c4c21dfd14349443",
+   "uae/alerts.py": "af084dc76568c0b0af99b026987579c494811c935abba866aa0a0fbac53a31bb",
+   "uae/backtest_v2.py": "5998ef997154fbd6b694c75cac3521cbede0e57c2dd73a33eb92d5dfc4af1dcd",
+   "uae/features_v2.py": "f0b0b75552b931a5b6906ee7143ee6263b358324d1b376f81b306e3a74ba7230",
+   "uae/models.py": "e7a2843c6e6128a0fc76110151b1d576f9550f6f3a18eb105e73f4280cef2da5",
+   "uae/models_v2.py": "08cb1c8f9dd7c6f8e84a8b953931c73a685156c06638a30a9f6ad7d1147bf4ed",
+   "uae/scoring.py": "ab2f632a338ce2d8e9c0b1cda48ff125dbc65e613b882667321ad3af243d95bf"
+  },
+  "root": "f745efc2c618c7d669739e6da5fd49f1be9c30badd0784fa36972558a3e4115a"
+ },
+ "hypotheses": [
+  "H1 v2 vs v1 relative WIS (improves only if pooled <1 and moving-block upper <1)",
+  "H2 v2 vs persistence per series"
+ ],
+ "label": "NABD-UAE-v2 retrospective evaluation (PROTOCOL-UAE-v2 v1.0)",
+ "locked_utc_self_attested": "2026-11-08T12:03:10.084610+00:00",
+ "schema": "nabd-lock/1"
+}

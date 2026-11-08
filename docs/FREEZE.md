@@ -15,3 +15,8 @@ Later changes are allowed only via docs/DEVIATIONS.md.
 ## Addendum (round 2, 8 Nov 2026)
 - **Prior exposure:** before this freeze, probes touched the test seasons (see DEVIATIONS D5). No NABD model was scored on them, but the point-model family and the D3 alert thresholds were chosen with that exposure.
 - **Anchoring:** this freeze is an *internal pre-registration in local git* (single author, commits 06:43–07:04Z on 8 Nov). Nothing was pushed or externally timestamped before results existed. Any public anchor (GitHub push, OSF or Zenodo, FluSight PR) post-dates the results and must be described that way. Future protocols (v2, the live ledger) must be externally anchored **before** issuing.
+
+## UAE track (data/UAE workstream, round 2)
+- **NABD-UAE-v1 frozen as-is** for the prospective public ledger (judges' fix: "freeze v1 as is"). Code: uae/models.py at commit da045ee (sha256 e7a2843c6e6128a0…). v1 was designed with all four UAE seasons visible; its LOSO numbers are **retrospective, design-stage, not pre-registered** (audit M9).
+- **PROTOCOL-UAE-v2 v1.0 locked** 2026-11-08T12:03:43Z (self-attested, local): `docs/LOCK-UAE-v2.json` (kit prereg.lock; plan + 8 code files + config + data manifest), Merkle root `f745efc2c618c7d6…`. Anchorable manifest `docs/lock_uae_v2/MANIFEST.sha256`, Merkle root `5ad8e85e7a609653…`. Committed before any v2 score. `uae/backtest_v2.py` calls `assert_locked` and refuses to score otherwise.
+- **External anchoring: NOT done.** OpenTimestamps calendars and freetsa.org are blocked from the build sandbox (tested 2026-11-08T12:03:43Z). The user must run `vendor/nabd_v2_kit/scripts/anchor.sh docs/lock_uae_v2/MANIFEST.sha256` locally and push; until then the lock time is self-attested and must be described that way.
