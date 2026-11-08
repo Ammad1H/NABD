@@ -177,3 +177,34 @@ NABD-UAE-v1 beat persistence in flu 4/4 seasons and RSV 3/4 (it loses on RSV 202
   - No explain file exists for the live issue date (2026-11-08). The card shows the latest LOSO example, labelled. The data agent should write `results/uae/explain/2026-11-08_*`.
   - The ledger meta still labels horizons with the end-of-week convention (+1.0/+2.0/+3.0).
   - Docker is still unbuilt (no daemon).
+
+## Round 2: data/UAE workstream (replacement agent), 8 Nov 2026
+**Built**
+- **UAE v2 (real multi-signal):** sentinel positivity, testing volume, NON-SENTINEL positivity (+1 wk lag), verified MoE school winter/spring breaks 2021/22–2026/27 (sources per row), Ramadan (kit tabular calendar).
+  - Weather omitted: every 2026 source is blocked, and a GitHub ERA5 mirror ends 2025-12-31.
+  - Protocol `docs/PROTOCOL-UAE-v2.md` locked by kit prereg (`docs/LOCK-UAE-v2.json`, f745efc2…; manifest 5ad8e85e…) **before** scoring, then scored once.
+  - **v2 did NOT beat v1:** pooled 1.059 (moving-block 1.016–1.111); flu 1.049, RSV 1.073. v2 vs persistence 0.815.
+  - **Ablation:** CLIM helps (+0.57 / +0.26 WIS when removed); NS (−0.09/−0.08) and CAL (−0.05/−0.04) *hurt* (overfitting on ~4 seasons); TV ≈ 0.
+- **Forward-in-time sensitivity (new, honest):** v1 vs persistence = 1.002 for both flu and RSV. The v1 LOSO advantage depends on training with later seasons.
+- **Explanations (G11):** exact per-term contributions for every LOSO issue date and the live round, in `results/uae/explain/<issue_date>_<target>.csv`.
+- **Feed removal and missing feeds (G10):** `results/uae/tables/ablation.csv`.
+  - NS dropped at forecast time → automatic fallback sub-model.
+  - Latest sentinel week missing → WIS +0.14–0.26.
+- **UAE alerts (G10, diagnostic, n=4):** `results/uae/tables/alerts_uae.csv`. Flu: v1 3/3 sensitivity, PPV 3/3, 0 false alarms, median lead 1.4 wk; census rule 2/3. RSV: weak for all rules (1/3).
+- **G12 GCC out-of-sample:**
+  - `docs/PREREG-GCC.md` locked (`docs/LOCK-GCC.json`, 741b36a9…) before any GCC download.
+  - Data: WHO's full FluNet export via a public mirror, verified against the official API (deviation G1).
+  - **PRIMARY MET:** flu, frozen v1 method vs persistence, 0.914 (0.843–0.983), OMN/QAT/SAU, forward-in-time, 9/12 country-seasons won. RSV 0.798 (0.719–0.894). BHR and KWT excluded by the rule.
+  - `results/gcc/`.
+- **Ledger R1:** v1 headline + v2 challenger + persistence, with a kit Merkle manifest (f1fffc0b…). `data_through` is now per series (m19). R0 has been scored: no target weeks published yet. `ledger/ANCHOR.md` has the user steps for OpenTimestamps/FreeTSA/Zenodo; anchoring is blocked from the sandbox.
+- **v1 reporting fixes:** common cells (m18); the integrity note is now generated, not hand-written (m17); labelled retrospective / not pre-registered (M9, U1).
+- **Tests:** tests/test_uae_v2.py (7) covers explain sums, no-future-data, the leak detector, known-future calendar, unverified calendar = NaN, and refusal by the GCC and v2 scorers without a valid lock. 30/30 pass together with test_adapters.
+
+**Gates advanced:** G4 (UAE track + locked v2), G10 (UAE alert metrics, missing-feed behaviour), G11 (exact explanations), G12 (done, MET).
+**Open:**
+- Outside anchors (user).
+- Weather (user, `adapters/weather.py --fetch` locally).
+- Re-pull GCC from xMart locally before publication.
+- v2 must not be marketed as an improvement.
+- Pitch should lead with GCC + live ledger, not UAE LOSO (which the forward-in-time test shows ≈ persistence).
+- After this commit, ledger/issue.py gained a live-explain writer. The R1 v2 forecast file was re-generated in a temp dir and reproduces byte-for-byte (sha 2e7979c4…).
