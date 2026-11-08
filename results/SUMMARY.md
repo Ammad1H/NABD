@@ -46,3 +46,64 @@ Chronos-2: NOT RUN in the build environment (weights blocked); excluded from the
 
 Figures: results/figures/rel_wis_by_horizon.png, coverage.png, fan_chart_CA_TX_h1.png.
 Relative WIS here = ratio of sums (CI: block bootstrap over reference dates, B=2000, seed 20261108). The overview table uses ratio of means on all-model common cells, so it can differ slightly from pairwise rows.
+
+## Round 2: sensitivity analyses and context (declared before computing: docs/DEVIATIONS.md D6, D7, D9, D10, D11)
+
+None of these changes the pre-registered PRIMARY verdict: **NOT MET**.
+
+**D6 sensitivity: circular moving-block bootstrap (L=4; L=6 check), relative WIS with 95% CIs:**
+
+| Analysis | rel. WIS | registered cluster CI | block L=4 CI | block L=6 CI |
+|---|---|---|---|---|
+| PRIMARY pooled | 1.223 | 1.011–1.521 | 0.979–1.573 | 0.965–1.553 |
+| S1 pooled vs baseline | 0.816 | 0.654–1.028 | 0.600–1.030 | 0.583–1.021 |
+| S3 season 2024/25 | 1.026 | 0.886–1.244 | 0.916–1.360 | 0.904–1.366 |
+| S3 season 2024/25 vs baseline | 0.690 | 0.567–0.814 | 0.438–0.844 | 0.410–0.839 |
+| S3 season 2025/26 | 1.516 | 1.081–2.012 | 0.979–2.027 | 0.977–1.985 |
+| S3 season 2025/26 vs baseline | 0.998 | 0.662–1.455 | 0.571–1.403 | 0.554–1.411 |
+| E1 EXPLORATORY realised phase=rising *(EXPLORATORY, realised phase; not a claim)* | 0.893 | 0.821–0.984 | 0.813–1.029 | 0.812–1.026 |
+| E1 EXPLORATORY realised phase=flat *(EXPLORATORY, realised phase; not a claim)* | 1.859 | 1.553–2.203 | 1.476–2.310 | 1.457–2.349 |
+| E1 EXPLORATORY realised phase=falling *(EXPLORATORY, realised phase; not a claim)* | 1.960 | 1.349–2.481 | 1.180–2.434 | 1.168–2.443 |
+
+**National series share of total WIS:** NABD 46.0%, FluSight-ensemble 44.9%.
+
+- PRIMARY excl. US national: rel. WIS 1.198 (cluster CI 1.014–1.449; block L=4 0.992–1.488)
+- S1 excl. US national: rel. WIS 0.818 (cluster CI 0.675–0.998; block L=4 0.624–0.999)
+
+**Per-location wins (NABD WIS sum < comparator's, by location × season):**
+
+- vs FluSight-ensemble, 2024/25: 18/53 locations (median ratio 1.03)
+- vs FluSight-ensemble, 2025/26: 0/53 locations (median ratio 1.44)
+- vs FluSight-ensemble, pooled: 0/53 locations (median ratio 1.22)
+- vs FluSight-baseline, 2024/25: 49/53 locations (median ratio 0.71)
+- vs FluSight-baseline, 2025/26: 18/53 locations (median ratio 1.08)
+- vs FluSight-baseline, pooled: 47/53 locations (median ratio 0.86)
+
+**D7 league table (pairwise relative WIS vs FluSight-baseline, Cramer et al. 2022; models with ≥50% of possible cells):**
+
+- 2024/25, all included: NABD rank **13 of 41** (rel. WIS 0.693)
+- 2024/25, excluding ensembles: NABD rank **7 of 21** (rel. WIS 0.693)
+- 2025/26, all included: NABD rank **40 of 46** (rel. WIS 1.007)
+- 2025/26, excluding ensembles: NABD rank **19 of 25** (rel. WIS 0.997)
+  - for reference, CDC FluSight-ensemble 2024/25: rank 12 of 41 (rel. WIS 0.673)
+  - for reference, CDC FluSight-ensemble 2025/26: rank 14 of 46 (rel. WIS 0.657)
+
+NABD-ensemble combines only NABD's own two members, so it is not flagged as a multi-model ensemble (D11d).
+
+**D10 / G13 (descriptive): relative WIS vs FluSight-ensemble by as-of phase (3-week slope at forecast time), all horizons:**
+
+- rising: 1.272 over 3780 cells (NABD WIS shares: dispersion 32% / over 28% / under 40%)
+- flat: 0.974 over 2008 cells (NABD WIS shares: dispersion 45% / over 9% / under 46%)
+- falling: 1.293 over 5872 cells (NABD WIS shares: dispersion 47% / over 3% / under 50%)
+- ALL: 1.223 over 11660 cells (NABD WIS shares: dispersion 36% / over 22% / under 42%)
+
+**Relative economic value** (event ≥3/100k at h2 = +2.5 wk; act when p > C/L; 1 = perfect, 0 = base rate; no CIs computed, descriptive):
+
+| model | C/L=0.02 | C/L=0.05 | C/L=0.1 | C/L=0.2 | C/L=0.3 | C/L=0.5 | C/L=0.7 |
+|---|---|---|---|---|---|---|---|
+| FluSight-baseline | -0.07 | -0.39 | -0.41 | 0.03 | 0.33 | 0.50 | 0.31 |
+| FluSight-ensemble | -0.13 | 0.11 | 0.26 | 0.49 | 0.61 | 0.67 | 0.55 |
+| NABD-ensemble | 0.08 | 0.22 | 0.37 | 0.48 | 0.55 | 0.62 | 0.45 |
+
+Figures (slide-ready): results/figures/fig1_rel_wis_season_horizon.png, fig2_league_table.png, fig3_wis_decomposition.png, fig4_rev.png.
+Scorer cross-check (D9): PASS. Our WIS equals an independent implementation exactly on all cells.

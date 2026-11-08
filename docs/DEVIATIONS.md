@@ -29,3 +29,8 @@
 | U3 | 2026-11-08 | Data (pre-lock) | data/raw/uae_calendar.csv: past winter/spring breaks 2021/22–2025/26 verified from news reports of MoE/Cabinet calendars (URLs per row). The 2025/26 winter break (8 Dec–4 Jan) and spring break (16–29 Mar 2026) replace the earlier approximate rows; mid-terms are recorded but not used. | Spec v1.3: calendar as a real signal | No v2 score existed |
 | U4 | 2026-11-08 | Reporting fix (v1, no model change) | v1 tables are now computed on common cells across models (audit m18); the integrity note is emitted by the generator (m17); the ledger stores `data_through` per series (m19). v1 point estimates may move in the 3rd decimal. | Audit minor items | Yes |
 | U5 | 2026-11-08 | Disclosure | Weather is not in v2: no source covering 2026 is reachable from the sandbox (NOAA, Open-Meteo [robots-disallowed via WebFetch], Meteostat blocked; a GitHub ERA5 mirror ends 2025-12-31). | Spec v1.3 "omit, don't fake" | n/a |
+
+## Results of declared checks (appended after computing; entries above unchanged)
+
+- **D9 scorer cross-check (computed 2026-11-08):** PASS. Our `eval.wis.wis` and the vendored independent `nabd_kit.scoring.wis` agree exactly (max abs difference 0.0) on all scored cells: NABD-ensemble 11,872, FluSight-ensemble 11,660, FluSight-baseline 11,660. There are no crossing quantiles in any of the three. Table: results/tables/scorer_crosscheck.csv. The kit's own test suite passes 26/26.
+- **D6/D7/D10:** computed by `eval/round2.py`; numbers in results/SUMMARY.md ("Round 2" section) and results/summary.json `round2`. None changes the PRIMARY verdict (NOT MET).
