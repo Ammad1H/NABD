@@ -25,3 +25,21 @@ NABD-UAE-v1 beat persistence in flu 4/4 seasons and RSV 3/4 (it loses on RSV 202
 - R0 must be pushed publicly by the user.
 - The W44 RSV drop may be a reporting artefact.
 - The modelling workstream's US track is separate (not in this workstream's scope).
+
+## B1 evidence & pitch workstream (8 Nov)
+- **Built:**
+  - research/burden.md (G7: 8 verified burden items; best is Tawam RSV, 2,189 admissions of children aged 5 and under 2018–22, positivity 2.9–16%, JIPH 2025);
+  - research/competitors.md (ADPHC tender scope verified, awardee not found; GE CareIntellect is 72 h, in-hospital);
+  - research/tc.md (FAQ + T&C + the official Statement 06 requirement list);
+  - pitch/outreach.md, qa.md, deck-script.md, demo-script.md, registration.md.
+- **Gates:** G7 PASS (burden verified; emails drafted; T&C summarised). G8 groundwork done, with ⟦RESULT⟧ slots still to fill from results/.
+- **COORDINATOR FLAGS:**
+  1. The official Statement 06 req. 5 asks for lead time, sensitivity, PPV, false alarms, data latency and missing-input behaviour. Req. 2 asks alerts to show contributing signals, locations and time periods. Add both to the G3/G5 scope.
+  2. The T&C grant the Organiser a 6-month right of first refusal on exclusive licences. An open-source licence for the repo looks compatible.
+  3. There is no conflict-of-interest clause; MBZUAI's own policy should be checked.
+  4. Team engagement at checkpoints is mandatory (disqualification risk).
+  5. DoH said in Sep 2026 that activity is similar to the previous two seasons, so don't pitch it as a crisis.
+- **Open:**
+  - the DoH Circular 37/2026 PDF (robots-blocked, so read it in a browser);
+  - fill the ⟦RESULT⟧ slots after the modelling run;
+  - abstract word counts run slightly over (56/160/310), so trim if the form enforces limits.
