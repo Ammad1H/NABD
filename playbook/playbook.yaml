@@ -18,7 +18,7 @@ review:
 rules:
   level:
     statistic: "forecast median"
-    horizon: "first forecast week at least +1 wk after the issue date"
+    horizon: "first target week ending after the issue date (about +0.5 wk, measured to the middle of the target week)"
   trend:
     statistic: "forecast median at the furthest horizon / last observed value"
     rising_if_ratio_at_least: 1.15
@@ -132,7 +132,7 @@ bands:
       adphc_duty:
         en: "Consider public advisory on respiratory hygiene and when to seek care; coordinate inter-facility capacity."
         ar: "النظر في إصدار إرشاد عام حول النظافة التنفسية ومتى يجب طلب الرعاية، وتنسيق السعة بين المنشآت."
-  - id: rsv_high_not_rising
+  - id: rsv_high_steady_or_falling
     target: "wk rsv pos pct sentinel"
     location: ARE
     horizon_label: "level horizon"
@@ -223,7 +223,7 @@ bands:
       adphc_duty:
         en: "Consider public advisory; coordinate inter-facility capacity."
         ar: "النظر في إصدار إرشاد عام وتنسيق السعة بين المنشآت."
-  - id: flu_high_not_rising
+  - id: flu_high_steady_or_falling
     target: "wk flu pos pct sentinel"
     location: ARE
     horizon_label: "level horizon"
