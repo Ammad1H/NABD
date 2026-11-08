@@ -76,3 +76,14 @@ def test_shadow_scorer_reports_prespecified_exit_rule():
     assert "SYNTHETIC" in out["data"]
     assert out["verdict"] in {"EXIT CRITERIA MET", "EXIT CRITERIA NOT MET", "NOT COMPUTABLE"}
     assert "0.9" in out.get("exit_rule", "0.9")
+
+
+def test_gcc_verify_compare_detects_differences():
+    from adapters.gcc_verify import compare
+    a = pd.DataFrame({"COUNTRY_CODE": ["QAT", "QAT"], "ISO_YEAR": [2024, 2024], "ISO_WEEK": [1, 2],
+                      "ORIGIN_SOURCE": ["NOTDEFINED"] * 2, "SPEC_PROCESSED_NB": [958.0, 869.0],
+                      "INF_ALL": [89.0, 50.0], "RSV": [26.0, np.nan]})
+    assert len(compare(a, a.copy())) == 0
+    b = a.copy(); b.loc[1, "INF_ALL"] = 51.0
+    assert len(compare(a, b)) == 1
+    assert len(compare(a, a.iloc[:1])) == 1  # missing in the official copy
