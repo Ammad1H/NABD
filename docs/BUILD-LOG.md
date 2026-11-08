@@ -215,3 +215,21 @@ NABD-UAE-v1 beat persistence in flu 4/4 seasons and RSV 3/4 (it loses on RSV 202
 - New: docs/TECHNICAL.md (mermaid architecture, model equations, protocol and lock provenance table, results tables, reproducibility, governance, limitations, deviations), pitch/video-script.md (336-word voiceover), pitch/one-pager.md.
 - ⟦IF BUILT⟧ slots remain for round-3 app items (exceedance probabilities, season-shape panel, bed-days scenario), PILOT-DATA-SPEC and the anchor receipt. Cut them if absent on 19 Nov.
 - Not touched: pitch/registration.md (final, coordinator c887edc).
+
+## Round 3, data (retry), 8 Nov 2026
+- **Ledger:**
+  - issue-relative horizon labels (nowcast/+0.5/+1.5/+2.5 wk) in round metadata, matching the card;
+  - an EXACT v1 (headline) per-signal explanation for the live issue date (`results/uae/explain/2026-11-08_*`), tested to match the hashed R1 median; the v2 explanation moved to `explain/challenger_v2/`;
+  - `ledger.issue --explain-only` writes no ledger files;
+  - `ledger.weekly`: one idempotent command that scores and issues only when there is a new WHO week (tested).
+- **R3-3 pilot:**
+  - `docs/PILOT-DATA-SPEC.md`: Tableegh/Malaffi context, ADHICS and the DoH AI policy cited; governance checklist; pre-specified exit criteria.
+  - `adapters/pilot.py`: strict aggregate schema, k≥10 + complementary suppression, identifier rejection, no back-imputation.
+  - A SYNTHETIC weekly example, the `uae/pilot_shadow.py` scorer, and tests.
+  - Finding: daily RSV admission counts are fully suppressed at k=10, so the spec asks for weekly aggregates.
+- **GCC data:**
+  - The official xMart API is blocked from the shell, so a full re-pull isn't possible here.
+  - Spot check extended to 16 more official rows (QAT, SAU, OMN), 16/16 identical; cumulative 23/23 (DEVIATIONS G1b). No re-score.
+  - `adapters/gcc_verify.py` lets the user close G1 locally.
+- **docs/RUNBOOK.md:** weekly ledger, FluSight, app, pilot and pre-publish checks, with a dry-run record.
+- **Tests:** 120 passed.
