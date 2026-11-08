@@ -118,13 +118,15 @@ if page == "nav_card":
     if is_demo:
         demo_banner()
     fr = data_io.freshness(observed)
-    issue = dt.date.fromisoformat(str(meta.get("reference_date")))
+    issue = dt.date.fromisoformat(str(meta.get("issue_date") or meta.get("reference_date")))
     c1, c2, c3 = st.columns([2, 2, 3])
     c1.metric(t("last_week", lang), fr["last_week"])
     c2.metric(t("lag", lang), f'{fr["lag_days"]} {t("days", lang)}', f'{t("expected", lang)} ~{fr["expected_lag_days"]}', delta_color="off")
     badge = "nabd-badge-warn" if fr["stale"] else "nabd-badge-ok"
     c3.markdown(f'<br><span class="{badge}">{t("freshness", lang)}: {t("stale" if fr["stale"] else "fresh", lang)}</span>'
-                f'<br><small>Issued {issue.isoformat()} · model: {meta.get("model")}</small>', unsafe_allow_html=True)
+                f'<br><small>Issued {issue.isoformat()} · model: <b>{meta.get("model")}</b> · source: {meta.get("source")}'
+                + (f'<br>round <code>{meta["round_file"]}</code> · SHA-256 <code>{meta["sha256"][:16]}…</code>' if meta.get("round_file") else "")
+                + '</small>', unsafe_allow_html=True)
 
     pb = load_playbook()
     for col in ("rsv", "flu"):
@@ -132,7 +134,7 @@ if page == "nav_card":
         st.subheader(t(col, lang))
         left, right = st.columns([3, 2])
         with left:
-            st.altair_chart(fan_chart(col, target, fc, pers, issue), use_container_width=True)
+            st.altair_chart(fan_chart(col, target, fc, pers, issue), width="stretch")
             st.caption(f"Teal: forecast median with 80% / 95% bands · dashed slate: {t('persistence', lang)} · red rule: issue date")
             f = fan_frame(fc, target)
             pe = fan_frame(pers, target)
@@ -143,7 +145,7 @@ if page == "nav_card":
                 t("band80", lang): [f"{a:.1f}–{b:.1f}" for a, b in zip(f[0.1], f[0.9])],
                 t("persistence", lang): pe[0.5].round(1).values[:len(f)],
             })
-            st.dataframe(tbl, hide_index=True, use_container_width=True)
+            st.dataframe(tbl, hide_index=True, width="stretch")
         with right:
             st.markdown(f"**{t('drivers', lang)}** <small>(descriptive context, not model attributions)</small>", unsafe_allow_html=True)
             for d in drivers(col):
@@ -190,7 +192,7 @@ if page == "nav_card":
         recs = audit.read_records()
         if recs:
             st.dataframe(pd.DataFrame(recs)[["seq", "ts_utc", "approver", "role", "decision", "reason_code",
-                                             "band_id", "hash"]], hide_index=True, use_container_width=True)
+                                             "band_id", "hash"]], hide_index=True, width="stretch")
 
 elif page == "nav_us":
     summary, s_demo = data_io.load_us_summary()
@@ -208,16 +210,38 @@ elif page == "nav_us":
     st.json(summary, expanded=False)
     for name, df in tables.items():
         st.markdown(f"**{name}**")
-        st.dataframe(df, hide_index=True, use_container_width=True)
+        st.dataframe(df, hide_index=True, width="stretch")
         rel_cols = [c for c in df.columns if "rel" in c.lower() and pd.api.types.is_numeric_dtype(df[c])]
         if "horizon" in df.columns and rel_cols:
             colour = "season:N" if "season" in df.columns else alt.value(TEAL)
             ch = alt.Chart(df).mark_line(point=True).encode(x="horizon:O", y=alt.Y(f"{rel_cols[0]}:Q", scale=alt.Scale(zero=False)),
                                                            color=colour)
             ref = alt.Chart(pd.DataFrame({"y": [1.0, 1.15]})).mark_rule(strokeDash=[4, 4], color=ROSE).encode(y="y:Q")
-            st.altair_chart((ch + ref).properties(height=240), use_container_width=True)
+            st.altair_chart((ch + ref).properties(height=240), width="stretch")
     for fig in data_io.list_figures():
         st.image(str(fig), caption=fig.name)
+
+    st.divider()
+    st.subheader("UAE retrospective (leave-one-season-out, n = 4 seasons)")
+    uae = data_io.load_uae_summary()
+    if uae is None:
+        demo_banner()
+        st.info("results/uae/summary.json not found yet.")
+    else:
+        st.caption("Shown verbatim from results/uae/summary.json. Only 4 seasons: treat as indicative, not definitive.")
+        rel = uae.get("rel_wis_nabd", {})
+        if rel:
+            st.dataframe(pd.DataFrame([{"comparison": k, "rel_wis": v.get("rel_wis"),
+                                        "ci95_low": (v.get("ci95") or [None, None])[0],
+                                        "ci95_high": (v.get("ci95") or [None, None])[1],
+                                        "n_reference_dates": v.get("n_reference_dates")} for k, v in rel.items()]),
+                         hide_index=True, width="stretch")
+        st.json(uae, expanded=False)
+        for name, df in data_io.load_uae_tables().items():
+            with st.expander(f"Table: {name}"):
+                st.dataframe(df, hide_index=True, width="stretch")
+        for fig in data_io.list_figures("uae"):
+            st.image(str(fig), caption=fig.name)
 
 elif page == "nav_ledger":
     rounds, scored, l_demo = data_io.load_ledger(observed)
@@ -226,11 +250,11 @@ elif page == "nav_ledger":
     st.subheader(t("nav_ledger", lang))
     st.markdown("Every forecast round is committed publicly **before** its target weeks are published. "
                 "The hash below is recomputed from the file now; it must match the recorded hash and the public commit.")
-    st.dataframe(rounds, hide_index=True, use_container_width=True)
+    st.dataframe(rounds, hide_index=True, width="stretch")
     if not scored.empty:
         sc = scored.copy()
         sc["status"] = sc.inside_80pct_band.map({True: "inside 80% band", False: "outside 80% band", None: "awaiting data"})
-        st.dataframe(sc, hide_index=True, use_container_width=True)
+        st.dataframe(sc, hide_index=True, width="stretch")
         n = sc.inside_80pct_band.notna().sum()
         if n:
             st.metric("Scored points inside 80% band", f"{int(sc.inside_80pct_band.sum())}/{int(n)}")
@@ -249,7 +273,7 @@ elif page == "nav_ablation":
     for c, name in zip(cols, abl.columns[1:]):
         val = row[name]
         c.metric(name, f"{val:.3f}" if isinstance(val, (int, float, np.floating)) else str(val))
-    st.dataframe(abl, hide_index=True, use_container_width=True)
+    st.dataframe(abl, hide_index=True, width="stretch")
     st.caption("Shows how much each signal family contributes: removing a useful feed should worsen WIS and widen intervals.")
 
 elif page == "nav_workforce":
@@ -263,7 +287,7 @@ elif page == "nav_workforce":
     emp = synthetic_employers(n_employers=n)
     table, one_server = secure_aggregate(emp, k=k)
     table["status"] = table.released.map({True: "released", False: f"SUPPRESSED (<{k} employers)"})
-    st.dataframe(table.drop(columns=["released"]), hide_index=True, use_container_width=True)
+    st.dataframe(table.drop(columns=["released"]), hide_index=True, width="stretch")
     with st.expander("What one aggregation server sees (random-looking share sums)"):
         st.dataframe(pd.DataFrame(one_server), hide_index=True)
     sim_watermark()

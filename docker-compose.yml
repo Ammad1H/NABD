@@ -1,0 +1,15 @@
+services:
+  app:
+    build: .
+    ports: ["8501:8501"]
+    volumes:
+      - ./app/audit:/srv/nabd/app/audit      # audit log persists outside the container
+      - ./results:/srv/nabd/results:ro
+      - ./ledger:/srv/nabd/ledger:ro
+  api:
+    build: .
+    command: ["uvicorn", "app.api:app", "--host", "0.0.0.0", "--port", "8000"]
+    ports: ["8000:8000"]
+    volumes:
+      - ./results:/srv/nabd/results:ro
+      - ./ledger:/srv/nabd/ledger:ro

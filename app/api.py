@@ -38,6 +38,8 @@ class ForecastResponse(BaseModel):
     unit: Literal["percent"] = "percent"
     model: str
     reference_date: str
+    issue_date: str = Field(description="Date horizons are measured from")
+    source: str
     demo: bool
     data_last_week: str
     data_lag_days: int
@@ -73,7 +75,7 @@ def forecast(location: str = Query("ARE", description="Only ARE is served"),
     if df.empty:
         raise HTTPException(404, "no forecast for that target")
     import datetime as dt
-    issue = dt.date.fromisoformat(str(meta["reference_date"]))
+    issue = dt.date.fromisoformat(str(meta.get("issue_date") or meta["reference_date"]))
     out = []
     for ted, g in df.sort_values("q").groupby("target_end_date"):
         qs = [QuantileValue(quantile=float(q), value=float(v)) for q, v in zip(g.q, g.value)]
@@ -82,5 +84,5 @@ def forecast(location: str = Query("ARE", description="Only ARE is served"),
                                    horizon_label=data_io.horizon_label(ted, issue), quantiles=qs, median=med))
     fr = data_io.freshness(obs)
     name = meta.get("model", "unknown") if model == "primary" else str(df.model.iloc[0])
-    return ForecastResponse(location=location, target=target, model=name, reference_date=issue.isoformat(),
-                            demo=demo, data_last_week=fr["last_week"], data_lag_days=fr["lag_days"], forecasts=out)
+    return ForecastResponse(location=location, target=target, model=name, reference_date=str(meta["reference_date"]), issue_date=issue.isoformat(),
+                            source=str(meta.get("source", "")), demo=demo, data_last_week=fr["last_week"], data_lag_days=fr["lag_days"], forecasts=out)

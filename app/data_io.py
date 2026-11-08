@@ -9,6 +9,7 @@ import datetime as dt
 import glob
 import hashlib
 import json
+import re
 import subprocess
 from pathlib import Path
 
@@ -18,7 +19,9 @@ import pandas as pd
 from app import demo_data
 
 ROOT = Path(__file__).resolve().parents[1]
-RAW_FLUNET = ROOT / "data" / "raw" / "flunet_are_webfetch.csv"
+RAW_FLUNET_CANDIDATES = [ROOT / "data" / "raw" / "flunet_are.csv",            # refreshed by the data workstream
+                         ROOT / "data" / "raw" / "flunet_are_webfetch.csv"]    # original 5 Nov copy
+RAW_FLUNET = next((p for p in RAW_FLUNET_CANDIDATES if p.exists()), RAW_FLUNET_CANDIDATES[-1])
 RESULTS = ROOT / "results"
 LEDGER = ROOT / "ledger"
 
@@ -83,34 +86,94 @@ def _normalise_quantiles(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
+ROUND_RE = re.compile(r"^(\d{4}-\d{2}-\d{2}T\d{4}Z)_(.+)\.csv$")
+
+
+def ledger_round_files() -> list[Path]:
+    """Ledger forecast rounds only (`<UTC>_<model>.csv`), not scores or helper files."""
+    if not LEDGER.exists():
+        return []
+    return sorted(f for f in LEDGER.glob("*.csv") if ROUND_RE.match(f.name))
+
+
+def _round_issue_date(stamp: str) -> dt.date:
+    return dt.date.fromisoformat(stamp[:10])
+
+
 def load_uae_forecasts(observed: pd.DataFrame | None = None):
-    """Return (primary_df, persistence_df, meta, is_demo). Quantile frames in contract format."""
+    """Return (primary_df, persistence_df, meta, is_demo). Quantile frames in contract format.
+
+    Source priority for the weekly card:
+      1. the latest LIVE ledger round (ledger/<UTC>_<model>.csv); issue date = round timestamp;
+      2. the latest retrospective forecast in results/uae/forecasts/<model>/ (labelled retrospective);
+      3. DEMO data.
+    meta["issue_date"] is the date horizons are measured from.
+    """
     observed = observed if observed is not None else load_uae_observed()
-    base = RESULTS / "uae" / "forecasts"
-    primary = persist = None
     meta: dict = {}
-    if base.exists():
+    primary = persist = None
+    rounds = ledger_round_files()
+    if rounds:
+        by_stamp: dict[str, dict[str, Path]] = {}
+        for f in rounds:
+            stamp, model = ROUND_RE.match(f.name).groups()
+            by_stamp.setdefault(stamp, {})[model] = f
+        for stamp in sorted(by_stamp, reverse=True):
+            models = by_stamp[stamp]
+            name = next((m for m in PRIMARY_MODEL_PREFS if m in models), None) or next(
+                (m for m in sorted(models) if m not in PERSISTENCE_NAMES), None)
+            if name is None:
+                continue
+            primary = _normalise_quantiles(pd.read_csv(models[name]))
+            pname = next((m for m in PERSISTENCE_NAMES if m in models), None)
+            if pname:
+                persist = _normalise_quantiles(pd.read_csv(models[pname]))
+            sha = hashlib.sha256(models[name].read_bytes()).hexdigest()
+            meta.update(model=name, source="live ledger round", round_file=models[name].name,
+                        sha256=sha, reference_date=str(primary.reference_date.iloc[0]),
+                        issue_date=_round_issue_date(stamp).isoformat())
+            break
+    base = RESULTS / "uae" / "forecasts"
+    if primary is None and base.exists():
         dirs = {p.name: p for p in base.iterdir() if p.is_dir()}
         for name in PRIMARY_MODEL_PREFS + sorted(dirs):
             if name in dirs and name not in PERSISTENCE_NAMES:
                 df, ref = _latest_forecast(dirs[name])
                 if df is not None:
                     primary = _normalise_quantiles(df)
-                    meta.update(model=name, reference_date=ref)
-                    break
-        for name in PERSISTENCE_NAMES:
-            if name in dirs:
-                df, _ = _latest_forecast(dirs[name])
-                if df is not None:
-                    persist = _normalise_quantiles(df)
+                    meta.update(model=name, source="retrospective (latest file in results/uae/forecasts)",
+                                reference_date=ref, issue_date=ref)
+                    for pn in PERSISTENCE_NAMES:
+                        if pn in dirs and (dirs[pn] / f"{ref}.csv").exists():
+                            persist = _normalise_quantiles(pd.read_csv(dirs[pn] / f"{ref}.csv"))
                     break
     if primary is None:
         p, pe, m = demo_data.uae_forecasts(observed)
+        m["issue_date"] = m["reference_date"]
+        m["source"] = "DEMO"
         return p, pe, m, True
     if persist is None:
         persist = demo_data.persistence_from_observed(observed, primary)
         meta["persistence_source"] = "computed in-app from last observed value (not a results/ file)"
     return primary, persist, meta, False
+
+
+def load_uae_summary():
+    p = RESULTS / "uae" / "summary.json"
+    if p.exists():
+        with open(p, encoding="utf-8") as f:
+            return json.load(f)
+    return None
+
+
+def load_uae_tables() -> dict[str, pd.DataFrame]:
+    out = {}
+    for f in sorted(glob.glob(str(RESULTS / "uae" / "tables" / "*.csv"))):
+        try:
+            out[Path(f).stem] = pd.read_csv(f)
+        except Exception:  # noqa: BLE001
+            continue
+    return out
 
 
 # ---------------------------------------------------------------- US proof
@@ -144,8 +207,9 @@ def load_ablation() -> tuple[pd.DataFrame, bool]:
     return demo_data.ablation_table(), True
 
 
-def list_figures() -> list[Path]:
-    return sorted((RESULTS / "figures").glob("*.png")) if (RESULTS / "figures").exists() else []
+def list_figures(sub: str = "") -> list[Path]:
+    d = RESULTS / sub / "figures" if sub else RESULTS / "figures"
+    return sorted(d.glob("*.png")) if d.exists() else []
 
 
 # ---------------------------------------------------------------- ledger
@@ -180,7 +244,7 @@ def load_ledger(observed: pd.DataFrame | None = None) -> tuple[pd.DataFrame, pd.
     scored: per round x target x week, realised value vs the 10-90% band where observed.
     """
     observed = observed if observed is not None else load_uae_observed()
-    files = sorted(f for f in LEDGER.glob("*.csv")) if LEDGER.exists() else []
+    files = ledger_round_files()
     if not files:
         r, s = demo_data.ledger(observed)
         return r, s, True
@@ -195,7 +259,8 @@ def load_ledger(observed: pd.DataFrame | None = None) -> tuple[pd.DataFrame, pd.
                     parts = [p.strip() for p in line.split("|") if p.strip()]
                     recorded = next((p for p in parts if len(p) == 64), None)
         actual = hashlib.sha256(f.read_bytes()).hexdigest()
-        rounds.append({"round_file": f.name, "issued_utc": f.name.split("_")[0],
+        stamp, model = ROUND_RE.match(f.name).groups()
+        rounds.append({"round_file": f.name, "model": model, "issued_utc": stamp,
                        "sha256": actual, "recorded_sha256": recorded,
                        "hash_matches": (recorded == actual) if recorded else None,
                        "git_commit_time": _git_commit_time(f)})
