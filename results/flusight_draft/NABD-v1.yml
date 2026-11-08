@@ -1,0 +1,30 @@
+# DRAFT model-metadata for the CDC FluSight hub. NOT SUBMITTED. The user must review, fill the
+# placeholders, and decide whether to submit (see docs/FLUSIGHT-PARTICIPATION.md).
+# File name in the hub must be model-metadata/<team_abbr>-<model_abbr>.yml (here: NABD-v1.yml).
+team_name: "NABD (MBZUAI student team)"            # PLACEHOLDER: user to confirm the team name
+team_abbr: "NABD"                                  # PLACEHOLDER: [a-zA-Z0-9_+], max 16 chars, no hyphens
+model_name: "NABD v1 damped-trend quantile ensemble"
+model_abbr: "v1"                                   # [a-zA-Z0-9_+], max 16 chars
+model_version: "1.0"
+model_contributors: [
+  {
+    "name": "PLACEHOLDER Name",
+    "affiliation": "Mohamed bin Zayed University of Artificial Intelligence (MBZUAI)",
+    "email": "PLACEHOLDER@mbzuai.ac.ae"
+  }
+]
+website_url: "PLACEHOLDER: public repo URL"
+repo_url: "PLACEHOLDER: public repo URL"
+license: "CC-BY-4.0"
+# false recommended: v1 did NOT meet non-inferiority vs the FluSight-ensemble in our pre-registered
+# 2024/25-2025/26 back-test (results/SUMMARY.md), so it should not be offered for the CDC ensemble.
+designated_model: false
+baseline_model: false
+citation: "PLACEHOLDER"
+team_funding: "None."
+data_inputs: "Weekly confirmed influenza hospital admissions (NHSN) from the FluSight hub target data, as available at each forecast deadline (vintage-correct)."
+methods: "Two-member quantile ensemble (damped log-linear trend GLM + empirical error quantiles), Vincentized and widened; tuned on 2023/24 only."
+methods_long: "Pre-registered (PROTOCOL v1.0, frozen 2026-11-08). Member 1: per-location damped log-linear trend with pooled shrinkage and a national seasonal-slope term, quantiles from a parametric GLM error model. Member 2: same point model with empirical rolling-origin log-error quantiles pooled within level strata. Ensemble: quantile average (Vincentization) with a tuned widening factor. Only data available at each forecast deadline are used. Retrospective evaluation 2024/25-2025/26: relative WIS vs FluSight-ensemble 1.22 (95% CI 1.01-1.52), non-inferiority not met; vs FluSight-baseline 0.82."
+ensemble_of_models: false
+ensemble_of_hub_models: false
+designated_targets: []
