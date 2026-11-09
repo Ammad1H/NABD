@@ -16,7 +16,7 @@ import numpy as np
 import yaml
 
 PLAYBOOK_PATH = Path(__file__).with_name("playbook.yaml")
-REQUIRED_ROLES = {"hospital_ops", "adphc_duty"}
+REQUIRED_ROLES = {"hospital_ops", "adphc_duty", "occupational_health"}
 REQUIRED_LANGS = {"en", "ar"}
 TRENDS = ("rising", "plateau", "falling")
 DEFAULT_RULES = {"rising_if_ratio_at_least": 1.15, "falling_if_ratio_at_most": 0.87}
@@ -87,7 +87,10 @@ def validate_playbook(pb: dict[str, Any]) -> None:
         if b["tier"] not in (1, 2, 3):
             raise PlaybookError(f"band {b['id']}: tier must be 1, 2 or 3")
         if set(b["actions"]) != REQUIRED_ROLES:
-            raise PlaybookError(f"band {b['id']}: actions needed for both roles")
+            raise PlaybookError(f"band {b['id']}: actions needed for every role {sorted(REQUIRED_ROLES)}")
+        lab = b.get("label")
+        if not isinstance(lab, dict) or not REQUIRED_LANGS <= set(lab) or not all(str(lab[x]).strip() for x in REQUIRED_LANGS):
+            raise PlaybookError(f"band {b['id']}: plain-language label with en and ar required")
         for role, text in b["actions"].items():
             if not REQUIRED_LANGS <= set(text):
                 raise PlaybookError(f"band {b['id']} role {role}: en and ar required")

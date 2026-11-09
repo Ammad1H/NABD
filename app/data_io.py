@@ -74,6 +74,42 @@ def horizon_label(target_end: dt.date, issue: dt.date) -> str:
     return "nowcast" if wk <= 0 else f"+{wk:g} wk"
 
 
+def round_horizon_labels(round_csv: Path) -> dict[str, str]:
+    """Horizon labels exactly as the ledger round's own meta.json states them (target_end_date -> label).
+
+    Live rounds carry their own horizon convention (R0/R1 measure to the END of the target week: +1/+2/+3 wk;
+    later rounds may use the issue-relative midpoint convention). The card shows the round's own numbers so the
+    app, the bulletin and the ledger never disagree. A nowcast is shown as "nowcast" (no claim about whether the
+    target week had ended at issue).
+    """
+    meta = round_csv.with_name(round_csv.name[:-4] + ".meta.json")
+    if not meta.exists():
+        return {}
+    try:
+        m = json.loads(meta.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}
+    out: dict[str, str] = {}
+    for h in m.get("horizons") or []:
+        ted = str(h.get("target_end_date"))
+        w = h.get("weeks_ahead_of_issue")
+        lab = str(h.get("horizon_label") or "")
+        if lab.startswith("nowcast") or (w is not None and float(w) <= 0):
+            out[ted] = "nowcast"
+        elif w is not None:
+            out[ted] = f"+{float(w):g} wk"
+        elif lab:
+            out[ted] = lab.replace(" after issue", "")
+    return out
+
+
+def display_horizon(target_end, issue: dt.date, meta: dict | None) -> str:
+    """Label used everywhere in the app and the bulletin: the ledger round's own label when available."""
+    d = pd.Timestamp(target_end).date()
+    labels = (meta or {}).get("horizon_labels") or {}
+    return labels.get(d.isoformat()) or horizon_label(d, issue)
+
+
 # ---------------------------------------------------------------- UAE forecasts
 def _latest_forecast(model_dir: Path) -> tuple[pd.DataFrame | None, str | None]:
     files = sorted(model_dir.glob("*.csv"))
@@ -142,7 +178,9 @@ def load_uae_forecasts(observed: pd.DataFrame | None = None):
             sha = hashlib.sha256(models[name].read_bytes()).hexdigest()
             meta.update(model=name, source="live ledger round", round_file=models[name].name,
                         sha256=sha, reference_date=str(primary.reference_date.iloc[0]),
-                        issue_date=_round_issue_date(stamp).isoformat())
+                        issue_date=_round_issue_date(stamp).isoformat(), round_stamp=stamp,
+                        horizon_labels=round_horizon_labels(models[name]),
+                        horizon_convention="ledger round's own labels (weeks from issue to the end of the target week)")
             break
     base = RESULTS / "uae" / "forecasts"
     if primary is None and base.exists():
@@ -441,7 +479,7 @@ def season_stats(seasons: pd.DataFrame, threshold: float | None) -> pd.DataFrame
 
 
 def rsv_scenario(observed: pd.DataFrame, fc_rsv: pd.DataFrame, issue: dt.date, annual_admissions: float,
-                 los_days: float, cost_per_admission: float) -> pd.DataFrame:
+                 los_days: float, cost_per_admission: float, meta: dict | None = None) -> pd.DataFrame:
     """ILLUSTRATIVE scenario: weekly admissions = annual x positivity / mean seasonal sum of weekly positivity.
 
     Uses complete seasons only for the seasonal sum. Returns 10%/50%/90% ranges per future horizon.
@@ -459,7 +497,7 @@ def rsv_scenario(observed: pd.DataFrame, fc_rsv: pd.DataFrame, issue: dt.date, a
         if h <= 0:
             continue
         adm = {k: annual_admissions * float(r[k]) / season_sum for k in (0.1, 0.5, 0.9)}
-        rows.append({"target_end_date": d, "horizon": horizon_label(d, issue),
+        rows.append({"target_end_date": d, "horizon": display_horizon(d, issue, meta),
                      "RSV positivity forecast (%) 10–90%": f"{r[0.1]:.1f}–{r[0.9]:.1f} (median {r[0.5]:.1f})",
                      "scenario admissions / week": f"{adm[0.1]:.0f}–{adm[0.9]:.0f} (median {adm[0.5]:.0f})",
                      "scenario bed-days generated": f"{adm[0.1] * los_days:.0f}–{adm[0.9] * los_days:.0f}",

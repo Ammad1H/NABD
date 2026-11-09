@@ -68,6 +68,7 @@ class CardResult:
     p_act: float = 0.30
     observed_trend: str = "unknown"
     observed_slope: float = float("nan")
+    exceed_dates: list = field(default_factory=list)   # target_end_date per row of `exceed`
     problems: list = field(default_factory=list)
 
     @property
@@ -176,7 +177,7 @@ def build_card(pb: dict, target: str, location: str, fc: pd.DataFrame, observed:
                      level_row=level_row, level_horizon_wk=float(level_row.h_wk), path_medians=path_medians,
                      trend=trend, trend_ratio=ratio, band=band, kit=kit, high_threshold=thr, p_high=p_high,
                      exceed=exceed, max_p=max_p, level=level, p_act=pa, observed_trend=o_trend,
-                     observed_slope=o_slope)
+                     observed_slope=o_slope, exceed_dates=list(path.target_end_date))
     res.problems = card_problems(res, q_level)
     return res
 
@@ -204,12 +205,23 @@ TREND_TXT = {"rising": {"en": "rising", "ar": "صاعد"}, "plateau": {"en": "pl
              "unknown": {"en": "unknown", "ar": "غير معروف"}}
 
 
-def card_sentence(res: CardResult, lang: str) -> str:
+def card_sentence(res: CardResult, lang: str, hlabel: str | None = None) -> str:
+    """One plain sentence. `hlabel` is the display label of the level horizon (ledger round's own label when live)."""
     k = res.kit
+    h = hlabel or f"+{res.level_horizon_wk:g} wk"
     if lang == "ar":
+        h_ar = h.replace("nowcast", "التقدير الآني").replace(" wk", " أسبوع")
         return (f"آخر أسبوع منشور: {OBS_TXT[k.observed_key]['ar']} ({res.prev_value:.1f}% ← {res.last_value:.1f}%). "
-                f"التوقع عند +{res.level_horizon_wk:g} أسبوع: {FC_TXT[k.forecast_key]['ar']} "
+                f"التوقع عند {h_ar}: {FC_TXT[k.forecast_key]['ar']} "
                 f"(ارتفاع {k.p_up:.0%}، انخفاض {k.p_down:.0%}). مسار التوقع: {TREND_TXT[res.trend]['ar']}.")
     return (f"Last published week {OBS_TXT[k.observed_key]['en']} ({res.prev_value:.1f}% → {res.last_value:.1f}%). "
-            f"Forecast at +{res.level_horizon_wk:g} wk: {FC_TXT[k.forecast_key]['en']} "
+            f"Forecast at {h}: {FC_TXT[k.forecast_key]['en']} "
             f"(rise {k.p_up:.0%}, fall {k.p_down:.0%}). Forecast path: {TREND_TXT[res.trend]['en']}.")
+
+
+def band_label(band: dict | None, lang: str) -> str:
+    """Plain-language band name (playbook v0.4 `label`); never the internal id."""
+    if not band:
+        return ""
+    lab = band.get("label") or {}
+    return str(lab.get(lang) or lab.get("en") or "")

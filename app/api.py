@@ -15,7 +15,7 @@ from pydantic import BaseModel, Field  # noqa: E402
 from app import data_io  # noqa: E402
 
 app = FastAPI(title="NABD forecast API", version="0.1.0",
-              description="Calibrated RSV and influenza positivity forecasts for the UAE (WHO FluNet sentinel). "
+              description="Probabilistic RSV and influenza positivity forecasts for the UAE (WHO FluNet sentinel). "
                           "Aggregate data only. `demo=true` means placeholder data, not NABD model output.")
 
 

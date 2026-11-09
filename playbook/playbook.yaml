@@ -7,7 +7,10 @@
 # (e.g. 4.6-21.4%) becomes a decision: "is there at least a 30% chance of crossing the high-pressure
 # threshold in the next three weeks?" Direction still comes from the forecast path, so a card can never
 # say "rising" while the forecast falls (G14). Thresholds are placeholders to be set with the pilot site.
-version: "0.3.0-illustrative"
+#
+# v0.4.0 (build round 4): plain-language band labels (en/ar) and an occupational_health role (hospital or
+# employer HR) for the workforce consequence of the forecast. Same thresholds and decision rule as v0.3.
+version: "0.4.0-illustrative"
 status: ILLUSTRATIVE
 review:
   required_reviewers:
@@ -44,6 +47,9 @@ roles:
   adphc_duty:
     en: "ADPHC duty officer"
     ar: "ضابط المناوبة في مركز أبوظبي للصحة العامة"
+  occupational_health:
+    en: "Occupational-health officer (hospital or employer HR)"
+    ar: "مسؤول الصحة المهنية (الموارد البشرية في المستشفى أو جهة العمل)"
 reason_codes:
   - code: AGREE_FORECAST
     en: "Agree with forecast and proposed action"
@@ -75,6 +81,9 @@ bands:
     upper: 10
     trend: [any]
     tier: 1
+    label:
+      en: "RSV low"
+      ar: "الفيروس المخلوي التنفسي: منخفض"
     actions:
       hospital_ops:
         en: "Routine operations. Keep standard paediatric bed and roster plan."
@@ -82,6 +91,9 @@ bands:
       adphc_duty:
         en: "No public action. Continue weekly monitoring."
         ar: "لا إجراء عام. مواصلة المراقبة الأسبوعية."
+      occupational_health:
+        en: "Routine: keep the staff seasonal-vaccination reminder and standard sick-leave policy."
+        ar: "اعتيادي: الإبقاء على تذكير الموظفين بالتطعيم الموسمي وسياسة الإجازات المرضية المعتادة."
   - id: rsv_elevated_rising
     target: "wk rsv pos pct sentinel"
     location: ARE
@@ -90,6 +102,9 @@ bands:
     upper: 20
     trend: [rising]
     tier: 2
+    label:
+      en: "RSV elevated and rising"
+      ar: "الفيروس المخلوي التنفسي: مرتفع ومتزايد"
     actions:
       hospital_ops:
         en: "Pre-warn paediatric ED and ward leads. Confirm surge roster for the next 2 weeks; review elective paediatric admissions."
@@ -97,6 +112,9 @@ bands:
       adphc_duty:
         en: "Review infant RSV immunisation uptake messaging; brief hospital network leads."
         ar: "مراجعة رسائل الإقبال على تحصين الرضّع ضد الفيروس المخلوي التنفسي وإحاطة قادة شبكة المستشفيات."
+      occupational_health:
+        en: "Push staff influenza vaccination now; remind staff of sick-leave flexibility so ill staff stay home; check cover for the weeks after the winter school break."
+        ar: "تشجيع تطعيم الموظفين ضد الإنفلونزا الآن، وتذكيرهم بمرونة الإجازات المرضية ليبقى المرضى في منازلهم، ومراجعة تغطية المناوبات للأسابيع التالية لعطلة الشتاء المدرسية."
   - id: rsv_elevated_plateau
     target: "wk rsv pos pct sentinel"
     location: ARE
@@ -105,6 +123,9 @@ bands:
     upper: 20
     trend: [plateau]
     tier: 2
+    label:
+      en: "RSV elevated, holding steady"
+      ar: "الفيروس المخلوي التنفسي: مرتفع ومستقر"
     actions:
       hospital_ops:
         en: "Hold heightened readiness: keep current paediatric bed plan; no new surge roster; re-check next week."
@@ -112,6 +133,9 @@ bands:
       adphc_duty:
         en: "Continue immunisation messaging; no new public advisory."
         ar: "مواصلة رسائل التحصين دون إصدار إرشاد عام جديد."
+      occupational_health:
+        en: "Keep the vaccination push and sick-leave reminder; review absence weekly with HR."
+        ar: "مواصلة حملة التطعيم وتذكير الإجازات المرضية، ومراجعة الغياب أسبوعياً مع الموارد البشرية."
   - id: rsv_elevated_falling
     target: "wk rsv pos pct sentinel"
     location: ARE
@@ -120,6 +144,9 @@ bands:
     upper: 20
     trend: [falling]
     tier: 1
+    label:
+      en: "RSV elevated but falling"
+      ar: "الفيروس المخلوي التنفسي: مرتفع لكنه يتراجع"
     actions:
       hospital_ops:
         en: "Step down: no surge roster needed; plan stand-down of any extra paediatric capacity if the decline is confirmed next week."
@@ -127,6 +154,9 @@ bands:
       adphc_duty:
         en: "No public action. Continue weekly monitoring; watch for a second wave."
         ar: "لا إجراء عام. مواصلة المراقبة الأسبوعية وترقّب موجة ثانية."
+      occupational_health:
+        en: "No new measures; keep weekly absence review with HR."
+        ar: "لا إجراءات جديدة؛ مواصلة المراجعة الأسبوعية للغياب مع الموارد البشرية."
   - id: rsv_high_rising
     target: "wk rsv pos pct sentinel"
     location: ARE
@@ -135,6 +165,9 @@ bands:
     upper: 101
     trend: [rising]
     tier: 3
+    label:
+      en: "RSV high and rising"
+      ar: "الفيروس المخلوي التنفسي: عالٍ ومتزايد"
     actions:
       hospital_ops:
         en: "Activate paediatric surge plan: open flex beds, extend ED staffing at peak hours, cohort respiratory patients."
@@ -142,6 +175,9 @@ bands:
       adphc_duty:
         en: "Consider public advisory on respiratory hygiene and when to seek care; coordinate inter-facility capacity."
         ar: "النظر في إصدار إرشاد عام حول النظافة التنفسية ومتى يجب طلب الرعاية، وتنسيق السعة بين المنشآت."
+      occupational_health:
+        en: "Activate staff-absence contingency: confirm bank/float cover, reinforce stay-home-when-ill, prioritise vaccination of front-line staff."
+        ar: "تفعيل خطة طوارئ غياب الموظفين: تأكيد التغطية الاحتياطية، والتشديد على البقاء في المنزل عند المرض، وإعطاء الأولوية لتطعيم الموظفين في الخطوط الأمامية."
   - id: rsv_high_steady_or_falling
     target: "wk rsv pos pct sentinel"
     location: ARE
@@ -150,6 +186,9 @@ bands:
     upper: 101
     trend: [plateau, falling]
     tier: 2
+    label:
+      en: "RSV high, steady or falling"
+      ar: "الفيروس المخلوي التنفسي: عالٍ، مستقر أو يتراجع"
     actions:
       hospital_ops:
         en: "Sustain the surge plan already in place; do not expand it. Review stand-down criteria."
@@ -157,6 +196,9 @@ bands:
       adphc_duty:
         en: "Keep coordination with hospitals; no new advisory unless local signals rise."
         ar: "مواصلة التنسيق مع المستشفيات دون إرشاد جديد ما لم ترتفع المؤشرات المحلية."
+      occupational_health:
+        en: "Sustain absence contingency already in place; do not expand; review stand-down with HR."
+        ar: "الإبقاء على خطة طوارئ الغياب القائمة دون توسيعها، ومراجعة إنهائها مع الموارد البشرية."
   # ----------------------------------------------------------------- Influenza (sentinel %)
   - id: flu_low
     target: "wk flu pos pct sentinel"
@@ -166,6 +208,9 @@ bands:
     upper: 15
     trend: [any]
     tier: 1
+    label:
+      en: "Influenza low"
+      ar: "الإنفلونزا: منخفضة"
     actions:
       hospital_ops:
         en: "Routine operations."
@@ -173,6 +218,9 @@ bands:
       adphc_duty:
         en: "No public action. Continue weekly monitoring."
         ar: "لا إجراء عام. مواصلة المراقبة الأسبوعية."
+      occupational_health:
+        en: "Routine: keep the staff seasonal-vaccination reminder and standard sick-leave policy."
+        ar: "اعتيادي: الإبقاء على تذكير الموظفين بالتطعيم الموسمي وسياسة الإجازات المرضية المعتادة."
   - id: flu_elevated_rising
     target: "wk flu pos pct sentinel"
     location: ARE
@@ -181,6 +229,9 @@ bands:
     upper: 30
     trend: [rising]
     tier: 2
+    label:
+      en: "Influenza elevated and rising"
+      ar: "الإنفلونزا: مرتفعة ومتزايدة"
     actions:
       hospital_ops:
         en: "Pre-warn adult and paediatric ED leads; confirm isolation-room availability and antiviral stock."
@@ -188,6 +239,9 @@ bands:
       adphc_duty:
         en: "Reinforce seasonal influenza vaccination messaging for high-risk groups."
         ar: "تعزيز رسائل التطعيم ضد الإنفلونزا الموسمية للفئات الأكثر عرضة للخطر."
+      occupational_health:
+        en: "Push staff influenza vaccination now; remind staff of sick-leave flexibility so ill staff stay home; check cover for the weeks after the winter school break."
+        ar: "تشجيع تطعيم الموظفين ضد الإنفلونزا الآن، وتذكيرهم بمرونة الإجازات المرضية ليبقى المرضى في منازلهم، ومراجعة تغطية المناوبات للأسابيع التالية لعطلة الشتاء المدرسية."
   - id: flu_elevated_plateau
     target: "wk flu pos pct sentinel"
     location: ARE
@@ -196,6 +250,9 @@ bands:
     upper: 30
     trend: [plateau]
     tier: 2
+    label:
+      en: "Influenza elevated, holding steady"
+      ar: "الإنفلونزا: مرتفعة ومستقرة"
     actions:
       hospital_ops:
         en: "Hold heightened readiness; keep isolation-room and antiviral checks; no extra staffing yet."
@@ -203,6 +260,9 @@ bands:
       adphc_duty:
         en: "Continue vaccination messaging for high-risk groups."
         ar: "مواصلة رسائل التطعيم للفئات الأكثر عرضة للخطر."
+      occupational_health:
+        en: "Keep the vaccination push and sick-leave reminder; review absence weekly with HR."
+        ar: "مواصلة حملة التطعيم وتذكير الإجازات المرضية، ومراجعة الغياب أسبوعياً مع الموارد البشرية."
   - id: flu_elevated_falling
     target: "wk flu pos pct sentinel"
     location: ARE
@@ -211,6 +271,9 @@ bands:
     upper: 30
     trend: [falling]
     tier: 1
+    label:
+      en: "Influenza elevated but falling"
+      ar: "الإنفلونزا: مرتفعة لكنها تتراجع"
     actions:
       hospital_ops:
         en: "Step down: no extra staffing; plan stand-down of any flu surge measures if the decline is confirmed."
@@ -218,6 +281,9 @@ bands:
       adphc_duty:
         en: "No new public action; continue monitoring."
         ar: "لا إجراء عام جديد؛ مواصلة المراقبة."
+      occupational_health:
+        en: "No new measures; keep weekly absence review with HR."
+        ar: "لا إجراءات جديدة؛ مواصلة المراجعة الأسبوعية للغياب مع الموارد البشرية."
   - id: flu_high_rising
     target: "wk flu pos pct sentinel"
     location: ARE
@@ -226,6 +292,9 @@ bands:
     upper: 101
     trend: [rising]
     tier: 3
+    label:
+      en: "Influenza high and rising"
+      ar: "الإنفلونزا: عالية ومتزايدة"
     actions:
       hospital_ops:
         en: "Activate respiratory surge plan: flex beds, extended ED staffing, cohorting."
@@ -233,6 +302,9 @@ bands:
       adphc_duty:
         en: "Consider public advisory; coordinate inter-facility capacity."
         ar: "النظر في إصدار إرشاد عام وتنسيق السعة بين المنشآت."
+      occupational_health:
+        en: "Activate staff-absence contingency: confirm bank/float cover, reinforce stay-home-when-ill, prioritise vaccination of front-line staff."
+        ar: "تفعيل خطة طوارئ غياب الموظفين: تأكيد التغطية الاحتياطية، والتشديد على البقاء في المنزل عند المرض، وإعطاء الأولوية لتطعيم الموظفين في الخطوط الأمامية."
   - id: flu_high_steady_or_falling
     target: "wk flu pos pct sentinel"
     location: ARE
@@ -241,6 +313,9 @@ bands:
     upper: 101
     trend: [plateau, falling]
     tier: 2
+    label:
+      en: "Influenza high, steady or falling"
+      ar: "الإنفلونزا: عالية، مستقرة أو تتراجع"
     actions:
       hospital_ops:
         en: "Sustain measures already in place; do not expand. Review stand-down criteria."
@@ -248,6 +323,9 @@ bands:
       adphc_duty:
         en: "Keep inter-facility coordination; no new advisory unless signals rise."
         ar: "مواصلة التنسيق بين المنشآت دون إرشاد جديد ما لم ترتفع المؤشرات."
+      occupational_health:
+        en: "Sustain absence contingency already in place; do not expand; review stand-down with HR."
+        ar: "الإبقاء على خطة طوارئ الغياب القائمة دون توسيعها، ومراجعة إنهائها مع الموارد البشرية."
   # ----------------------------------------------------------------- US analogue (demonstration only)
   - id: us_admissions_growth
     target: "wk inc flu hosp"
@@ -258,10 +336,16 @@ bands:
     metric: "growth_ratio_vs_last_observed"
     trend: [rising]
     tier: 3
+    label:
+      en: "US admissions growing (demonstration only)"
+      ar: "نمو حالات الدخول الأمريكية (للعرض فقط)"
     actions:
       hospital_ops:
         en: "(US analogue, demonstration only) Forecast admissions >=25% above last observed week: review surge staffing."
         ar: "(مثال أمريكي للعرض فقط) التوقع أعلى بنسبة 25% أو أكثر من آخر أسبوع: مراجعة مناوبات الطوارئ."
       adphc_duty:
+        en: "(US analogue, demonstration only) No action; illustrative."
+        ar: "(مثال أمريكي للعرض فقط) لا إجراء؛ توضيحي."
+      occupational_health:
         en: "(US analogue, demonstration only) No action; illustrative."
         ar: "(مثال أمريكي للعرض فقط) لا إجراء؛ توضيحي."

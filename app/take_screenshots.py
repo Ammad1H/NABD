@@ -20,6 +20,7 @@ SHOTS = [  # (file, language label, page label)
     ("02_weekly_card_ar.png", "العربية", "البطاقة الأسبوعية"),
     ("03_season_shape.png", "English", "Season shape"),
     ("04_bed_days_scenario.png", "English", "Bed-days scenario"),
+    ("04b_winter_planner.png", "English", "Hospital winter planner"),
     ("05_gcc.png", "English", "GCC out-of-sample"),
     ("06_ledger.png", "English", "Ledger receipt"),
     ("07_us_proof.png", "English", "US proof"),
@@ -54,7 +55,21 @@ def main() -> int:
             b.close()
     finally:
         proc.terminate()
+    render_bulletin()
     return 0
+
+
+def render_bulletin() -> None:
+    """PNG of each bulletin page (needs poppler's pdftoppm) -> app/screenshots/12_bulletin_p<n>.png."""
+    import shutil
+    pdfs = sorted((ROOT / "bulletin" / "out").glob("NABD-bulletin-*.pdf"))
+    if not pdfs or not shutil.which("pdftoppm"):
+        print("bulletin render skipped (no PDF or no pdftoppm)")
+        return
+    subprocess.run(["pdftoppm", "-r", "110", "-png", str(pdfs[-1]), str(OUT / "12_bulletin_p")], check=True)
+    for f in sorted(OUT.glob("12_bulletin_p-*.png")):
+        f.rename(OUT / f.name.replace("12_bulletin_p-", "12_bulletin_p"))
+    print("wrote bulletin page PNGs")
 
 
 if __name__ == "__main__":
