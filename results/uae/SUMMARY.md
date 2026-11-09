@@ -1,6 +1,6 @@
 # UAE track: leave-one-season-out results (PRELIMINARY)
 
-Data: WHO FluNet UAE sentinel, latest week **2026-W44** (`data/raw/flunet_are.csv`). Design: leave-one-season-out over **n = 4 test seasons** (2022/23–2025/26), 1-week simulated publication lag, horizons relative to reference date: -1 = nowcast, 0 = +0.5 wk, 1 = +1.5 wk, 2 = +2.5 wk after issue.
+Data: WHO FluNet UAE sentinel, latest week **2026-W44** (`data/raw/flunet_are.csv`). Design: leave-one-season-out over **n = 4 test seasons** (2022/23–2025/26), 1-week simulated publication lag, horizons h = -1, 0, 1, 2 are the 1st–4th weeks after the last published week L (L+1 = nowcast … L+4); in the live product they are labelled by week-ending date and 'nowcast / +1 / +2 / +3 wk after issue'; skill is measured at a conservative 11-day lag.
 
 **Honest caveats:** n = 4 seasons; 2022/23 is low-volume; LOSO trains on later seasons when testing earlier ones; bootstrap CIs resample reference dates and do not capture between-season uncertainty; FluNet revisions are not reproduced.
 
@@ -54,6 +54,6 @@ Peak-week metric is descriptive only (4 seasons × 4 origins).
 
 ## Integrity note
 
-These v1 numbers are **retrospective, design-stage, not pre-registered**: NABD-UAE-v1 was designed with all four seasons visible and re-run after a leak fix (463ab09; docs/DEVIATIONS.md U1). All tables use cells common to all three models (U4). The blind tests of the UAE method are the GCC out-of-sample test (results/gcc/SUMMARY.md) and the prospective ledger. v2 results: results/uae/SUMMARY-v2.md.
+These v1 numbers are **retrospective, design-stage, not pre-registered**: NABD-UAE-v1 was designed with all four seasons visible and re-run after a leak fix (463ab09; docs/DEVIATIONS.md U1). All tables use cells common to all three models (U4). The out-of-sample tests of the UAE method are the GCC test (plan locked before download; self-attested until anchored) (results/gcc/SUMMARY.md) and the prospective ledger. v2 results: results/uae/SUMMARY-v2.md.
 
 `tests/test_adapters.py::test_forecast_unchanged_when_future_data_altered` caught a leave-one-season-out boundary leak in the first build (lag features of a training season's first week reached into the held-out season); it was fixed by masking cross-season lags in `uae/models.py::_features`, changing relative WIS by <= 0.01. A companion test confirms the detector fires when a leak is injected.

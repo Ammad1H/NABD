@@ -30,8 +30,10 @@ from uae.scoring import wis, covered
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "results" / "uae"
 TEST_SEASONS = [2022, 2023, 2024, 2025]
-HORIZON_LABEL = {-1: "nowcast (target week already ended at issue)", 0: "+0.5 wk after issue",
-                 1: "+1.5 wk after issue", 2: "+2.5 wk after issue"}
+# Horizon h = target week L+2+h, where L is the last published week (h = -1 is L+1, the nowcast). In the live
+# product these targets are labelled by week-ending date and "nowcast / +1 / +2 / +3 wk after issue"
+# (7-day publication lag); skill here is measured at a conservative 11-day lag (docs/DEVIATIONS.md C8).
+HORIZON_LABEL = {-1: "L+1 (nowcast)", 0: "L+2", 1: "L+3", 2: "L+4"}
 
 
 def run(mode="cached", write_forecasts=True):
@@ -209,7 +211,7 @@ def make_figure(s, scores):
         ax.plot(s.week_end, pct, color="black", lw=1.2, label="observed (WHO FluNet, UAE sentinel)")
         sc = scores[(scores.series == key) & (scores.model == "NABD-UAE-v1") & (scores.horizon == 0)]
         ax.plot(pd.to_datetime(sc.target_end_date), sc["median"], color="#1f77b4", lw=1, alpha=0.8,
-                label="NABD-UAE-v1 median, horizon 0 (+0.5 wk after issue), LOSO")
+                label="NABD-UAE-v1 median, target L+2 (1 wk after issue in the live product), LOSO")
         ax.set_ylabel(f"{key.upper()} positivity %")
         ax.legend(loc="upper left", fontsize=8)
         ax.grid(alpha=0.3)
@@ -222,7 +224,9 @@ def write_summary_md(summary, by_model, by_season, pk):
     L = ["# UAE track: leave-one-season-out results (PRELIMINARY)", "",
          f"Data: WHO FluNet UAE sentinel, latest week **{summary['latest_sentinel_week']}** (`data/raw/flunet_are.csv`). "
          "Design: leave-one-season-out over **n = 4 test seasons** (2022/23–2025/26), 1-week simulated publication lag, "
-         "horizons relative to reference date: -1 = nowcast, 0 = +0.5 wk, 1 = +1.5 wk, 2 = +2.5 wk after issue.", "",
+         "horizons h = -1, 0, 1, 2 are the 1st–4th weeks after the last published week L (L+1 = nowcast … L+4); in the live "
+         "product they are labelled by week-ending date and 'nowcast / +1 / +2 / +3 wk after issue'; skill is measured at a "
+         "conservative 11-day lag.", "",
          "**Honest caveats:** n = 4 seasons; 2022/23 is low-volume; LOSO trains on later seasons when testing earlier ones; "
          "bootstrap CIs resample reference dates and do not capture between-season uncertainty; FluNet revisions are not reproduced.", "",
          "## Relative WIS (NABD-UAE-v1 / baseline; < 1 means NABD better), 95% block-bootstrap CI", "",
@@ -243,7 +247,8 @@ def write_summary_md(summary, by_model, by_season, pk):
           "## Integrity note", "",
           "These v1 numbers are **retrospective, design-stage, not pre-registered**: NABD-UAE-v1 was designed with all "
           "four seasons visible and re-run after a leak fix (463ab09; docs/DEVIATIONS.md U1). All tables use cells common "
-          "to all three models (U4). The blind tests of the UAE method are the GCC out-of-sample test "
+          "to all three models (U4). The out-of-sample tests of the UAE method are the GCC test (plan locked before download; "
+          "self-attested until anchored) "
           "(results/gcc/SUMMARY.md) and the prospective ledger. v2 results: results/uae/SUMMARY-v2.md.", "",
           "`tests/test_adapters.py::test_forecast_unchanged_when_future_data_altered` caught a leave-one-season-out "
           "boundary leak in the first build (lag features of a training season's first week reached into the held-out "

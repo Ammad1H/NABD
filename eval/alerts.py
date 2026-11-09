@@ -121,7 +121,7 @@ def latency() -> pd.DataFrame:
         "rounds": len(f), "stale_rounds": int((f.stale_weeks > 0).sum()),
         "median_input_age_at_issue_days": float(f.input_age_at_issue_days.median()),
         "max_input_age_at_issue_days": int(f.input_age_at_issue_days.max()),
-        "forecast_horizons_after_issue_weeks": "+0.5, +1.5, +2.5, +3.5",
+        "forecast_horizons": "FluSight horizons 0-3 (target weeks ending 0-3 weeks after the Saturday reference date)",
         "note": "US NHSN: week ending Saturday R-7 is available by the Wednesday deadline R-3 (4 days). "
                 "Stale rounds = missing hub vintage; model forecasts from older data (PROTOCOL §2.3)."}])
 

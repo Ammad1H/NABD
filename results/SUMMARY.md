@@ -99,7 +99,7 @@ NABD-ensemble combines only NABD's own two members, so it is not flagged as a mu
 - falling: 1.293 over 5872 cells (NABD WIS shares: dispersion 47% / over 3% / under 50%)
 - ALL: 1.223 over 11660 cells (NABD WIS shares: dispersion 36% / over 22% / under 42%)
 
-**Relative economic value** (event ≥3/100k at h2 = +2.5 wk; act when p > C/L; 1 = perfect, 0 = base rate; no CIs computed, descriptive):
+**Relative economic value** (event ≥3/100k at FluSight horizon h2, the target week ending 2 weeks after the reference date; act when p > C/L; 1 = perfect, 0 = base rate; no CIs computed, descriptive):
 
 | model | C/L=0.02 | C/L=0.05 | C/L=0.1 | C/L=0.2 | C/L=0.3 | C/L=0.5 | C/L=0.7 |
 |---|---|---|---|---|---|---|---|

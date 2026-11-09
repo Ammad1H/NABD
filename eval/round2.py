@@ -415,9 +415,9 @@ def figures(models, lt, pdc, rev):
             ax.errorbar(x, est, yerr=[est - los, his - est], fmt="o", capsize=4, ms=8, color=col[Bm], label=lab)
         ax.axhline(1.0, color="black", lw=0.8)
         ax.axhline(MARGIN, color="red", lw=1.2, ls="--", label="pre-registered margin 1.15")
-        ax.set_xticks(range(4), ["+0.5 wk", "+1.5 wk", "+2.5 wk", "+3.5 wk"])
+        ax.set_xticks(range(4), ["h0", "h1", "h2", "h3"])
         ax.set_title(f"Season {s}")
-        ax.set_xlabel("horizon after forecast issue")
+        ax.set_xlabel("FluSight horizon (target week ends h weeks after the reference date)")
     axes[0].set_ylabel("relative WIS (NABD / comparator)\n<1 = NABD better")
     axes[1].legend(fontsize=10, loc="upper left")
     fig.suptitle("NABD v1 vs CDC benchmarks, US state flu admissions (95% block-bootstrap CIs)", fontsize=13)
@@ -483,7 +483,7 @@ def figures(models, lt, pdc, rev):
     ax.set_xlabel("cost of acting / loss if unprepared (C/L)")
     ax.set_ylabel("relative economic value (1 = perfect, 0 = no better than base rate)")
     ax.set_ylim(-0.5, 1)
-    ax.set_title(f"Decision value: surge ≥3/100k at +2.5 wk (base rate {r.base_rate.iloc[0]:.0%}); dotted = best trigger")
+    ax.set_title(f"Decision value: surge ≥3/100k at FluSight horizon 2 (base rate {r.base_rate.iloc[0]:.0%}); dotted = best trigger")
     ax.legend(fontsize=10)
     fig.tight_layout()
     fig.savefig(FIG / "fig4_rev.png", dpi=160)
@@ -593,7 +593,7 @@ def render_summary_section(d6o, lt, xc, pdc, rev, league_status) -> str:
                  f"{r.share_dispersion*100:.0f}% / over {r.share_over*100:.0f}% / under {r.share_under*100:.0f}%)")
     rv = rev[(rev.subset == "h2 (primary)") & (rev.curve.str.startswith("act"))]
     alphas = sorted(rv.alpha.unique())
-    L += ["", "**Relative economic value** (event ≥3/100k at h2 = +2.5 wk; act when p > C/L; 1 = perfect, 0 = base "
+    L += ["", "**Relative economic value** (event ≥3/100k at FluSight horizon h2, the target week ending 2 weeks after the reference date; act when p > C/L; 1 = perfect, 0 = base "
               "rate; no CIs computed, descriptive):", "",
           "| model | " + " | ".join(f"C/L={a:g}" for a in alphas) + " |", "|---|" + "---|" * len(alphas)]
     for m, g in rv.groupby("model"):

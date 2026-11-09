@@ -27,10 +27,10 @@
   "flusight_ensemble_cov50": 0.5221269296740995,
   "flusight_ensemble_cov95": 0.861492281303602
  },
- "chronos2": "NOT RUN HERE (weights unavailable in build environment)",
- "tables": "results/tables/endpoints.csv, overview_common_cells.csv, cell_coverage.csv, vintage_flags.csv",
  "primary_verdict": "NOT MET",
  "primary_text": "Pre-registered primary endpoint NOT MET: NABD v1 relative WIS vs the CDC FluSight-ensemble = 1.22 (95% CI 1.01-1.52); the non-inferiority margin was 1.15. NABD v1 is less accurate than the CDC ensemble on US state flu admissions in 2024/25-2025/26.",
+ "chronos2": "NOT RUN HERE (weights unavailable in build environment)",
+ "tables": "results/tables/endpoints.csv, overview_common_cells.csv, cell_coverage.csv, vintage_flags.csv",
  "round2": {
   "declared_in": "docs/DEVIATIONS.md D6, D7, D9, D10, D11 (declared before computing)",
   "sensitivity_block_bootstrap_L4": {
