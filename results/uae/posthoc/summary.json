@@ -1,0 +1,92 @@
+{
+ "label": "POST HOC / exploratory (DEVIATIONS U6)",
+ "design": "forward-in-time, seasons 2023,2024,2025",
+ "comparison": "NABD-UAE-v1 / seasonal-analog (relative WIS; <1 = v1 better)",
+ "pooled": {
+  "flu": {
+   "rel_wis": 0.824,
+   "ci95_date_cluster": [
+    0.726,
+    0.955
+   ],
+   "ci95_moving_block_L4": [
+    0.664,
+    1.133
+   ],
+   "n_cells": 470,
+   "n_reference_dates": 141
+  },
+  "rsv": {
+   "rel_wis": 0.855,
+   "ci95_date_cluster": [
+    0.773,
+    0.946
+   ],
+   "ci95_moving_block_L4": [
+    0.719,
+    1.026
+   ],
+   "n_cells": 564,
+   "n_reference_dates": 141
+  }
+ },
+ "by_training_history": {
+  "flu": {
+   "1": {
+    "rel_wis": 2.562,
+    "ci95_date_cluster": [
+     2.069,
+     3.259
+    ],
+    "ci95_moving_block_L4": [
+     2.065,
+     4.138
+    ],
+    "n_cells": 94,
+    "n_reference_dates": 47
+   },
+   ">=2": {
+    "rel_wis": 0.607,
+    "ci95_date_cluster": [
+     0.551,
+     0.677
+    ],
+    "ci95_moving_block_L4": [
+     0.518,
+     0.722
+    ],
+    "n_cells": 376,
+    "n_reference_dates": 94
+   }
+  },
+  "rsv": {
+   "1": {
+    "rel_wis": 1.387,
+    "ci95_date_cluster": [
+     1.262,
+     1.561
+    ],
+    "ci95_moving_block_L4": [
+     1.22,
+     1.643
+    ],
+    "n_cells": 188,
+    "n_reference_dates": 47
+   },
+   ">=2": {
+    "rel_wis": 0.675,
+    "ci95_date_cluster": [
+     0.615,
+     0.739
+    ],
+    "ci95_moving_block_L4": [
+     0.58,
+     0.79
+    ],
+    "n_cells": 376,
+    "n_reference_dates": 94
+   }
+  }
+ },
+ "folds_v1_better": "4/6"
+}

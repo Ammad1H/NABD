@@ -1,0 +1,7 @@
+series,season,n_training_seasons,NABD-UAE-v1,seasonal-analog,ratio_v1_over_analog,v1_better
+flu,2023,1,4.746,1.8523,2.5623,False
+flu,2024,2,2.5442,4.5045,0.5648,True
+flu,2025,3,1.9375,2.8839,0.6718,True
+rsv,2023,1,2.5016,1.8041,1.3866,False
+rsv,2024,2,1.3149,1.4745,0.8918,True
+rsv,2025,3,2.2957,3.8731,0.5927,True
