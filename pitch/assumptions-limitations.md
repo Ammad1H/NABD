@@ -4,14 +4,14 @@ Required by the Challenge submission rules (FAQ: a working prototype with "techn
 
 ## 1. What NABD is, exactly
 - **UAE headline model: NABD-UAE-v1** (`uae/models.py`, frozen at commit da045ee).
-  - **Forecasts:** weekly sentinel RSV and influenza positivity, from the nowcast to +2.5 weeks after issue (skill measured at an 11-day publication lag). Ledger rounds R0/R1 carry the older "+1/+2/+3 wk" labels and are kept unchanged because they are hashed; later rounds use issue-relative labels.
+  - **Forecasts:** weekly sentinel RSV and influenza positivity, from the nowcast to +3 weeks after issue, each forecast labelled by its target week-ending date (skill measured at a conservative 11-day publication lag). The hashed R0/R1 rounds use the same convention (DEVIATIONS C8).
   - **Inputs:** WHO FluNet UAE sentinel positivity and testing volume.
   - **Method:** a pooled linear growth model on the logit scale with a seasonal-climatology term. Intervals come from nested out-of-season residuals.
 - **UAE challenger: NABD-UAE-v2** (`uae/models_v2.py`, locked protocol `docs/PROTOCOL-UAE-v2.md`).
   - **Inputs:** v1 plus non-sentinel positivity, the school winter/spring breaks and Ramadan. It falls back to a smaller sub-model when a feed is missing.
   - **Status:** it ran alongside v1 in the ledger and was **worse than v1** retrospectively.
 - **US benchmark model: NABD-ensemble v1** (`models/`, `docs/PROTOCOL.md`).
-  - **Forecasts:** weekly state influenza admissions (NHSN), +0.5 to +3.5 weeks after issue.
+  - **Forecasts:** weekly state influenza admissions (NHSN), FluSight horizons 0–3 (target weeks ending 0–3 weeks after the Saturday reference date).
   - **Inputs:** admissions only.
   - **Method:** an equal-weight quantile average of a damped log-linear negative-binomial GLM and an empirical error-quantile model, tuned on 2023/24 only.
 - **Decision layer:**
@@ -68,7 +68,7 @@ Required by the Challenge submission rules (FAQ: a working prototype with "techn
    - All alert metrics are diagnostic only.
    - UAE alert metrics come from the leave-one-season-out design (which trains on later seasons) and cover only 3 onsets per series. We don't cite them.
 7. **Missing data hurts.** One missing input week raises US error 1.41-fold, and two weeks 1.82-fold. In the UAE, a missing latest week raises mean WIS by 0.14–0.26 percentage points.
-8. **The workforce module is simulated.** The employer sickness-absence feed is a secure-aggregation design on synthetic data, watermarked SIMULATED. No credible UAE respiratory-absence figure was found. ⟦IF BUILT⟧ The hospital winter planner translates the forecast into the hospital's own beds and staff, using hospital-supplied inputs, and every number is labelled SCENARIO. The workforce half of Statement 06 is met only as a designed path and a scenario, not as a scored forecast of absence.
+8. **The workforce module is simulated.** The employer sickness-absence feed is a secure-aggregation design on synthetic data, watermarked SIMULATED. No credible UAE respiratory-absence figure was found. The hospital winter planner translates the forecast into the hospital's own beds and staff, using hospital-supplied inputs (staff absence follows flu and RSV by default), and every number is labelled SCENARIO. The workforce half of Statement 06 is met only as a designed path and a scenario, not as a scored forecast of absence.
 9. **Timestamps are self-attested until anchored.** Protocol locks (US, UAE v2, Gulf) and ledger hashes are local git commits. Nothing was externally anchored before results existed, and any later anchor must be described that way.
 10. **Prior exposure.** Exploratory probes on 5 Nov touched the US test seasons before the protocol freeze (D5).
 11. **The WHO FluNet licence** is non-commercial. A commercial hospital product would run on the hospital's own data.

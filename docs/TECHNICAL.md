@@ -279,7 +279,7 @@ So only climatology helps. The non-sentinel and calendar feeds slightly overfit.
 
 **Diagnostics (descriptive, D10):**
 - **Relative WIS vs the ensemble by as-of phase:** rising 1.27, flat 0.97, falling 1.29. Under-prediction is the largest WIS component overall (42%).
-- **Relative economic value at +2.5 weeks, event ≥ 3/100k:** NABD is above the CDC ensemble at cost/loss ≤ 0.1, about equal at 0.2, and below at ≥ 0.3 (no CIs).
+- **Relative economic value at FluSight horizon 2, event ≥ 3/100k:** NABD is above the CDC ensemble at cost/loss ≤ 0.1, about equal at 0.2, and below at ≥ 0.3 (no CIs).
 - **US alerts at 3/100k** (DIAGNOSTIC, thresholds informed by pre-freeze probes, D5):
   - median onset lead is 0 weeks for every rule;
   - **0 false alarms for every rule**, so the PPV differences (NABD 0.65/0.76, ensemble 0.41/0.67, census 0.60/0.46; 2024/25 / 2025/26) come from **late** first alerts, not false ones;
@@ -302,9 +302,9 @@ Figures: `results/figures/fig1_rel_wis_season_horizon.png`, `fig2_league_table.p
   - the persistence forecast alongside, as an automation-bias guard;
   - exact per-signal contributions;
   - a playbook action for a named role (bed and roster manager; ADPHC duty officer).
-  - exceedance probabilities $P(Y > \text{threshold})$ from the issued quantiles (values at the edges are shown as <1% / >99%), plus the forecast-path direction. The playbook band follows the highest threshold with ≥30% probability, combined with the direction (playbook v0.3);
+  - exceedance probabilities $P(Y > \text{threshold})$ from the issued quantiles (values at the edges are shown as <1% / >99%), plus the forecast-path direction. The playbook band follows the highest threshold with ≥30% probability, combined with the direction (playbook v0.4.0, illustrative);
   - the season-shape page (every UAE season aligned at ISO week 27, with the live forecast overlaid) and a paediatric bed-days SCENARIO page;
-  - ⟦IF BUILT⟧ the hospital winter planner (SCENARIO: bed-days, % of ward, staff-absence range, roster gap in AED; occupational-health role), and a weekly bilingual bulletin PDF per ledger round.
+  - the hospital winter planner (SCENARIO: bed-days, % of ward, staff-absence range driven by flu and RSV by default, roster gap, cost in AED; occupational-health role), and a weekly bilingual bulletin PDF per ledger round.
 - **Card consistency (G14):** `app/cardcheck.py` blocks any card whose band, trend and action contradict each other. A test feeds in a deliberately contradictory card and must fail.
 - **Playbook:** `playbook/playbook.yaml` is versioned and schema-validated, and is **ILLUSTRATIVE** until clinicians and public-health officials review it.
 - **Human approval and audit:** Approve, Modify or Dismiss each needs a reason code. Each decision is appended to `app/audit/audit.jsonl`, with each record carrying the hash of the previous one, so tampering is detectable (`tests/test_app_audit.py`).
@@ -336,7 +336,7 @@ Figures: `results/figures/fig1_rel_wis_season_horizon.png`, `fig2_league_table.p
 | GCC test | `python3 -m uae.gcc --score` (refuses without `assert_locked`) | seconds–minutes |
 | Ledger | `python3 -m ledger.issue --cached --round Rn`; `python3 -m ledger.score --cached` | seconds |
 | App / API | `streamlit run app/streamlit_app.py`; `uvicorn app.api:app --port 8000` | — |
-| Tests | `make test` (120 tests at the round-3 close) | ≈ 30 s |
+| Tests | `make test` (150+ tests at the round-5 close) | ≈ 30 s |
 
 Seeds are fixed (US bootstrap 20261108; GCC bootstrap seed 0). The Docker files (`Dockerfile`, `docker-compose.yml`) are written but not built, because the build environment has no daemon.
 
@@ -356,7 +356,7 @@ Seeds are fixed (US bootstrap 20261108; GCC bootstrap seed 0). The Docker files 
    - data via a mirror of WHO's export, with only a spot-check against the official API (full re-pull pending).
 5. **No Abu Dhabi hospital, district or daily data.** Positivity is not bed load, and that link is the pilot's question.
 6. **No earlier onset warning:** at the US primary threshold, median lead is 0 weeks. All alert metrics are diagnostic, and the UAE alert table is retired (LOSO).
-7. **The workforce module is SIMULATED.** ⟦IF BUILT⟧ The hospital winter planner is a SCENARIO on hospital-supplied inputs. No absence figure is claimed. Chronos-2 was NOT RUN, and ACI is not used.
+7. **The workforce module is SIMULATED.** The hospital winter planner is a SCENARIO on hospital-supplied inputs. No absence figure is claimed. Chronos-2 was NOT RUN, and ACI is not used.
 8. **Timestamps are self-attested until anchored.** Exploratory probes touched the US test seasons before the freeze (D5).
 9. **The WHO FluNet licence is non-commercial,** so a commercial product would run on partner data.
 

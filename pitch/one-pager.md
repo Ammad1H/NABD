@@ -4,7 +4,7 @@
 
 ---
 
-**The Monday problem.** Every winter week, Abu Dhabi's paediatric bed managers and public-health officers plan the next three weeks of RSV and flu. Their defaults are last week's numbers and last year's pattern, but UAE seasons don't repeat:
+**The Monday problem.** Every winter week, Abu Dhabi's paediatric bed managers and public-health officers plan the next three weeks of RSV and flu. Their defaults are last week's numbers and last year's pattern, but the timing and shape of UAE seasons change from year to year, and you can't know in advance which shape you'll get:
 - **Flu** peaked at **40.6% in October** 2025, after a **five-month plateau that peaked in February** the season before. The RSV peak moved between weeks 41 and 47 (WHO FluNet UAE, our computation).
 - **One Abu Dhabi hospital (Tawam, SEHA)** recorded **2,189 RSV admissions of children aged ≤5** in 2018–22, and infants under six months stayed **5.8 days** on average.
 - **Dubai claims data:** 22% of under-2s with RSV were hospitalised, and <2% had a known risk factor.
@@ -16,10 +16,10 @@
 - **The immunisation programme** (campaign and catch-up timing): a fixed window against a moving epidemic.
 
 **The solution.** NABD is the forecast layer built to sit on top of Abu Dhabi's detection systems (Tableegh/Malaffi, UMOC, Rasid).
-- **Forecasts:** WHO FluNet surveillance → probabilistic RSV and flu forecasts, nowcast to +2.5 weeks after issue, with coverage reported.
+- **Forecasts:** WHO FluNet surveillance → probabilistic RSV and flu forecasts, nowcast to +3 weeks after issue (forecasts labelled by target week; skill measured at a conservative 11-day lag), with coverage reported.
 - **The card:** a bilingual Arabic/English card shows the **chance of crossing each pressure threshold** and the direction of the forecast. It always shows the last-week baseline alongside, plus exact per-signal explanations.
 - **Human decision:** it proposes a playbook action for a named role. **Only a person approves**, and a hash-chained log records it. Contradictory cards are blocked.
-- **Workforce:** a hospital view translates the wave into its own beds and staff, as a labelled SCENARIO ⟦IF BUILT: hospital winter planner, in AED⟧. The employer-absence path is a secure-aggregation design (k ≥ 10), SIMULATED.
+- **Workforce:** a hospital view translates the wave into its own beds and staff, as a labelled SCENARIO (hospital winter planner: beds, nurse shifts at risk and cost in AED; staff absence follows flu and RSV). The employer-absence path is a secure-aggregation design (k ≥ 10), SIMULATED.
 - **Privacy:** aggregate data only. Person-level fields are rejected by design, with k ≥ 10 suppression for pilot data. No individual or employment use.
 
 **The evidence, all of it** (files in our repo):

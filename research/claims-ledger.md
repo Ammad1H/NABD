@@ -43,7 +43,7 @@ Numbers to remember: **2,189 · 46% · 7th of 21**.
 | B2 | As of 8 Nov: **one forecast round** (data through W44), issued as R0 and re-issued as R1 with the v2 challenger. The v1 and persistence files are byte-identical (`2691894e…`, `6347b067…`) | deck 12, demo, one-pager, Q&A | `ledger/*.sha256` | R |
 | B3 | 0 weeks scored | deck 12, demo | `ledger/SCOREBOARD.md` | R (refresh on the day) |
 | B4 | The ledger is public, outside-anchored, or can't be rewritten | — | `ledger/ANCHOR.md` + the team's receipt | **P** (use only after the push and anchor; until then say "hashed and committed locally") |
-| B5 | R0/R1 metadata carry "+1/+2/+3 wk" labels; issue-relative labels from round 3 on | Q&A 25, TECHNICAL, limitations | `docs/RUNBOOK.md`; `ledger/*.meta.json` | R |
+| B5 | One horizon convention: target week-ending date + "+N wk after issue", the same as the hashed R0/R1 rounds (DEVIATIONS C8) | Q&A 25, TECHNICAL, limitations | `docs/RUNBOOK.md`; `ledger/*.meta.json` | R |
 
 ## C. US benchmark (CDC FluSight hub)
 
@@ -85,7 +85,7 @@ Numbers to remember: **2,189 · 46% · 7th of 21**.
 | D8 | The leakage test caught and fixed a real LOSO boundary leak in the first build | Q&A 22 | `results/uae/SUMMARY.md`; commit 463ab09 | R |
 | D9 | LOSO vs persistence flu 0.76, RSV 0.78; "7 of 8 season-series" | — | `results/uae/SUMMARY.md` | **RET** |
 | D10 | Training-history reading (POST HOC): UAE sentinel data start in 2022. The 2023/24 forward fold (1 training season) lost (flu WIS 4.75 vs persistence 2.21). With ≥2 seasons, flu won both folds (2.54 vs 2.66; 1.94 vs 3.08); RSV split (1.31 vs 2.14 won; 2.30 vs 1.89 lost) | deck 9, Q&A 1, demo, one-pager | `results/uae/v2/tables/forward_wis_by_season.csv`; `data/raw/flunet_are.csv` | R (always say "post hoc", "our reading") |
-| D11 | Card, 8 Nov round at +0.5 wk: RSV P(>10%) 51%, P(>20%) 13%; flu 94% / 27%; both "elevated, falling" | Q&A 3, demo | `app/screenshots/01_weekly_card_en.png`; app round-3 report | R |
+| D11 | Card, 8 Nov round, week ending 15 Nov (+1 wk after issue): RSV P(>10%) 51%, P(>20%) 13%; flu P(>15%) 94%, P(>30%) 27%; both "elevated, falling" | Q&A 3, demo | `app/screenshots/01_weekly_card_en.png`; app round-3 report | R |
 
 ## E. Problem and context
 
@@ -114,12 +114,12 @@ Numbers to remember: **2,189 · 46% · 7th of 21**.
 
 | # | Claim | Used in | Source | Status |
 |---|---|---|---|---|
-| G1 | Hospital winter planner: hospital-supplied inputs → scenario bed-days, % of ward, staff-absence range, roster gap in AED; occupational-health playbook role | deck 10, video 6, demo, Q&A 6, one-pager | app round-4 build (`app/`) | **P** (cut if it isn't in the app on 19 Nov) |
+| G1 | Hospital winter planner: hospital-supplied inputs → scenario bed-days, % of ward, staff-absence range, roster gap in AED; occupational-health playbook role | deck 10, video 6, demo, Q&A 6, one-pager | `app/planner.py`; `app/screenshots/04b_winter_planner.png`; staff absence follows flu and RSV by default (round 5) | R (scenario) |
 | G2 | Bed-days SCENARIO page (sourced inputs: 2,189/5 years, LOS, US$2,241) | deck 6/10/11 | `app/screenshots/04_bed_days_scenario.png` | R (scenario, not a forecast) |
 | G3 | Employer-absence secure aggregation (k ≥ 10 employers), synthetic data, SIMULATED | deck 10, Q&A 6, one-pager | `app/workforce.py`; `app/screenshots/10_workforce_simulated.png` | R (simulated) |
 | G4 | No credible public UAE respiratory sickness-absence figure | deck 10, Q&A 6, limitations | `research/positioning.md` §1.6 | V |
 | G5 | Pricing: a public-health feed licence per country per season; a hospital seat per facility; the seat should cost less than a handful of avoided admissions | deck 12, Q&A 10, one-pager | business hypothesis | H |
-| G6 | Weekly bilingual bulletin PDF per ledger round | deck 6, demo [+] | app round-4 build | **P** |
+| G6 | Weekly bilingual bulletin PDF per ledger round | deck 6, demo [+] | `bulletin/make_bulletin.py`; `bulletin/out/`; `app/screenshots/12_bulletin_p1.png` | R |
 
 ## F. Banned (X)
 

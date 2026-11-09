@@ -18,7 +18,7 @@
 
 Dear Dr Alsuwaidi,
 
-Your 2025 paper on RSV seasonality at Tawam Hospital is the anchor for our Future Health Challenge entry. NABD is an MBZUAI team's open forecasting tool. It turns WHO FluNet UAE data into probabilistic RSV and flu forecasts up to 2.5 weeks ahead, with every forecast hashed before its outcome exists.
+Your 2025 paper on RSV seasonality at Tawam Hospital is the anchor for our Future Health Challenge entry. NABD is an MBZUAI team's open forecasting tool. It turns WHO FluNet UAE data into probabilistic RSV and flu forecasts up to three weeks ahead, with every forecast hashed before its outcome exists.
 
 We'd value either of two small things:
 1. Thirty minutes of your team's view on whether our forecast card and action playbook make clinical sense. We'd credit you only with permission.

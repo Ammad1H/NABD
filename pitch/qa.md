@@ -35,14 +35,14 @@
 - **The primary bar** was the harder baseline, last week carried forward: 0.914, met.
 
 **3. "The 80% band is 4.6–21.4%. What does my bed manager actually do differently on Monday?"**
-- **They read one line, not the band.** In the 8 Nov round at +0.5 weeks, the card shows:
+- **They read one line, not the band.** In the 8 Nov round, for the week ending 15 Nov (+1 wk after issue), the card shows:
   - RSV: P(> 10%) = 51%, P(> 20%) = 13%, forecast path falling;
-  - flu: P(> 10%) = 94%, P(> 20%) = 27%, falling.
-- **The playbook output:** "elevated, falling". For the bed manager that means no surge roster; plan stand-down of extra paediatric capacity if next week confirms the decline (`app/screenshots/01_weekly_card_en.png`; `playbook/playbook.yaml` v0.3, illustrative).
+  - flu: P(> 15%) = 94%, P(> 30%) = 27%, falling (flu thresholds are 15% and 30%).
+- **The playbook output:** "elevated, falling". For the bed manager that means no surge roster; plan stand-down of extra paediatric capacity if next week confirms the decline (`app/screenshots/01_weekly_card_en.png`; `playbook/playbook.yaml` v0.4.0, illustrative).
 - **The value is not over-staffing into a declining wave**, and not under-preparing for a rising one.
 
 **4. "Statement 06 is early warning. Your lead time is zero. Wrong statement?"**
-- **Our lead is on size, not onset:** a range up to +2.5 weeks after issue (skill measured at an 11-day lag).
+- **Our lead is on size, not onset:** a range up to +3 weeks after issue, each forecast labelled by its target week (skill measured at a conservative 11-day lag).
 - **Onset in the US:** at the primary threshold (3 per 100k), median onset lead is 0 weeks for every rule, the CDC ensemble's included (`results/tables/alerts_us.csv`).
 - **Onset detection is already Tableegh and UMOC's job** in Abu Dhabi. How big the wave gets, and for how long, is the gap.
 - **Alerts at 3 per 100k** (diagnostic, because the thresholds were informed by pre-freeze probes, `docs/DEVIATIONS.md` D3, D5):
@@ -58,7 +58,7 @@
 
 **6. "Half the statement is *workforce*. Where is it?"**
 - **We forecast the population wave and translate it into the hospital's two constraints, beds and staff.**
-- ⟦IF BUILT⟧ The winter-planner page works from the hospital's own admissions, length of stay, beds, nursing headcount and the winter sickness-absence baseline its HR sets. It shows scenario bed-days, % of ward capacity, a staff-absence range and the net roster gap in AED, with an occupational-health role in the playbook.
+- The winter-planner page works from the hospital's own admissions, length of stay, beds, nursing headcount and the winter sickness-absence baseline its HR sets. It shows scenario bed-days, % of ward capacity, a staff-absence range and the net roster gap in AED, with an occupational-health role in the playbook.
 - **Every number is labelled SCENARIO.**
 - **The employer path is designed, not live:** a secure aggregation of sickness-absence counts across ≥10 employers, demonstrated on synthetic data and watermarked SIMULATED (`app/workforce.py`).
 - **We don't fake absence data.** No credible public UAE respiratory-absence figure exists (`research/positioning.md` §1.6).
@@ -180,8 +180,8 @@
 - **The MBZUAI-level contribution** is that evaluation and transfer discipline, not the model.
 
 **25. "Your horizons say three weeks, but WHO data are late."**
-- **Horizons run from the nowcast to +2.5 weeks after issue,** with skill measured at an 11-day publication lag. The measured lag on 8 Nov was 7 days (`data/raw/PROVENANCE.md`).
-- **Rounds R0/R1 carry the older "+1/+2/+3" labels** and stay unchanged because they are hashed. Rounds from R2 on carry issue-relative labels (`docs/RUNBOOK.md`).
+- **Forecasts run from the nowcast to +3 weeks after issue, each labelled by its target week-ending date,** with skill measured at a conservative 11-day publication lag. The measured lag on 8 Nov was 7 days (`data/raw/PROVENANCE.md`).
+- **One convention everywhere:** the card, bulletin, API, planner and ledger all label by week ending, with "+1/+2/+3 wk after issue" as the secondary label, the same as the hashed R0/R1 rounds (`docs/DEVIATIONS.md` C8).
 
 ## E. Positioning, governance and business
 

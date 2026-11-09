@@ -11,7 +11,7 @@
 - **The three numbers to say out loud:** **2,189** · **46%** · **7th of 21**. Don't speak 1.22, 1.002 or 1.059; show them on the slide.
 
 **Headline (slide 1 and the video's last line):**
-> **UAE respiratory seasons never repeat, and to our knowledge no one publishes a forecast of the next three weeks. NABD is an open RSV and flu forecasting hub for Abu Dhabi, tested out of sample across the Gulf.**
+> **UAE respiratory seasons change timing and shape from year to year, and to our knowledge no one publishes a forecast of the next three weeks. NABD is an open RSV and flu forecasting hub for Abu Dhabi, tested out of sample across the Gulf.**
 
 ---
 
@@ -22,7 +22,7 @@
 
 ### 2. The pain: a Monday decision, made with last year's pattern
 - **Problem statement (on slide, 40 words; adapted from `docs/REVIEW-R3-judges.md` §2 within the stop list):**
-  > Every winter week, Abu Dhabi's paediatric bed managers and public-health officers plan the next three weeks of RSV and flu. Their defaults are last week's numbers and last year's pattern, but UAE seasons don't repeat, and no checkable forecast exists.
+  > Every winter week, Abu Dhabi's paediatric bed managers and public-health officers plan the next three weeks of RSV and flu. Their defaults are last week's numbers and last year's pattern, but UAE seasons change timing and shape from year to year, you can't know in advance which you'll get, and no checkable forecast exists.
 - **Visual:** the season-shape overlay (app page "Season shape", `app/screenshots/03_season_shape.png`): every UAE season from WHO FluNet, aligned at ISO week 27.
 - **Callouts** (WHO FluNet UAE sentinel, our computation, `research/positioning.md` §1.1):
   - flu peaked at **40.6% in week 42** (Oct 2025); the season before, it ran a five-month plateau that peaked in **week 7 (Feb 2025)**;
@@ -56,7 +56,7 @@
 
 ### 6. NABD: what runs today
 - **Built:**
-  - WHO FluNet UAE → NABD-UAE-v1, a linear growth model on the logit of sentinel positivity with a seasonal term and testing volume. It produces **probabilistic forecasts with coverage reported**, from the nowcast to +2.5 weeks after issue (skill measured at an 11-day publication lag).
+  - WHO FluNet UAE → NABD-UAE-v1, a linear growth model on the logit of sentinel positivity with a seasonal term and testing volume. It produces **probabilistic forecasts with coverage reported**, from the nowcast to +3 weeks after issue, labelled by target week (skill measured at a conservative 11-day publication lag).
   - The bilingual Arabic/English card shows:
     - the **chance of crossing each pressure threshold** and the forecast direction;
     - the persistence line, always shown alongside;
@@ -64,8 +64,8 @@
   - A playbook action for a named role → **Approve / Modify / Dismiss** with a reason → a hash-chained audit. A card that contradicts itself is blocked and can't render.
   - The season-shape page, the paediatric bed-days SCENARIO page and the pilot data connector (`docs/PILOT-DATA-SPEC.md`: aggregate weekly counts, k ≥ 10 suppression).
 - **In build for 20 Nov:**
-  - ⟦IF BUILT⟧ the weekly bilingual bulletin;
-  - ⟦IF BUILT⟧ the hospital winter planner;
+  - the weekly bilingual bulletin (built);
+  - the hospital winter planner (built);
   - ⟦IF DONE⟧ the public repo and externally timestamped ledger.
 - **Visual:** `app/screenshots/01_weekly_card_en.png` plus the architecture strip.
 - **Notes:** "Version one is deliberately simple and auditable. On Monday the bed manager reads one line: the chance RSV crosses your threshold next week, and whether it's heading up or down."
@@ -115,7 +115,7 @@
 
 ### 10. Workforce: from the population wave to the hospital's own constraints
 - **On slide:**
-  - **⟦IF BUILT: app page "Hospital winter planner (SCENARIO)"⟧** Takes NABD's forecast and the hospital's **own** inputs (annual paediatric RSV admissions, length of stay, beds, nursing headcount, and a baseline winter sickness-absence rate the hospital's HR sets). Shows, per horizon:
+  - **App page "Hospital winter planner (SCENARIO)"** Takes NABD's forecast and the hospital's **own** inputs (annual paediatric RSV admissions, length of stay, beds, nursing headcount, and a baseline winter sickness-absence rate the hospital's HR sets). Shows, per horizon:
     - scenario bed-days and % of ward capacity;
     - a scenario staff-absence range;
     - the net roster gap, in AED.
@@ -123,7 +123,7 @@
   - **Every number is labelled SCENARIO.** We cite no UAE absence statistic, because none credible exists publicly (`research/positioning.md` §1.6).
   - **Employer data path:** a secure-aggregation design (k ≥ 10 employers) on synthetic counts, watermarked **SIMULATED** (`app/workforce.py`). It shows how real absence counts would enter without exposing any employer or worker.
   - **Use limitation:** no individual, employment or disciplinary use. Aggregate only.
-- **Visual:** ⟦IF BUILT: winter-planner screenshot⟧, else `app/screenshots/04_bed_days_scenario.png` and `10_workforce_simulated.png`.
+- **Visual:** `app/screenshots/04b_winter_planner.png`.
 - **Notes:** "Statement 06 is population *and* workforce. We forecast the wave and translate it into the hospital's two constraints, beds and staff, using the hospital's own numbers. We don't fake absence data that doesn't exist."
 
 ### 11. Statement 06, requirement by requirement, and responsible by design
@@ -134,7 +134,7 @@
 | Decision support | Built: exceedance-probability bands, actions for named roles, approval with a reason code, consistency gate. Playbook ILLUSTRATIVE pending clinical review |
 | Privacy | Built: aggregate only; person-level fields rejected (tested); k ≥ 10 complementary suppression in the pilot connector |
 | Operational validation | Built (diagnostic): lead, sensitivity, PPV, false alarms (US + UAE); latency (US median input age 4 days; UAE lag 7 days on 8 Nov); missing-feed behaviour |
-| Health and resilience impact | Bed-days SCENARIO; ⟦IF BUILT⟧ winter planner. A pilot hypothesis, not a result |
+| Health and resilience impact | Bed-days SCENARIO; hospital winter planner (built). A pilot hypothesis, not a result |
 
 - **Also:** persistence always shown (automation-bias guard); freshness badge; WHO non-commercial terms respected.
 - **Visual:** the checklist with built / scored / simulated tags, beside `app/screenshots/11_about.png`.

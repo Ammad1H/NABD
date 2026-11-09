@@ -1,5 +1,8 @@
 # NABD: Why this matters to Abu Dhabi and Future Health (positioning, v1)
 
+> **Status (9 Nov 2026, round 5).** This is the round-2 research note. Its *evidence* (§1–3) stands. Its *wording* (§0, §4, §6) is **superseded** by `pitch/registration.md` and BUILD-SPEC v1.7: say "timing and shape change from year to year" (not "no two seasons share a shape" / "never repeat"), "probabilistic, coverage reported" (not "calibrated"), "to our knowledge, no one publishes", "hashed before the outcome exists; to be externally timestamped" (not "published"), and never "fill Abu Dhabi's children's beds". Lines below are reworded where they would be quoted.
+
+
 Owner: positioning workstream (BUILD-SPEC v1.4). Compiled 8 Nov 2026. This is the **single source** for the pain point and value story; pitch/ draws from here.
 
 Labels used throughout:
@@ -16,9 +19,9 @@ Quotes are kept under 15 words.
 
 Abu Dhabi already **detects**. Tableegh turns lab results into near-real-time notifications [S12]. UMOC runs an AI early-warning layer [S13]. Rasid watches wastewater [S20]. DoH scores every resident's chronic-disease risk [S14].
 
-What nobody provides, publicly or with a checkable track record, is the answer to the question a paediatric ward lead and a public-health duty officer both face every week in winter: **how big will the next 1–3 weeks of RSV and flu be, and how sure are we?** That question is hard in the UAE for two reasons. Its seasons do not repeat ([DATA] §1.1), and its case counts are not public [S6].
+What nobody provides, publicly or with a checkable track record, is the answer to the question a paediatric ward lead and a public-health duty officer both face every week in winter: **how big will the next 1–3 weeks of RSV and flu be, and how sure are we?** That question is hard in the UAE for two reasons. Its seasons change timing and shape from year to year ([DATA] §1.1), and its case counts are not public [S6].
 
-NABD is that forecast layer: calibrated, bilingual, human-approved, and scored in public. The US stress test shows we hold it to the hardest public bar there is.
+NABD is that forecast layer: probabilistic (coverage reported), bilingual, human-approved, and scored on a hashed record that is to be externally timestamped. The US stress test shows we hold it to the hardest public bar there is.
 
 ---
 
@@ -126,7 +129,7 @@ NABD is that forecast layer: calibrated, bilingual, human-approved, and scored i
    - **UMOC** (Feb 2025) runs an AI early-warning system that "predicts potential outbreaks" [S13].
    - **Rasid** handles wastewater [S20].
    - The **DoH patient risk profile** covers 14 chronic diseases for all residents [S14].
-   - **The missing link** is a *calibrated, evaluated, operational forecast of seasonal load* that sits between detection and the bed manager.
+   - **The missing link** is a *probabilistic, evaluated, operational forecast of seasonal load* that sits between detection and the bed manager.
 3. **Policy is moving to seasons and climate:**
    - The national campaign expanded to RSV + pneumonia [S7].
    - Infant RSV antibodies are in the Abu Dhabi programme [S4].
@@ -143,20 +146,20 @@ NABD is that forecast layer: calibrated, bilingual, human-approved, and scored i
 ## 4. Positioning
 
 ### 4.1 Problem statement (chosen, 40 words)
-> **Every winter, RSV and flu fill Abu Dhabi's children's beds, but no two seasons share a shape: flu peaked in October one year and plateaued for five months the next. Nobody publishes a forecast of how big or how long.**
+> **Every winter, RSV and flu drive paediatric admissions in Abu Dhabi, and their timing and shape change from year to year: flu peaked in October one year and plateaued for five months the next. To our knowledge, no one publishes a forecast of how big or how long.** *(Reworded in round 5; the original wording is retired.)*
 
 **Alternatives, ranked:**
-1. *(Detection-gap framing)* "Abu Dhabi can already see an outbreak start. It still cannot see how big the next three weeks will be. Hospitals plan winter from last year's calendar, and the UAE's seasons don't repeat." (Strong for the DoH judge. It risks sounding like a knock on Tableegh/UMOC, so pair it with "built to plug into them".)
+1. *(Detection-gap framing)* "Abu Dhabi can already see an outbreak start. It still cannot see how big the next three weeks will be. Hospitals plan winter from last year's calendar, and the UAE's seasons change timing and shape from year to year." (Strong for the DoH judge. It risks sounding like a knock on Tableegh/UMOC, so pair it with "built to plug into them".)
 2. *(Trust framing)* "Health AI in the Gulf asks for trust it hasn't earned. NABD publishes every forecast before the outcome exists, so Abu Dhabi can check us, week by week." (Strong for the AI judge, weaker on impact. Use as the closing line, not the opener.)
 3. *(Prevention-timing framing)* "Abu Dhabi now protects infants against RSV from 1 September. In two of the last four seasons RSV was already circulating before then." (Sharp and true [DATA]. It invites the question "can you predict onset?", and our honest answer is no better than the census. Keep it as a slide-2 fact, not the headline.)
 
 ### 4.2 Value proposition for the top 3 stakeholders
 - **SEHA/PureHealth paediatric ops:** "Each Monday you get the probability that RSV/flu pressure exceeds your surge threshold in each of the next three weeks, with a reason code and a named-approver workflow. Shadow-pilot it on your own aggregate counts for 12 weeks. The exit test is whether it beats your census carried forward."
-- **ADPHC/DoH (surveillance, UMOC):** "A calibrated forecast feed for Tableegh/Malaffi-derived counts, with a pre-registered evaluation protocol and a public ledger. It can be audited in the same way regardless of which vendor platform hosts it."
+- **ADPHC/DoH (surveillance, UMOC):** "A probabilistic forecast feed (coverage reported) for Tableegh/Malaffi-derived counts, with a pre-registered evaluation protocol and a public ledger. It can be audited in the same way regardless of which vendor platform hosts it."
 - **Immunisation programme:** "A season-shape evidence base (onset, peak and duration, by year) and a live view of where this season sits against them. Use it for catch-up and messaging timing."
 
 ### 4.3 The "only we" claim (defensible)
-> **"To our knowledge, NABD is the first open respiratory forecast for the UAE. It is calibrated and bilingual, and every forecast is timestamped in public before the outcome exists. It is held to the same test the US CDC applies to its own forecasting hub."**
+> **"To our knowledge, NABD is the first open respiratory forecast for the UAE. It is probabilistic (coverage reported) and bilingual, and every forecast is hashed before the outcome exists (to be externally timestamped). It is held to the same test the US CDC applies to its own forecasting hub."**
 
 "To our knowledge" is required: we searched (§1.7) and found none. Never say "the only" without that qualifier.
 
@@ -217,14 +220,14 @@ Placement: after the UAE proof and before the forward plan (deck slide 7), per t
 >
 > Abu Dhabi already senses brilliantly. Tableegh flags notifiable cases in near-real time, and UMOC watches for outbreaks. But nobody, publicly, answers the question a ward lead asks every Monday: how big will the next three weeks be, and how sure are you?
 >
-> NABD answers that. It produces calibrated RSV and flu forecasts in Arabic and English, every action is approved by a named officer, and every forecast is published *before* the outcome exists. We tested ourselves against the hardest public benchmark in the world, the US CDC's forecasting hub, and we'll show you exactly where we fell short.
+> NABD answers that. It produces probabilistic RSV and flu forecasts in Arabic and English, every action is approved by a named officer, and every forecast is hashed *before* the outcome exists. We tested ourselves against the hardest public benchmark in the world, the US CDC's forecasting hub, and we'll show you exactly where we fell short.
 >
 > To sense is to predict. NABD is how Abu Dhabi checks the prediction."
 
 *(Facts: [S1], [DATA] §1.1, [S12], [S13]. "Brilliantly" is rhetorical; keep or drop it.)*
 
 ### 6.2 One-paragraph executive summary (registration / solution description, 119 words)
-> Every winter RSV and influenza strain Abu Dhabi's paediatric services, but the seasons never repeat. In WHO's UAE laboratory data, flu peaked above 40% positivity in October one year and plateaued for five months into February the year before, and the UAE publishes no forecast of either. NABD is an open, bilingual forecasting layer that turns surveillance data into calibrated 1–3-week forecasts of RSV and flu activity, with a named-officer approval workflow and a public, timestamped track record. It is built to sit on the sensing Abu Dhabi already has (Tableegh/Malaffi, UMOC, Rasid) rather than replace it. Its evaluation is pre-registered and held to the US CDC FluSight standard, with results reported in full, including where it falls short.
+> Every winter RSV and influenza strain Abu Dhabi's paediatric services, and their timing and shape change from year to year. In WHO's UAE laboratory data, flu peaked above 40% positivity in October one year and plateaued for five months into February the year before, and the UAE publishes no forecast of either. NABD is an open, bilingual forecasting layer that turns surveillance data into probabilistic 1–3-week forecasts of RSV and flu activity, with a named-officer approval workflow and a hashed track record (to be externally timestamped). It is built to sit on the sensing Abu Dhabi already has (Tableegh/Malaffi, UMOC, Rasid) rather than replace it. Its evaluation is pre-registered and held to the US CDC FluSight standard, with results reported in full, including where it falls short.
 
 *(The pitch workstream must reconcile this with the CLAIM RULE and the abstract word limits. "1–3-week" should be read as issue-relative horizons up to +2.5 weeks (UAE).)*
 
