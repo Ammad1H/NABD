@@ -23,10 +23,10 @@
 ### 2. The pain: a Monday decision, made with last year's pattern
 - **Problem statement (on slide, 40 words; adapted from `docs/REVIEW-R3-judges.md` §2 within the stop list):**
   > Every winter week, Abu Dhabi's paediatric bed managers and public-health officers plan the next three weeks of RSV and flu. Their defaults are last week's numbers and last year's pattern, but UAE seasons change timing and shape from year to year, you can't know in advance which you'll get, and no checkable forecast exists.
-- **Visual:** the season-shape overlay (app page "Season shape", `app/screenshots/03_season_shape.png`): every UAE season from WHO FluNet, aligned at ISO week 27.
+- **Visual:** the influenza season-shape overlay (`results/uae/season_shape_flu.png`, from `eval/deck_figures.py`): every UAE season from WHO FluNet, aligned at ISO week 27, with 2024/25 (plateau) and 2025/26 (spike) highlighted.
 - **Callouts** (WHO FluNet UAE sentinel, our computation, `research/positioning.md` §1.1):
   - flu peaked at **40.6% in week 42** (Oct 2025); the season before, it ran a five-month plateau that peaked in **week 7 (Feb 2025)**;
-  - the RSV peak moved between **week 41 and week 47**.
+  - RSV peak height ranged **20% to 30%** (2022/23–2025/26). Some seasons look alike (this season's flu peak is close to last season's); the point is that you can't know in advance which shape you'll get.
 - **Notes (≈40 words):** "Plan this winter from last winter and you're wrong on timing and size. That's not a crisis claim: DoH says this season looks like the last two. It's the normal state of UAE respiratory seasons, and it recurs every year."
 
 ### 3. The burden behind the curve
@@ -84,7 +84,7 @@
   - the method was chosen after the UAE results;
   - Bahrain and Kuwait were excluded by the pre-set data rule;
   - RSV is a secondary outcome (vs persistence 0.798, but its country-clustered interval crosses 1, and its intervals are too narrow outside the UAE: 95% coverage 0.83).
-- **Visual:** `results/gcc/gcc_v1_vs_persistence.png` plus a country × season win grid.
+- **Visual:** `results/gcc/gcc_flu_two_comparators.png` (per country and pooled: vs past-season pattern and vs persistence; influenza only).
 - **Source:** `results/gcc/SUMMARY.md`; `docs/PREREG-GCC.md`.
 - **Notes (≈35 words):** "This is the test we couldn't tune for. Against the planner's default, last season's pattern, it cut influenza error by forty-six per cent. Against carrying last week forward, nine per cent, which met our pre-set bar. Every loss is on the slide."
 
