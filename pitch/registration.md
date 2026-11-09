@@ -32,17 +32,13 @@ Every winter RSV and influenza send young children to Abu Dhabi's hospitals, but
 
 ## Abstract (≤ 300 words)
 <!-- WC:a300 -->
-Every winter, respiratory syncytial virus (RSV) and influenza send young children to Abu Dhabi's hospitals, but no two seasons share a shape. UAE influenza has peaked anywhere from October to February, sometimes as a sharp spike and sometimes as a months-long plateau, while the RSV peak has moved across six weeks. One Abu Dhabi tertiary hospital recorded 2,189 RSV admissions of children aged five or under over 2018–2022. The UAE publishes no influenza case counts and, to our knowledge, no respiratory forecasts, so planners see last week, not the weeks ahead.
+Every winter, respiratory syncytial virus (RSV) and influenza send young children to Abu Dhabi's hospitals, but no two seasons share a shape. UAE influenza has peaked anywhere from October to February, while the RSV peak has moved across six weeks. One Abu Dhabi tertiary hospital recorded 2,189 RSV admissions of children aged five or under over 2018–2022. The UAE publishes no influenza case counts and, to our knowledge, no respiratory forecasts, so planners see last week, not the weeks ahead.
 
 NABD ("pulse") is an open respiratory forecasting hub for Abu Dhabi. It turns WHO FluNet UAE surveillance into probabilistic forecasts of RSV and influenza positivity up to three weeks ahead. A bilingual Arabic/English card shows the forecast range, the chance of crossing pressure thresholds, data freshness and a proportionate playbook action for a named role. Only a person can approve, modify or dismiss it, and a hash-chained audit log records every decision. Each forecast round is hashed before its outcome exists.
 
 Evidence: in a test on Oman, Qatar and Saudi Arabia, specified and locked before their data were downloaded, the frozen method cut influenza forecast error by 9% against last-week persistence (primary criterion met) and 46% against past-season patterns. In the UAE's own short record, a forward-in-time check shows parity with persistence, which is why we keep a live forecast ledger. In the United States, NABD missed our pre-set bar against the CDC FluSight ensemble; among individual hub models it ranked 7th of 21 in 2024/25 and 19th of 25 in 2025/26.
 
-In build for 20 November:
-- publishing and externally timestamping the forecast ledger;
-- a weekly bilingual bulletin;
-- a hospital winter-planning scenario view;
-- an aggregate-data connector for a hospital pilot.
+Also built: a weekly bilingual bulletin; a hospital winter planner that translates the forecast into beds and nurse shifts at risk (scenario, using the hospital's own inputs); and an aggregate-data connector for a hospital pilot. In build for 20 November: publishing and externally timestamping the forecast ledger.
 
 All data are aggregate; no individual is tracked.
 <!-- /WC -->
@@ -50,7 +46,7 @@ All data are aggregate; no individual is tracked.
 ---
 
 ## Current maturity and what we will build (the FAQ asks for this)
-**Maturity today (8 Nov): working prototype, version 1.**
+**Maturity today (9 Nov): working prototype, version 1.**
 - **Built and scored:**
   - data adapters with privacy guards;
   - the UAE forecasting model (v1), with a four-season retrospective and a forward-in-time check (parity with persistence on the UAE's short record);
@@ -60,9 +56,12 @@ All data are aggregate; no individual is tracked.
   - the US forecasting model, with a pre-registered back-test against the CDC FluSight ensemble (primary bar not met; reported);
   - the bilingual Streamlit decision card with approval and a hash-chained audit;
   - a FastAPI endpoint;
+  - a weekly bilingual (Arabic/English) bulletin PDF generated from each forecast round;
+  - a hospital winter planner (beds, nurse shifts at risk and roster gap, cost in AED), labelled scenario, with an occupational-health role in the playbook;
+  - an aggregate-data pilot connector with k ≥ 10 small-cell suppression (`docs/PILOT-DATA-SPEC.md`);
   - hashed forecast ledger rounds R0 and R1 with a Merkle manifest, not yet published or externally anchored;
-  - 100+ automated tests.
-- **Built during the Challenge (by 20 Nov):** the items listed "in build" above, plus the deck, video and technical documentation.
+  - 140+ automated tests.
+- **By 20 Nov:** publishing and externally timestamping the forecast ledger, plus the video and final technical documentation (the deck exists).
 - **Not in scope for 20 Nov:** Abu Dhabi hospital or district data (requires a pilot partner), a live employer-absence feed (simulated design only), and the foundation-model member (the wrapper exists; weights were unavailable in our build environment).
 
 ## Data sources (the T&C asks for every source to be declared)
@@ -87,5 +86,5 @@ No personal or patient-level data is used anywhere.
 summary: 94 words (limit 100) OK
 a50: 50 words (limit 50) OK
 a150: 148 words (limit 150) OK
-a300: 299 words (limit 300) OK
+a300: 307 words (limit 300) OVER
 ```
