@@ -49,8 +49,8 @@ EM=$(cd "$OUT" && git grep -nIoE '[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}
 if [[ -n "$EM" ]]; then echo "  REVIEW: email addresses in tracked files (remove personal ones if unintended):"; echo "$EM" | head -20 | sed 's/^/    /'; fi
 
 echo "== banned-claim scan (BUILD-SPEC v1.7; review each hit, fix wording before publishing)"
-CLAIMS='verified row-for-row|fewer false alarms|outside-anchored|externally anchored|3/3 onsets|nobody publishes|is published|publicly timestamped'
-(cd "$OUT" && git grep -nIiE "$CLAIMS" -- pitch app docs/TECHNICAL.md docs/SPEC.md README.md research/positioning.md 2>/dev/null \
+CLAIMS='verified row-for-row|verified against the official|fewer false alarms|outside-anchored|externally anchored|3/3 onsets|nobody publishes|is published|publicly timestamped|run blind|first blind|fill.{0,30}beds|share a shape|never repeat'
+(cd "$OUT" && git grep -nIiE "$CLAIMS" -- pitch app bulletin results docs/TECHNICAL.md docs/SPEC.md README.md research/positioning.md 2>/dev/null \
    | grep -v -iE 'banned|stop[- ]list|do not claim|not yet|until|never|BANNED' | head -40 | sed 's/^/  /') || true
 echo "  (also check the word 'blind' and 'calibrated' in context; see research/positioning.md 'What NOT to claim')"
 

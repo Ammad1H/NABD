@@ -46,7 +46,7 @@ Season wins (lower mean WIS): {"v2_vs_v1": {"flu": "1/4", "rsv": "0/4"}, "v2_vs_
 | rsv      |     2024 |         1.315 |         1.318 |         2.137 |             1.475 |
 | rsv      |     2025 |         2.296 |         2.745 |         1.887 |             3.873 |
 
-## By horizon (LOSO; horizon relative to reference date: -1 nowcast … 2 = +2.5 wk after issue)
+## By horizon (LOSO; h = -1 … 2 are targets L+1 … L+4 after the last published week L; in the live product these are labelled by week-ending date and nowcast / +1 / +2 / +3 wk after issue)
 
 | series   |   horizon |   NABD-UAE-v1 |   NABD-UAE-v2 |   persistence |   seasonal-analog |   NABD-UAE-v1/persistence |   NABD-UAE-v2/persistence |
 |:---------|----------:|--------------:|--------------:|--------------:|------------------:|--------------------------:|--------------------------:|
@@ -112,7 +112,9 @@ Season wins (lower mean WIS): {"v2_vs_v1": {"flu": "1/4", "rsv": "0/4"}, "v2_vs_
 | rsv      |     2025 | CORE+CLIM+TV+CAL    |   4 |
 | rsv      |     2025 | CORE+CLIM+TV+NS+CAL | 184 |
 
-## Surge-onset alerts (pre-declared rule; descriptive, n = 4 seasons per series)
+## Surge-onset alerts (pre-declared rule; descriptive, n = 4 seasons per series; RETIRED as evidence)
+
+> These counts use the **leave-one-season-out** design, in which the model is trained on later seasons. That design is retired as evidence (docs/DEVIATIONS.md U1; research/claims-ledger.md D4/F18). Shown for transparency only; do not cite the '3/3'.
 
 | model                         | series   |   n_eligible |   n_onsets | sensitivity   | ppv   |   false_alarms |   premature |   late_or_missed |   median_lead_wk |
 |:------------------------------|:---------|-------------:|-----------:|:--------------|:------|---------------:|------------:|-----------------:|-----------------:|

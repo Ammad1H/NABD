@@ -1,6 +1,6 @@
 # GCC out-of-sample test of the frozen UAE method (G12)
 
-**Pre-registered** in `docs/PREREG-GCC.md` and locked (`docs/LOCK-GCC.json`) **before any GCC data were downloaded**. The lock is self-attested in local git; outside anchoring is still to be done by the user. Design: **forward-in-time**: at the start of each season the model is refitted on that country's own earlier seasons only, with no UAE data and no pooling across countries. Data: WHO FluNet (finalised values, no vintages), so the results are **retrospective, revised data**. Data source deviation G1: WHO's full export via a public mirror, verified against the official API.
+**Pre-registered** in `docs/PREREG-GCC.md` and locked (`docs/LOCK-GCC.json`) **before any GCC data were downloaded**. The lock is self-attested in local git; outside anchoring is still to be done by the user. Design: **forward-in-time**: at the start of each season the model is refitted on that country's own earlier seasons only, with no UAE data and no pooling across countries. Data: WHO FluNet (finalised values, no vintages), so the results are **retrospective, revised data**. Data source deviation G1: WHO's full export via a public mirror; 419/419 overlapping UAE rows identical to our official-API cache and 23/23 Gulf rows spot-checked against the official API; full re-pull pending (docs/DEVIATIONS.md G1, G1b, C2).
 
 ## PRIMARY (influenza, NABD-UAE-v1 method vs persistence, pooled): **MET**
 
@@ -77,6 +77,6 @@ Included for the primary analysis (≥ 2 scored flu seasons): **OMN, QAT, SAU**.
 
 ## How to read it
 
-- The method designed on UAE data, frozen, and then run blind on three other Gulf countries' surveillance beat 'next week = this week' by about 9% for influenza and 20% for RSV, and beat the seasonal-average baseline by much more. Losses: flu in Oman 2022/23 and 2024/25, flu in Qatar 2023/24 (a tie), and RSV in Saudi Arabia 2025/26.
-- This is the project's first blind, pre-registered test the method passed. It is still retrospective on revised data, n = 3 countries, and n ≈ 4 seasons each.
+- The method designed on UAE data, frozen, and then run out of sample on three other Gulf countries' surveillance (plan locked in our git before download; self-attested until anchored) beat 'next week = this week' by about 9% for influenza (the pre-registered primary), and beat the seasonal-average baseline by much more. RSV is a secondary outcome (about 20% vs persistence; its country-clustered interval includes 1 and its 95% coverage is 0.83). Losses: flu in Oman 2022/23 and 2024/25, flu in Qatar 2023/24 (a tie), and RSV in Saudi Arabia 2025/26.
+- This is the project's first out-of-sample test, with the plan locked before download, that the method passed. It is still retrospective on revised data, n = 3 countries, and n ≈ 4 seasons each.
 - Coverage, flu: 95% intervals cover 0.96 (v1). RSV: 0.83, so RSV intervals are too narrow outside the UAE.
