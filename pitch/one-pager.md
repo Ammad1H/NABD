@@ -6,7 +6,7 @@
 
 **The Monday problem.** Every winter week, Abu Dhabi's paediatric bed managers and public-health officers plan the next three weeks of RSV and flu. Their defaults are last week's numbers and last year's pattern, but UAE seasons don't repeat:
 - **Flu** peaked at **40.6% in October** 2025, after a **five-month plateau that peaked in February** the season before. The RSV peak moved between weeks 41 and 47 (WHO FluNet UAE, our computation).
-- **One Abu Dhabi hospital (Tawam, SEHA)** admitted **2,189 children aged ≤5 with RSV** in 2018–22, and infants under six months stayed **5.8 days** on average.
+- **One Abu Dhabi hospital (Tawam, SEHA)** recorded **2,189 RSV admissions of children aged ≤5** in 2018–22, and infants under six months stayed **5.8 days** on average.
 - **Dubai claims data:** 22% of under-2s with RSV were hospitalised, and <2% had a known risk factor.
 - **No public data or forecast:** UAE flu case data is not public, and to our knowledge **no public respiratory forecast exists for the UAE**.
 
