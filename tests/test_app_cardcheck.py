@@ -45,8 +45,10 @@ def pb():
 
 def test_horizon_labels_issue_relative():
     assert data_io.horizon_label(ISSUE, ISSUE) == "nowcast"
-    assert data_io.horizon_label(ISSUE + dt.timedelta(weeks=1), ISSUE) == "+0.5 wk"
-    assert data_io.horizon_label(ISSUE + dt.timedelta(weeks=3), ISSUE) == "+2.5 wk"
+    assert data_io.horizon_label(ISSUE + dt.timedelta(weeks=1), ISSUE) == "+1 wk after issue"
+    assert data_io.horizon_label(ISSUE + dt.timedelta(weeks=3), ISSUE) == "+3 wk after issue"
+    d = ISSUE + dt.timedelta(weeks=1)
+    assert data_io.display_horizon(d, ISSUE).startswith(data_io.week_ending_label(d) + " (")
 
 
 def test_falling_forecast_never_gets_rising_band(pb):

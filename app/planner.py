@@ -73,7 +73,8 @@ def winter_plan(observed: pd.DataFrame, fc_rsv: pd.DataFrame, issue: dt.date, *,
         occ = {k: v / 7.0 for k, v in bed_days.items()}
         row = {
             "target_end_date": d,
-            "horizon": data_io.display_horizon(d, issue, meta),
+            "week": data_io.week_ending_label(d),
+            "weeks after issue": data_io.horizon_label(d, issue),
             "RSV positivity forecast % (10–50–90)": f"{q[0.1]:.1f} – {q[0.5]:.1f} – {q[0.9]:.1f}",
             "RSV admissions / week": f"{adm[0.1]:.0f} – {adm[0.5]:.0f} – {adm[0.9]:.0f}",
             "RSV beds occupied (avg)": f"{occ[0.1]:.0f} – {occ[0.5]:.0f} – {occ[0.9]:.0f}",
@@ -84,25 +85,44 @@ def winter_plan(observed: pd.DataFrame, fc_rsv: pd.DataFrame, issue: dt.date, *,
                                              f"{adm[0.9] * cost_usd * AED_PER_USD:,.0f}"),
         }
         if absence_rate_avg is not None and nurses:
-            rate = {k: absence_rate_avg * v / avg_pos for k, v in q.items()}
-            absent = {k: nurses * v for k, v in rate.items()}
-            shifts = {k: v * shifts_per_nurse_week for k, v in absent.items()}
-            gap = {k: v - spare_shifts_week for k, v in shifts.items()}
-            # gap > 0  <=>  positivity > p_star (gap is increasing in positivity)
-            denom = nurses * absence_rate_avg * shifts_per_nurse_week / avg_pos
-            p_star = spare_shifts_week / denom if denom > 0 else np.inf
+            wf = workforce_scenario(q, nurses=nurses, absence_rate_avg=absence_rate_avg, avg_pos=avg_pos,
+                                    shifts_per_nurse_week=shifts_per_nurse_week, spare_shifts_week=spare_shifts_week)
             qvec = np.array([float(r[round(float(x), 3)]) for x in FLUSIGHT_LEVELS])
-            p_gap = float(exceedance_prob(qvec, FLUSIGHT_LEVELS, p_star)[0]) if np.isfinite(p_star) else 0.0
+            p_gap = (float(exceedance_prob(qvec, FLUSIGHT_LEVELS, wf["p_star"])[0])
+                     if np.isfinite(wf["p_star"]) else 0.0)
             row.update({
-                "nurses absent (respiratory)": f"{absent[0.1]:.1f} – {absent[0.5]:.1f} – {absent[0.9]:.1f}",
-                "nurse shifts at risk / week": f"{shifts[0.1]:.0f} – {shifts[0.5]:.0f} – {shifts[0.9]:.0f}",
-                "net roster gap (shifts)": f"{gap[0.1]:+.0f} – {gap[0.5]:+.0f} – {gap[0.9]:+.0f}",
-                "P(roster gap > 0)": _fmt_p(p_gap),
+                WF_COLS[0]: " – ".join(f"{wf['absent'][k]:.1f}" for k in (0.1, 0.5, 0.9)),
+                WF_COLS[1]: " – ".join(f"{wf['shifts'][k]:.0f}" for k in (0.1, 0.5, 0.9)),
+                WF_COLS[2]: " – ".join(f"{wf['gap'][k]:.0f}" for k in (0.1, 0.5, 0.9)),
+                WF_COLS[3]: _fmt_p(p_gap),
             })
+            for k, lab in ((0.1, "q10"), (0.5, "q50"), (0.9, "q90")):  # numeric copies for tests / export
+                row[f"_shifts_{lab}"] = wf["shifts"][k]
+                row[f"_gap_{lab}"] = wf["gap"][k]
+            row["_p_gap"] = p_gap
         rows.append(row)
     out = pd.DataFrame(rows)
     out.attrs.update(season_sum=season_sum, n_seasons=n_seasons, avg_pos=avg_pos)
     return out
+
+
+WF_COLS = ["expected absent nurses (respiratory)", "nurse shifts at risk / week",
+           "net roster gap after bank/float (shifts)", "P(roster gap > 0)"]
+DEMAND_COLS = ["week", "weeks after issue", "RSV positivity forecast % (10–50–90)", "RSV admissions / week",
+               "RSV beds occupied (avg)", "% of paediatric respiratory beds", "cost of RSV admissions (AED)"]
+
+
+def workforce_scenario(q: dict, *, nurses: int, absence_rate_avg: float, avg_pos: float,
+                       shifts_per_nurse_week: float, spare_shifts_week: float) -> dict:
+    """SCENARIO arithmetic (assumptions shown on the page): absence rate scales with positivity / its average;
+    shifts at risk = absent nurses × shifts per nurse; net gap = max(shifts at risk − bank/float shifts, 0)."""
+    rate = {k: absence_rate_avg * v / avg_pos for k, v in q.items()}
+    absent = {k: nurses * v for k, v in rate.items()}
+    shifts = {k: v * shifts_per_nurse_week for k, v in absent.items()}
+    gap = {k: max(v - spare_shifts_week, 0.0) for k, v in shifts.items()}
+    denom = nurses * absence_rate_avg * shifts_per_nurse_week / avg_pos  # gap > 0  <=>  positivity > p_star
+    p_star = spare_shifts_week / denom if denom > 0 else np.inf
+    return {"absent": absent, "shifts": shifts, "gap": gap, "p_star": p_star}
 
 
 def simulated_absence_rate(table: pd.DataFrame) -> float | None:

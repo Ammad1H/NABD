@@ -27,7 +27,9 @@ class QuantileValue(BaseModel):
 class HorizonForecast(BaseModel):
     target_end_date: str
     horizon: int
-    horizon_label: str = Field(description="Relative to issue date: 'nowcast' or '+X wk'")
+    weeks_after_issue: int = Field(description="Whole weeks from the issue date to the end of the target week (0 = nowcast)")
+    week_ending_label: str = Field(description="Primary label, e.g. 'week ending 15 Nov'")
+    horizon_label: str = Field(description="Full label, e.g. 'week ending 15 Nov (+1 wk after issue)' or '... (nowcast)'")
     quantiles: list[QuantileValue]
     median: float
 
@@ -81,7 +83,9 @@ def forecast(location: str = Query("ARE", description="Only ARE is served"),
         qs = [QuantileValue(quantile=float(q), value=float(v)) for q, v in zip(g.q, g.value)]
         med = float(g.loc[(g.q - 0.5).abs().idxmin(), "value"])
         out.append(HorizonForecast(target_end_date=str(ted), horizon=int(g.horizon.iloc[0]),
-                                   horizon_label=data_io.horizon_label(ted, issue), quantiles=qs, median=med))
+                                   weeks_after_issue=data_io.horizon_weeks(ted, issue),
+                                   week_ending_label=data_io.week_ending_label(ted),
+                                   horizon_label=data_io.display_horizon(ted, issue), quantiles=qs, median=med))
     fr = data_io.freshness(obs)
     name = meta.get("model", "unknown") if model == "primary" else str(df.model.iloc[0])
     return ForecastResponse(location=location, target=target, model=name, reference_date=str(meta["reference_date"]), issue_date=issue.isoformat(),

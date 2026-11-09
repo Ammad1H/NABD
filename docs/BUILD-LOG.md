@@ -280,3 +280,9 @@ NABD-UAE-v1 beat persistence in flu 4/4 seasons and RSV 3/4 (it loses on RSV 202
   - .streamlit/config.toml, requirements.txt (app) and requirements-dev.txt; LICENSE (MIT code + data terms); root README.md.
 - Dry runs: hub pin OK; the FluSight script on the LIVE hub wrote and validated the 2026-11-14 draft (file PASS; metadata only has placeholders left; stale weeks 1 on 8 Nov, so re-run Wed); anchor_all dry-run verified 3/3 manifests and built a 28-file bundle; prepare_public_repo produced a 110 MB clone with no secrets and flagged overclaims in docs/SPEC.md and research/positioning.md (not in this workstream's scope).
 - Tests: 142 passed.
+
+## Round 4 app finish (9 Nov)
+- Winter planner: separate Demand and Workforce tables. Workforce columns: expected absent nurses, nurse shifts at risk, net roster gap after bank/float (floored at 0), P(gap > 0), at 10–50–90%. The arithmetic lives in `planner.workforce_scenario`, with tests for consistency and for hiding the table when no rate is given.
+- One horizon convention everywhere (`data_io.display_horizon`): the primary label is the target week-ending date; the secondary is "nowcast / +N wk after issue", equal to the hashed R0/R1 `weeks_ahead_of_issue` (tested row by row). The +0.5/+1.5/+2.5 midpoint labels are removed from the card, bulletin, API, planner, bed-days, explain selector and tests. The API adds `weeks_after_issue` and `week_ending_label`.
+- Plain band names in the audit table. The explain selector is labelled by week ending, and the bars have more height to stop label overlap. The banned-wording scan of app/ and bulletin/ found no hits (remaining "pre-registered" uses refer to the locked US/GCC protocols).
+- Bulletin regenerated (2 pages; sha256 995aa28a…); all screenshots regenerated. 144 tests pass.

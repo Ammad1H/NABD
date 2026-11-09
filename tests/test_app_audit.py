@@ -115,7 +115,9 @@ def test_api_schema():
         qs = [q["quantile"] for q in f["quantiles"]]
         vals = [q["value"] for q in f["quantiles"]]
         assert qs == sorted(qs) and vals == sorted(vals), "quantiles must be monotone"
-        assert f["horizon_label"] == "nowcast" or f["horizon_label"].startswith("+")
+        assert f["horizon_label"].startswith("week ending ")
+        assert f["horizon_label"].endswith("(nowcast)") or f["horizon_label"].endswith("wk after issue)")
+        assert f["week_ending_label"].startswith("week ending ") and f["weeks_after_issue"] >= 0
     assert c.get("/forecast", params={"location": "USA"}).status_code == 404
     assert c.get("/forecast", params={"target": "bogus"}).status_code == 422
     assert "/forecast" in c.get("/openapi.json").json()["paths"]

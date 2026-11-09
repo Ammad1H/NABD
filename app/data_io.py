@@ -58,29 +58,42 @@ def freshness(observed: pd.DataFrame, today: dt.date | None = None) -> dict:
             "expected_lag_days": FLUNET_LAG_DAYS, "stale": lag > FLUNET_LAG_DAYS + 7}
 
 
-def horizon_weeks(target_end: dt.date, issue: dt.date) -> float:
-    """Weeks from the issue date to the MIDDLE of the target week, rounded to 0.5.
+AR_MONTHS = ["يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر",
+             "نوفمبر", "ديسمبر"]
 
-    A target week ending 7 days after issue is mostly in the future: its midpoint is +0.5 wk.
-    This matches the issue-relative horizons in docs/SPEC.md §5.1 (nowcast, +0.5, +1.5, +2.5 wk).
+
+def horizon_weeks(target_end: dt.date, issue: dt.date) -> int:
+    """Whole weeks from the issue date to the END of the target week (the hashed ledger convention).
+
+    0 = nowcast (the target week ends on or before the issue date); 1, 2, 3 = weeks after issue.
+    This is the convention stored in ledger rounds R0/R1 (`weeks_ahead_of_issue`), so the card, the bulletin,
+    the API, the planner and the ledger receipt can never disagree.
     """
-    mid = pd.Timestamp(target_end) - pd.Timedelta(days=3.5)
-    wk = (mid - pd.Timestamp(issue)).total_seconds() / (7 * 86400)
-    return round(wk * 2) / 2
+    days = (pd.Timestamp(target_end) - pd.Timestamp(issue)).days
+    return max(int(round(days / 7.0)), 0)
 
 
-def horizon_label(target_end: dt.date, issue: dt.date) -> str:
+def week_ending_label(target_end, lang: str = "en") -> str:
+    """PRIMARY horizon label: the target week-ending date, e.g. 'week ending 15 Nov'."""
+    d = pd.Timestamp(target_end).date()
+    if lang == "ar":
+        return f"الأسبوع المنتهي في {d.day} {AR_MONTHS[d.month - 1]}"
+    return f"week ending {d.day} {d:%b}"
+
+
+def horizon_label(target_end, issue: dt.date, lang: str = "en") -> str:
+    """SECONDARY horizon label: 'nowcast' or '+N wk after issue' (matches ledger R0/R1 '+N.0 wk after issue')."""
     wk = horizon_weeks(target_end, issue)
-    return "nowcast" if wk <= 0 else f"+{wk:g} wk"
+    if lang == "ar":
+        return "تقدير آني" if wk <= 0 else f"+{wk} أسبوع بعد الإصدار"
+    return "nowcast" if wk <= 0 else f"+{wk} wk after issue"
 
 
 def round_horizon_labels(round_csv: Path) -> dict[str, str]:
-    """Horizon labels exactly as the ledger round's own meta.json states them (target_end_date -> label).
+    """Secondary labels exactly as a ledger round's own meta.json states them (target_end_date -> label).
 
-    Live rounds carry their own horizon convention (R0/R1 measure to the END of the target week: +1/+2/+3 wk;
-    later rounds may use the issue-relative midpoint convention). The card shows the round's own numbers so the
-    app, the bulletin and the ledger never disagree. A nowcast is shown as "nowcast" (no claim about whether the
-    target week had ended at issue).
+    Used to CHECK that the computed labels agree with the hashed round (tests); display always goes through
+    `display_horizon`, which yields the same text.
     """
     meta = round_csv.with_name(round_csv.name[:-4] + ".meta.json")
     if not meta.exists():
@@ -97,17 +110,19 @@ def round_horizon_labels(round_csv: Path) -> dict[str, str]:
         if lab.startswith("nowcast") or (w is not None and float(w) <= 0):
             out[ted] = "nowcast"
         elif w is not None:
-            out[ted] = f"+{float(w):g} wk"
+            out[ted] = f"+{float(w):g} wk after issue"
         elif lab:
-            out[ted] = lab.replace(" after issue", "")
+            out[ted] = lab
     return out
 
 
-def display_horizon(target_end, issue: dt.date, meta: dict | None) -> str:
-    """Label used everywhere in the app and the bulletin: the ledger round's own label when available."""
-    d = pd.Timestamp(target_end).date()
-    labels = (meta or {}).get("horizon_labels") or {}
-    return labels.get(d.isoformat()) or horizon_label(d, issue)
+def display_horizon(target_end, issue: dt.date, meta: dict | None = None, lang: str = "en") -> str:
+    """The one horizon label used everywhere: 'week ending 15 Nov (+1 wk after issue)'.
+
+    `meta` is accepted for backward compatibility; the secondary part is computed from dates and equals the
+    ledger round's own label (tested in tests/test_app_round4.py).
+    """
+    return f"{week_ending_label(target_end, lang)} ({horizon_label(target_end, issue, lang)})"
 
 
 # ---------------------------------------------------------------- UAE forecasts

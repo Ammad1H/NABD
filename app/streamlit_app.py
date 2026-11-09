@@ -238,10 +238,18 @@ def explain_panel(col: str, ex: pd.DataFrame | None, ex_date: str | None, issue:
                    f"available example, issue date {ex_date}"
                    + (f" ({ex['design'].iloc[0]})" if "design" in ex.columns else "") + ", to illustrate the method.")
     ex = ex.copy()
-    horizons = list(pd.unique(ex["horizon"]))
-    default = horizons.index(0) if 0 in horizons else 0
-    h = st.selectbox("Horizon (model step; 0 = first target week after issue)", horizons, index=default, key=f"exh_{col}")
-    g = ex[ex["horizon"] == h].copy()
+    if "target_end_date" in ex.columns:
+        ex_issue = dt.date.fromisoformat(str(ex["issue_date"].iloc[0])) if "issue_date" in ex.columns else issue
+        weeks = sorted(pd.unique(ex["target_end_date"].astype(str)))
+        wk_of = {w: data_io.horizon_weeks(w, ex_issue) for w in weeks}
+        default = next((i for i, w in enumerate(weeks) if wk_of[w] == int(default_wk)), 0)
+        sel = st.selectbox(t("week_end", lang), weeks, index=default, key=f"exh_{col}",
+                           format_func=lambda w: data_io.display_horizon(w, ex_issue, None, lang))
+        g = ex[ex["target_end_date"].astype(str) == sel].copy()
+    else:  # older explain files without dates: fall back to the model step
+        horizons = list(pd.unique(ex["horizon"]))
+        h = st.selectbox("Model step", horizons, index=horizons.index(0) if 0 in horizons else 0, key=f"exh_{col}")
+        g = ex[ex["horizon"] == h].copy()
     g["contribution"] = pd.to_numeric(g["contribution"], errors="coerce")
     g = g.dropna(subset=["contribution"])
     unit = str(g["unit"].iloc[0]) if "unit" in g.columns and len(g) else ""
@@ -260,7 +268,7 @@ def explain_panel(col: str, ex: pd.DataFrame | None, ex_date: str | None, issue:
                                   labelExpr="split(datum.label, '|')")),
             x=alt.X("contribution:Q", title=f"contribution ({unit})" if unit else "contribution"),
             color=alt.Color("direction:N", scale=alt.Scale(domain=["pushes up", "pushes down"], range=[ROSE, TEAL]), legend=None),
-            tooltip=["feature", "value", alt.Tooltip("contribution:Q", format="+.3f")]).properties(height=46 * max(len(sig), 3))
+            tooltip=["feature", "value", alt.Tooltip("contribution:Q", format="+.3f")]).properties(height=64 * max(len(sig), 3))
         st.altair_chart(ch, width="stretch")
     for r in list(sig.itertuples())[:3]:
         r = r._replace(label=str(r.label).replace("|", " "))
@@ -280,7 +288,7 @@ if page == "nav_card":
         demo_banner()
     fr = data_io.freshness(observed)
     issue = dt.date.fromisoformat(str(meta.get("issue_date") or meta.get("reference_date")))
-    hl = lambda d: data_io.display_horizon(d, issue, meta)  # noqa: E731  (ledger round's own labels)
+    hl = lambda d: data_io.display_horizon(d, issue, meta, lang)  # noqa: E731  (one convention everywhere)
     c1, c2, c3 = st.columns([2, 2, 3])
     c1.metric(t("last_week", lang), fr["last_week"])
     c2.metric(t("lag", lang), f'{fr["lag_days"]} {t("days", lang)}', f'{t("expected", lang)} ~{fr["expected_lag_days"]}', delta_color="off")
@@ -310,8 +318,8 @@ if page == "nav_card":
             if res.exceed is not None:
                 st.markdown(f"**{t('exceed_title', lang)}**")
                 ex_tbl = pd.DataFrame({
-                    t("horizon", lang): [hl(d) for d in res.exceed_dates],
-                    t("week_end", lang): [str(pd.Timestamp(d).date()) for d in res.exceed_dates],
+                    t("week_end", lang): [data_io.week_ending_label(d, lang) for d in res.exceed_dates],
+                    t("horizon", lang): [data_io.horizon_label(d, issue, lang) for d in res.exceed_dates],
                     **{f"P(> {T:g}%)": [cardcheck.fmt_p(v) for v in res.exceed[T]] for T in res.exceed.columns}})
                 st.dataframe(ex_tbl, hide_index=True, width="stretch")
                 lvl_txt = (f"{res.level:g}%" if res.level > 0 else t("below_tiers", lang))
@@ -341,14 +349,14 @@ if page == "nav_card":
             f = fan_frame(fc, target)
             pe = fan_frame(pers, target)
             tbl = pd.DataFrame({
-                t("horizon", lang): [hl(d) for d in f.target_end_date],
-                t("week_end", lang): f.target_end_date.astype(str),
+                t("week_end", lang): [data_io.week_ending_label(d, lang) for d in f.target_end_date],
+                t("horizon", lang): [data_io.horizon_label(d, issue, lang) for d in f.target_end_date],
                 t("median", lang): f[0.5].round(1),
                 t("band80", lang): [f"{a:.1f}–{b:.1f}" for a, b in zip(f[0.1], f[0.9])],
                 t("persistence_short", lang): f.target_end_date.map(dict(zip(pe.target_end_date, pe[0.5].round(1)))).values,
             })
             st.dataframe(tbl, hide_index=True, width="stretch")
-            st.caption(t("horizon_note_ledger" if meta.get("horizon_labels") else "horizon_note", lang))
+            st.caption(t("horizon_note", lang))
             explain_panel(col, explain.get(col), ex_date, issue, res.level_horizon_wk)
         with right:
             if res.renderable:
@@ -389,8 +397,11 @@ if page == "nav_card":
         (st.success if ok else st.error)(msg)
         recs = audit.read_records()
         if recs:
-            st.dataframe(pd.DataFrame(recs)[["seq", "ts_utc", "approver", "role", "decision", "reason_code",
-                                             "band_id", "hash"]], hide_index=True, width="stretch")
+            _labels = {b["id"]: cardcheck.band_label(b, lang) for b in pb.get("bands", [])}
+            _df = pd.DataFrame(recs)
+            _df["band"] = _df["band_id"].map(lambda i: _labels.get(i, i))
+            st.dataframe(_df[["seq", "ts_utc", "approver", "role", "decision", "reason_code", "band", "hash"]],
+                         hide_index=True, width="stretch")
 
 elif page == "nav_alerts":
     st.subheader(t("nav_alerts", lang))
@@ -833,13 +844,19 @@ elif page == "nav_planner":
                                shifts_per_nurse_week=float(shifts), spare_shifts_week=float(spare), cost_usd=float(cost),
                                meta=meta)
     st.markdown("##### Weekly plan (SCENARIO: 10% – median – 90% of the forecast carried through the same arithmetic)")
-    st.dataframe(plan.drop(columns=["target_end_date"]), hide_index=True, width="stretch")
+    st.markdown("**Demand: beds and cost** (SCENARIO)")
+    st.dataframe(plan[[c for c in planner.DEMAND_COLS if c in plan.columns]], hide_index=True, width="stretch")
+    st.markdown("**Workforce: nursing roster** (SCENARIO; absence rate " + ("from your HR figure" if src == "Enter my HR figure" else "SIMULATED") + ")")
+    if all(c in plan.columns for c in planner.WF_COLS):
+        st.dataframe(plan[["week", "weeks after issue"] + planner.WF_COLS], hide_index=True, width="stretch")
+    else:
+        st.info("Workforce columns need an absence rate: enter your HR figure, or choose the SIMULATED module.")
     st.markdown(f"**Assumptions (unvalidated, shown so you can challenge them).** Weekly admissions = annual admissions × "
                 f"this week's sentinel RSV positivity ÷ {plan.attrs['season_sum']:.0f} (the average seasonal sum of weekly "
                 f"positivity over {plan.attrs['n_seasons']} complete UAE seasons). Beds occupied = admissions × length of stay "
                 f"÷ 7. Staff absence scales the hospital's own average rate by positivity ÷ its average "
                 f"({plan.attrs['avg_pos']:.1f}%). Shifts at risk = absent nurses × shifts per nurse. Net roster gap = shifts "
-                f"at risk − bank/float shifts. P(gap > 0) is read from the forecast quantiles. AED at 3.6725 per US$.")
+                f"at risk − bank/float shifts, floored at 0. P(gap > 0) is read from the forecast quantiles. AED at 3.6725 per US$.")
     pb = load_playbook()
     res = cardcheck.build_card(pb, data_io.UAE_TARGETS["rsv"], "ARE", fc[fc.target == data_io.UAE_TARGETS["rsv"]],
                                observed["rsv"], issue)

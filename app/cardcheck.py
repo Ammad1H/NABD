@@ -208,7 +208,7 @@ TREND_TXT = {"rising": {"en": "rising", "ar": "صاعد"}, "plateau": {"en": "pl
 def card_sentence(res: CardResult, lang: str, hlabel: str | None = None) -> str:
     """One plain sentence. `hlabel` is the display label of the level horizon (ledger round's own label when live)."""
     k = res.kit
-    h = hlabel or f"+{res.level_horizon_wk:g} wk"
+    h = hlabel or ("nowcast" if res.level_horizon_wk <= 0 else f"+{res.level_horizon_wk:g} wk after issue")
     if lang == "ar":
         h_ar = h.replace("nowcast", "التقدير الآني").replace(" wk", " أسبوع")
         return (f"آخر أسبوع منشور: {OBS_TXT[k.observed_key]['ar']} ({res.prev_value:.1f}% ← {res.last_value:.1f}%). "

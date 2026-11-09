@@ -100,7 +100,7 @@ TXT = {
     "tier": {"en": "tier", "ar": "المستوى"},
     "rise": {"en": "rise", "ar": "ارتفاع"},
     "fall": {"en": "fall", "ar": "انخفاض"},
-    "horizon": {"en": "Horizon", "ar": "الأفق"},
+    "horizon": {"en": "Weeks after issue", "ar": "أسابيع بعد الإصدار"},
     "week_end": {"en": "Week ending", "ar": "نهاية الأسبوع"},
     "median": {"en": "Median", "ar": "الوسيط"},
     "range80": {"en": "80% range", "ar": "نطاق 80%"},
@@ -305,10 +305,8 @@ def _p(text: str, style, lang: str, width: float | None = 180 * mm) -> Paragraph
 
 
 def _hlab(d, issue, labels, lang) -> str:
-    lab = labels.get(pd.Timestamp(d).date().isoformat()) or data_io.horizon_label(pd.Timestamp(d).date(), issue)
-    if lang == "ar":
-        return lab.replace("nowcast", TXT["nowcast"]["ar"]).replace(" wk", " " + TXT["wk"]["ar"])
-    return lab
+    """One convention everywhere (data_io.display_horizon): 'week ending 15 Nov (+1 wk after issue)'."""
+    return data_io.display_horizon(pd.Timestamp(d).date(), issue, None, lang)
 
 
 def _tile(lang: str, st: dict, rd: dict, pb: dict, col: str, obs: pd.DataFrame, issue: dt.date,
@@ -332,12 +330,13 @@ def _tile(lang: str, st: dict, rd: dict, pb: dict, col: str, obs: pd.DataFrame, 
     if res.exceed is not None:
         for d, (_, row) in zip(res.exceed_dates, res.exceed.iterrows()):
             pmap[pd.Timestamp(d).date()] = row
-    head = [tx("horizon", lang), tx("week_end", lang), tx("median", lang), tx("range80", lang)] + [f"P(> {T:g}%)" for T in thr]
+    head = [tx("week_end", lang), tx("horizon", lang), tx("median", lang), tx("range80", lang)] + [f"P(> {T:g}%)" for T in thr]
     rows = [head]
     for d, r in w.iterrows():
         dd = pd.Timestamp(d).date()
         pr = pmap.get(dd)
-        rows.append([_hlab(d, issue, labels, lang), dd.isoformat(), f"{r[0.5]:.1f}", f"{r[0.1]:.1f}–{r[0.9]:.1f}"]
+        rows.append([data_io.week_ending_label(dd, lang), data_io.horizon_label(dd, issue, lang),
+                     f"{r[0.5]:.1f}", f"{r[0.1]:.1f}–{r[0.9]:.1f}"]
                     + [cardcheck.fmt_p(pr[T]) if pr is not None else "–" for T in thr])
     if lang == "ar":
         rows = [list(reversed(r)) for r in rows]

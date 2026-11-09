@@ -45,11 +45,15 @@ def test_card_horizon_labels_match_ledger_round():
     m = json.loads(meta_file.read_text())
     issue = dt.date.fromisoformat(meta["issue_date"])
     for h in m["horizons"]:
+        # computed weeks == the hashed round's own weeks_ahead_of_issue, for every row
+        assert data_io.horizon_weeks(h["target_end_date"], issue) == int(float(h["weeks_ahead_of_issue"]))
         lab = data_io.display_horizon(h["target_end_date"], issue, meta)
+        assert lab.startswith(data_io.week_ending_label(h["target_end_date"]))
         if float(h["weeks_ahead_of_issue"]) <= 0:
-            assert lab == "nowcast"
+            assert lab.endswith("(nowcast)")
         else:
-            assert lab == f"+{float(h['weeks_ahead_of_issue']):g} wk"
+            assert lab.endswith(f"(+{int(float(h['weeks_ahead_of_issue']))} wk after issue)")
+            assert h["horizon_label"].startswith(f"+{float(h['weeks_ahead_of_issue']):.1f} wk after issue")
 
 
 def _flat_forecast(issue: dt.date, value: float) -> pd.DataFrame:
@@ -72,7 +76,7 @@ def test_planner_reproduces_hospital_averages_at_average_positivity():
                                absence_rate_avg=0.02, shifts_per_nurse_week=4, spare_shifts_week=0, cost_usd=1000)
     med_adm = float(plan["RSV admissions / week"].iloc[0].split(" – ")[1])
     assert med_adm == pytest.approx(10, abs=0.5)          # 520 / 52
-    med_abs = float(plan["nurses absent (respiratory)"].iloc[0].split(" – ")[1])
+    med_abs = float(plan[planner.WF_COLS[0]].iloc[0].split(" – ")[1])
     assert med_abs == pytest.approx(2.0, abs=0.05)         # 100 x 2%
     assert plan["P(roster gap > 0)"].iloc[0] == ">99%"     # no spare shifts -> any absence is a gap
 
@@ -107,3 +111,35 @@ def test_no_banned_wording_in_app_text():
         txt = (ROOT / f).read_text(encoding="utf-8").lower()
         for w in banned:
             assert w not in txt, (f, w)
+
+
+def test_planner_workforce_columns_consistent():
+    """Winter planner shows workforce outputs; gap = max(shifts at risk - bank shifts, 0) at every quantile."""
+    from app import planner
+    obs = data_io.load_uae_observed()
+    fc, pers, meta, demo = data_io.load_uae_forecasts(obs)
+    issue = dt.date.fromisoformat(str(meta.get("issue_date") or meta.get("reference_date")))
+    spare = 10.0
+    plan = planner.winter_plan(obs, fc[fc.target == data_io.UAE_TARGETS["rsv"]], issue, annual_admissions=438,
+                               los_days=4.0, beds=40, nurses=80, absence_rate_avg=0.02, shifts_per_nurse_week=4.0,
+                               spare_shifts_week=spare, cost_usd=2241, meta=meta)
+    assert not plan.empty
+    for c in planner.WF_COLS + planner.DEMAND_COLS:
+        assert c in plan.columns, c
+    for lab in ("q10", "q50", "q90"):
+        s, g = plan[f"_shifts_{lab}"], plan[f"_gap_{lab}"]
+        assert ((g - (s - spare).clip(lower=0)).abs() < 1e-9).all()
+        assert (g >= 0).all()
+    assert (plan["_gap_q10"] <= plan["_gap_q50"]).all() and (plan["_gap_q50"] <= plan["_gap_q90"]).all()
+    assert plan["week"].str.startswith("week ending ").all()
+
+
+def test_planner_no_workforce_without_rate():
+    from app import planner
+    obs = data_io.load_uae_observed()
+    fc, pers, meta, demo = data_io.load_uae_forecasts(obs)
+    issue = dt.date.fromisoformat(str(meta.get("issue_date") or meta.get("reference_date")))
+    plan = planner.winter_plan(obs, fc[fc.target == data_io.UAE_TARGETS["rsv"]], issue, annual_admissions=438,
+                               los_days=4.0, beds=40, nurses=80, absence_rate_avg=None, shifts_per_nurse_week=4.0,
+                               spare_shifts_week=10, cost_usd=2241, meta=meta)
+    assert not any(c in plan.columns for c in planner.WF_COLS)
