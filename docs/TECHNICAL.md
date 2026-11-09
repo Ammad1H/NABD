@@ -10,7 +10,7 @@ Every number below is copied from a file in `results/` and cited inline. Status 
 
 ## 1. What NABD is
 
-NABD (نبض, "pulse") is an open forecasting layer for seasonal RSV and influenza. It issues probabilistic forecasts of weekly respiratory activity, from the nowcast to +2.5 weeks after issue, with interval coverage measured and reported (§6). A bilingual (Arabic/English) decision card proposes a proportionate action for a named role, and only a person can approve, modify or dismiss it; a hash-chained audit log records the decision. Every forecast round is hashed and committed before its target week is observed. The record becomes public and externally timestamped once the repository is pushed and the manifests are anchored (§8). Until then it is self-attested.
+NABD (نبض, "pulse") is an open forecasting layer for seasonal RSV and influenza. It issues probabilistic forecasts of weekly respiratory activity, from the nowcast to three weeks after issue (each forecast is labelled by its target week-ending date), with interval coverage measured and reported (§6). A bilingual (Arabic/English) decision card proposes a proportionate action for a named role, and only a person can approve, modify or dismiss it; a hash-chained audit log records the decision. Every forecast round is hashed and committed before its target week is observed. The record becomes public and externally timestamped once the repository is pushed and the manifests are anchored (§8). Until then it is self-attested.
 
 It is built to sit on top of Abu Dhabi's existing detection systems (Tableegh/Malaffi notifications, UMOC early warning, Rasid wastewater), not to replace them (`research/positioning.md` §0, §3).
 
@@ -99,7 +99,7 @@ $$
 
 where $\bar y_{w}$ is the training-season mean logit by ISO week (circularly smoothed ± 2 weeks), and $\Delta\log\text{spec}_t$ is the 1-week change in log specimens processed (testing volume). Predictive quantiles are $y_t + \hat{(\cdot)} + Q_\tau(\hat\varepsilon)$, where the residuals come from **nested** leave-one-season-out fits within the training seasons, so the spread is out-of-sample. They are back-transformed to percent.
 
-**Information rule:** a forecast issued after the last published week L uses only rows with week_end ≤ week_end(L). Targets are L+1 … L+4. With WHO's lag of about 7–11 days, these sit at the **nowcast, +0.5, +1.5 and +2.5 weeks after issue**. All skill numbers assume issue at L_end + 11 days. Ledger rounds from round 3 on carry these labels. R0/R1 (issued at L_end + 7 days) carry "+1/+2/+3 wk" and stay unchanged because they are hashed (`docs/RUNBOOK.md`).
+**Information rule:** a forecast issued after the last published week L uses only rows with week_end ≤ week_end(L). Targets are L+1 … L+4. With WHO's lag of about 7–11 days, the four targets are the nowcast and the weeks ending one, two and three weeks after issue. **Display convention, everywhere** (card, bulletin, API, planner, ledger): the primary label is the target week-ending date; the secondary label is whole weeks from issue to the target week's end ("nowcast", "+1/+2/+3 wk after issue"), the same as the hashed R0/R1 rounds. All skill numbers assume issue at L_end + 11 days (a conservative lag).
 
 **Comparators:**
 - **persistence:** median = the last logit; spread = the empirical h-step changes;

@@ -40,19 +40,19 @@ COLS = ["reference_date", "target", "horizon", "target_end_date", "location", "o
         "value", "model"]
 
 
-HORIZON_CONVENTION = ("weeks from the issue date to the MIDDLE of the target week, rounded to 0.5 "
-                      "(same as app/data_io.horizon_weeks and docs/SPEC.md 5.1: nowcast, +0.5, +1.5, +2.5 wk)")
+HORIZON_CONVENTION = ("whole weeks from the issue date to the END of the target week (0 = nowcast); "
+                      "same as app/data_io.horizon_weeks and the hashed R0/R1 rounds: nowcast, +1, +2, +3 wk "
+                      "after issue. The primary display label is the target week-ending date.")
 
 
-def horizon_weeks(target_end, issue) -> float:
-    """Issue-relative horizon to the target-week midpoint, rounded to 0.5 (matches the card)."""
-    mid = pd.Timestamp(target_end) - pd.Timedelta(days=3.5)
-    wk = (mid - pd.Timestamp(issue)).total_seconds() / (7 * 86400)
-    return round(wk * 2) / 2
+def horizon_weeks(target_end, issue) -> int:
+    """Whole weeks from the issue date to the END of the target week (matches app/data_io.horizon_weeks)."""
+    days = (pd.Timestamp(target_end) - pd.Timestamp(issue)).days
+    return max(int(round(days / 7.0)), 0)
 
 
-def horizon_label(wk: float) -> str:
-    return "nowcast" if wk <= 0 else f"+{wk:g} wk"
+def horizon_label(wk) -> str:
+    return "nowcast" if wk <= 0 else f"+{int(wk)} wk after issue"
 
 
 def issue(mode="cached", round_label="R0", now=None, with_v2=True, explain_only=False):
