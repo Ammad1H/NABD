@@ -34,13 +34,13 @@ Every winter RSV and influenza send young children to Abu Dhabi's hospitals, but
 <!-- WC:a300 -->
 Every winter, respiratory syncytial virus (RSV) and influenza send young children to Abu Dhabi's hospitals, but no two seasons share a shape. UAE influenza has peaked anywhere from October to February, while the RSV peak has moved across six weeks. One Abu Dhabi tertiary hospital recorded 2,189 RSV admissions of children aged five or under over 2018–2022. The UAE publishes no influenza case counts and, to our knowledge, no respiratory forecasts, so planners see last week, not the weeks ahead.
 
-NABD ("pulse") is an open respiratory forecasting hub for Abu Dhabi. It turns WHO FluNet UAE surveillance into probabilistic forecasts of RSV and influenza positivity up to three weeks ahead. A bilingual Arabic/English card shows the forecast range, the chance of crossing pressure thresholds, data freshness and a proportionate playbook action for a named role. Only a person can approve, modify or dismiss it, and a hash-chained audit log records every decision. Each forecast round is hashed before its outcome exists.
+NABD ("pulse"), an open forecasting hub, turns WHO FluNet UAE surveillance into probabilistic forecasts of RSV and influenza positivity up to three weeks ahead. A bilingual Arabic/English card shows the forecast range, the chance of crossing pressure thresholds, data freshness and a proportionate playbook action for a named role. Only a person can approve, modify or dismiss it, and a hash-chained audit log records every decision. Each forecast round is hashed before its outcome exists.
 
 Evidence: in a test on Oman, Qatar and Saudi Arabia, specified and locked before their data were downloaded, the frozen method cut influenza forecast error by 9% against last-week persistence (primary criterion met) and 46% against past-season patterns. In the UAE's own short record, a forward-in-time check shows parity with persistence, which is why we keep a live forecast ledger. In the United States, NABD missed our pre-set bar against the CDC FluSight ensemble; among individual hub models it ranked 7th of 21 in 2024/25 and 19th of 25 in 2025/26.
 
-Also built: a weekly bilingual bulletin; a hospital winter planner that translates the forecast into beds and nurse shifts at risk (scenario, using the hospital's own inputs); and an aggregate-data connector for a hospital pilot. In build for 20 November: publishing and externally timestamping the forecast ledger.
+Also built: a weekly bilingual bulletin; a hospital winter planner that translates the forecast into beds and nurse shifts at risk (scenario, from the hospital's own inputs); and an aggregate-data connector for a hospital pilot. In build for 20 November: publishing and externally timestamping the forecast ledger.
 
-All data are aggregate; no individual is tracked.
+All data are aggregate.
 <!-- /WC -->
 
 ---
@@ -86,5 +86,5 @@ No personal or patient-level data is used anywhere.
 summary: 94 words (limit 100) OK
 a50: 50 words (limit 50) OK
 a150: 148 words (limit 150) OK
-a300: 307 words (limit 300) OVER
+a300: 297 words (limit 300) OK
 ```
