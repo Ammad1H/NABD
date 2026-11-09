@@ -27,7 +27,7 @@ To our knowledge, no one publishes respiratory forecasts for the UAE. NABD is an
 
 ## Abstract (≤ 150 words)
 <!-- WC:a150 -->
-Every winter RSV and influenza send young children to Abu Dhabi's hospitals, but their timing and shape change from year to year: UAE influenza has peaked anywhere from October to February, and the RSV peak has moved across six weeks. One Abu Dhabi hospital recorded 2,189 RSV admissions of young children in 2018–2022. The UAE publishes no flu case counts and, to our knowledge, no respiratory forecasts. NABD is an open forecasting hub. It turns WHO FluNet surveillance into probabilistic RSV and influenza forecasts up to three weeks ahead; a bilingual card proposes an action that a named officer must approve, with a tamper-evident log. In a test on Oman, Qatar and Saudi Arabia, locked before their data were downloaded, the method cut influenza forecast error by 9% against last-week persistence and 46% against past-season patterns. We also benchmark NABD against the CDC FluSight ensemble and report every result, including shortfalls.
+Every winter RSV and influenza send young children to Abu Dhabi's hospitals, but their timing and shape change yearly: UAE influenza has peaked anywhere from October to February, and the RSV peak has moved across six weeks. One Abu Dhabi hospital recorded 2,189 RSV admissions of young children in 2018–2022. The UAE publishes no flu case counts and, to our knowledge, no respiratory forecasts. NABD is an open forecasting hub. It turns WHO FluNet surveillance into probabilistic RSV and influenza forecasts up to three weeks ahead; a bilingual card proposes an action that a named officer must approve, with a tamper-evident log. In a test on Oman, Qatar and Saudi Arabia, locked before their data were downloaded, the method cut influenza forecast error by 9% against last-week persistence and 46% against past-season patterns. We also benchmark NABD against the CDC FluSight ensemble and report every result, including shortfalls.
 <!-- /WC -->
 
 ## Abstract (≤ 300 words)
@@ -85,6 +85,6 @@ No personal or patient-level data is used anywhere.
 ```
 summary: 94 words (limit 100) OK
 a50: 50 words (limit 50) OK
-a150: 151 words (limit 150) OVER
+a150: 148 words (limit 150) OK
 a300: 300 words (limit 300) OK
 ```
