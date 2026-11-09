@@ -27,14 +27,14 @@ To our knowledge, no one publishes respiratory forecasts for the UAE. NABD is an
 
 ## Abstract (≤ 150 words)
 <!-- WC:a150 -->
-Every winter RSV and influenza send young children to Abu Dhabi's hospitals, but their timing and shape change yearly: UAE influenza has peaked anywhere from October to February, and the RSV peak has moved across six weeks. One Abu Dhabi hospital recorded 2,189 RSV admissions of young children in 2018–2022. The UAE publishes no flu case counts and, to our knowledge, no respiratory forecasts. NABD is an open forecasting hub. It turns WHO FluNet surveillance into probabilistic RSV and influenza forecasts up to three weeks ahead; a bilingual card proposes an action that a named officer must approve, with a tamper-evident log. In a test on Oman, Qatar and Saudi Arabia, locked before their data were downloaded, the method cut influenza forecast error by 9% against last-week persistence and 46% against past-season patterns. We also benchmark NABD against the CDC FluSight ensemble and report every result, including shortfalls.
+Every winter RSV and influenza send young children to Abu Dhabi's hospitals, but their timing and shape change yearly: UAE influenza has peaked anywhere from October to February, and the RSV peak has moved across six weeks. One Abu Dhabi hospital recorded 2,189 RSV admissions of young children in 2018–2022. The UAE publishes no current weekly flu case counts and, to our knowledge, no respiratory forecasts. NABD is an open forecasting hub. It turns WHO FluNet surveillance into probabilistic RSV and influenza forecasts up to three weeks ahead; a bilingual card proposes an action that a named officer must approve, with a tamper-evident log. In a test on Oman, Qatar and Saudi Arabia, locked before their data were downloaded, the method cut influenza forecast error by 9% against last-week persistence and 46% against past-season patterns. We also benchmark NABD against the CDC FluSight ensemble and report every result, including shortfalls.
 <!-- /WC -->
 
 ## Abstract (≤ 300 words)
 <!-- WC:a300 -->
-Every winter, respiratory syncytial virus (RSV) and influenza send young children to Abu Dhabi's hospitals, but their timing and shape change from year to year. UAE influenza has peaked anywhere from October to February, while the RSV peak has moved across six weeks. One Abu Dhabi tertiary hospital recorded 2,189 RSV admissions of children aged five or under over 2018–2022. The UAE publishes no influenza case counts and, to our knowledge, no respiratory forecasts, so planners see last week, not the weeks ahead.
+Every winter, respiratory syncytial virus (RSV) and influenza send young children to Abu Dhabi's hospitals, but their timing and shape change from year to year. UAE influenza has peaked anywhere from October to February, while the RSV peak has moved across six weeks. One Abu Dhabi tertiary hospital recorded 2,189 RSV admissions of children aged five or under over 2018–2022. The UAE publishes no current weekly influenza counts and, to our knowledge, no respiratory forecasts, so planners see last week, not the weeks ahead.
 
-NABD ("pulse"), an open forecasting hub, turns WHO FluNet UAE surveillance into probabilistic forecasts of RSV and influenza positivity up to three weeks ahead. A bilingual Arabic/English card shows the forecast range, the chance of crossing pressure thresholds, data freshness and a proportionate playbook action for a named role. Only a person can approve, modify or dismiss it, and a hash-chained audit log records every decision. Each forecast round is hashed before its outcome exists.
+NABD ("pulse"), an open forecasting hub, turns WHO FluNet UAE surveillance into probabilistic forecasts of RSV and influenza positivity up to three weeks ahead. A bilingual card shows the forecast range, the chance of crossing pressure thresholds, data freshness and a proportionate playbook action for a named role. Only a person can approve, modify or dismiss it, and a hash-chained audit log records every decision. Each forecast round is hashed before its outcome exists.
 
 Evidence: in a test on Oman, Qatar and Saudi Arabia, specified and locked before their data were downloaded, the frozen method cut influenza forecast error by 9% against last-week persistence (primary criterion met) and 46% against past-season patterns. In the UAE's own short record, a forward-in-time check shows parity with persistence, which is why we keep a live forecast ledger. In the United States, NABD missed our pre-set bar against the CDC FluSight ensemble; among individual hub models it ranked 7th of 21 in 2024/25 and 19th of 25 in 2025/26.
 
@@ -85,6 +85,6 @@ No personal or patient-level data is used anywhere.
 ```
 summary: 94 words (limit 100) OK
 a50: 50 words (limit 50) OK
-a150: 148 words (limit 150) OK
+a150: 150 words (limit 150) OK
 a300: 300 words (limit 300) OK
 ```
