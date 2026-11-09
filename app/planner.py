@@ -8,10 +8,16 @@ Everything here is a labelled SCENARIO. No Abu Dhabi hospital data are used. The
 Bed counts, nursing headcount, shifts and the staff-absence rate are the HOSPITAL'S OWN inputs (or the
 SIMULATED secure-aggregation module); no absence statistic is presented as a fact.
 
-Scaling rule (the same one the bed-days scenario uses, shown on the page):
-    weekly admissions_q = annual admissions x positivity_q / sum of weekly positivity over an average season
-    weekly absence rate_q = average weekly absence rate x positivity_q / average weekly positivity
-so a week at average positivity reproduces the hospital's own averages.
+Scaling rules (shown on the page):
+    weekly RSV admissions_q = annual admissions x RSV positivity_q / sum of weekly RSV positivity over an average season
+    weekly absence rate_q   = average weekly absence rate x driver index_q
+where the absence DRIVER INDEX is chosen by the user (default "both"):
+    "rsv":  RSV positivity_q / average weekly RSV positivity
+    "flu":  flu positivity_q / average weekly flu positivity
+    "both": 0.5 x RSV index_q + 0.5 x flu index_q  (equal weights; quantiles averaged level by level, which assumes
+            the two move together, so the 10-90% range is wider than if they were independent)
+Adult staff respiratory absence is plausibly driven more by influenza than by paediatric RSV, so "rsv" alone is
+offered but not the default. A week at average activity reproduces the hospital's own averages.
 """
 from __future__ import annotations
 
@@ -46,22 +52,53 @@ def _wide(fc_rsv: pd.DataFrame) -> pd.DataFrame:
     return w
 
 
-def season_reference(observed: pd.DataFrame) -> tuple[float, int]:
-    """(sum of weekly RSV positivity over an average complete season, number of complete seasons)."""
-    sf = data_io.season_frame(observed, "rsv")
+def season_reference(observed: pd.DataFrame, series: str = "rsv") -> tuple[float, int]:
+    """(sum of weekly positivity over an average complete season, number of complete seasons) for `series`."""
+    sf = data_io.season_frame(observed, series)
     cur = sf.season.max()
     complete = sf[sf.season != cur].groupby("season").value.sum()
     return float(complete.mean()), int(len(complete))
 
 
+DRIVERS = ("both", "flu", "rsv")
+DRIVER_LABEL = {"both": "flu and RSV (equal weight)", "flu": "influenza", "rsv": "RSV"}
+
+
+def _index_matrix(observed: pd.DataFrame, fc_rsv: pd.DataFrame, fc_flu: pd.DataFrame | None,
+                  driver: str) -> pd.DataFrame:
+    """Absence driver index (positivity / its seasonal average) per target week × FluSight level."""
+    if driver not in DRIVERS:
+        raise ValueError(f"absence_driver must be one of {DRIVERS}")
+    parts = []
+    if driver in ("rsv", "both"):
+        s, _ = season_reference(observed, "rsv")
+        parts.append(_wide(fc_rsv) / (s / 52.0))
+    if driver in ("flu", "both"):
+        if fc_flu is None or fc_flu.empty:
+            raise ValueError("absence_driver '%s' needs the influenza forecast (fc_flu)" % driver)
+        s, _ = season_reference(observed, "flu")
+        parts.append(_wide(fc_flu) / (s / 52.0))
+    if len(parts) == 1:
+        return parts[0]
+    common = parts[0].index.intersection(parts[1].index)
+    return 0.5 * parts[0].loc[common] + 0.5 * parts[1].loc[common]
+
+
 def winter_plan(observed: pd.DataFrame, fc_rsv: pd.DataFrame, issue: dt.date, *, annual_admissions: float,
                 los_days: float, beds: int, nurses: int, absence_rate_avg: float | None,
                 shifts_per_nurse_week: float, spare_shifts_week: float, cost_usd: float,
-                meta: dict | None = None) -> pd.DataFrame:
-    """One row per future target week with 10% / 50% / 90% scenario values. All numbers are SCENARIO."""
-    season_sum, n_seasons = season_reference(observed)
+                meta: dict | None = None, fc_flu: pd.DataFrame | None = None,
+                absence_driver: str = "both") -> pd.DataFrame:
+    """One row per future target week with 10% / 50% / 90% scenario values. All numbers are SCENARIO.
+
+    Beds and cost follow the RSV forecast (paediatric RSV admissions). Staff absence follows the chosen driver
+    index (default "both", which needs `fc_flu`)."""
+    season_sum, n_seasons = season_reference(observed, "rsv")
     avg_pos = season_sum / 52.0
     w = _wide(fc_rsv)
+    idx = None
+    if absence_rate_avg is not None and nurses:
+        idx = _index_matrix(observed, fc_rsv, fc_flu, absence_driver)
     rows = []
     for ted, r in w.iterrows():
         d = pd.Timestamp(ted).date()
@@ -84,12 +121,14 @@ def winter_plan(observed: pd.DataFrame, fc_rsv: pd.DataFrame, issue: dt.date, *,
                                              f"{adm[0.5] * cost_usd * AED_PER_USD:,.0f} – "
                                              f"{adm[0.9] * cost_usd * AED_PER_USD:,.0f}"),
         }
-        if absence_rate_avg is not None and nurses:
-            wf = workforce_scenario(q, nurses=nurses, absence_rate_avg=absence_rate_avg, avg_pos=avg_pos,
+        if idx is not None and ted in idx.index:
+            ir = idx.loc[ted]
+            iq = {k: float(ir[k]) for k in (0.1, 0.5, 0.9)}
+            wf = workforce_scenario(iq, nurses=nurses, absence_rate_avg=absence_rate_avg,
                                     shifts_per_nurse_week=shifts_per_nurse_week, spare_shifts_week=spare_shifts_week)
-            qvec = np.array([float(r[round(float(x), 3)]) for x in FLUSIGHT_LEVELS])
-            p_gap = (float(exceedance_prob(qvec, FLUSIGHT_LEVELS, wf["p_star"])[0])
-                     if np.isfinite(wf["p_star"]) else 0.0)
+            ivec = np.array([float(ir[round(float(x), 3)]) for x in FLUSIGHT_LEVELS])
+            p_gap = (float(exceedance_prob(ivec, FLUSIGHT_LEVELS, wf["index_star"])[0])
+                     if np.isfinite(wf["index_star"]) else 0.0)
             row.update({
                 WF_COLS[0]: " – ".join(f"{wf['absent'][k]:.1f}" for k in (0.1, 0.5, 0.9)),
                 WF_COLS[1]: " – ".join(f"{wf['shifts'][k]:.0f}" for k in (0.1, 0.5, 0.9)),
@@ -99,10 +138,12 @@ def winter_plan(observed: pd.DataFrame, fc_rsv: pd.DataFrame, issue: dt.date, *,
             for k, lab in ((0.1, "q10"), (0.5, "q50"), (0.9, "q90")):  # numeric copies for tests / export
                 row[f"_shifts_{lab}"] = wf["shifts"][k]
                 row[f"_gap_{lab}"] = wf["gap"][k]
+                row[f"_index_{lab}"] = iq[k]
             row["_p_gap"] = p_gap
         rows.append(row)
     out = pd.DataFrame(rows)
-    out.attrs.update(season_sum=season_sum, n_seasons=n_seasons, avg_pos=avg_pos)
+    out.attrs.update(season_sum=season_sum, n_seasons=n_seasons, avg_pos=avg_pos,
+                     absence_driver=absence_driver if idx is not None else None)
     return out
 
 
@@ -112,17 +153,18 @@ DEMAND_COLS = ["week", "weeks after issue", "RSV positivity forecast % (10–50�
                "RSV beds occupied (avg)", "% of paediatric respiratory beds", "cost of RSV admissions (AED)"]
 
 
-def workforce_scenario(q: dict, *, nurses: int, absence_rate_avg: float, avg_pos: float,
+def workforce_scenario(index_q: dict, *, nurses: int, absence_rate_avg: float,
                        shifts_per_nurse_week: float, spare_shifts_week: float) -> dict:
-    """SCENARIO arithmetic (assumptions shown on the page): absence rate scales with positivity / its average;
-    shifts at risk = absent nurses × shifts per nurse; net gap = max(shifts at risk − bank/float shifts, 0)."""
-    rate = {k: absence_rate_avg * v / avg_pos for k, v in q.items()}
+    """SCENARIO arithmetic (assumptions shown on the page): absence rate = average rate × driver index
+    (index 1 = an average week); shifts at risk = absent nurses × shifts per nurse;
+    net gap = max(shifts at risk − bank/float shifts, 0)."""
+    rate = {k: absence_rate_avg * v for k, v in index_q.items()}
     absent = {k: nurses * v for k, v in rate.items()}
     shifts = {k: v * shifts_per_nurse_week for k, v in absent.items()}
     gap = {k: max(v - spare_shifts_week, 0.0) for k, v in shifts.items()}
-    denom = nurses * absence_rate_avg * shifts_per_nurse_week / avg_pos  # gap > 0  <=>  positivity > p_star
-    p_star = spare_shifts_week / denom if denom > 0 else np.inf
-    return {"absent": absent, "shifts": shifts, "gap": gap, "p_star": p_star}
+    denom = nurses * absence_rate_avg * shifts_per_nurse_week  # gap > 0  <=>  index > index_star
+    index_star = spare_shifts_week / denom if denom > 0 else np.inf
+    return {"absent": absent, "shifts": shifts, "gap": gap, "index_star": index_star}
 
 
 def simulated_absence_rate(table: pd.DataFrame) -> float | None:

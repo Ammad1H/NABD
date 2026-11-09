@@ -91,9 +91,29 @@ def _evidence_lines() -> list[str]:
         lines.append("**3. UAE's own short record (forward-in-time, v1 vs persistence):** "
                      + ", ".join(f"{k} {d['rel_wis']:.3f}" for k, d in fit.items()) + ": parity.")
     rounds = data_io.ledger_round_files()
-    lines.append(f"**4. Live forecast ledger:** {len(rounds)} hashed round file(s); local only until pushed and "
-                 "externally timestamped. The pilot ask.")
+    n_rounds = len({r.name.split("_")[0] for r in rounds})
+    lines.append(f"**4. Live forecast ledger:** {n_rounds} issued round(s), {len(rounds)} hashed file(s) (R0 and R1 "
+                 "carry the same v1 forecast; R1 adds the v2 challenger); 0 weeks scored so far; local only until "
+                 "pushed and externally timestamped. The pilot ask.")
     return lines
+
+
+def _gcc_label(key: str) -> str:
+    """Plain-language label for a results/gcc/summary.json key (the raw key stays in the JSON)."""
+    names = {"NABD-UAE-v1": "NABD v1 (frozen UAE method)", "NABD-UAE-v2-GCC": "NABD v2 challenger",
+             "persistence": "last week carried forward", "seasonal-analog": "past-season pattern"}
+    primary = key.startswith("PRIMARY_")
+    k = key.replace("PRIMARY_", "")
+    series, rest = k.split("_", 1)
+    a, b = rest.split("_vs_")
+    lab = f"{'Influenza' if series == 'flu' else 'RSV'}: {names.get(a, a)} vs {names.get(b, b)}"
+    if primary:
+        lab += " (PRIMARY, pre-registered)"
+    elif series == "flu" and b == "seasonal-analog":
+        lab += " (pre-registered secondary)"
+    else:
+        lab += " (secondary)"
+    return lab
 
 
 with st.sidebar.expander("📊 " + ("Evidence, in order" if lang == "en" else "الأدلة بالترتيب"), expanded=True):
@@ -270,12 +290,21 @@ def explain_panel(col: str, ex: pd.DataFrame | None, ex_date: str | None, issue:
             color=alt.Color("direction:N", scale=alt.Scale(domain=["pushes up", "pushes down"], range=[ROSE, TEAL]), legend=None),
             tooltip=["feature", "value", alt.Tooltip("contribution:Q", format="+.3f")]).properties(height=64 * max(len(sig), 3))
         st.altair_chart(ch, width="stretch")
-    for r in list(sig.itertuples())[:3]:
+    for r in list(sig.itertuples()):
         r = r._replace(label=str(r.label).replace("|", " "))
         pp = getattr(r, "pp_effect_loo", np.nan)
         verb = "pushed the forecast up" if r.contribution >= 0 else "pushed the forecast down"
         extra = f"; without it the median would move by {-float(pp):+.1f} percentage points" if pd.notna(pp) else ""
-        st.markdown(f"- **{r.label}** {verb} ({r.contribution:+.2f} {unit}{extra}).")
+        gloss = ""
+        val = getattr(r, "value", np.nan)
+        try:
+            val = float(val)
+        except (TypeError, ValueError):
+            val = np.nan
+        if str(getattr(r, "feature", "")).startswith("dy1") and pd.notna(val) and val < 0 <= r.contribution:
+            gloss = (" The last week fell, and the model expects part of a one-week drop to reverse "
+                     "(week-to-week noise), so this term nudges the forecast back up")
+        st.markdown(f"- **{r.label}** {verb} ({r.contribution:+.2f} {unit}{extra}).{gloss}")
     model_name = str(ex["model"].iloc[0]) if "model" in ex.columns and len(ex) else "the UAE linear model"
     st.caption(f"Exact additive terms of {model_name} (linear on the logit scale): starting point + constant + signal "
                "terms + calibration offset = forecast median on the logit scale. They describe the model, not causes.")
@@ -435,7 +464,10 @@ elif page == "nav_alerts":
             if key in alerts:
                 with st.expander(label):
                     st.dataframe(alerts[key], hide_index=True, width="stretch")
-    st.markdown("#### UAE sentinel positivity (n = 4 seasons, descriptive)")
+    st.markdown("#### UAE sentinel positivity (n = 4 seasons, descriptive; RETIRED design)")
+    st.warning("These UAE alert counts come from the **leave-one-season-out (LOSO)** design, in which the model is "
+               "trained on later seasons. That design is **retired as evidence** (DEVIATIONS U1, claims-ledger D4/F18). "
+               "Shown for transparency only; do not cite them.")
     uae_keys = [k for k in alerts if k.startswith("UAE ")]
     if not uae_keys:
         not_computed("UAE alert metrics under the pre-declared UAE alert rule", "results/uae/tables/alert*.csv")
@@ -635,7 +667,7 @@ elif page == "nav_gcc":
         if isinstance(wins, dict):
             st.markdown("**Seasons where the frozen UAE method beat persistence:** "
                         + "; ".join(f"{k} {v_}" for k, v_ in wins.items()) + ".")
-        rows = [{"comparison": k, "rel_wis": d.get("rel_wis"), "ci95_low": (d.get("ci95") or [None, None])[0],
+        rows = [{"comparison": _gcc_label(k), "rel_wis": d.get("rel_wis"), "ci95_low": (d.get("ci95") or [None, None])[0],
                  "ci95_high": (d.get("ci95") or [None, None])[1], "country_seasons": d.get("n_country_seasons"),
                  "forecasts": d.get("n_cells")} for k, d in res.items() if isinstance(d, dict) and "rel_wis" in d]
         if rows:
@@ -721,9 +753,10 @@ elif page == "nav_ablation":
 
 elif page == "nav_shape":
     st.subheader(t("nav_shape", lang))
-    st.markdown("**No two UAE seasons share a shape.** WHO FluNet UAE sentinel positivity for every complete season "
-                "in our data, aligned on the season start (ISO week 27), with this season and NABD's latest issued "
-                "forecast overlaid. A planner using last year as the template would have been wrong in timing and size.")
+    st.markdown("**Season timing and shape change from year to year.** WHO FluNet UAE sentinel positivity for every "
+                "complete season in our data, aligned on the season start (ISO week 27), with this season and NABD's "
+                "latest issued forecast overlaid. Some seasons look alike (this season's flu peak is close to last "
+                "season's); the point is that you cannot know in advance which shape you will get.")
     fc, pers, meta, is_demo = data_io.load_uae_forecasts(observed)
     if is_demo:
         demo_banner()
@@ -839,10 +872,15 @@ elif page == "nav_planner":
         st.caption(f"SIMULATED: weekly respiratory absence rate {rate:.2%} from synthetic employers released through "
                    "k ≥ 10 secure aggregation (Workforce page). Not a real statistic." if rate is not None else
                    "SIMULATED module released no cell at k = 10.")
+    driver = st.radio("Staff absence follows", list(planner.DRIVERS), index=0, horizontal=True,
+                      format_func=lambda k: planner.DRIVER_LABEL[k],
+                      help="Which forecast drives the staff-absence scenario. Default: flu and RSV with equal weight. "
+                           "Adult staff absence plausibly follows influenza more than paediatric RSV; RSV alone is "
+                           "offered for comparison. An assumption, not a validated model.")
     plan = planner.winter_plan(observed, fc[fc.target == data_io.UAE_TARGETS["rsv"]], issue, annual_admissions=annual,
                                los_days=los, beds=int(beds), nurses=int(nurses), absence_rate_avg=rate,
                                shifts_per_nurse_week=float(shifts), spare_shifts_week=float(spare), cost_usd=float(cost),
-                               meta=meta)
+                               meta=meta, fc_flu=fc[fc.target == data_io.UAE_TARGETS["flu"]], absence_driver=driver)
     st.markdown("##### Weekly plan (SCENARIO: 10% – median – 90% of the forecast carried through the same arithmetic)")
     st.markdown("**Demand: beds and cost** (SCENARIO)")
     st.dataframe(plan[[c for c in planner.DEMAND_COLS if c in plan.columns]], hide_index=True, width="stretch")
@@ -854,8 +892,9 @@ elif page == "nav_planner":
     st.markdown(f"**Assumptions (unvalidated, shown so you can challenge them).** Weekly admissions = annual admissions × "
                 f"this week's sentinel RSV positivity ÷ {plan.attrs['season_sum']:.0f} (the average seasonal sum of weekly "
                 f"positivity over {plan.attrs['n_seasons']} complete UAE seasons). Beds occupied = admissions × length of stay "
-                f"÷ 7. Staff absence scales the hospital's own average rate by positivity ÷ its average "
-                f"({plan.attrs['avg_pos']:.1f}%). Shifts at risk = absent nurses × shifts per nurse. Net roster gap = shifts "
+                f"÷ 7. Staff absence = the hospital's own average rate × a driver index ({planner.DRIVER_LABEL[driver]}): "
+                f"each pathogen's forecast positivity ÷ its own seasonal average (1 = an average week); for 'both', the two "
+                f"indices are averaged level by level, which assumes they move together. Shifts at risk = absent nurses × shifts per nurse. Net roster gap = shifts "
                 f"at risk − bank/float shifts, floored at 0. P(gap > 0) is read from the forecast quantiles. AED at 3.6725 per US$.")
     pb = load_playbook()
     res = cardcheck.build_card(pb, data_io.UAE_TARGETS["rsv"], "ARE", fc[fc.target == data_io.UAE_TARGETS["rsv"]],
@@ -889,8 +928,9 @@ elif page == "nav_workforce":
 else:
     st.subheader(t("nav_about", lang))
     st.markdown("""
-**What NABD is.** Every winter RSV and influenza fill Abu Dhabi's children's beds, but no two seasons share a shape,
-and, to our knowledge, no public forecast of how big or how long exists for the UAE. NABD is an open forecasting hub:
+**What NABD is.** Every winter RSV and influenza drive paediatric admissions in Abu Dhabi (one hospital, Tawam,
+recorded 2,189 RSV admissions of children aged 5 and under in 2018–22), and their timing and shape change from year
+to year. To our knowledge, no public forecast of how big or how long exists for the UAE. NABD is an open forecasting hub:
 probabilistic RSV and influenza forecasts from WHO FluNet surveillance (coverage checked and reported), the chance of
 crossing each pressure threshold, and playbook actions that a named person must approve. It is the forecast layer that Abu Dhabi's existing detection systems
 (Tableegh/Malaffi notifications, UMOC early warning, Rasid) could host. It does not replace them.
@@ -949,10 +989,10 @@ our pre-set bar against the CDC FluSight ensemble; among single hub models it ra
     st.markdown("""
 **Other limitations.** UAE evaluation covers only 4 seasons (2022/23 is low-volume). WHO FluNet data are used for
 public-health evaluation only (non-commercial terms); a hospital product would run on the hospital's own data.
-Publication lags (FluNet about 10–11 days; NHSN weekly) are estimates. The ledger has few scored points at submission:
+Publication lags are estimates (FluNet: 7 days measured on 8 Nov; skill is measured at a conservative 11-day lag; NHSN weekly). The ledger has few scored points at submission:
 it is an integrity device, not statistical evidence.
 
-**Card rules (playbook v0.3).** For every future target week, the card computes the chance of exceeding each
+**Card rules (playbook v0.4, illustrative).** For every future target week, the card computes the chance of exceeding each
 playbook threshold from the issued forecast quantiles. The action uses the highest threshold with at least a 30%
 chance in any of the next three target weeks, plus the forecast path (furthest median vs the last value: rising ≥ 1.15×,
 falling ≤ 0.87×). Probabilities at the edge of the forecast are shown as <1% / >99%. Direction labels need at least 60%
