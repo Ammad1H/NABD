@@ -286,3 +286,24 @@ NABD-UAE-v1 beat persistence in flu 4/4 seasons and RSV 3/4 (it loses on RSV 202
 - One horizon convention everywhere (`data_io.display_horizon`): the primary label is the target week-ending date; the secondary is "nowcast / +N wk after issue", equal to the hashed R0/R1 `weeks_ahead_of_issue` (tested row by row). The +0.5/+1.5/+2.5 midpoint labels are removed from the card, bulletin, API, planner, bed-days, explain selector and tests. The API adds `weeks_after_issue` and `week_ending_label`.
 - Plain band names in the audit table. The explain selector is labelled by week ending, and the bars have more height to stop label overlap. The banned-wording scan of app/ and bulletin/ found no hits (remaining "pre-registered" uses refer to the locked US/GCC protocols).
 - Bulletin regenerated (2 pages; sha256 995aa28a…); all screenshots regenerated. 144 tests pass.
+
+## Round 5: consistency sweep + targeted fixes (9 Nov)
+- **DEVIATIONS:** U6 (post hoc UAE v1 vs seasonal analog, declared before computing), C8 (one horizon convention; supersedes C7's last clause) and C9 (wording errata for locked-generator outputs).
+- **U6 result** (`results/uae/posthoc/`, exploratory):
+  - pooled v1/analog: flu 0.824 (date-cluster 0.73–0.96; moving-block 0.66–1.13), RSV 0.855 (0.77–0.95; 0.72–1.03);
+  - ≥2 training seasons: flu 0.607, RSV 0.675 (4/4 folds won); 1 training season: flu 2.56, RSV 1.39 (both lost);
+  - unweighted flu parity (3.08 vs 3.08).
+- **Banned/retired-claim sweep** across the app, pitch, TECHNICAL, the claims ledger and positioning.md (§0/§4/§6 wording superseded). Generated summaries:
+  - UAE v1 and US round2 generators fixed and regenerated (labels only; summary.json values identical);
+  - the GCC and UAE-v2 outputs (locked generators) are fixed by `eval/wording_errata.py`, with a numbers-preserved test.
+- **App:**
+  - About and season-shape wording;
+  - LOSO UAE alert table labelled retired;
+  - honest ledger count;
+  - plain GCC labels;
+  - every explain bar described, with a mean-reversion gloss;
+  - planner absence driver flu/RSV/both (default both) + tests;
+  - Streamlit toolbar minimal; screenshots retaken.
+- **Deck** (live artifact): pain slide → flu season-shape chart + "timing and shape change from year to year"; slide 6 → Monday line + exceedance table; slide 7 → two-comparator Gulf chart (`eval/deck_figures.py`); slide 8 de-cluttered; slide 9 → post hoc analog card replaces the US card; slide 10 → workforce scenario callout; slides 5/11/12 wording.
+- **Publish scan** extended to results/ and bulletin/, plus new banned terms.
+- **Tests:** 147 pass.

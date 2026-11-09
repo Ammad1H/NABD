@@ -9,7 +9,7 @@ Gate verdicts take the R3 audit (docs/REVIEW-R3-audit.md) and apply the round-4 
 | G3 Primary endpoint honest | PASS | NOT MET, 1.22 (1.01–1.52); unchanged. |
 | G4 UAE track | PASS | v1 forward-in-time parity; v2 no better than v1; both reported. |
 | G5 Working app | PASS | Root `requirements.txt` and `.streamlit/config.toml` are ready for Streamlit Cloud (PUBLISH §5). |
-| G6 Tests | PASS | 142 tests pass. New: hub pin (3), GCC future-perturbation with a positive control (3), SUMMARY generation (1), FluSight validator (4). |
+| G6 Tests | PASS | 147 tests pass (round 5). New: hub pin (3), GCC future-perturbation with a positive control (3), SUMMARY generation (1), FluSight validator (4). |
 | G7 Evidence | PASS | unchanged |
 | G8 Pitch | PARTIAL | Pitch workstream. Placeholders remain (team name, repo URL, anchor date). |
 | G9 Honesty | **PARTIAL** | Registration fixed (coordinator). The `prepare_public_repo.sh` scan still finds overclaims in **docs/SPEC.md** (old concept spec: "publicly timestamped", "fusing … ED, geospatial … signals", "calibrated") and **research/positioning.md** ("Nobody publishes…", "every forecast is published"). Fix or mark these as superseded **before the repo goes public**. |

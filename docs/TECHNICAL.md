@@ -347,7 +347,7 @@ Figures: `results/figures/fig1_rel_wis_season_horizon.png`, `fig2_league_table.p
 | GCC test | `python3 -m uae.gcc --score` (refuses without `assert_locked`) | seconds–minutes |
 | Ledger | `python3 -m ledger.issue --cached --round Rn`; `python3 -m ledger.score --cached` | seconds |
 | App / API | `streamlit run app/streamlit_app.py`; `uvicorn app.api:app --port 8000` | — |
-| Tests | `make test` (150+ tests at the round-5 close) | ≈ 30 s |
+| Tests | `make test` (147 tests at the round-5 close) | ≈ 30 s |
 
 Seeds are fixed (US bootstrap 20261108; GCC bootstrap seed 0). The Docker files (`Dockerfile`, `docker-compose.yml`) are written but not built, because the build environment has no daemon.
 
