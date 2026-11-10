@@ -1,0 +1,29 @@
+{
+ "chosen": "ENS(G_relaxed+L_relaxed_k8)",
+ "selection_rule": "lowest pooled relative WIS vs local v1 on development countries, forward-in-time, 5-fold country-held-out; ensemble members admitted only if they beat persistence",
+ "members": [
+  {
+   "name": "G_relaxed",
+   "members": [
+    "G"
+   ],
+   "relaxed": true
+  },
+  {
+   "name": "L_relaxed_k8",
+   "members": [
+    "L"
+   ],
+   "relaxed": true,
+   "k": 8
+  }
+ ],
+ "dev_result": {
+  "vs_NABD-UAE-v1": 0.8022,
+  "vs_persistence": 0.8148,
+  "vs_seasonal-analog": 0.4578,
+  "short_vs_v1": 0.581,
+  "cov50": 0.541,
+  "cov95": 0.965
+ }
+}
