@@ -16,6 +16,10 @@ ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "app" / "screenshots"
 PORT = 8599
 SHOTS = [  # (file, language label, page label)
+    ("00_start_here_en.png", "English", "Start here"),
+    ("00_start_here_ar.png", "العربية", "ابدأ من هنا"),
+    ("00b_season_replay_en.png", "English", "Season replay"),
+    ("00b_season_replay_ar.png", "العربية", "إعادة عرض موسم"),
     ("01_weekly_card_en.png", "English", "Weekly card"),
     ("02_weekly_card_ar.png", "العربية", "البطاقة الأسبوعية"),
     ("03_season_shape.png", "English", "Season shape"),

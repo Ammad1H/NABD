@@ -521,3 +521,27 @@ def rsv_scenario(observed: pd.DataFrame, fc_rsv: pd.DataFrame, issue: dt.date, a
     out.attrs["season_sum"] = season_sum
     out.attrs["n_seasons"] = int(len(complete))
     return out
+
+
+# ------------------------------------------------------------------ decision replay (DEVIATIONS V1, post hoc)
+def load_replay() -> tuple[dict | None, pd.DataFrame | None, pd.DataFrame | None]:
+    """results/replay: (summary.json, weekly decisions at p* = 0.30 with playbook thresholds, truth)."""
+    r = RESULTS / "replay"
+    summary = _read_json(r / "summary.json")
+    f = r / "tables" / "weekly_decisions.csv.gz"
+    weekly = pd.read_csv(f) if f.exists() else None
+    if weekly is not None:
+        weekly = weekly[weekly.threshold_kind == "playbook"].copy()
+    truth = _read_csv(r / "truth.csv")
+    return summary, weekly, truth
+
+
+def replay_headline(summary: dict | None, series: str = "flu") -> dict | None:
+    """Mismatch weeks per season, NABD minus past-season pattern (GCC, playbook thresholds, +2 wk)."""
+    try:
+        r = summary["results"][f"GCC|{series}|playbook|p30|h2"]
+        return dict(vs_pattern=r["NABD_minus_past-season-pattern_mismatch"],
+                    vs_last_week=r["NABD_minus_persistence_mismatch"], totals=r["totals"],
+                    n=r["n_country_seasons"])
+    except (KeyError, TypeError):
+        return None

@@ -117,7 +117,7 @@ def test_validator_rejects_rising_band_on_falling_trend(pb):
 def test_all_pages_render(lang):
     pytest.importorskip("streamlit.testing.v1")
     from streamlit.testing.v1 import AppTest
-    pages = ["nav_card", "nav_shape", "nav_scenario", "nav_planner", "nav_gcc", "nav_ledger", "nav_us", "nav_alerts", "nav_ablation",
+    pages = ["nav_home", "nav_replay", "nav_card", "nav_shape", "nav_scenario", "nav_planner", "nav_gcc", "nav_ledger", "nav_us", "nav_alerts", "nav_ablation",
              "nav_workforce", "nav_about"]
     for p in pages:
         at = AppTest.from_file(str(ROOT / "app" / "streamlit_app.py"), default_timeout=60)
