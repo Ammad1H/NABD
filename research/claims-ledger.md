@@ -33,7 +33,7 @@ Numbers to remember: **2,189 · 46% · 7th of 21**.
 | A10 | Forward in time, each country's own earlier seasons only, no UAE data, no pooling | deck 7, Q&A 11 | `docs/PREREG-GCC.md` §4; audit leak test (2,112 cases, 0 changes) | R |
 | A11 | Data = WHO's full export (3 Oct 2026) via a public mirror; matches our independently fetched UAE rows exactly (419/419) and 23/23 spot-checked Gulf rows; full official re-pull pending | Q&A 16, limitations, TECHNICAL | `docs/DEVIATIONS.md` G1, G1b; `docs/REVIEW-R3-audit.md` §0 | R (**never** "verified row-for-row") |
 | A12 | v1 chosen as primary after UAE v2 and forward-in-time results were known (disclosed) | Q&A 15, limitations, deck 7 small print | `docs/PREREG-GCC.md` §1 | R |
-| A13 | "Our records show no one on the team had used the Gulf countries' data before" | Q&A 15 | `docs/PREREG-GCC.md` §1; audit filesystem search (`docs/REVIEW-R3-audit.md` §0) | R (records only; human exposure not checkable) |
+| A13 | "Our records show the author had not used the Gulf countries' data before" | Q&A 15 | `docs/PREREG-GCC.md` §1; audit filesystem search (`docs/REVIEW-R3-audit.md` §0) | R (records only; human exposure not checkable) |
 
 ## B. Forecast ledger
 
@@ -42,7 +42,7 @@ Numbers to remember: **2,189 · 46% · 7th of 21**.
 | B1 | Every round is hashed before WHO publishes the target week | deck 12, demo, video, one-pager | `ledger/`; `ledger/rounds/2026-11-08T1212Z_R1` | R |
 | B2 | As of 8 Nov: **one forecast round** (data through W44), issued as R0 and re-issued as R1 with the v2 challenger. The v1 and persistence files are byte-identical (`2691894e…`, `6347b067…`) | deck 12, demo, one-pager, Q&A | `ledger/*.sha256` | R |
 | B3 | 0 weeks scored | deck 12, demo | `ledger/SCOREBOARD.md` | R (refresh on the day) |
-| B4 | The ledger is public, outside-anchored, or can't be rewritten | — | `ledger/ANCHOR.md` + the team's receipt | **P** (use only after the push and anchor; until then say "hashed and committed locally") |
+| B4 | The ledger is public, outside-anchored, or can't be rewritten | — | `ledger/ANCHOR.md` + the author's receipt | **P** (use only after the push and anchor; until then say "hashed and committed locally") |
 | B5 | One horizon convention: target week-ending date + "+N wk after issue", the same as the hashed R0/R1 rounds (DEVIATIONS C8) | Q&A 25, TECHNICAL, limitations | `docs/RUNBOOK.md`; `ledger/*.meta.json` | R |
 
 ## C. US benchmark (CDC FluSight hub)
@@ -105,7 +105,7 @@ Numbers to remember: **2,189 · 46% · 7th of 21**.
 | E14 | DoH: this season's activity similar to the previous two | deck 2 notes, Q&A curveball | [S7] | V |
 | E15 | Dr Mahra Alhosani, DoH Director of Surveillance and Outbreak Response, gave the Sep 2026 update | outreach B | [S7] | V |
 | E16 | Infant RSV window 1 Sep–1 Mar; RSV ≥10% before 1 Sep in 2 of 4 seasons | deck 4, Q&A curveball (context) | [S4] secondary; [DATA] | S / R |
-| E17 | No conflict-of-interest clause; IP stays with the team; 6-month organiser right of first refusal on exclusive deals | deck 12, Q&A 10, one-pager | `research/tc.md` | V |
+| E17 | No conflict-of-interest clause; IP stays with the entrant; 6-month organiser right of first refusal on exclusive deals | deck 12, Q&A 10, one-pager | `research/tc.md` | V |
 | E18 | Future Health 2026 theme "To Sense is to Predict" | video, deck 12, one-pager | [S25] | V |
 | E19 | Gulf CDC regional system at the pilot stage, with ARI as a weekly-reported pilot disease | Q&A 29, one-pager | [S23] | V |
 | E20 | Tawam study authors and units (UAEU Department of Pediatrics, Institute of Public Health); a contact address in the citation metadata for Dr Ahmed R. Alsuwaidi | outreach A1 | UAEU publication record (fetched 8 Nov) | V (confirm the corresponding author on the journal page before sending) |
@@ -133,6 +133,10 @@ Numbers to remember: **2,189 · 46% · 7th of 21**.
 | H6 | UAE with the pooled model: 0.87 vs local v1, 0.77 vs persistence | Q&A only, with the label | `results/pool/SUMMARY.md` "already-seen countries" | R (**NON-CONFIRMATORY**: UAE data were seen; never a headline) |
 | H7 | Roster rule replayed on the held-out countries (post hoc): pooled 10.5 mismatch weeks a season vs 12.3 for the own-record model (−1.81, 95% CI −3.00 to −0.72) and 16.6 for the past-season pattern | deck 7b small print, Q&A | `results/replay/pool/SUMMARY.md`; DEVIATIONS V2 | R (POST HOC; always with H8) |
 | H8 | Under that rule the pooled model is not distinguishable from last week carried forward (10.5 vs 11.1; −0.56, −1.42 to +0.31) and missed slightly more surge weeks than the own-record model (2.7 vs 2.2 a season) | wherever H7 is used | same | R (must accompany H7) |
+| H10 | A general time-series foundation model (Chronos-2), used zero-shot on the same held-out forecasts, is level with our pooled model (1.026, 95% CI 0.993–1.055) and also beats the own-record model by about a fifth (0.787) | deck 7b small print, Q&A, web | `results/fm/SUMMARY.md`; DEVIATIONS W1 | R (POST HOC; say "level with", never "we beat the foundation model") |
+| H11 | "Borrowing works whichever model does it" | story, deck 7b, Q&A | H2 + H10 | R (interpretation; keep the post hoc label) |
+| H12 | A prospective UAE test of the pooled model is locked; its first round (R2) was hashed on 14 Nov before WHO published week 45; result due after 15 April 2027 | story, deck 12, Q&A, web | `docs/PREREG-LIVE.md`; `docs/LOCK-LIVE.json`; `ledger/rounds/2026-11-14T1947Z_R2/` | R (self-attested until committed, pushed and anchored; "no result yet") |
+| H13 | Any statement of a UAE result for the pooled model before final scoring | — | PREREG-LIVE section 8: interim numbers are descriptive only | X |
 | H9 | "The pooled model is NABD's live UAE model" / any pooled-model claim about UAE hospital load | — | Pool is an opt-in ledger challenger; v1 is the hashed headline | X |
 
 ## F. Banned (X)

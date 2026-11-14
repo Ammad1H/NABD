@@ -1,6 +1,6 @@
 # NABD نبض: an open RSV and flu forecasting hub for Abu Dhabi, tested across the Gulf
 
-**Future Health Digital Innovation Challenge 2026 · Statement 06 · ⟨team⟩, MBZUAI**
+**Future Health Digital Innovation Challenge 2026 · Statement 06 · Ammad Hassan (solo entrant), MBZUAI**
 
 ---
 
@@ -32,7 +32,7 @@
 | **UAE's own record** (forward in time) | Parity with last week (1.002). UAE sentinel data start in 2022; our post-hoc reading is that the method needs more seasons of history. Multi-signal v2 didn't help (1.059). |
 | **Forecast ledger** | Every round is hashed before WHO publishes the target week. As of 14 Nov: one round (data through W44); WHO has not yet released W45, so 0 weeks are scored. ⟦IF DONE: public at ⟨URL⟩, anchored ⟨date⟩⟧ |
 
-*Retrospective analyses use revised WHO data. Locks are self-attested git commits until anchored outside the team. Alert metrics are diagnostic. At the US primary threshold onset lead is 0 weeks, so NABD forecasts **size and duration**, not "earlier".*
+*Retrospective analyses use revised WHO data. Locks are self-attested git commits until anchored by an outside service. Alert metrics are diagnostic. At the US primary threshold onset lead is 0 weeks, so NABD forecasts **size and duration**, not "earlier".*
 
 **Why Abu Dhabi, why now.**
 - Future Health's theme is "To Sense is to Predict".
@@ -49,4 +49,4 @@
 - A public-health forecast-feed licence per country per season, and a hospital-operations seat per facility, running on the hospital's own data. WHO data are used only for the public feed and evaluation (non-commercial terms).
 - Open, non-exclusive code licence. Any exclusive deal goes to the organiser first for 6 months (T&C).
 
-**Contact:** ⟨name, email⟩ · Repository: ⟦IF DONE: ⟨public URL⟩⟧ · Ledger: ⟦IF DONE: ⟨public URL⟩⟧
+**Contact:** Ammad Hassan, ⟨email⟩ · Repository: ⟦IF DONE: ⟨public URL⟩⟧ · Ledger: ⟦IF DONE: ⟨public URL⟩⟧

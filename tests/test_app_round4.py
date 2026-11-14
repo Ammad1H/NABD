@@ -53,7 +53,8 @@ def test_card_horizon_labels_match_ledger_round():
             assert lab.endswith("(nowcast)")
         else:
             assert lab.endswith(f"(+{int(float(h['weeks_ahead_of_issue']))} wk after issue)")
-            assert h["horizon_label"].startswith(f"+{float(h['weeks_ahead_of_issue']):.1f} wk after issue")
+            w = float(h["weeks_ahead_of_issue"])   # R0/R1 wrote "+1.0 wk"; rounds from R2 write "+1 wk" (DEVIATIONS C8)
+            assert h["horizon_label"].startswith((f"+{w:.1f} wk after issue", f"+{int(w)} wk after issue"))
 
 
 def _flat_forecast(issue: dt.date, value: float) -> pd.DataFrame:
@@ -170,3 +171,14 @@ def test_planner_absence_driver_options():
         assert (plans[d]["RSV admissions / week"] == plans["rsv"]["RSV admissions / week"]).all()
     with pytest.raises(ValueError):
         planner.winter_plan(obs, rsv, issue, absence_driver="both", **kw)
+
+
+def test_headline_model_is_v1_even_when_challengers_are_in_the_round():
+    """The card must show the designated, hashed headline (v1), never a challenger picked by file order."""
+    if not data_io.ledger_round_files():
+        pytest.skip("no ledger round")
+    _, _, meta, demo = data_io.load_uae_forecasts()
+    assert not demo and meta["model"] == "NABD-UAE-v1"
+    fc, _, m2, _ = data_io.load_uae_forecasts(model="NABD-Pool")
+    if m2.get("model") == "NABD-Pool":
+        assert set(fc.model) == {"NABD-Pool"}

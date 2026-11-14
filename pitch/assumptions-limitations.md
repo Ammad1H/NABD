@@ -42,7 +42,7 @@ Required by the Challenge submission rules (FAQ: a working prototype with "techn
 - **D2. Software:** Python 3.10+, pandas, numpy, scipy, statsmodels, streamlit and fastapi (`requirements-app.txt`). It runs on a laptop CPU. The third-party kit `vendor/nabd_v2_kit` was cross-checked: its WIS matches ours exactly (`results/tables/scorer_crosscheck.csv`).
 - **D3. Foundation model:** Chronos-2 needs Hugging Face access and ideally a GPU. Its wrapper exists, but it was **not run** and is excluded from every reported result.
 - **D4. For the pilot:** one hospital's aggregate weekly paediatric respiratory counts, under a data-sharing agreement, per `docs/PILOT-DATA-SPEC.md` (enforced aggregation, k ≥ 10 complementary suppression, identifiers rejected). No patient-level data.
-- **D5. For an outside timestamp:** a public repository and an external anchor (OpenTimestamps, Zenodo or OSF), which the team must create (`ledger/ANCHOR.md`).
+- **D5. For an outside timestamp:** a public repository and an external anchor (OpenTimestamps, Zenodo or OSF), which the author must create (`ledger/ANCHOR.md`).
 
 ## 4. Limitations (stated plainly)
 1. **The US primary test was NOT MET.** Relative WIS against the CDC FluSight ensemble was 1.22 (95% CI 1.01–1.52), against a pre-registered margin of 1.15.
@@ -74,7 +74,7 @@ Required by the Challenge submission rules (FAQ: a working prototype with "techn
 11. **The WHO FluNet licence** is non-commercial. A commercial hospital product would run on the hospital's own data.
 
 ## 5. What would change these conclusions
-- Prospective ledger scores through 2026/27, anchored outside the team.
+- Prospective ledger scores through 2026/27, anchored by an outside service.
 - A shadow pilot on one hospital's counts, judged on its pre-set exit criterion (relative WIS < 0.9 vs the census carried forward).
 - A prospective US v2, locked before its first forecast (`docs/PREREG-US-V2.md`, draft).
 - Weather, wastewater (Rasid) or hospital signals added as a new locked version, published whether or not they help.

@@ -1,0 +1,3 @@
+# Optional: only for fm/benchmark.py (zero-shot foundation-model benchmark; needs Hugging Face access).
+torch>=2.2
+chronos-forecasting>=2.0

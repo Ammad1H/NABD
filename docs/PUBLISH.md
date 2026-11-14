@@ -26,7 +26,7 @@ gh repo create <your-github-user>/nabd --public --source ../nabd-public --remote
 - Review the script's "banned-claim scan" and "email" output before pushing.
 - Pushing makes the commit **contents** public. Commit **times** are still self-attested, which is what step 4 fixes.
 
-## 4. Anchor everything outside the team (3 min, plus one upgrade a few hours later)
+## 4. Anchor everything with an outside service (3 min, plus one upgrade a few hours later)
 ```bash
 cd ../nabd-public
 scripts/anchor_all.sh                     # verifies manifests, builds anchors/<UTC>_all bundle (all locks, freeze, ledger, git HEAD), stamps with OpenTimestamps + FreeTSA
@@ -65,3 +65,6 @@ See `docs/RUNBOOK.md` (`python -m ledger.weekly`), then `scripts/anchor_all.sh` 
 - `scripts/flusight_wednesday.sh 2026-11-14` (**live** hub clone; hub `main` was at `d0357402`, 2026-11-06): wrote `results/flusight_draft/2026-11-14-NABD-v1.csv`, 4,876 rows, sha256 `e77fdace…3add`. Vintage 2026-11-04, data through 2026-10-31, **stale weeks: 1** (that week's data were not yet in the hub on 8 Nov; re-run on Wednesday). Validator: file PASS; metadata FAIL only on PLACEHOLDER values (expected).
 - `DRY_RUN=1 scripts/anchor_all.sh`: all 3 existing manifests verify intact; bundle of 28 files built (Merkle root `4883429d…83f1` at HEAD `01f7d2f`; the real run will differ because HEAD changes). 4 stamp commands printed.
 - `scripts/prepare_public_repo.sh`: see the output recorded in docs/BUILD-LOG.md (round 4, ops).
+
+## 6. The static front-end (added 14 Nov 2026)
+`web/dist/` is a self-contained static site (one HTML page, one stylesheet, one script, one data file; fonts fall back to system fonts offline). It can be hosted on GitHub Pages, Netlify or any file server, or opened from disk. Rebuild it with `python -m web.build` after every ledger round. The approval log in it is a browser-session demonstration; audited approvals are made in the Streamlit app. Before publishing it, the same wording rules apply as for the rest of the repository (the ledger is "local until pushed and timestamped" until that is no longer true; then change the two sentences in `web/src/app.js` that say so and rebuild).

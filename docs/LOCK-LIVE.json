@@ -1,0 +1,70 @@
+{
+ "config": {
+  "bootstrap": {
+   "B": 2000,
+   "block": 4,
+   "seed": 0
+  },
+  "final_scoring_from": "2027-04-15",
+  "first_round": 2,
+  "last_target_week_end": "2027-03-28",
+  "models": [
+   "NABD-Pool",
+   "NABD-UAE-v1",
+   "persistence"
+  ],
+  "pool_model": {
+   "chosen": "ENS(G_relaxed+L_relaxed_k8)",
+   "dev_result": {
+    "cov50": 0.541,
+    "cov95": 0.965,
+    "short_vs_v1": 0.581,
+    "vs_NABD-UAE-v1": 0.8022,
+    "vs_persistence": 0.8148,
+    "vs_seasonal-analog": 0.4578
+   },
+   "members": [
+    {
+     "members": [
+      "G"
+     ],
+     "name": "G_relaxed",
+     "relaxed": true
+    },
+    {
+     "k": 8,
+     "members": [
+      "L"
+     ],
+     "name": "L_relaxed_k8",
+     "relaxed": true
+    }
+   ],
+   "selection_rule": "lowest pooled relative WIS vs local v1 on development countries, forward-in-time, 5-fold country-held-out; ensemble members admitted only if they beat persistence"
+  }
+ },
+ "digest": {
+  "config": "044ff6ece2e8d070974ff4fd2a9de33baf82d2e757551215fa899f7505f85650",
+  "data_manifest": "9a25c90b8927b9ce330399dfea3891af3d64569fdb6e20f4ab8b3b2c1fb603c6",
+  "files": {
+   "docs/PREREG-LIVE.md": "ae93615bf031494567ef14f55e2c7c891103025e43cf2639c7ca86ed4fb4d838",
+   "ledger/issue.py": "6d615bd9d6bff3888db989f9c7be76f199a29da163714c63548b5e7807412408",
+   "ledger/live_lock.py": "3a4edfe6eee9c826fb74183e10caac64996c096b05b8b24ec2b5ef9b5f80d78d",
+   "ledger/live_test.py": "af8a40c8598de4ddb47251ce1b920d4010db589c9081b1a848e23056436ae6d2",
+   "ledger/score.py": "270af43e0153f1c459fdb4001aad43713d6010ab803cd4e58c66ecd334af676f",
+   "pool/features.py": "900d4959694eb8e54c41e7fdc3a9da1176075b394db8e5586a0f7a630934a37d",
+   "pool/harness.py": "da5dcb64eefc564cca3efccef5bd36efa8c3233d5a5b89a04fbde9c618f2ceb2",
+   "pool/live.py": "428e4e764651fc6fd4f64d92681cb213facccdc059d6ee6da11b99212281c303",
+   "pool/models.py": "db8adf5aabb7cef9560ffe653fc42276bcb2904b9931171e4237ff2bd27a6f6b",
+   "uae/models.py": "e7a2843c6e6128a0fc76110151b1d576f9550f6f3a18eb105e73f4280cef2da5",
+   "uae/scoring.py": "ab2f632a338ce2d8e9c0b1cda48ff125dbc65e613b882667321ad3af243d95bf"
+  },
+  "root": "9bbcfa7ef769480a54bc99fcf4d73d5fe2a5aa9d00de0fc93b1f11a87cdfa2fb"
+ },
+ "hypotheses": [
+  "H-live: UAE influenza rel WIS NABD-Pool / NABD-UAE-v1 < 1 with round-bootstrap 95% upper bound < 1"
+ ],
+ "label": "PREREG-LIVE (prospective UAE test, before W45 was published)",
+ "locked_utc_self_attested": "2026-11-14T19:47:26.537996+00:00",
+ "schema": "nabd-lock/1"
+}

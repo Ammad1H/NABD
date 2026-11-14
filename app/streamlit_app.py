@@ -138,13 +138,14 @@ def _evidence_lines(lang: str = "en") -> list[str]:
     rounds = data_io.ledger_round_files()
     n_rounds = len({r.name.split("_")[0] for r in rounds})
     if ar:
-        lines.append(f"**4. سجل التوقعات الحي:** {n_rounds} جولة صادرة، {len(rounds)} ملفاً موثّقاً بالتجزئة (الجولتان R0 و R1 "
-                     "تحملان التوقع نفسه؛ R1 تضيف النموذج المنافس v2)؛ لم يُقيَّم أي أسبوع بعد؛ محلي فقط إلى أن يُنشر ويُختم "
+        lines.append(f"**4. سجل التوقعات الحي:** {n_rounds} جولة صادرة، {len(rounds)} ملفاً موثّقاً بالتجزئة (كلها حتى الآن على بيانات "
+                     "الأسبوع نفسه؛ أحدث جولة تضيف النموذج المنافس المجمَّع، واختباره المستقبلي للإمارات مثبّت مسبقاً)؛ لم يُقيَّم أي أسبوع بعد؛ محلي فقط إلى أن يُنشر ويُختم "
                      "زمنياً من جهة خارجية. هذا هو طلب التجربة.")
     else:
-        lines.append(f"**4. Live forecast ledger:** {n_rounds} issued round(s), {len(rounds)} hashed file(s) (R0 and R1 "
-                     "carry the same v1 forecast; R1 adds the v2 challenger); 0 weeks scored so far; local only until "
-                     "pushed and externally timestamped. The pilot ask.")
+        lines.append(f"**4. Live forecast ledger:** {n_rounds} issued round(s), {len(rounds)} hashed file(s) (all on "
+                     "data through the same week so far; the newest round adds the pooled challenger, and a prospective "
+                     "UAE test of it is locked, docs/PREREG-LIVE.md); 0 weeks scored so far; local only until pushed and "
+                     "externally timestamped. The pilot ask.")
     rp = data_io.replay_headline(data_io.load_replay()[0], "flu")
     if rp:
         d, e = rp["vs_pattern"], rp["vs_last_week"]
@@ -1127,7 +1128,7 @@ elif page == "nav_ledger":
     st.subheader(t("nav_ledger", lang))
     st.markdown("Every forecast round is committed **before** its target weeks are published. The hash below is "
                 "recomputed from the file now and must match the recorded hash. Timestamps are self-attested until "
-                "the repository is pushed publicly and the manifest is anchored outside the team (see ledger/README.md).")
+                "the repository is pushed publicly and the manifest is anchored by an outside service (see ledger/README.md).")
     st.dataframe(rounds[[c for c in ["model", "issued_utc", "hash_matches", "git_commit_time", "sha256", "round_file"]
                          if c in rounds.columns]], hide_index=True, width="stretch")
     st.caption("hash_matches = recomputed SHA-256 equals the hash recorded at issue.")
@@ -1388,8 +1389,8 @@ our pre-set bar against the CDC FluSight ensemble; among single hub models it ra
 - It does not warn of surge *onset* earlier than a simple threshold on the latest counts (median lead about 0 weeks).
 - It did **not** meet its pre-registered US bar (non-inferiority to the CDC FluSight ensemble).
 - The 21–36% error reduction seen in the CDC archive is the **CDC ensemble's**, not NABD's.
-- No ED, weather or geospatial signal is used by any scored model. No online calibration (ACI) is used. The
-  foundation model was not run.
+- No ED, weather or geospatial signal is used by any scored model. No online calibration (ACI) is used. A
+  foundation model (Chronos-2) was run only as a post hoc benchmark on the held-out countries; it feeds no forecast.
 - The multi-signal UAE v2 did **not** improve on v1, and the leave-one-season-out UAE results are context only.
 - No SEHA operational numbers, ED volumes or bed occupancy. The bed-days page is a labelled scenario.
 - No workforce-absence figures: that module is SIMULATED.
@@ -1422,7 +1423,11 @@ our pre-set bar against the CDC FluSight ensemble; among single hub models it ra
         ("Playbook thresholds and actions", "ILLUSTRATIVE (not reviewed by a clinician or official)", "playbook/playbook.yaml"),
         ("Employer sickness-absence feed (secure aggregation)", "SIMULATED (synthetic data, feeds no forecast)", "app/workforce.py"),
         ("Abu Dhabi hospital, district or daily data", "NOT BUILT (pilot only)", "n/a"),
-        ("Chronos-2 foundation model", "NOT RUN (weights unavailable here; reported only if run)", "models/chronos2.py"),
+        ("Borrowed-strength test on 18 held-out countries (pooled model)", "REAL" if has("results/pool/summary.json") else "NOT YET COMPUTED",
+         "results/pool/"),
+        ("Pooled model on the UAE ledger", "REAL, challenger (prospective test locked; no UAE result yet)", "docs/PREREG-LIVE.md"),
+        ("Chronos-2 foundation model", "BENCHMARK ONLY (post hoc, zero-shot, held-out countries; not an input)"
+         if has("results/fm/summary.json") else "NOT RUN", "results/fm/SUMMARY.md"),
         ("Online calibration (ACI)", "NOT USED in v1", "models/config.yaml"),
         ("ED syndromic / geospatial inputs for NABD", "NOT BUILT", "n/a"),
     ]

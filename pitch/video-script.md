@@ -1,5 +1,7 @@
 # NABD: 3-minute submission video (shot list + voiceover), round 4 (impact first, BUILD-SPEC v1.7)
 
+> **Superseded on 14 Nov 2026 by the v3 voiceover in `pitch/story.md`.** Kept for the shot list and the "never" list, which still bind.
+
 **Rules:**
 - Every spoken number traces to `research/claims-ledger.md`. The stop list (`research/positioning.md` §4.6) and the v1.7 BANNED list are binding.
 - Shots marked ⟦IF BUILT⟧ / ⟦IF DONE⟧ are cut, along with their voiceover line, if the feature isn't real on 19 Nov.

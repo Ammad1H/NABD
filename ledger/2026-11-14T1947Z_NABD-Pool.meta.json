@@ -1,0 +1,96 @@
+{
+  "round": "R2",
+  "issued_utc": "2026-11-14T19:47:33+00:00",
+  "model": "NABD-Pool",
+  "data_source": "data/raw/flunet_are.csv (cached)",
+  "data_through_week": {
+    "wk flu pos pct sentinel": "2026-W44",
+    "wk rsv pos pct sentinel": "2026-W44"
+  },
+  "designation": "challenger (pooled across countries; locked, docs/LOCK-POOL-2.json; confirmatory held-out test in results/pool)",
+  "sha256": "cf8a86c7febec58951e8f1e30c4ff6aa3dba8d88c3597deb371f72f012aa0752",
+  "horizons": [
+    {
+      "model": "NABD-Pool",
+      "target": "wk flu pos pct sentinel",
+      "horizon": -1,
+      "target_end_date": "2026-11-08",
+      "weeks_ahead_of_issue": 0,
+      "weeks_to_target_week_end": -0.86,
+      "horizon_label": "nowcast",
+      "horizon_convention": "whole weeks from the issue date to the END of the target week (0 = nowcast); same as app/data_io.horizon_weeks and the hashed R0/R1 rounds: nowcast, +1, +2, +3 wk after issue. The primary display label is the target week-ending date."
+    },
+    {
+      "model": "NABD-Pool",
+      "target": "wk flu pos pct sentinel",
+      "horizon": 0,
+      "target_end_date": "2026-11-15",
+      "weeks_ahead_of_issue": 0,
+      "weeks_to_target_week_end": 0.14,
+      "horizon_label": "nowcast",
+      "horizon_convention": "whole weeks from the issue date to the END of the target week (0 = nowcast); same as app/data_io.horizon_weeks and the hashed R0/R1 rounds: nowcast, +1, +2, +3 wk after issue. The primary display label is the target week-ending date."
+    },
+    {
+      "model": "NABD-Pool",
+      "target": "wk flu pos pct sentinel",
+      "horizon": 1,
+      "target_end_date": "2026-11-22",
+      "weeks_ahead_of_issue": 1,
+      "weeks_to_target_week_end": 1.14,
+      "horizon_label": "+1 wk after issue",
+      "horizon_convention": "whole weeks from the issue date to the END of the target week (0 = nowcast); same as app/data_io.horizon_weeks and the hashed R0/R1 rounds: nowcast, +1, +2, +3 wk after issue. The primary display label is the target week-ending date."
+    },
+    {
+      "model": "NABD-Pool",
+      "target": "wk flu pos pct sentinel",
+      "horizon": 2,
+      "target_end_date": "2026-11-29",
+      "weeks_ahead_of_issue": 2,
+      "weeks_to_target_week_end": 2.14,
+      "horizon_label": "+2 wk after issue",
+      "horizon_convention": "whole weeks from the issue date to the END of the target week (0 = nowcast); same as app/data_io.horizon_weeks and the hashed R0/R1 rounds: nowcast, +1, +2, +3 wk after issue. The primary display label is the target week-ending date."
+    },
+    {
+      "model": "NABD-Pool",
+      "target": "wk rsv pos pct sentinel",
+      "horizon": -1,
+      "target_end_date": "2026-11-08",
+      "weeks_ahead_of_issue": 0,
+      "weeks_to_target_week_end": -0.86,
+      "horizon_label": "nowcast",
+      "horizon_convention": "whole weeks from the issue date to the END of the target week (0 = nowcast); same as app/data_io.horizon_weeks and the hashed R0/R1 rounds: nowcast, +1, +2, +3 wk after issue. The primary display label is the target week-ending date."
+    },
+    {
+      "model": "NABD-Pool",
+      "target": "wk rsv pos pct sentinel",
+      "horizon": 0,
+      "target_end_date": "2026-11-15",
+      "weeks_ahead_of_issue": 0,
+      "weeks_to_target_week_end": 0.14,
+      "horizon_label": "nowcast",
+      "horizon_convention": "whole weeks from the issue date to the END of the target week (0 = nowcast); same as app/data_io.horizon_weeks and the hashed R0/R1 rounds: nowcast, +1, +2, +3 wk after issue. The primary display label is the target week-ending date."
+    },
+    {
+      "model": "NABD-Pool",
+      "target": "wk rsv pos pct sentinel",
+      "horizon": 1,
+      "target_end_date": "2026-11-22",
+      "weeks_ahead_of_issue": 1,
+      "weeks_to_target_week_end": 1.14,
+      "horizon_label": "+1 wk after issue",
+      "horizon_convention": "whole weeks from the issue date to the END of the target week (0 = nowcast); same as app/data_io.horizon_weeks and the hashed R0/R1 rounds: nowcast, +1, +2, +3 wk after issue. The primary display label is the target week-ending date."
+    },
+    {
+      "model": "NABD-Pool",
+      "target": "wk rsv pos pct sentinel",
+      "horizon": 2,
+      "target_end_date": "2026-11-29",
+      "weeks_ahead_of_issue": 2,
+      "weeks_to_target_week_end": 2.14,
+      "horizon_label": "+2 wk after issue",
+      "horizon_convention": "whole weeks from the issue date to the END of the target week (0 = nowcast); same as app/data_io.horizon_weeks and the hashed R0/R1 rounds: nowcast, +1, +2, +3 wk after issue. The primary display label is the target week-ending date."
+    }
+  ],
+  "public": false,
+  "note": "Not public until committed, pushed to a public repo, and the hash is posted."
+}

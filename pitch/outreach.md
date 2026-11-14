@@ -1,4 +1,4 @@
-# Outreach drafts (do NOT send automatically; the team sends these themselves)
+# Outreach drafts (do NOT send automatically; the author sends these personally)
 
 **Rules:**
 - Fill ⟨…⟩ before sending. Each email body is under 150 words (counted).
@@ -18,7 +18,7 @@
 
 Dear Dr Alsuwaidi,
 
-Your 2025 paper on RSV seasonality at Tawam Hospital is the anchor for our Future Health Challenge entry. NABD is an MBZUAI team's open forecasting tool. It turns WHO FluNet UAE data into probabilistic RSV and flu forecasts up to three weeks ahead, with every forecast hashed before its outcome exists.
+Your 2025 paper on RSV seasonality at Tawam Hospital is the anchor for our Future Health Challenge entry. NABD is an open forecasting tool I am building at MBZUAI as a solo entrant. It turns WHO FluNet UAE data into probabilistic RSV and flu forecasts up to three weeks ahead, with every forecast hashed before its outcome exists.
 
 We'd value either of two small things:
 1. Thirty minutes of your team's view on whether our forecast card and action playbook make clinical sense. We'd credit you only with permission.
@@ -37,7 +37,7 @@ With thanks,
 
 Dear Dr ⟨Name⟩,
 
-I lead a small MBZUAI team building NABD for the Future Health Digital Innovation Challenge. Each week NABD gives the probability that RSV or flu activity crosses a pressure threshold in each of the next weeks, and which way it is heading. A named person approves any action.
+I am building NABD, as a solo entrant from MBZUAI, for the Future Health Digital Innovation Challenge. Each week NABD gives the probability that RSV or flu activity crosses a pressure threshold in each of the next weeks, and which way it is heading. A named person approves any action.
 
 Our ask is small: a one-paragraph, non-binding note saying your department would consider a 12-week shadow test after the Challenge, on aggregate weekly counts. Forecasts would be produced and scored, but no decisions would depend on them. No data moves now.
 
@@ -79,7 +79,7 @@ Thank you,
 
 Dear Dr Alhosani (or the Communicable Diseases Surveillance team),
 
-Our MBZUAI team is building NABD for the Future Health Digital Innovation Challenge. It is a forecast layer for seasonal RSV and influenza, designed to sit alongside Tableegh and UMOC rather than replace them. Each forecast tier maps to a proposed action for a named role, such as an ADPHC duty officer or a hospital bed manager, and a person must approve, modify or dismiss it with a logged reason.
+I am building NABD at MBZUAI, as a solo entrant, for the Future Health Digital Innovation Challenge. It is a forecast layer for seasonal RSV and influenza, designed to sit alongside Tableegh and UMOC rather than replace them. Each forecast tier maps to a proposed action for a named role, such as an ADPHC duty officer or a hospital bed manager, and a person must approve, modify or dismiss it with a logged reason.
 
 Would your team review the one-page playbook (attached) and flag anything operationally wrong? A two-line reply is plenty. We'll say "reviewed by a public-health professional" only with your permission. Until then it stays marked "illustrative".
 
@@ -95,7 +95,7 @@ Respectfully,
 > Our first **NABD** forecast round for UAE RSV and flu positivity is now public. It was hashed before the outcome existed and timestamped with ⟨OpenTimestamps/Zenodo⟩.
 > 🔒 Merkle root: `⟨root⟩` · 📂 ⟨public repo URL⟩ (commit `⟨short-sha⟩`)
 > We'll score every round against WHO FluNet as data arrives, misses included.
-> Built by an MBZUAI team for the #FutureHealth Digital Innovation Challenge (Statement 06). Data: WHO FluNet (public-health, non-commercial use) · CDC FluSight hub.
+> Built by a solo entrant at MBZUAI for the #FutureHealth Digital Innovation Challenge (Statement 06). Data: WHO FluNet (public-health, non-commercial use) · CDC FluSight hub.
 
 X/short version (≤280 characters):
 > NABD forecast round for UAE RSV + flu, hashed before the outcomes exist and anchored ⟨date⟩. Merkle root `⟨first 16⟩…` · ⟨repo⟩. We'll score every round, misses included. #FutureHealth

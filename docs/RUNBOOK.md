@@ -1,6 +1,6 @@
 # NABD weekly operations runbook
 
-Who runs this: the team (Ammad), on a laptop with internet access. The build sandbox can't reach WHO, the CDC hub's live updates or the timestamp services.
+Who runs this: the author (Ammad, a solo entrant), on a laptop with internet access. The build sandbox can't reach WHO, the CDC hub's live updates or the timestamp services.
 
 Rule: **nothing is posted, pushed or submitted automatically.** Every public act is a command you type.
 
@@ -24,6 +24,13 @@ python -m ledger.weekly --cached --with-pool     # score past rounds; issue R<n+
 ```
 
 `ledger.weekly` is **idempotent**. It prints the latest round, its `data_through` week, the newest published week, and whether it issued a round. Running it twice in a row never creates a duplicate round. Use `--no-issue` to score only.
+
+After any new round or new scores, refresh the interim table of the locked UAE test and the web front-end:
+
+```bash
+python -m ledger.live_test --cached        # interim, descriptive only (docs/PREREG-LIVE.md); never --final before 15 Apr 2027
+python -m web.build                        # regenerates web/dist from results/ and ledger/
+```
 
 If it issued a round, the commands to type next are printed:
 

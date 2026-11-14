@@ -119,7 +119,7 @@
 
 **15. "Was it really blind? You chose v1 after seeing the UAE results."**
 - **True, and disclosed** (`docs/PREREG-GCC.md` §1). We call it *out-of-sample with the plan locked before download*, not "blind".
-- **Our records show no one on the team had used the Gulf countries' data before.** An independent filesystem and git search found none (`docs/REVIEW-R3-audit.md` §0).
+- **Our records show the author had not used the Gulf countries' data before.** An independent filesystem and git search found none (`docs/REVIEW-R3-audit.md` §0).
 
 **16. "The data came from a GitHub mirror?"**
 - **What it is:** WHO's full FluNet export (3 Oct 2026), obtained through a public mirror.
@@ -145,6 +145,13 @@
 - Partly, and we show both sides. Replaying a fixed roster rule on the same held-out forecasts (post hoc): the pooled model had **10.5 mismatch weeks a season vs 12.3** for the own-record model (−1.81, 95% CI −3.00 to −0.72) and 16.6 for the past-season pattern.
 - But against simply carrying last week forward it was **not distinguishable** (11.1; −0.56, CI −1.42 to +0.31), and it missed slightly more surge weeks than the own-record model (2.7 vs 2.2 a season) while wasting fewer (`results/replay/pool/SUMMARY.md`).
 - That is why the pilot's exit criterion is set against the hospital's own census carried forward.
+
+**"Why not just use a foundation model?"**
+- We ran one. Chronos-2, zero-shot, on the same 6,410 held-out forecasts: **level with our pooled model** (1.026, 95% CI 0.993–1.055), and it also beats the own-record model by about a fifth (0.787) (`results/fm/SUMMARY.md`, post hoc).
+- Two unrelated ways of borrowing give the same gain, so the effect is not a quirk of our model. We keep the small model live because every forecast decomposes exactly into its inputs, it runs in seconds without a GPU, and it is slightly better at the nearest weeks. Averaging the two is 1.5% better with an interval that includes 1: a hypothesis, not a claim.
+
+**"So when will you know if it works for the UAE?"**
+- The test is already locked (`docs/PREREG-LIVE.md`): pooled vs own-record model on every weekly round of this season, scored against WHO's published values, assessed once after 15 April 2027. The first round was hashed on 14 Nov, before WHO published week 45. Until then we say "no UAE result yet".
 
 ## C. The US stress test
 
@@ -219,7 +226,7 @@
 
 **30. "What's defensible? Anyone can fit a regression."**
 - **What can't be copied:**
-  - a dated forecast record that can't be backdated, once it is anchored outside the team ⟦IF DONE⟧;
+  - a dated forecast record that can't be backdated, once it is anchored by an outside service ⟦IF DONE⟧;
   - frozen protocols with their deviation logs;
   - a method tested out of sample on three Gulf countries;
   - the approval and audit workflow a hospital signs off on.
@@ -227,6 +234,6 @@
 ## Curveballs
 - **"Is this season unusual?"** DoH said in September that activity looks similar to the previous two seasons [S7]. We sell recurring variability, not crisis.
 - **"Do you use patient data?"** No. We use aggregates only, the adapters reject person-level fields, and a test checks this.
-- **"Conflict of interest? MBZUAI is a co-creator."** The T&C has no conflict clause (`research/tc.md`). Institutional permission: ⟨team status⟩.
+- **"Conflict of interest? MBZUAI is a co-creator."** The T&C has no conflict clause (`research/tc.md`). This is a solo entry. Institutional permission: ⟨status⟩.
 - **"Does NABD predict when to start infant RSV immunisation?"** No. RSV passing 10% before 1 Sep in 2 of 4 seasons is context from WHO data, not a prediction [S4 secondary; DATA].
 - **"Is the ledger public?"** ⟦IF DONE: "Yes, at ⟨URL⟩, anchored ⟨date⟩."⟧ Otherwise: "Not yet. It is hashed and committed locally, and it will be public and externally timestamped from ⟨date⟩."

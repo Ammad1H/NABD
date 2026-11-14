@@ -26,7 +26,9 @@ RESULTS = ROOT / "results"
 LEDGER = ROOT / "ledger"
 
 UAE_TARGETS = {"flu": "wk flu pos pct sentinel", "rsv": "wk rsv pos pct sentinel"}
-PRIMARY_MODEL_PREFS = ["NABD-ensemble", "NABD-GLM", "NABD-baseline-v0"]
+# The card's headline model. NABD-UAE-v1 is the designated, hashed headline of the live ledger; challengers
+# (NABD-Pool, NABD-UAE-v2) are shown only when asked for by name: load_uae_forecasts(model=...).
+PRIMARY_MODEL_PREFS = ["NABD-UAE-v1", "NABD-ensemble", "NABD-GLM", "NABD-baseline-v0"]
 PERSISTENCE_NAMES = ["persistence", "Persistence", "UAE-persistence"]
 FLUNET_LAG_DAYS = 11  # documented ~10-11 day publication lag (docs/SPEC.md §2)
 
@@ -162,7 +164,7 @@ def _round_issue_date(stamp: str) -> dt.date:
     return dt.date.fromisoformat(stamp[:10])
 
 
-def load_uae_forecasts(observed: pd.DataFrame | None = None):
+def load_uae_forecasts(observed: pd.DataFrame | None = None, model: str | None = None):
     """Return (primary_df, persistence_df, meta, is_demo). Quantile frames in contract format.
 
     Source priority for the weekly card:
@@ -178,11 +180,13 @@ def load_uae_forecasts(observed: pd.DataFrame | None = None):
     if rounds:
         by_stamp: dict[str, dict[str, Path]] = {}
         for f in rounds:
-            stamp, model = ROUND_RE.match(f.name).groups()
-            by_stamp.setdefault(stamp, {})[model] = f
+            stamp, mname = ROUND_RE.match(f.name).groups()
+            by_stamp.setdefault(stamp, {})[mname] = f
         for stamp in sorted(by_stamp, reverse=True):
             models = by_stamp[stamp]
-            name = next((m for m in PRIMARY_MODEL_PREFS if m in models), None) or next(
+            if model is not None and model not in models:
+                continue
+            name = model or next((m for m in PRIMARY_MODEL_PREFS if m in models), None) or next(
                 (m for m in sorted(models) if m not in PERSISTENCE_NAMES), None)
             if name is None:
                 continue

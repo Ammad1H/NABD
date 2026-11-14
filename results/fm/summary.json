@@ -1,0 +1,347 @@
+{
+ "status": "POST HOC, EXPLORATORY (DEVIATIONS W1). Not a confirmatory result.",
+ "model": "amazon/chronos-2",
+ "weights_revision": "29ec3766d36d6f73f0696f85560a422f50e8498c",
+ "check_w1d": {
+  "rel_wis": 0.7671,
+  "ci95": [
+   0.6814,
+   0.8324
+  ],
+  "n_units": 18,
+  "n_cells": 6410,
+  "mean_log_ratio": 0.7211,
+  "unit_wins": "18/18"
+ },
+ "n_cells_common": 6410,
+ "n_countries": 18,
+ "coverage": {
+  "Chronos-2 (zero-shot)": {
+   "cov50": 0.487,
+   "cov95": 0.951
+  },
+  "Chronos-2 (zero-shot, percent input)": {
+   "cov50": 0.483,
+   "cov95": 0.962
+  },
+  "NABD-Pool": {
+   "cov50": 0.537,
+   "cov95": 0.956
+  },
+  "NABD-UAE-v1": {
+   "cov50": 0.645,
+   "cov95": 0.96
+  },
+  "Pool+FM": {
+   "cov50": 0.522,
+   "cov95": 0.959
+  },
+  "persistence": {
+   "cov50": 0.554,
+   "cov95": 0.946
+  },
+  "seasonal-analog": {
+   "cov50": 0.372,
+   "cov95": 0.648
+  }
+ },
+ "mean_wis": {
+  "Chronos-2 (zero-shot)": 3.1963,
+  "Chronos-2 (zero-shot, percent input)": 3.193,
+  "NABD-Pool": 3.1167,
+  "NABD-UAE-v1": 4.0629,
+  "Pool+FM": 3.069,
+  "persistence": 3.5469,
+  "seasonal-analog": 5.4585
+ },
+ "results": {
+  "Chronos-2 (zero-shot)": {
+   "vs_NABD-Pool": {
+    "rel_wis": 1.0255,
+    "ci95": [
+     0.9926,
+     1.0549
+    ],
+    "n_units": 18,
+    "n_cells": 6410,
+    "mean_log_ratio": 1.0152,
+    "unit_wins": "5/18"
+   },
+   "vs_NABD-Pool_short_history": {
+    "rel_wis": 1.0113,
+    "ci95": [
+     0.9294,
+     1.0746
+    ],
+    "n_units": 14,
+    "n_cells": 2344,
+    "mean_log_ratio": 0.981,
+    "unit_wins": "6/14"
+   },
+   "vs_NABD-UAE-v1": {
+    "rel_wis": 0.7867,
+    "ci95": [
+     0.6894,
+     0.8614
+    ],
+    "n_units": 18,
+    "n_cells": 6410,
+    "mean_log_ratio": 0.7321,
+    "unit_wins": "18/18"
+   },
+   "vs_NABD-UAE-v1_short_history": {
+    "rel_wis": 0.6305,
+    "ci95": [
+     0.5071,
+     0.7534
+    ],
+    "n_units": 14,
+    "n_cells": 2344,
+    "mean_log_ratio": 0.6097,
+    "unit_wins": "14/14"
+   },
+   "vs_persistence": {
+    "rel_wis": 0.9011,
+    "ci95": [
+     0.8635,
+     0.9321
+    ],
+    "n_units": 18,
+    "n_cells": 6410,
+    "mean_log_ratio": 0.8864,
+    "unit_wins": "18/18"
+   },
+   "vs_persistence_short_history": {
+    "rel_wis": 0.8866,
+    "ci95": [
+     0.8241,
+     0.9374
+    ],
+    "n_units": 14,
+    "n_cells": 2344,
+    "mean_log_ratio": 0.8748,
+    "unit_wins": "13/14"
+   },
+   "vs_seasonal-analog": {
+    "rel_wis": 0.5856,
+    "ci95": [
+     0.5218,
+     0.6494
+    ],
+    "n_units": 18,
+    "n_cells": 6410,
+    "mean_log_ratio": 0.5919,
+    "unit_wins": "18/18"
+   },
+   "vs_seasonal-analog_short_history": {
+    "rel_wis": 0.6051,
+    "ci95": [
+     0.4996,
+     0.6932
+    ],
+    "n_units": 14,
+    "n_cells": 2344,
+    "mean_log_ratio": 0.5892,
+    "unit_wins": "14/14"
+   },
+   "by_horizon_vs_NABD-Pool": {
+    "1": 0.9911,
+    "2": 1.011,
+    "3": 1.0316,
+    "4": 1.0572
+   }
+  },
+  "Chronos-2 (zero-shot, percent input)": {
+   "vs_NABD-Pool": {
+    "rel_wis": 1.0245,
+    "ci95": [
+     0.989,
+     1.0597
+    ],
+    "n_units": 18,
+    "n_cells": 6410,
+    "mean_log_ratio": 1.0072,
+    "unit_wins": "6/18"
+   },
+   "vs_NABD-Pool_short_history": {
+    "rel_wis": 1.0143,
+    "ci95": [
+     0.9261,
+     1.0879
+    ],
+    "n_units": 14,
+    "n_cells": 2344,
+    "mean_log_ratio": 0.9751,
+    "unit_wins": "6/14"
+   },
+   "vs_NABD-UAE-v1": {
+    "rel_wis": 0.7859,
+    "ci95": [
+     0.6863,
+     0.8603
+    ],
+    "n_units": 18,
+    "n_cells": 6410,
+    "mean_log_ratio": 0.7263,
+    "unit_wins": "18/18"
+   },
+   "vs_NABD-UAE-v1_short_history": {
+    "rel_wis": 0.6324,
+    "ci95": [
+     0.5066,
+     0.7596
+    ],
+    "n_units": 14,
+    "n_cells": 2344,
+    "mean_log_ratio": 0.6061,
+    "unit_wins": "14/14"
+   },
+   "vs_persistence": {
+    "rel_wis": 0.9002,
+    "ci95": [
+     0.8644,
+     0.9289
+    ],
+    "n_units": 18,
+    "n_cells": 6410,
+    "mean_log_ratio": 0.8794,
+    "unit_wins": "18/18"
+   },
+   "vs_persistence_short_history": {
+    "rel_wis": 0.8892,
+    "ci95": [
+     0.823,
+     0.938
+    ],
+    "n_units": 14,
+    "n_cells": 2344,
+    "mean_log_ratio": 0.8696,
+    "unit_wins": "13/14"
+   },
+   "vs_seasonal-analog": {
+    "rel_wis": 0.585,
+    "ci95": [
+     0.5171,
+     0.6538
+    ],
+    "n_units": 18,
+    "n_cells": 6410,
+    "mean_log_ratio": 0.5872,
+    "unit_wins": "18/18"
+   },
+   "vs_seasonal-analog_short_history": {
+    "rel_wis": 0.6069,
+    "ci95": [
+     0.4969,
+     0.6981
+    ],
+    "n_units": 14,
+    "n_cells": 2344,
+    "mean_log_ratio": 0.5857,
+    "unit_wins": "14/14"
+   },
+   "by_horizon_vs_NABD-Pool": {
+    "1": 0.9952,
+    "2": 1.0115,
+    "3": 1.0285,
+    "4": 1.0531
+   }
+  },
+  "Pool+FM": {
+   "vs_NABD-Pool": {
+    "rel_wis": 0.9847,
+    "ci95": [
+     0.9632,
+     1.0019
+    ],
+    "n_units": 18,
+    "n_cells": 6410,
+    "mean_log_ratio": 0.9775,
+    "unit_wins": "10/18"
+   },
+   "vs_NABD-Pool_short_history": {
+    "rel_wis": 0.9725,
+    "ci95": [
+     0.9232,
+     1.0106
+    ],
+    "n_units": 14,
+    "n_cells": 2344,
+    "mean_log_ratio": 0.9581,
+    "unit_wins": "7/14"
+   },
+   "vs_NABD-UAE-v1": {
+    "rel_wis": 0.7554,
+    "ci95": [
+     0.6624,
+     0.8268
+    ],
+    "n_units": 18,
+    "n_cells": 6410,
+    "mean_log_ratio": 0.7049,
+    "unit_wins": "18/18"
+   },
+   "vs_NABD-UAE-v1_short_history": {
+    "rel_wis": 0.6063,
+    "ci95": [
+     0.5003,
+     0.7103
+    ],
+    "n_units": 14,
+    "n_cells": 2344,
+    "mean_log_ratio": 0.5955,
+    "unit_wins": "14/14"
+   },
+   "vs_persistence": {
+    "rel_wis": 0.8652,
+    "ci95": [
+     0.8315,
+     0.8914
+    ],
+    "n_units": 18,
+    "n_cells": 6410,
+    "mean_log_ratio": 0.8536,
+    "unit_wins": "18/18"
+   },
+   "vs_persistence_short_history": {
+    "rel_wis": 0.8526,
+    "ci95": [
+     0.8032,
+     0.8974
+    ],
+    "n_units": 14,
+    "n_cells": 2344,
+    "mean_log_ratio": 0.8544,
+    "unit_wins": "13/14"
+   },
+   "vs_seasonal-analog": {
+    "rel_wis": 0.5622,
+    "ci95": [
+     0.501,
+     0.6204
+    ],
+    "n_units": 18,
+    "n_cells": 6410,
+    "mean_log_ratio": 0.57,
+    "unit_wins": "18/18"
+   },
+   "vs_seasonal-analog_short_history": {
+    "rel_wis": 0.5819,
+    "ci95": [
+     0.4929,
+     0.6561
+    ],
+    "n_units": 14,
+    "n_cells": 2344,
+    "mean_log_ratio": 0.5754,
+    "unit_wins": "14/14"
+   },
+   "by_horizon_vs_NABD-Pool": {
+    "1": 0.9731,
+    "2": 0.9805,
+    "3": 0.9861,
+    "4": 0.9953
+   }
+  }
+ }
+}

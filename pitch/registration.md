@@ -78,7 +78,7 @@ All data are aggregate.
 No personal or patient-level data is used anywhere.
 
 ## Team
-⟨Names (1–5), lead aged 18+, MBZUAI⟩. Fill in before submitting. Check MBZUAI's own policy on sponsor-run competitions; the T&C has no conflict-of-interest clause.
+Solo entrant: Ammad Hassan, MBZUAI (team size 1; the T&C allows 1–5). Check MBZUAI's own policy on sponsor-run competitions; the T&C has no conflict-of-interest clause.
 
 ---
 ## Measured word counts (pitch/wordcount.py)

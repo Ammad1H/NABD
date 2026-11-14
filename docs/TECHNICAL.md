@@ -4,7 +4,7 @@
 **Version:** final stretch, 14 Nov 2026 (adds the borrowed-strength test, §4.4 and §6.4, and the decision replays, §6.5).
 **Repository:** this repo (the git history is the provenance record).
 
-Every number below is copied from a file in `results/` and cited inline. Status labels used throughout: **PRE-REGISTERED** (plan locked before scoring), **RETROSPECTIVE** (data or earlier results had been seen), **DIAGNOSTIC** (thresholds informed by earlier exposure), **SIMULATED** (synthetic data) and **NOT RUN**. Protocol locks are local git commits. They are **self-attested until anchored outside the team** (§8).
+Every number below is copied from a file in `results/` and cited inline. Status labels used throughout: **PRE-REGISTERED** (plan locked before scoring), **RETROSPECTIVE** (data or earlier results had been seen), **DIAGNOSTIC** (thresholds informed by earlier exposure), **SIMULATED** (synthetic data) and **NOT RUN**. Protocol locks are local git commits. They are **self-attested until anchored by an outside service** (§8). NABD is a solo entry; "the author" below means the entrant.
 
 ---
 
@@ -362,6 +362,20 @@ What a pre-declared roster rule would have done with the frozen forecasts. Rule:
 - **Secondary threshold (15%):** pooled vs local −3.11 (−4.67 to −1.72); vs last week −1.42 (−2.53 to −0.42); vs pattern −5.11 (−7.44 to −3.08). Short-history stratum (14 country-seasons, primary threshold): −3.14 (−5.64 to −1.00).
 - **Status:** post hoc (the accuracy of these forecasts was already known). The declaration was written before computing but committed together with the results, so its order is self-attested by the deviations note only. No AED translation is made for this replay.
 
+### 6.6 Zero-shot foundation-model benchmark (`results/fm/SUMMARY.md`), POST HOC and EXPLORATORY
+The comparator an informed reader asks for: a general time-series foundation model (`amazon/chronos-2`, zero-shot, univariate, no fine-tuning, revision recorded) on the same 6,410 held-out influenza forecasts, same score and bootstrap as §6.4 (DEVIATIONS W1, declared before computing; `fm/benchmark.py`). Each forecast sees only the country's own series up to the origin.
+
+| Comparison | Relative WIS (95% CI) | Countries better |
+|---|---|---|
+| Chronos-2 zero-shot vs NABD-Pool | 1.026 (0.993–1.055) | 5 of 18 |
+| Chronos-2 zero-shot vs own-record model (local v1) | 0.787 (0.689–0.861) | 18 of 18 |
+| Chronos-2 zero-shot vs last week carried forward | 0.901 (0.864–0.932) | 18 of 18 |
+| Equal-weight average of NABD-Pool and Chronos-2 vs NABD-Pool | 0.985 (0.963–1.002) | 10 of 18 |
+
+- **Reading:** two very different ways of borrowing from other series (a small purpose-built pooled model, and a large pretrained model that has never been fitted to FluNet by us) both cut error by about a fifth against the own-record model, and neither is clearly better than the other (the interval includes 1). The gain in §6.4 is therefore not a quirk of one model. NABD-Pool is the nearer-term better of the two (0.991 at one week, 1.057 at four) and its inputs are exactly explainable; the average of the two is 1.5% better, with an interval that includes 1, so it is a hypothesis for a future locked test and not a finding.
+- **Coverage (50% / 95%):** NABD-Pool 0.54 / 0.96; Chronos-2 0.49 / 0.95; the average 0.52 / 0.96. Feeding percent instead of logit changes nothing material (1.024).
+- **Limits:** post hoc; the foundation model's pretraining data may include public epidemiological series; finalised FluNet data. Reproduce with `pip install -r requirements-fm.txt && python -m fm.benchmark` (about 3 minutes on a laptop CPU, no GPU needed).
+
 ## 7. Decision layer and governance
 
 - **Card** (`app/streamlit_app.py`, Arabic RTL and English) shows:
@@ -385,13 +399,19 @@ What a pre-declared roster rule would have done with the frozen forecasts. Rule:
 
 - `python3 -m ledger.issue --fetch --round Rn` pulls the newest WHO week and issues v1 (headline), v2 (challenger) and persistence forecasts. Each file gets a SHA-256, and the round gets a Merkle manifest (vendored kit `nabd_kit.ledger`).
 - `python3 -m ledger.score --fetch` scores past rounds once their target weeks are published. It verifies each file's hash first, and tampered files are excluded.
+- **Status on 14 Nov:** round **R2** issued (data through W44, still before WHO published W45). It hashes four forecasts from the same data: v1, v2, persistence and, for the first time, the **pooled challenger NABD-Pool**. 0 rows scored.
+- **Prospective UAE test (`docs/PREREG-LIVE.md`, `docs/LOCK-LIVE.json`, locked 14 Nov before R2):** from R2 to target weeks ending 28 March 2027, pooled vs own-record model on UAE influenza (primary) and RSV, WIS, bootstrap over rounds, assessed once on or after 15 April 2027. Models are frozen for the test. `python -m ledger.live_test` prints the interim table (descriptive only) and refuses a final verdict before the date. This is the only route to confirmatory UAE evidence, and it will report after the hackathon.
 - **Status on 8 Nov:**
   - **one forecast round** (data through W44) has been issued: R0 (06:51 UTC), then re-issued as R1 (12:12 UTC) with the v2 challenger added. The v1 and persistence files are byte-identical across R0 and R1;
   - **0 rows scored**, because no target week has been published yet (`ledger/SCOREBOARD.md`).
-- **Anchoring is NOT done.** OpenTimestamps and RFC 3161 services are blocked from the build environment. The team must run `vendor/nabd_v2_kit/scripts/anchor.sh <MANIFEST.sha256>` locally for the US freeze, the UAE-v2 lock, the GCC lock and each ledger round, then push. Steps are in `ledger/ANCHOR.md`.
+- **Anchoring is NOT done.** OpenTimestamps and RFC 3161 services are blocked from the build environment. The author must run `vendor/nabd_v2_kit/scripts/anchor.sh <MANIFEST.sha256>` locally for the US freeze, the UAE-v2 lock, the GCC lock and each ledger round, then push. Steps are in `ledger/ANCHOR.md`.
 - Every anchor made after results existed must be described that way (`docs/FREEZE.md` addendum).
 
 ---
+
+### 7.1 Two front-ends, one source of numbers
+- **Presentation front-end (`web/`):** a static page built by `python -m web.build` from `results/`, `ledger/` and `data/raw/` through `app.data_io` and `app.cardcheck`, so it cannot disagree with the workbench. Arabic (right-to-left) and English, light and dark, usable on a phone. The ledger section recomputes each forecast file's SHA-256 in the reader's browser. `tests/test_web_build.py` asserts that the page's numbers equal the summary files, that the headline model is the designated one, and that every embedded ledger file hashes to its recorded value.
+- **Workbench (`app/streamlit_app.py`):** audited approve / modify / dismiss with the hash-chained log, the hospital winter planner, feed removal, and every detail table.
 
 ## 9. Reproducibility
 
@@ -450,6 +470,7 @@ Full statement: `pitch/assumptions-limitations.md`.
 | G1, G1b | GCC data from a public mirror of WHO's full export. It matches the independently fetched UAE rows exactly (419/419), and 23/23 Gulf rows were spot-checked against the official API. A full re-pull is pending | after lock, before scoring | provenance note |
 | P1 | Relaxed training-row rule as a tunable option for the pooled model's training rows | after lock #1, before any pooled fit and before any held-out row | chosen on development countries; hashed in lock #2 |
 | V1 | Gulf decision replay (rule, thresholds, metrics, AED scenario) | declared and committed before computing | POST HOC, EXPLORATORY |
+| W1 | Zero-shot foundation-model benchmark (Chronos-2) and an equal-weight average with NABD-Pool, on the S1 held-out cells | declared before computing; committed with the results | POST HOC, EXPLORATORY |
 | V2 | Decision replay of the pooled model on the held-out countries; check tolerance set to the stored file's rounding (V2a-note) | declared before computing; committed with the results | POST HOC, EXPLORATORY |
 
 ---

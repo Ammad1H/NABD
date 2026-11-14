@@ -1,5 +1,7 @@
 # NABD: 12-slide deck script (round 4, BUILD-SPEC v1.7, impact first)
 
+> **Narrative order superseded on 14 Nov 2026 by `pitch/story.md` (v3: borrowed strength first).** Slide contents below stay valid; add slide 7b and use the v3 order.
+
 **Rules:**
 - Every number traces to `results/`, `data/raw/` or `research/`. See `research/claims-ledger.md`; a claim that isn't in the ledger can't go on a slide.
 - `research/positioning.md` §4.6 (the stop list) and the BUILD-SPEC v1.7 BANNED list are binding.
@@ -16,7 +18,7 @@
 ---
 
 ### 1. Title
-- **On slide:** NABD (نبض, "pulse"): an open RSV and flu forecasting hub for Abu Dhabi. Statement 06 · ⟨team⟩ · MBZUAI.
+- **On slide:** NABD (نبض, "pulse"): an open RSV and flu forecasting hub for Abu Dhabi. Statement 06 · Ammad Hassan (solo entrant) · MBZUAI.
 - **Visual:** a pulse line opening into a forecast fan.
 - **Notes (≈25 words):** "Every winter Monday, someone in Abu Dhabi decides how much RSV and flu to prepare for. NABD gives them a checkable range for the next three weeks."
 

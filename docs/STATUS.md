@@ -1,6 +1,6 @@
 # NABD status, 14 Nov 2026 (final stretch)
 
-**Where it stands.** The prototype runs end to end from a clean checkout: `pip install -r requirements-dev.txt`, `pytest -q` (145 tests pass, none skipped, with the CDC hub cloned by `python -m eval.run_all --fetch`), `streamlit run app/streamlit_app.py`. Submission is due 20 Nov.
+**Where it stands.** The prototype runs end to end from a clean checkout: `pip install -r requirements-dev.txt`, `pytest -q` (157 tests pass, none skipped, with the CDC hub cloned by `python -m eval.run_all --fetch`), `streamlit run app/streamlit_app.py`. Submission is due 20 Nov.
 
 | Item | State on 14 Nov |
 |---|---|
@@ -8,7 +8,10 @@
 | S2 Gulf decision replay | Done, post hoc (`results/replay/SUMMARY.md`) |
 | S3 Start-here landing and Season Replay page | Done |
 | S4 decision replay of the pooled model on the held-out countries | Done, post hoc (DEVIATIONS V2; `results/replay/pool/SUMMARY.md`): better than the own-record model, not distinguishable from last week carried forward |
-| Live ledger | R0/R1 issued 8 Nov on data through 2026-W44. **WHO had not published W45 on 14 Nov** (official API checked), so 0 weeks are scored and no new round is due. Next: `python -m ledger.weekly --fetch --with-pool` once W45 appears |
+| S5 foundation-model benchmark | Done, post hoc (DEVIATIONS W1; `results/fm/SUMMARY.md`): Chronos-2 zero-shot is level with NABD-Pool (1.026, 0.993–1.055); both beat the own-record model by about a fifth |
+| Prospective UAE test | **Locked 14 Nov** (`docs/PREREG-LIVE.md`, `docs/LOCK-LIVE.json`); round R2 issued with the pooled challenger; no result until WHO publishes; final on or after 15 Apr 2027 |
+| New web front-end | `web/` (static, bilingual, built from the results files by `python -m web.build`); the Streamlit app stays as the analyst workbench |
+| Live ledger | R0/R1 issued 8 Nov and R2 on 14 Nov, all on data through 2026-W44. **WHO had not published W45 on 14 Nov** (official API checked), so 0 weeks are scored and no new round is due. Next: `python -m ledger.weekly --fetch --with-pool` once W45 appears |
 | Outside anchoring, public repo, deployed app | **Not done** (user-only steps below). Every lock and ledger time is still self-attested |
 | Deck (Slides artifact) and video | Not yet synced with S1/S4; `pitch/deck-script.md` slide 7b and `pitch/qa.md` carry the wording |
 | Portability fixes (14 Nov) | `scikit-learn` and the bulletin packages added to `requirements-dev.txt`; bulletin fonts fall back to matplotlib's DejaVu; deprecated pandas calls removed; leakage tests skip cleanly without the hub clone |
