@@ -1,0 +1,296 @@
+{
+ "label": "Held-out countries, forward-in-time, revised FluNet data; plan locked before download (lock #1), model locked before any held-out row was extracted (lock #2)",
+ "lock2_root": "a209cc7b92d3033748c6c4ba7ed64956f01c46e945318651787443f1e550c061",
+ "chosen_model": "ENS(G_relaxed+L_relaxed_k8)",
+ "included_countries": [
+  "BGD",
+  "CRI",
+  "ECU",
+  "EGY",
+  "ETH",
+  "GHA",
+  "IDN",
+  "IRN",
+  "KEN",
+  "LKA",
+  "MYS",
+  "NPL",
+  "PAK",
+  "PER",
+  "PHL",
+  "PRY",
+  "SEN",
+  "VNM"
+ ],
+ "n_included": 18,
+ "PRIMARY_flu_pool_vs_local_v1": {
+  "rel_wis": 0.7671,
+  "ci95": [
+   0.6814,
+   0.8324
+  ],
+  "n_units": 18,
+  "n_cells": 6410,
+  "mean_log_ratio": 0.7211,
+  "unit_wins": "18/18"
+ },
+ "PRIMARY_verdict": "MET",
+ "secondary": {
+  "pool_vs_NABD-UAE-v1": {
+   "rel_wis": 0.7671,
+   "ci95": [
+    0.6814,
+    0.8324
+   ],
+   "n_units": 18,
+   "n_cells": 6410,
+   "mean_log_ratio": 0.7211,
+   "unit_wins": "18/18"
+  },
+  "pool_vs_persistence": {
+   "rel_wis": 0.8787,
+   "ci95": [
+    0.8499,
+    0.9014
+   ],
+   "n_units": 18,
+   "n_cells": 6410,
+   "mean_log_ratio": 0.8732,
+   "unit_wins": "18/18"
+  },
+  "pool_vs_seasonal-analog": {
+   "rel_wis": 0.571,
+   "ci95": [
+    0.5183,
+    0.6243
+   ],
+   "n_units": 18,
+   "n_cells": 6410,
+   "mean_log_ratio": 0.5831,
+   "unit_wins": "18/18"
+  },
+  "v1_vs_persistence": {
+   "rel_wis": 1.1455,
+   "ci95": [
+    1.0548,
+    1.2832
+   ],
+   "n_units": 18,
+   "n_cells": 6410,
+   "mean_log_ratio": 1.2108,
+   "unit_wins": "4/18"
+  },
+  "short_history_pool_vs_v1": {
+   "rel_wis": 0.6235,
+   "ci95": [
+    0.54,
+    0.7053
+   ],
+   "n_units": 14,
+   "n_cells": 2344,
+   "mean_log_ratio": 0.6216,
+   "unit_wins": "14/14"
+  },
+  "EMRO_pool_vs_v1": {
+   "rel_wis": 0.6397,
+   "ci95": [
+    0.5646,
+    0.8222
+   ],
+   "n_units": 3,
+   "n_cells": 866,
+   "mean_log_ratio": 0.6992,
+   "unit_wins": "3/3"
+  },
+  "other_regions_pool_vs_v1": {
+   "rel_wis": 0.785,
+   "ci95": [
+    0.7019,
+    0.8468
+   ],
+   "n_units": 15,
+   "n_cells": 5544,
+   "mean_log_ratio": 0.7256,
+   "unit_wins": "15/15"
+  },
+  "by_horizon_pool_vs_v1": {
+   "1": 0.6486,
+   "2": 0.6986,
+   "3": 0.8492,
+   "4": 0.8771
+  },
+  "coverage": {
+   "NABD-Pool": {
+    "cov50": 0.537,
+    "cov95": 0.956
+   },
+   "NABD-UAE-v1": {
+    "cov50": 0.645,
+    "cov95": 0.96
+   },
+   "persistence": {
+    "cov50": 0.554,
+    "cov95": 0.946
+   },
+   "seasonal-analog": {
+    "cov50": 0.372,
+    "cov95": 0.648
+   }
+  },
+  "country_season_wins_pool_vs_v1": "35/36"
+ },
+ "simulated_short_record": {
+  "pool_vs_NABD-UAE-v1": {
+   "rel_wis": 0.64,
+   "ci95": [
+    0.5919,
+    0.692
+   ],
+   "n_units": 18,
+   "n_cells": 6387,
+   "mean_log_ratio": 0.6414,
+   "unit_wins": "18/18"
+  },
+  "pool_vs_persistence": {
+   "rel_wis": 0.8926,
+   "ci95": [
+    0.8644,
+    0.9137
+   ],
+   "n_units": 18,
+   "n_cells": 6387,
+   "mean_log_ratio": 0.8869,
+   "unit_wins": "18/18"
+  },
+  "pool_vs_seasonal-analog": {
+   "rel_wis": 0.5333,
+   "ci95": [
+    0.4816,
+    0.5901
+   ],
+   "n_units": 18,
+   "n_cells": 6387,
+   "mean_log_ratio": 0.5577,
+   "unit_wins": "18/18"
+  }
+ },
+ "rsv": {
+  "included": [
+   "AFG",
+   "BGD",
+   "CRI",
+   "ECU",
+   "GEO",
+   "IDN",
+   "KAZ",
+   "MYS",
+   "NPL",
+   "PAK",
+   "PER",
+   "PHL",
+   "PRY"
+  ],
+  "pool_vs_NABD-UAE-v1": {
+   "rel_wis": 0.7887,
+   "ci95": [
+    0.7047,
+    0.8598
+   ],
+   "n_units": 13,
+   "n_cells": 6835,
+   "mean_log_ratio": 0.8062,
+   "unit_wins": "12/13"
+  },
+  "pool_vs_persistence": {
+   "rel_wis": 0.8451,
+   "ci95": [
+    0.811,
+    0.8878
+   ],
+   "n_units": 13,
+   "n_cells": 6835,
+   "mean_log_ratio": 0.8744,
+   "unit_wins": "11/13"
+  },
+  "pool_vs_seasonal-analog": {
+   "rel_wis": 0.4957,
+   "ci95": [
+    0.441,
+    0.5664
+   ],
+   "n_units": 13,
+   "n_cells": 6835,
+   "mean_log_ratio": 0.5087,
+   "unit_wins": "12/13"
+  },
+  "v1_vs_persistence": {
+   "rel_wis": 1.0715,
+   "ci95": [
+    0.9708,
+    1.2087
+   ],
+   "n_units": 13,
+   "n_cells": 6835,
+   "mean_log_ratio": 1.0846,
+   "unit_wins": "4/13"
+  },
+  "short_history_pool_vs_v1": {
+   "rel_wis": 0.7343,
+   "ci95": [
+    0.6312,
+    0.9173
+   ],
+   "n_units": 7,
+   "n_cells": 1358,
+   "mean_log_ratio": 0.7624,
+   "unit_wins": "5/7"
+  },
+  "EMRO_pool_vs_v1": {
+   "rel_wis": 0.7307,
+   "ci95": [
+    0.6093,
+    0.8351
+   ],
+   "n_units": 2,
+   "n_cells": 970,
+   "mean_log_ratio": 0.7133,
+   "unit_wins": "2/2"
+  },
+  "other_regions_pool_vs_v1": {
+   "rel_wis": 0.7948,
+   "ci95": [
+    0.7054,
+    0.8743
+   ],
+   "n_units": 11,
+   "n_cells": 5865,
+   "mean_log_ratio": 0.8244,
+   "unit_wins": "10/11"
+  },
+  "by_horizon_pool_vs_v1": {
+   "1": 0.7092,
+   "2": 0.7614,
+   "3": 0.8341,
+   "4": 0.8456
+  },
+  "coverage": {
+   "NABD-Pool": {
+    "cov50": 0.328,
+    "cov95": 0.598
+   },
+   "NABD-UAE-v1": {
+    "cov50": 0.337,
+    "cov95": 0.595
+   },
+   "persistence": {
+    "cov50": 0.302,
+    "cov95": 0.593
+   },
+   "seasonal-analog": {
+    "cov50": 0.239,
+    "cov95": 0.432
+   }
+  },
+  "country_season_wins_pool_vs_v1": "31/36"
+ }
+}

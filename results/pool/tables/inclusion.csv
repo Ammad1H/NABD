@@ -1,0 +1,37 @@
+country,series,qualifying_seasons,scored_seasons,included,reason
+AFG,TOTAL,,,False,no qualifying evaluation season
+DJI,none,,,False,no rows in the export (ISO_YEAR >= 2015)
+EGY,SENTINEL,2021 2022 2023 2024 2025,2023 2024 2025,True,
+IRN,SENTINEL,2023 2024 2025,2025,True,
+IRQ,TOTAL,,,False,no qualifying evaluation season
+JOR,TOTAL,,,False,no qualifying evaluation season
+LBN,TOTAL,2023,,False,fewer than 2 qualifying earlier seasons
+LBY,TOTAL,,,False,no qualifying evaluation season
+MAR,TOTAL,,,False,no qualifying evaluation season
+PAK,TOTAL,2021 2022 2024,2024,True,
+PSE,TOTAL,,,False,no qualifying evaluation season
+SOM,TOTAL,2022,,False,fewer than 2 qualifying earlier seasons
+SDN,TOTAL,,,False,no qualifying evaluation season
+SYR,TOTAL,,,False,no qualifying evaluation season
+TUN,TOTAL,,,False,no qualifying evaluation season
+YEM,TOTAL,,,False,no qualifying evaluation season
+ISR,TOTAL,,,False,no qualifying evaluation season
+GEO,TOTAL,,,False,no qualifying evaluation season
+ARM,TOTAL,,,False,no qualifying evaluation season
+KAZ,TOTAL,,,False,no qualifying evaluation season
+UZB,TOTAL,,,False,no qualifying evaluation season
+BGD,SENTINEL,2023 2024 2025,2025,True,
+LKA,SENTINEL,2023 2024 2025,2025,True,
+NPL,SENTINEL,2022 2023 2024 2025,2024 2025,True,
+IDN,SENTINEL,2015 2016 2017 2018 2022 2023 2024 2025,2022 2023 2024 2025,True,
+VNM,SENTINEL,2022 2023 2024 2025,2024 2025,True,
+PHL,TOTAL,2018 2022 2023 2024 2025,2023 2024 2025,True,
+MYS,TOTAL,2015 2017 2018 2022 2023 2024 2025,2022 2023 2024 2025,True,
+KEN,SENTINEL,2022 2024 2025,2025,True,
+GHA,SENTINEL,2022 2023 2024 2025,2024 2025,True,
+SEN,SENTINEL,2023 2024 2025,2025,True,
+ETH,SENTINEL,2022 2023 2024,2024,True,
+PER,SENTINEL,2022 2024 2025,2025,True,
+ECU,SENTINEL,2022 2023 2024 2025,2024 2025,True,
+CRI,TOTAL,2015 2016 2018 2024 2025,2024 2025,True,
+PRY,TOTAL,2016 2017 2018 2022 2023 2024 2025,2022 2023 2024 2025,True,

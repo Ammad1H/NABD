@@ -99,3 +99,29 @@ def test_pooled_training_rows_are_strictly_before_the_evaluation_season(are):
     tr = T[T.season < S]
     assert tr.origin.max() < are["x"].week_end[are["x"].season == S].min()
     assert not set(tr.season) & set(C.EXCLUDE_TRAINING_SEASONS)
+
+
+def test_live_pool_forecast_for_the_uae_ledger():
+    """The challenger issues 23 ordered percent quantiles per horizon from cached data."""
+    if not locks.LOCK2.exists():
+        pytest.skip("lock #2 not made yet")
+    from adapters import flunet
+    from pool.live import forecast
+    s = flunet.sentinel_series(flunet.load("cached"))
+    pf = forecast(s, "flu")
+    assert set(pf) == {1, 2, 3, 4}
+    for v in pf.values():
+        assert len(v) == 23 and np.all(np.diff(v) >= 0) and 0 <= v[0] and v[-1] <= 100
+
+
+def test_confirmatory_summary_matches_scores():
+    import json
+    p = ROOT / "results" / "pool" / "summary.json"
+    if not p.exists():
+        pytest.skip("confirmatory test not run yet")
+    from pool import harness as Hn
+    s = json.loads(p.read_text())
+    sc = pd.read_csv(ROOT / "results" / "pool" / "tables" / "scores_long.csv")
+    r = Hn.rel(sc, "NABD-Pool", "NABD-UAE-v1")
+    assert r["rel_wis"] == s["PRIMARY_flu_pool_vs_local_v1"]["rel_wis"]
+    assert set(sc.country) <= set(C.HELD) and set(sc.country) == set(s["included_countries"])

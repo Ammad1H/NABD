@@ -32,7 +32,9 @@ from uae.models_v2 import NabdUAEv2
 from uae.explain_v1 import explain_frame
 
 DESIGNATION = {"NABD-UAE-v1": "headline (frozen as-is, see docs/FREEZE.md)",
-               "NABD-UAE-v2": "challenger (locked, docs/LOCK-UAE-v2.json)", "persistence": "baseline"}
+               "NABD-UAE-v2": "challenger (locked, docs/LOCK-UAE-v2.json)", "persistence": "baseline",
+               "NABD-Pool": "challenger (pooled across countries; locked, docs/LOCK-POOL-2.json; "
+                            "confirmatory held-out test in results/pool)"}
 
 ROOT = Path(__file__).resolve().parents[1]
 LEDGER = ROOT / "ledger"
@@ -55,7 +57,7 @@ def horizon_label(wk) -> str:
     return "nowcast" if wk <= 0 else f"+{int(wk)} wk after issue"
 
 
-def issue(mode="cached", round_label="R0", now=None, with_v2=True, explain_only=False):
+def issue(mode="cached", round_label="R0", now=None, with_v2=True, explain_only=False, with_pool=False):
     """Issue a ledger round. explain_only=True regenerates ONLY the per-signal explanation files for the
     live issue date (same data, same fits) and writes no ledger file, so hashed rounds are never touched."""
     now = now or dt.datetime.now(dt.timezone.utc)
@@ -134,6 +136,19 @@ def issue(mode="cached", round_label="R0", now=None, with_v2=True, explain_only=
                                       weeks_ahead_of_issue=horizon_weeks(tgt_end, now.date()),
                                       weeks_to_target_week_end=round((pd.Timestamp(tgt_end) - pd.Timestamp(now.date())).days / 7, 2)))
             frames.setdefault(m.name, []).extend(rows)
+        if with_pool and not explain_only:   # S1 challenger: NABD-Pool (opt-in; v1 stays the headline)
+            from pool.live import NAME as POOL_NAME, forecast as pool_forecast
+            pf = pool_forecast(s, key)
+            for h in H:
+                if h not in pf:
+                    continue
+                tgt_end = (L_end + pd.Timedelta(weeks=h)).date()
+                for q, v in zip(QUANTILES, np.sort(pf[h])):
+                    frames.setdefault(POOL_NAME, []).append(
+                        [str(ref), target_name, h - 2, str(tgt_end), "ARE", "quantile", q, round(float(v), 4), POOL_NAME])
+                meta_rows.append(dict(model=POOL_NAME, target=target_name, horizon=h - 2, target_end_date=str(tgt_end),
+                                      weeks_ahead_of_issue=horizon_weeks(tgt_end, now.date()),
+                                      weeks_to_target_week_end=round((pd.Timestamp(tgt_end) - pd.Timestamp(now.date())).days / 7, 2)))
         data_through[target_name] = f"{int(d.iso_year.iloc[i])}-W{int(d.iso_week.iloc[i]):02d}"  # per series (audit m19)
     if explain_only:
         return []
@@ -183,6 +198,8 @@ def main():
     ap.add_argument("--round", default="R0")
     ap.add_argument("--explain-only", action="store_true",
                     help="regenerate per-signal explanation files for the live issue date only (no ledger write)")
+    ap.add_argument("--with-pool", action="store_true",
+                    help="also issue the NABD-Pool challenger (pooled across countries; docs/PREREG-POOL.md)")
     ap.add_argument("--issue-date", default=None, help="UTC date to stamp explanation files with (explain-only)")
     a = ap.parse_args()
     if not (LEDGER / "LEDGER.md").exists():
@@ -192,7 +209,7 @@ def main():
         issue("fetch" if a.fetch else "cached", a.round, now=now, explain_only=True)
         print("explanations written to results/uae/explain/ (v1 headline) and results/uae/explain/challenger_v2/")
         return
-    for csv, h in issue("fetch" if a.fetch else "cached", a.round):
+    for csv, h in issue("fetch" if a.fetch else "cached", a.round, with_pool=a.with_pool):
         print(f"{csv.relative_to(ROOT)}  sha256={h}")
     print("Next: git add ledger && git commit -m 'ledger round' && git push  (public commit time = timestamp); post the hash.")
 

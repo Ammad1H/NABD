@@ -1,0 +1,37 @@
+country,series,qualifying_seasons,scored_seasons,included,reason
+AFG,TOTAL,2016 2017 2018 2020 2021 2022 2023 2024 2025,2022 2023 2024 2025,True,
+DJI,none,,,False,no rows in the export (ISO_YEAR >= 2015)
+EGY,SENTINEL,,,False,no qualifying evaluation season
+IRN,SENTINEL,,,False,no qualifying evaluation season
+IRQ,TOTAL,,,False,no qualifying evaluation season
+JOR,TOTAL,,,False,no qualifying evaluation season
+LBN,TOTAL,,,False,no qualifying evaluation season
+LBY,TOTAL,,,False,no qualifying evaluation season
+MAR,TOTAL,2024 2025,,False,fewer than 2 qualifying earlier seasons
+PAK,TOTAL,2023 2024 2025,2025,True,
+PSE,TOTAL,,,False,no qualifying evaluation season
+SOM,TOTAL,,,False,no qualifying evaluation season
+SDN,TOTAL,,,False,no qualifying evaluation season
+SYR,TOTAL,,,False,no qualifying evaluation season
+TUN,TOTAL,2024 2025,,False,fewer than 2 qualifying earlier seasons
+YEM,TOTAL,,,False,no qualifying evaluation season
+ISR,TOTAL,,,False,no qualifying evaluation season
+GEO,TOTAL,2022 2023 2024 2025,2024 2025,True,
+ARM,TOTAL,2016 2017 2018,,False,no qualifying evaluation season
+KAZ,TOTAL,2015 2016 2017 2018 2021 2022 2023 2024 2025,2022 2023 2024 2025,True,
+UZB,TOTAL,,,False,no qualifying evaluation season
+BGD,SENTINEL,2022 2023 2024 2025,2024 2025,True,
+LKA,SENTINEL,2024 2025,,False,fewer than 2 qualifying earlier seasons
+NPL,SENTINEL,2023 2024 2025,2025,True,
+IDN,SENTINEL,2022 2023 2024 2025,2024 2025,True,
+VNM,SENTINEL,,,False,no qualifying evaluation season
+PHL,TOTAL,2016 2017 2018 2021 2022 2023 2024 2025,2022 2023 2024 2025,True,
+MYS,TOTAL,2016 2017 2018 2019 2020 2021 2022 2023 2024 2025,2022 2023 2024 2025,True,
+KEN,SENTINEL,2024 2025,,False,fewer than 2 qualifying earlier seasons
+GHA,SENTINEL,2025,,False,fewer than 2 qualifying earlier seasons
+SEN,SENTINEL,,,False,no qualifying evaluation season
+ETH,SENTINEL,2024 2025,,False,fewer than 2 qualifying earlier seasons
+PER,SENTINEL,2021 2022 2024 2025,2024 2025,True,
+ECU,SENTINEL,2021 2022 2023 2024 2025,2023 2024 2025,True,
+CRI,TOTAL,2015 2016 2017 2018 2019 2020 2021 2022 2024 2025,2022 2024 2025,True,
+PRY,TOTAL,2015 2016 2017 2018 2019 2020 2021 2022 2023 2024 2025,2022 2023 2024 2025,True,
