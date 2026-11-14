@@ -1,7 +1,7 @@
 # NABD: Technical documentation
 
 **Future Health Digital Innovation Challenge 2026 · Statement 06 (Population and Workforce Health Early Warning)**
-**Version:** round 4, 8 Nov 2026, to be refreshed on 19–20 Nov.
+**Version:** final stretch, 14 Nov 2026 (adds the borrowed-strength test, §4.4 and §6.4, and the decision replays, §6.5).
 **Repository:** this repo (the git history is the provenance record).
 
 Every number below is copied from a file in `results/` and cited inline. Status labels used throughout: **PRE-REGISTERED** (plan locked before scoring), **RETROSPECTIVE** (data or earlier results had been seen), **DIAGNOSTIC** (thresholds informed by earlier exposure), **SIMULATED** (synthetic data) and **NOT RUN**. Protocol locks are local git commits. They are **self-attested until anchored outside the team** (§8).
@@ -148,6 +148,15 @@ $$
 - **Tuning:** 2023/24 only (30 reference dates), minimising total WIS. Rerunning the tuning reproduces `config.yaml` exactly.
 
 ---
+
+### 4.4 NABD-Pool: the pooled challenger (`pool/`; `docs/PREREG-POOL.md`; lock #2)
+Idea ("borrowed strength"): a country with a short surveillance record is forecast from many countries' WHO FluNet histories instead of its own record alone. Both members predict the within-season change in logit positivity, $y_{t+h}-y_t$, for h = 1–4 data weeks, and output the 23 FluSight quantiles in percent.
+- **G (gradient-boosted quantiles):** scikit-learn `HistGradientBoostingRegressor`, one fit per quantile level, all countries and horizons in one model. Features: own lags and growth, anomaly from the country's own past-season pattern, season phase, absolute latitude and hemisphere, testing volume and its change, and the number of own earlier seasons.
+- **L (partial pooling of v1):** v1's linear form with coefficients fitted on pooled development-country rows, shrunk towards the country's own v1 fit with weight n/(n+8), where n is the number of own earlier seasons.
+- **NABD-Pool = quantile average of G and L** (`pool/model_config.json`: `ENS(G_relaxed+L_relaxed_k8)`).
+- **Selection:** on the 46 development countries only, forward in time, with the target country left out of the fit (5 country-grouped folds). Development result: 0.802 vs local v1, 0.815 vs persistence. Training rows use the relaxed season rule of deviation P1 (declared before any pooled fit).
+- **Never fitted on a held-out country's evaluation season.** For a held-out country it uses that country's data up to the forecast origin, the same information the local method has.
+- **In the product:** an opt-in challenger on the ledger (`python -m ledger.issue --with-pool`, `pool/live.py`). NABD-UAE-v1 stays the frozen headline model of the live ledger.
 
 ## 5. Evaluation protocols and lock provenance
 
@@ -305,6 +314,54 @@ Figures: `results/figures/fig1_rel_wis_season_horizon.png`, `fig2_league_table.p
 
 ---
 
+### 6.4 Borrowed-strength test (S1): primary MET (`results/pool/SUMMARY.md`), PRE-REGISTERED
+Plan and country lists locked before any new data were downloaded (lock #1); model, configuration and development data locked before any held-out row was extracted (lock #2); scored once. Both locks are self-attested local git commits until anchored (§8). Forward in time, finalised (revised) FluNet data, evaluation seasons 2022/23–2025/26, horizons 1–4 data weeks.
+
+| Comparison (influenza, held-out countries) | Relative WIS (95% CI, countries resampled) | Countries better |
+|---|---|---|
+| **Pooled vs each country's own-record model, local v1 (PRIMARY)** | **0.767 (0.681–0.832)** | 18 of 18 |
+| Short-history stratum (≤ 2 own earlier seasons) | 0.624 (0.540–0.705) | 14 of 14 |
+| Simulated short record (every country cut to its last 2 seasons) | 0.640 (0.592–0.692) | 18 of 18 |
+| Pooled vs persistence | 0.879 (0.850–0.901) | 18 of 18 |
+| Pooled vs past-season pattern | 0.571 (0.518–0.624) | 18 of 18 |
+| For reference: local v1 vs persistence, same cells | 1.145 (1.055–1.283) | 4 of 18 |
+
+- **Inclusion:** 36 held-out countries were named in advance; 18 met the pre-set data rules (BGD, CRI, ECU, EGY, ETH, GHA, IDN, IRN, KEN, LKA, MYS, NPL, PAK, PER, PHL, PRY, SEN, VNM). The other 18 are listed with their reason in the summary; none was dropped after scoring.
+- **By horizon** (pooled vs local): 0.649, 0.699, 0.849, 0.877 for 1–4 data weeks. The gain is largest for the nearest weeks.
+- **Coverage** (50% / 95% intervals): pooled 0.54 / 0.96; local v1 0.65 / 0.96; persistence 0.55 / 0.95; past-season pattern 0.37 / 0.65.
+- **EMRO only:** 0.640 (0.565–0.822), 3 countries (EGY, IRN, PAK). **RSV (secondary, 13 countries):** 0.789 (0.705–0.860) vs local, 0.845 (0.811–0.888) vs persistence.
+- **Already-seen countries, NON-CONFIRMATORY** (development cross-fitting, country left out of the pooled fit): UAE 0.87 vs local v1 and 0.77 vs persistence; Oman 0.95, Qatar 0.94, Saudi Arabia 0.94 vs local v1. These are not evidence for the hypothesis.
+- **What it shows:** on countries nobody on the project had looked at, the pooled model had 23% less influenza forecast error than a model fitted to the country's own record, and 38% less where that record was short, which is the UAE's position. It also beat last-week persistence in all 18 countries, where the local method did not (1.145).
+- **What it doesn't show:** nothing confirmatory about the UAE (its data were seen; the UAE figure above is non-confirmatory). Positivity, not hospital load. The week-27 season boundary is a northern-hemisphere convention applied to every country and every model alike.
+
+### 6.5 Decision replays (`results/replay/`), POST HOC and EXPLORATORY
+What a pre-declared roster rule would have done with the frozen forecasts. Rule: each week, for the week about two weeks after issue, roster surge capacity if the forecast gives at least a 30% chance (the playbook's `p_act`) that positivity passes a threshold T. A missed week is a surge week with no roster; a wasted week is a roster with no surge; mismatch = missed + wasted. The same rule is applied to every forecaster.
+
+**Gulf replay (DEVIATIONS V1; `results/replay/SUMMARY.md`), playbook thresholds (flu 15%, RSV 10%):**
+
+| Pathogen | NABD v1 | Past-season pattern | Last week | Difference v1 − pattern (95% CI) |
+|---|---|---|---|---|
+| Influenza, 12 country-seasons, mismatch weeks a season | 8.0 | 20.8 | 8.0 | −12.75 (−16.7 to −9.3) |
+| RSV, 10 country-seasons | 5.6 | 7.1 | 7.4 | −1.5 (−3.0 to +0.1) |
+
+- Influenza: a tie with last week carried forward (0.0, −1.2 to +1.2). RSV: v1 missed more surge weeks than the pattern (16 vs 11) and wasted fewer. UAE folds (n = 2, descriptive): v1 missed more surge weeks than last week did.
+- AED scenario (RSV, Tawam-sized unit; scale of resource mis-planned, not cash): about −10,000 / 423,000 / 2,979,000 AED a season (low / central / high). Every assumption is in `research/impact-case.md`.
+
+**Held-out replay of the pooled model (DEVIATIONS V2; `results/replay/pool/SUMMARY.md`), influenza, 36 country-seasons in 18 countries.** Primary threshold: the country's own 75th percentile over its earlier seasons (declared before computing, because the playbook's 15% was written for UAE levels); the 15% threshold is the secondary.
+
+| Rule input | Missed / season | Wasted / season | Mismatch / season | Brier |
+|---|---|---|---|---|
+| Pooled model (NABD-Pool) | 2.7 | 7.8 | 10.5 | 0.133 |
+| Own-record model (local v1) | 2.2 | 10.1 | 12.3 | 0.154 |
+| Last week carried forward | 2.2 | 8.9 | 11.1 | 0.141 |
+| Past-season pattern | 6.9 | 9.7 | 16.6 | 0.228 |
+
+- **Pooled vs local v1:** −1.81 mismatch weeks a season (95% CI −3.00 to −0.72 resampling country-seasons; −2.63 to −0.88 resampling countries); better in 23, tied in 6, worse in 7 of 36. The gain is fewer wasted surge weeks (7.8 vs 10.1); **the pooled model missed slightly more surge weeks (2.7 vs 2.2)**.
+- **Pooled vs last week:** −0.56 (−1.42 to +0.31): **not distinguishable from carrying last week forward** under this rule at this horizon.
+- **Pooled vs past-season pattern:** −6.11 (−8.25 to −4.06).
+- **Secondary threshold (15%):** pooled vs local −3.11 (−4.67 to −1.72); vs last week −1.42 (−2.53 to −0.42); vs pattern −5.11 (−7.44 to −3.08). Short-history stratum (14 country-seasons, primary threshold): −3.14 (−5.64 to −1.00).
+- **Status:** post hoc (the accuracy of these forecasts was already known). The declaration was written before computing but committed together with the results, so its order is self-attested by the deviations note only. No AED translation is made for this replay.
+
 ## 7. Decision layer and governance
 
 - **Card** (`app/streamlit_app.py`, Arabic RTL and English) shows:
@@ -391,6 +448,9 @@ Full statement: `pitch/assumptions-limitations.md`.
 | D10 | Phase decomposition and relative economic value | declared before computing | descriptive |
 | E1 | Realised-phase split | post hoc | EXPLORATORY; never a claim |
 | G1, G1b | GCC data from a public mirror of WHO's full export. It matches the independently fetched UAE rows exactly (419/419), and 23/23 Gulf rows were spot-checked against the official API. A full re-pull is pending | after lock, before scoring | provenance note |
+| P1 | Relaxed training-row rule as a tunable option for the pooled model's training rows | after lock #1, before any pooled fit and before any held-out row | chosen on development countries; hashed in lock #2 |
+| V1 | Gulf decision replay (rule, thresholds, metrics, AED scenario) | declared and committed before computing | POST HOC, EXPLORATORY |
+| V2 | Decision replay of the pooled model on the held-out countries; check tolerance set to the stored file's rounding (V2a-note) | declared before computing; committed with the results | POST HOC, EXPLORATORY |
 
 ---
 

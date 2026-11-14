@@ -52,6 +52,7 @@ STRINGS = {
     "language": {"en": "Language", "ar": "اللغة"},
     "nav_alerts": {"en": "Alerts", "ar": "التنبيهات"},
     "nav_gcc": {"en": "GCC out-of-sample", "ar": "اختبار دول الخليج"},
+    "nav_pool": {"en": "Borrowed strength (18 countries)", "ar": "الاستفادة من بيانات دول أخرى (18 دولة)"},
     "why": {"en": "Why this forecast", "ar": "لماذا هذا التوقع"},
     "context": {"en": "Context (observed data, not model attributions)", "ar": "السياق (بيانات مرصودة، وليست إسهامات النموذج)"},
     "not_computed": {"en": "Not yet computed", "ar": "لم يُحسب بعد"},

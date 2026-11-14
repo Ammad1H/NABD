@@ -59,7 +59,7 @@ st.markdown(f"""
   {"section.main .block-container, .stMarkdown, .stRadio, .stSelectbox, .stTextInput {direction: rtl; text-align: right;}" if rtl else ""}
 </style>""", unsafe_allow_html=True)
 
-PAGES = ["nav_home", "nav_replay", "nav_card", "nav_shape", "nav_scenario", "nav_planner", "nav_gcc", "nav_ledger", "nav_us", "nav_alerts", "nav_ablation",
+PAGES = ["nav_home", "nav_replay", "nav_card", "nav_shape", "nav_scenario", "nav_planner", "nav_gcc", "nav_pool", "nav_ledger", "nav_us", "nav_alerts", "nav_ablation",
          "nav_workforce", "nav_about"]
 def go(to: str):
     st.session_state["page"] = to
@@ -98,6 +98,22 @@ def _evidence_lines(lang: str = "en") -> list[str]:
         lines.append(txt)
     else:
         lines.append("**1. اختبار خليجي خارج العيّنة:** لم يُحسب بعد." if ar else "**1. Out-of-sample Gulf test:** not yet computed.")
+    ph = data_io.pool_headline(data_io.load_pool()[0])
+    if ph:
+        p_, s_ = ph["primary"], ph["short"]
+        if ar:
+            lines.append(f"**0. اختبار «الاستفادة من بيانات دول أخرى»** ({ph['n']} دولة لم نطّلع على بياناتها من قبل؛ خطة "
+                         "ونموذج مثبّتان مسبقاً؛ إقرار ذاتي إلى أن تُختم زمنياً من جهة خارجية). خطأ توقع الإنفلونزا لنموذج "
+                         f"مدرَّب على دول عديدة مقارنة بنموذج مبني على سجل الدولة وحدها: **أقل بنسبة {(1 - p_['rel_wis']) * 100:.0f}%** "
+                         f"({p_['rel_wis']:.3f}، {p_['ci95'][0]:.2f}–{p_['ci95'][1]:.2f}؛ النتيجة الأساسية، {ph['verdict']})؛ "
+                         f"وعند قِصر السجل: **{(1 - s_['rel_wis']) * 100:.0f}%**.")
+        else:
+            lines.append(f"**0. Borrowed-strength test** ({ph['n']} countries never examined before; plan and model locked "
+                         "in advance; self-attested until externally timestamped). Influenza forecast error of a model "
+                         f"pooled across countries vs each country's own-record model: **{(1 - p_['rel_wis']) * 100:.0f}% "
+                         f"lower** ({p_['rel_wis']:.3f}, {p_['ci95'][0]:.2f}–{p_['ci95'][1]:.2f}; primary, {ph['verdict']}); "
+                         f"with a short own record: **{(1 - s_['rel_wis']) * 100:.0f}% lower**. The pooled model is a "
+                         "ledger challenger, not yet the live UAE model.")
     v, _ = data_io.us_verdict(data_io.load_us_summary())
     league, _ = data_io.load_league()
     lt = league.get("league_table")
@@ -142,7 +158,8 @@ def _evidence_lines(lang: str = "en") -> list[str]:
                          f"{d['mean_a']:.1f} mismatch weeks a season with NABD vs {d['mean_b']:.1f} with the past-season "
                          f"pattern (difference {d['diff_per_season']:+.1f}, {d['ci95'][0]:+.1f} to {d['ci95'][1]:+.1f}); "
                          f"vs last week carried forward: {e['diff_per_season']:+.1f} (a tie).")
-    return lines
+    import re as _re
+    return [_re.sub(r"^\*\*\d+\. ", f"**{i}. ", ln) for i, ln in enumerate(lines, 1)]
 
 
 def _gcc_label(key: str) -> str:
@@ -193,6 +210,7 @@ AR_LEAD = {
     "nav_scenario": "سيناريو توضيحي يحوّل نطاق التوقع إلى أيام أسرّة للأطفال في مستشفى بحجم توام. ليس توقعاً لحالات الدخول.",
     "nav_planner": "مخطط شتوي للمستشفى: الأسرّة ومناوبات التمريض المعرّضة للنقص وكلفتها بالدرهم. جميع الأرقام سيناريو أو محاكاة.",
     "nav_gcc": "اختبار خارج العيّنة على عُمان وقطر والسعودية بخطة ثُبّتت قبل تنزيل بياناتها. تُعرض النتائج كاملة بما فيها الخسائر.",
+    "nav_pool": "اختبار مسجّل مسبقاً على 18 دولة لم نطّلع على بياناتها: نموذج مدرَّب على دول عديدة مقابل نموذج مبني على سجل كل دولة وحدها. تُعرض كل الدول بما فيها المستبعدة.",
     "nav_ledger": "سجل التوقعات: كل جولة توقع تُوثَّق بالتجزئة قبل معرفة النتيجة. السجل محلي حتى يُنشر ويُختم زمنياً من جهة خارجية.",
     "nav_us": "المقارنة الأمريكية مع توقع CDC FluSight المجمّع: لم يبلغ نبض الحدّ الذي حدّدناه مسبقاً، وتُعرض النتيجة كما هي.",
     "nav_alerts": "مقاييس التنبيه (التوقيت والحساسية والدقة). لا يكتشف نبض بداية الموجة أبكر من قاعدة بسيطة على أحدث الأعداد.",
@@ -435,7 +453,24 @@ if page == "nav_home":
     rp = data_io.replay_headline(_replay_data()[0], "flu")
     league, _ = data_io.load_league()
     lt = league.get("league_table")
-    m1, m2, m3 = st.columns(3)
+    ph = data_io.pool_headline(data_io.load_pool()[0])
+    m0, m1 = st.columns(2)      # 2 x 2 so the metric labels are not truncated at laptop widths
+    m2, m3 = st.columns(2)
+    if ph:
+        m0.metric(L("Less forecast error than a country's own-record model", "خطأ أقل من نموذج مبني على سجل الدولة وحدها"),
+                  f"{(1 - ph['primary']['rel_wis']) * 100:.0f}%",
+                  help=L(f"Influenza. A model pooled across many countries' WHO data vs a model fitted to each country's "
+                         f"own record, in {ph['n']} countries we had never examined. Plan and model locked in advance; "
+                         f"scored once. Relative error {ph['primary']['rel_wis']:.3f} "
+                         f"(95% CI {ph['primary']['ci95'][0]:.2f}–{ph['primary']['ci95'][1]:.2f}).",
+                         f"الإنفلونزا. نموذج مدرَّب على بيانات منظمة الصحة العالمية لدول عديدة مقابل نموذج مبني على سجل كل "
+                         f"دولة وحدها، في {ph['n']} دولة لم نطّلع على بياناتها من قبل. ثُبّتت الخطة والنموذج مسبقاً."))
+        m0.caption(L(f"{ph['n']} held-out countries; {(1 - ph['short']['rel_wis']) * 100:.0f}% where the record is short, "
+                     "as in the UAE. Not a UAE result.",
+                     f"{ph['n']} دولة خارج العيّنة؛ {(1 - ph['short']['rel_wis']) * 100:.0f}% عند قِصر السجل كما في الإمارات. "
+                     "ليست نتيجة عن الإمارات."))
+    else:
+        m0.metric(L("Borrowed-strength test", "اختبار الاستفادة من دول أخرى"), t("not_computed", lang))
     if pa:
         m1.metric(L("Less forecast error than planning from past seasons", "خطأ أقل من التخطيط بناءً على المواسم السابقة"),
                   f"{(1 - pa['rel_wis']) * 100:.0f}%",
@@ -1009,6 +1044,82 @@ elif page == "nav_gcc":
         with st.expander("summary.json"):
             st.json(summary, expanded=False)
 
+elif page == "nav_pool":
+    st.subheader(t("nav_pool", lang))
+    st.markdown("The UAE has only four seasons of sentinel data, and on that record NABD's own-record model only ties "
+                "'repeat last week'. This test asks whether a country with a short record is forecast better by **one "
+                "model trained across many countries' WHO FluNet histories** than by a model fitted to its own record. "
+                "The plan and the list of 36 test countries were locked before any of their data were downloaded, the "
+                "model was chosen on 46 other countries and locked before any test-country row was extracted, and the "
+                "test was scored once (docs/PREREG-POOL.md; both locks self-attested until externally timestamped).")
+    psum, ptabs, pfigs = data_io.load_pool()
+    ph = data_io.pool_headline(psum)
+    if ph is None:
+        not_computed("Borrowed-strength test", "results/pool/summary.json")
+    else:
+        p_ = ph["primary"]
+        good = str(ph["verdict"]).upper() == "MET"
+        st.markdown(f'<div class="{"nabd-verdict-good" if good else "nabd-verdict-bad"}" style="font-size:1.1rem">'
+                    f'<span class="nabd-pill {"nabd-pill-good" if good else ""}">{ph["verdict"]}</span>'
+                    f'Primary (influenza, pooled model vs each country\'s own-record model): relative error '
+                    f'{p_["rel_wis"]:.3f} (95% CI {p_["ci95"][0]:.3f}–{p_["ci95"][1]:.3f}); better in {p_["unit_wins"]} '
+                    f'countries; {p_["n_cells"]:,} forecasts. Below 1 = the pooled model had less error.</div>',
+                    unsafe_allow_html=True)
+        c1, c2, c3 = st.columns(3)
+        c1.metric("Short own record (≤ 2 earlier seasons)", f"{(1 - ph['short']['rel_wis']) * 100:.0f}% less error",
+                  help=f"Relative error {ph['short']['rel_wis']:.3f} (95% CI {ph['short']['ci95'][0]:.2f}–"
+                       f"{ph['short']['ci95'][1]:.2f}); {ph['short']['unit_wins']} countries. Pre-registered secondary.")
+        c2.metric("vs last week carried forward", f"{(1 - ph['vs_persistence']['rel_wis']) * 100:.0f}% less error",
+                  help=f"Relative error {ph['vs_persistence']['rel_wis']:.3f} (95% CI {ph['vs_persistence']['ci95'][0]:.2f}–"
+                       f"{ph['vs_persistence']['ci95'][1]:.2f}); {ph['vs_persistence']['unit_wins']} countries. On the same "
+                       f"forecasts the own-record model was worse than last week ({ph['local_vs_persistence']['rel_wis']:.2f}).")
+        c3.metric("vs past-season pattern", f"{(1 - ph['vs_pattern']['rel_wis']) * 100:.0f}% less error",
+                  help=f"Relative error {ph['vs_pattern']['rel_wis']:.3f} (95% CI {ph['vs_pattern']['ci95'][0]:.2f}–"
+                       f"{ph['vs_pattern']['ci95'][1]:.2f}).")
+        st.markdown(f"**Included countries (pre-set data rules, applied mechanically):** {', '.join(ph['countries'])}. "
+                    "The other 18 named countries did not meet the rules; each is listed with its reason in the "
+                    "inclusion table below. No country was dropped after scoring.")
+        st.warning("**What this is not.** It is not a UAE result: UAE data had already been seen, so the UAE figure in "
+                   "results/pool/SUMMARY.md is labelled non-confirmatory. It measures positivity forecasts on finalised "
+                   "WHO data, not hospital load. The pooled model runs on the ledger as a challenger; the hashed "
+                   "headline model is still the own-record v1.")
+        for fig in pfigs:
+            st.image(str(fig), caption=fig.name)
+        if "per_country_flu" in ptabs:
+            st.markdown("**Every included country (influenza, mean forecast error; ratio below 1 = pooled better)**")
+            pc = ptabs["per_country_flu"].rename(columns={
+                "country": "Country", "NABD-Pool": "Pooled model", "NABD-UAE-v1": "Own-record model",
+                "persistence": "Last week", "seasonal-analog": "Past-season pattern", "pool/v1": "Pooled / own-record",
+                "pool/persistence": "Pooled / last week", "pool/analog": "Pooled / pattern", "n_cells": "Forecasts"})
+            st.dataframe(pc.round(2), hide_index=True, width="stretch")
+        rsum, rtab, rfig = data_io.load_pool_replay()
+        rh = data_io.pool_replay_headline(rsum)
+        if rh:
+            st.markdown("#### Does it change a decision? The roster rule, replayed on the same forecasts")
+            exploratory_note()
+            d, e, g = rh["vs_local"], rh["vs_last_week"], rh["vs_pattern"]
+            st.markdown(
+                f"Rule fixed in advance: roster surge capacity when the forecast gives at least a 30% chance that "
+                f"positivity two weeks after issue passes the country's own high-season level. Over {rh['n']} "
+                f"country-seasons in {rh['n_countries']} countries the pooled model had **{d['mean_a']:.1f} mismatch weeks "
+                f"a season vs {d['mean_b']:.1f}** for the own-record model (difference {d['diff_per_season']:+.2f}, 95% CI "
+                f"{d['ci95'][0]:+.2f} to {d['ci95'][1]:+.2f}) and {g['mean_b']:.1f} for the past-season pattern. "
+                f"**Against simply repeating last week it is not distinguishable** ({e['mean_b']:.1f}; difference "
+                f"{e['diff_per_season']:+.2f}, {e['ci95'][0]:+.2f} to {e['ci95'][1]:+.2f}), and it missed slightly more "
+                f"surge weeks than the own-record model ({rh['per_season']['NABD-Pool']['missed']:.1f} vs "
+                f"{rh['per_season']['NABD-UAE-v1']['missed']:.1f} a season) while wasting fewer "
+                f"({rh['per_season']['NABD-Pool']['wasted']:.1f} vs {rh['per_season']['NABD-UAE-v1']['wasted']:.1f}).")
+            if rfig:
+                st.image(str(rfig))
+            st.caption("Post hoc (DEVIATIONS V2): the accuracy of these forecasts was already known when this replay was "
+                       "declared. Source: results/replay/pool/SUMMARY.md.")
+        for name in ["inclusion", "per_country_season_flu", "per_country_rsv"]:
+            if name in ptabs:
+                with st.expander(f"Table: {name}"):
+                    st.dataframe(ptabs[name], hide_index=True, width="stretch")
+        with st.expander("summary.json"):
+            st.json(psum, expanded=False)
+
 elif page == "nav_ledger":
     rounds, scored, l_demo = data_io.load_ledger(observed)
     if l_demo:
@@ -1027,8 +1138,18 @@ elif page == "nav_ledger":
         sc.insert(0, "model", sc.round_file.str.extract(r"Z_(.+)\.csv$")[0])
         sc = sc.drop(columns=["round_file"])
         sc["status"] = sc.inside_80pct_band.map({True: "inside 80% band", False: "outside 80% band", None: "awaiting data"})
-        st.dataframe(sc, hide_index=True, width="stretch")
+        show = sc.drop(columns=["inside_80pct_band"]).copy()
+        if "realised" in show.columns:      # no 'None' cells: say plainly that WHO has not published the week yet
+            real = pd.to_numeric(show.realised, errors="coerce")
+            show["realised"] = [f"{v:.1f}" if pd.notna(v) else "not yet published" for v in real]
+        show = show.rename(columns={"model": "Model", "target": "Target", "target_week_end": "Target week ending",
+                                    "q10": "Low (10%)", "median": "Median", "q90": "High (90%)",
+                                    "realised": "WHO value (%)", "status": "Status"})
+        st.dataframe(show, hide_index=True, width="stretch")
         n = sc.inside_80pct_band.notna().sum()
+        if not n:
+            st.info("No target week of an issued round has been published by WHO yet, so nothing is scored. "
+                    "The table fills in as WHO publishes each week (usually 7 to 11 days after the week ends).")
         if n:
             st.metric("Scored points inside 80% band", f"{int(sc.inside_80pct_band.sum())}/{int(n)}")
         st.caption("The ledger is an integrity device, not statistical evidence: counts at submission are small.")

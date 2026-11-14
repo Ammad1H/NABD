@@ -55,7 +55,10 @@ from playbook.validate import load_playbook  # noqa: E402
 
 OUT_DIR = ROOT / "bulletin" / "out"
 LEDGER = ROOT / "ledger"
-FONT_DIR = Path("/usr/share/fonts/truetype/dejavu")
+_SYSTEM_FONT_DIR = Path("/usr/share/fonts/truetype/dejavu")
+# Fall back to the DejaVu fonts bundled with matplotlib (same typeface) so the bulletin builds on macOS/Windows too.
+FONT_DIR = (_SYSTEM_FONT_DIR if (_SYSTEM_FONT_DIR / "DejaVuSans.ttf").exists()
+            else Path(matplotlib.get_data_path()) / "fonts" / "ttf")
 TEAL, SLATE, ROSE, SAND = "#1f7a8c", "#334155", "#b4505b", "#f3efe6"
 
 _FONTS_OK = False

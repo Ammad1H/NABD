@@ -545,3 +545,45 @@ def replay_headline(summary: dict | None, series: str = "flu") -> dict | None:
                     n=r["n_country_seasons"])
     except (KeyError, TypeError):
         return None
+
+
+def load_pool() -> tuple[dict | None, dict[str, pd.DataFrame], list[Path]]:
+    """Borrowed-strength test (S1): results/pool/{summary.json, tables/per_country_flu.csv, inclusion.csv, fig_*.png}."""
+    g = RESULTS / "pool"
+    summary = _read_json(g / "summary.json")
+    tabs = {}
+    for name in ["per_country_flu", "per_country_season_flu", "inclusion", "per_country_rsv"]:
+        df = _read_csv(g / "tables" / f"{name}.csv")
+        if df is not None:
+            tabs[name] = df
+    figs = sorted(g.glob("fig_*.png")) if g.exists() else []
+    return summary, tabs, figs
+
+
+def pool_headline(summary: dict | None) -> dict | None:
+    """Primary and key secondaries of the held-out test, or None if not computed."""
+    try:
+        sec = summary["secondary"]
+        return dict(primary=summary["PRIMARY_flu_pool_vs_local_v1"], verdict=summary["PRIMARY_verdict"],
+                    short=sec["short_history_pool_vs_v1"], vs_persistence=sec["pool_vs_persistence"],
+                    vs_pattern=sec["pool_vs_seasonal-analog"], local_vs_persistence=sec["v1_vs_persistence"],
+                    n=summary["n_included"], countries=summary["included_countries"])
+    except (KeyError, TypeError):
+        return None
+
+
+def load_pool_replay() -> tuple[dict | None, pd.DataFrame | None, Path | None]:
+    """Decision replay of the held-out forecasts (DEVIATIONS V2, post hoc): summary, per-season table, figure."""
+    r = RESULTS / "replay" / "pool"
+    fig = r / "pool_replay_mismatch_weeks.png"
+    return _read_json(r / "summary.json"), _read_csv(r / "per_season_country_q75_p30.csv"), (fig if fig.exists() else None)
+
+
+def pool_replay_headline(summary: dict | None) -> dict | None:
+    try:
+        r = summary["results"]["country_q75|p30|h2"]
+        return dict(vs_local=r["NABD-Pool_minus_NABD-UAE-v1_mismatch"], vs_last_week=r["NABD-Pool_minus_persistence_mismatch"],
+                    vs_pattern=r["NABD-Pool_minus_seasonal-analog_mismatch"], per_season=r["per_season_mean"],
+                    brier=r["brier"], n=r["n_country_seasons"], n_countries=r["n_countries"])
+    except (KeyError, TypeError):
+        return None

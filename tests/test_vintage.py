@@ -6,6 +6,9 @@ import pytest
 from models import data
 from models.engine import prepare
 
+pytestmark = pytest.mark.skipif(not (data.HUB / "target-data" / "time-series.csv").exists(),
+                                reason="needs the CDC hub clone (python -m eval.run_all --fetch)")
+
 
 def test_vintage_rule_deadline():
     R = pd.Timestamp("2025-12-06")

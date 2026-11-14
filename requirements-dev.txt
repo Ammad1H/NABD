@@ -3,8 +3,14 @@
 -r requirements-app.txt
 scipy>=1.11
 statsmodels>=0.14
+scikit-learn>=1.3
 pandera>=0.20
 duckdb>=1.0
 jsonschema>=4
 pytest>=8
 matplotlib>=3.8
+# Weekly PDF bulletin (bulletin/make_bulletin.py) and its tests
+reportlab>=4
+arabic-reshaper>=3
+python-bidi>=0.4
+pypdf>=4

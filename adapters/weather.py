@@ -37,7 +37,7 @@ def _weekly(daily: pd.DataFrame) -> pd.DataFrame:
 def placeholder(start="2022-01-02", end="2027-06-27") -> pd.DataFrame:
     """Smooth sinusoidal climatology, labelled NOT REAL (real=False). For UI layout only."""
     idx = pd.date_range(start, end, freq="W-SUN")
-    doy = idx.dayofyear.values
+    doy = idx.day_of_year.values
     tavg = 28.0 + 7.5 * np.sin(2 * np.pi * (doy - 110) / 365.25)
     out = pd.DataFrame({"week_end": idx.astype("datetime64[ns]"), "tavg_c": tavg, "tmax_c": tavg + 6.0, "real": False})
     return WEATHER_WEEKLY.validate(out)

@@ -88,6 +88,22 @@
 - **Source:** `results/gcc/SUMMARY.md`; `docs/PREREG-GCC.md`.
 - **Notes (≈35 words):** "This is the test we couldn't tune for. Against the planner's default, last season's pattern, it cut influenza error by forty-six per cent. Against carrying last week forward, nine per cent, which met our pre-set bar. Every loss is on the slide."
 
+### 7b. Evidence I-b: borrowed strength (new, 14 Nov; not yet in the Slides artifact)
+- **Title:** *"A short record is the UAE's problem. Borrowing other countries' seasons fixes it, in 18 countries we had never looked at."*
+- **On slide (influenza):**
+  - **Pooled model vs each country's own-record model:** **23% less forecast error.** Relative WIS 0.767 (95% CI 0.681–0.832). *Pre-registered primary: MET.* Better in 18 of 18 countries.
+  - **Where the record was short (≤ 2 earlier seasons):** **38% less.** 0.624 (0.540–0.705). *Pre-registered secondary.*
+  - **vs last week carried forward:** 12% less (0.879, 0.850–0.901), in all 18; the own-record model lost to it on the same cells (1.145).
+- **Small print, same size:**
+  - 36 countries named in advance, 18 met the pre-set data rules, all 18 shown;
+  - plan locked before download and model locked before any held-out row was extracted, in our local git; self-attested ⟦IF DONE: "anchored ⟨date⟩, after the result"⟧;
+  - retrospective on revised WHO data; positivity, not hospital load;
+  - nothing here is a confirmatory UAE result (UAE data had been seen); the pooled model runs on the ledger as a challenger;
+  - roster rule replayed on the same forecasts (post hoc): 10.5 mismatch weeks a season vs 12.3 for the own-record model, but no clear gain over last week carried forward (11.1), and slightly more missed surge weeks (2.7 vs 2.2).
+- **Visual:** `results/pool/fig_forest_pool_vs_local.png` (per country) and `results/pool/fig_skill_vs_own_seasons.png`.
+- **Source:** `results/pool/SUMMARY.md`; `docs/PREREG-POOL.md`; `results/replay/pool/SUMMARY.md`.
+- **Notes (≈40 words):** "On the UAE's own four seasons we only tie. So we asked: can a country with a short record borrow from the rest of the world? We locked the plan, then tested on eighteen countries we'd never opened. Twenty-three per cent less error, in every one."
+
 ### 8. Evidence II: we set our bar at the CDC's best and missed it
 - **Title:** *"We set our bar at the CDC's best. NABD v1 missed it, and here is exactly where."*
 - **On slide:**

@@ -122,7 +122,7 @@ def to_series(df: pd.DataFrame, measure: str, facility: str | None = None, age_b
     d = df[(df.measure == measure) & (df.age_band == age_band)]
     if facility:
         d = d[d.facility_code == facility]
-    d = d.assign(week_end=d.period_start + pd.to_timedelta((6 - d.period_start.dt.weekday) % 7, unit="D"))
+    d = d.assign(week_end=d.period_start + pd.to_timedelta((6 - d.period_start.dt.day_of_week) % 7, unit="D"))
     g = d.groupby("week_end").agg(count=("count", lambda x: x.sum(min_count=len(x))),
                                   any_suppressed=("suppressed", "any")).reset_index()
     g.loc[g.any_suppressed, "count"] = np.nan
@@ -149,7 +149,7 @@ def make_synthetic(seed: int = 7, weeks: int = 26, granularity: str = "week") ->
     df = pd.DataFrame(rows, columns=["period_start", "granularity", "facility_code", "region", "measure",
                                      "age_band", "count", "suppressed", "synthetic"])
     if granularity == "week":  # weekly aggregates (Monday start) keep low-count measures above k
-        df["period_start"] = df.period_start - pd.to_timedelta(df.period_start.dt.weekday, unit="D")
+        df["period_start"] = df.period_start - pd.to_timedelta(df.period_start.dt.day_of_week, unit="D")
         df = (df.groupby(["period_start", "facility_code", "region", "measure", "age_band"], as_index=False)
                 .agg(count=("count", "sum")))
         df["granularity"], df["suppressed"], df["synthetic"] = "week", False, True

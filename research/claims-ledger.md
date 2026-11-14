@@ -121,6 +121,20 @@ Numbers to remember: **2,189 · 46% · 7th of 21**.
 | G5 | Pricing: a public-health feed licence per country per season; a hospital seat per facility; the seat should cost less than a handful of avoided admissions | deck 12, Q&A 10, one-pager | business hypothesis | H |
 | G6 | Weekly bilingual bulletin PDF per ledger round | deck 6, demo [+] | `bulletin/make_bulletin.py`; `bulletin/out/`; `app/screenshots/12_bulletin_p1.png` | R |
 
+## H. Borrowed-strength test (S1) and decision replays (S2, S4)
+
+| # | Claim (as worded in pitch) | Used in | Source | Status |
+|---|---|---|---|---|
+| H1 | Plan and country lists locked before any new country's data were downloaded; model locked before any held-out row was extracted; scored once | deck 7b, one-pager, Q&A | `docs/PREREG-POOL.md`; `docs/LOCK-POOL-1.json`, `docs/LOCK-POOL-2.json`; `docs/FREEZE.md` | R (self-attested local git until anchored; never "blind") |
+| H2 | Influenza, model pooled across countries vs each country's own-record model: 0.767 (95% CI 0.681–0.832), pre-registered primary MET, better in 18 of 18 held-out countries; "23% less forecast error" | deck 7b, one-pager, Q&A, README | `results/pool/SUMMARY.md` primary (1 − 0.767) | R |
+| H3 | Where the country's own record was short (≤ 2 earlier seasons): 0.624 (0.540–0.705), "38% less error"; every country cut to 2 seasons: 0.640 | deck 7b, one-pager, Q&A | `results/pool/SUMMARY.md` key secondaries 1–2 | R (secondary; say "short record, the UAE's position", never "in the UAE") |
+| H4 | Pooled vs last week carried forward: 0.879 (0.850–0.901), 18 of 18; the own-record model on the same cells: 1.145 | deck 7b, Q&A | `results/pool/SUMMARY.md` secondary 3 | R |
+| H5 | 36 countries named in advance, 18 met the pre-set data rules; all 18 reported | deck 7b small print, Q&A | `results/pool/SUMMARY.md` inclusion and exclusion lists | R |
+| H6 | UAE with the pooled model: 0.87 vs local v1, 0.77 vs persistence | Q&A only, with the label | `results/pool/SUMMARY.md` "already-seen countries" | R (**NON-CONFIRMATORY**: UAE data were seen; never a headline) |
+| H7 | Roster rule replayed on the held-out countries (post hoc): pooled 10.5 mismatch weeks a season vs 12.3 for the own-record model (−1.81, 95% CI −3.00 to −0.72) and 16.6 for the past-season pattern | deck 7b small print, Q&A | `results/replay/pool/SUMMARY.md`; DEVIATIONS V2 | R (POST HOC; always with H8) |
+| H8 | Under that rule the pooled model is not distinguishable from last week carried forward (10.5 vs 11.1; −0.56, −1.42 to +0.31) and missed slightly more surge weeks than the own-record model (2.7 vs 2.2 a season) | wherever H7 is used | same | R (must accompany H7) |
+| H9 | "The pooled model is NABD's live UAE model" / any pooled-model claim about UAE hospital load | — | Pool is an opt-in ledger challenger; v1 is the hashed headline | X |
+
 ## F. Banned (X)
 
 | # | Claim | Why |

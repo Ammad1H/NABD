@@ -10,7 +10,7 @@ Rule: **nothing is posted, pushed or submitted automatically.** Every public act
 
 ```bash
 git clone <your public repo> nabd && cd nabd
-pip install -r requirements-app.txt pandas numpy scipy statsmodels pandera pyyaml pytest   # + opentimestamps-client
+pip install -r requirements-dev.txt        # everything, incl. scikit-learn (pooled model) and the PDF bulletin; + opentimestamps-client
 python -m pytest -q                       # everything passes before you touch live data
 ```
 
@@ -20,7 +20,7 @@ Anchor the existing locks and round R1 once, following `ledger/ANCHOR.md`: UAE v
 
 ```bash
 python -m adapters.flunet --fetch --save         # refresh data/raw/flunet_are.csv from WHO xMart
-python -m ledger.weekly --cached                 # score past rounds; issue R<n+1> ONLY if a newer week exists
+python -m ledger.weekly --cached --with-pool     # score past rounds; issue R<n+1> ONLY if a newer week exists (--with-pool also hashes the pooled challenger)
 ```
 
 `ledger.weekly` is **idempotent**. It prints the latest round, its `data_through` week, the newest published week, and whether it issued a round. Running it twice in a row never creates a duplicate round. Use `--no-issue` to score only.

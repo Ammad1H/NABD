@@ -1,0 +1,6857 @@
+{
+ "status": "POST HOC, EXPLORATORY (DEVIATIONS V2). Not a confirmatory result.",
+ "forecasts": "results/pool/tables/forecasts_heldout.csv.gz (locked run, unchanged)",
+ "check_v2a": {
+  "cells": 25640,
+  "max_abs_diff": 0.0005000000000006111,
+  "tolerance": "3-decimal rounding of the stored file (5e-4 pp)"
+ },
+ "rule": {
+  "p_star": 0.3,
+  "primary_horizon": "+2 wk after issue (target week L+3)",
+  "primary_threshold": "country_q75",
+  "secondary_threshold": "playbook 15%"
+ },
+ "results": {
+  "country_q75|p30|h0": {
+   "n_country_seasons": 36,
+   "n_countries": 18,
+   "totals": {
+    "NABD-Pool": {
+     "weeks": 1656,
+     "surge_weeks": 510,
+     "rostered": 658,
+     "missed": 58,
+     "wasted": 206,
+     "mismatch": 264
+    },
+    "NABD-UAE-v1": {
+     "weeks": 1656,
+     "surge_weeks": 510,
+     "rostered": 902,
+     "missed": 34,
+     "wasted": 426,
+     "mismatch": 460
+    },
+    "always-roster": {
+     "weeks": 1656,
+     "surge_weeks": 510,
+     "rostered": 1656,
+     "missed": 0,
+     "wasted": 1146,
+     "mismatch": 1146
+    },
+    "never-roster": {
+     "weeks": 1656,
+     "surge_weeks": 510,
+     "rostered": 0,
+     "missed": 510,
+     "wasted": 0,
+     "mismatch": 510
+    },
+    "perfect-foresight": {
+     "weeks": 1656,
+     "surge_weeks": 510,
+     "rostered": 510,
+     "missed": 0,
+     "wasted": 0,
+     "mismatch": 0
+    },
+    "persistence": {
+     "weeks": 1656,
+     "surge_weeks": 510,
+     "rostered": 680,
+     "missed": 54,
+     "wasted": 224,
+     "mismatch": 278
+    },
+    "seasonal-analog": {
+     "weeks": 1656,
+     "surge_weeks": 510,
+     "rostered": 620,
+     "missed": 258,
+     "wasted": 368,
+     "mismatch": 626
+    }
+   },
+   "per_season_mean": {
+    "NABD-Pool": {
+     "weeks": 46.0,
+     "surge_weeks": 14.17,
+     "rostered": 18.28,
+     "missed": 1.61,
+     "wasted": 5.72,
+     "mismatch": 7.33
+    },
+    "NABD-UAE-v1": {
+     "weeks": 46.0,
+     "surge_weeks": 14.17,
+     "rostered": 25.06,
+     "missed": 0.94,
+     "wasted": 11.83,
+     "mismatch": 12.78
+    },
+    "always-roster": {
+     "weeks": 46.0,
+     "surge_weeks": 14.17,
+     "rostered": 46.0,
+     "missed": 0.0,
+     "wasted": 31.83,
+     "mismatch": 31.83
+    },
+    "never-roster": {
+     "weeks": 46.0,
+     "surge_weeks": 14.17,
+     "rostered": 0.0,
+     "missed": 14.17,
+     "wasted": 0.0,
+     "mismatch": 14.17
+    },
+    "perfect-foresight": {
+     "weeks": 46.0,
+     "surge_weeks": 14.17,
+     "rostered": 14.17,
+     "missed": 0.0,
+     "wasted": 0.0,
+     "mismatch": 0.0
+    },
+    "persistence": {
+     "weeks": 46.0,
+     "surge_weeks": 14.17,
+     "rostered": 18.89,
+     "missed": 1.5,
+     "wasted": 6.22,
+     "mismatch": 7.72
+    },
+    "seasonal-analog": {
+     "weeks": 46.0,
+     "surge_weeks": 14.17,
+     "rostered": 17.22,
+     "missed": 7.17,
+     "wasted": 10.22,
+     "mismatch": 17.39
+    }
+   },
+   "brier": {
+    "NABD-Pool": 0.0967,
+    "NABD-UAE-v1": 0.1299,
+    "always-roster": 0.6898,
+    "never-roster": 0.3102,
+    "perfect-foresight": 0.0,
+    "persistence": 0.1015,
+    "seasonal-analog": 0.2281
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_mismatch": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "mismatch",
+    "n_country_seasons": 36,
+    "mean_a": 7.333,
+    "mean_b": 12.778,
+    "diff_per_season": -5.444,
+    "ci95": [
+     -8.14,
+     -3.056
+    ],
+    "a_better": 26,
+    "ties": 4,
+    "a_worse": 6,
+    "ci95_country_cluster": [
+     -8.118,
+     -3.324
+    ]
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_missed": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "missed",
+    "n_country_seasons": 36,
+    "mean_a": 1.611,
+    "mean_b": 0.944,
+    "diff_per_season": 0.667,
+    "ci95": [
+     0.278,
+     1.111
+    ],
+    "a_better": 4,
+    "ties": 18,
+    "a_worse": 14
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_wasted": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "wasted",
+    "n_country_seasons": 36,
+    "mean_a": 5.722,
+    "mean_b": 11.833,
+    "diff_per_season": -6.111,
+    "ci95": [
+     -8.862,
+     -3.556
+    ],
+    "a_better": 26,
+    "ties": 7,
+    "a_worse": 3
+   },
+   "NABD-Pool_minus_persistence_mismatch": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "mismatch",
+    "n_country_seasons": 36,
+    "mean_a": 7.333,
+    "mean_b": 7.722,
+    "diff_per_season": -0.389,
+    "ci95": [
+     -1.0,
+     0.222
+    ],
+    "a_better": 17,
+    "ties": 13,
+    "a_worse": 6,
+    "ci95_country_cluster": [
+     -1.064,
+     0.539
+    ]
+   },
+   "NABD-Pool_minus_persistence_missed": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "missed",
+    "n_country_seasons": 36,
+    "mean_a": 1.611,
+    "mean_b": 1.5,
+    "diff_per_season": 0.111,
+    "ci95": [
+     -0.083,
+     0.333
+    ],
+    "a_better": 5,
+    "ties": 23,
+    "a_worse": 8
+   },
+   "NABD-Pool_minus_persistence_wasted": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "wasted",
+    "n_country_seasons": 36,
+    "mean_a": 5.722,
+    "mean_b": 6.222,
+    "diff_per_season": -0.5,
+    "ci95": [
+     -1.167,
+     0.194
+    ],
+    "a_better": 16,
+    "ties": 13,
+    "a_worse": 7
+   },
+   "NABD-Pool_minus_seasonal-analog_mismatch": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "mismatch",
+    "n_country_seasons": 36,
+    "mean_a": 7.333,
+    "mean_b": 17.389,
+    "diff_per_season": -10.056,
+    "ci95": [
+     -12.306,
+     -7.889
+    ],
+    "a_better": 35,
+    "ties": 0,
+    "a_worse": 1,
+    "ci95_country_cluster": [
+     -12.237,
+     -7.25
+    ]
+   },
+   "NABD-Pool_minus_seasonal-analog_missed": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "missed",
+    "n_country_seasons": 36,
+    "mean_a": 1.611,
+    "mean_b": 7.167,
+    "diff_per_season": -5.556,
+    "ci95": [
+     -7.028,
+     -4.194
+    ],
+    "a_better": 31,
+    "ties": 4,
+    "a_worse": 1
+   },
+   "NABD-Pool_minus_seasonal-analog_wasted": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "wasted",
+    "n_country_seasons": 36,
+    "mean_a": 5.722,
+    "mean_b": 10.222,
+    "diff_per_season": -4.5,
+    "ci95": [
+     -6.75,
+     -2.36
+    ],
+    "a_better": 25,
+    "ties": 1,
+    "a_worse": 10
+   }
+  },
+  "country_q75|p30|h0|short_history": {
+   "n_country_seasons": 14,
+   "n_countries": 14,
+   "totals": {
+    "NABD-Pool": {
+     "weeks": 607,
+     "surge_weeks": 195,
+     "rostered": 276,
+     "missed": 26,
+     "wasted": 107,
+     "mismatch": 133
+    },
+    "NABD-UAE-v1": {
+     "weeks": 607,
+     "surge_weeks": 195,
+     "rostered": 480,
+     "missed": 9,
+     "wasted": 294,
+     "mismatch": 303
+    },
+    "always-roster": {
+     "weeks": 607,
+     "surge_weeks": 195,
+     "rostered": 607,
+     "missed": 0,
+     "wasted": 412,
+     "mismatch": 412
+    },
+    "never-roster": {
+     "weeks": 607,
+     "surge_weeks": 195,
+     "rostered": 0,
+     "missed": 195,
+     "wasted": 0,
+     "mismatch": 195
+    },
+    "perfect-foresight": {
+     "weeks": 607,
+     "surge_weeks": 195,
+     "rostered": 195,
+     "missed": 0,
+     "wasted": 0,
+     "mismatch": 0
+    },
+    "persistence": {
+     "weeks": 607,
+     "surge_weeks": 195,
+     "rostered": 257,
+     "missed": 31,
+     "wasted": 93,
+     "mismatch": 124
+    },
+    "seasonal-analog": {
+     "weeks": 607,
+     "surge_weeks": 195,
+     "rostered": 237,
+     "missed": 94,
+     "wasted": 136,
+     "mismatch": 230
+    }
+   },
+   "per_season_mean": {
+    "NABD-Pool": {
+     "weeks": 43.36,
+     "surge_weeks": 13.93,
+     "rostered": 19.71,
+     "missed": 1.86,
+     "wasted": 7.64,
+     "mismatch": 9.5
+    },
+    "NABD-UAE-v1": {
+     "weeks": 43.36,
+     "surge_weeks": 13.93,
+     "rostered": 34.29,
+     "missed": 0.64,
+     "wasted": 21.0,
+     "mismatch": 21.64
+    },
+    "always-roster": {
+     "weeks": 43.36,
+     "surge_weeks": 13.93,
+     "rostered": 43.36,
+     "missed": 0.0,
+     "wasted": 29.43,
+     "mismatch": 29.43
+    },
+    "never-roster": {
+     "weeks": 43.36,
+     "surge_weeks": 13.93,
+     "rostered": 0.0,
+     "missed": 13.93,
+     "wasted": 0.0,
+     "mismatch": 13.93
+    },
+    "perfect-foresight": {
+     "weeks": 43.36,
+     "surge_weeks": 13.93,
+     "rostered": 13.93,
+     "missed": 0.0,
+     "wasted": 0.0,
+     "mismatch": 0.0
+    },
+    "persistence": {
+     "weeks": 43.36,
+     "surge_weeks": 13.93,
+     "rostered": 18.36,
+     "missed": 2.21,
+     "wasted": 6.64,
+     "mismatch": 8.86
+    },
+    "seasonal-analog": {
+     "weeks": 43.36,
+     "surge_weeks": 13.93,
+     "rostered": 16.93,
+     "missed": 6.71,
+     "wasted": 9.71,
+     "mismatch": 16.43
+    }
+   },
+   "brier": {
+    "NABD-Pool": 0.121,
+    "NABD-UAE-v1": 0.1859,
+    "always-roster": 0.6773,
+    "never-roster": 0.3227,
+    "perfect-foresight": 0.0,
+    "persistence": 0.1259,
+    "seasonal-analog": 0.2424
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_mismatch": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "mismatch",
+    "n_country_seasons": 14,
+    "mean_a": 9.5,
+    "mean_b": 21.643,
+    "diff_per_season": -12.143,
+    "ci95": [
+     -16.573,
+     -7.857
+    ],
+    "a_better": 13,
+    "ties": 1,
+    "a_worse": 0,
+    "ci95_country_cluster": [
+     -16.573,
+     -7.857
+    ]
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_missed": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "missed",
+    "n_country_seasons": 14,
+    "mean_a": 1.857,
+    "mean_b": 0.643,
+    "diff_per_season": 1.214,
+    "ci95": [
+     0.5,
+     2.0
+    ],
+    "a_better": 1,
+    "ties": 6,
+    "a_worse": 7
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_wasted": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "wasted",
+    "n_country_seasons": 14,
+    "mean_a": 7.643,
+    "mean_b": 21.0,
+    "diff_per_season": -13.357,
+    "ci95": [
+     -17.714,
+     -9.0
+    ],
+    "a_better": 14,
+    "ties": 0,
+    "a_worse": 0
+   },
+   "NABD-Pool_minus_persistence_mismatch": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "mismatch",
+    "n_country_seasons": 14,
+    "mean_a": 9.5,
+    "mean_b": 8.857,
+    "diff_per_season": 0.643,
+    "ci95": [
+     -0.5,
+     1.857
+    ],
+    "a_better": 5,
+    "ties": 4,
+    "a_worse": 5,
+    "ci95_country_cluster": [
+     -0.5,
+     1.857
+    ]
+   },
+   "NABD-Pool_minus_persistence_missed": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "missed",
+    "n_country_seasons": 14,
+    "mean_a": 1.857,
+    "mean_b": 2.214,
+    "diff_per_season": -0.357,
+    "ci95": [
+     -0.643,
+     -0.143
+    ],
+    "a_better": 5,
+    "ties": 9,
+    "a_worse": 0
+   },
+   "NABD-Pool_minus_persistence_wasted": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "wasted",
+    "n_country_seasons": 14,
+    "mean_a": 7.643,
+    "mean_b": 6.643,
+    "diff_per_season": 1.0,
+    "ci95": [
+     -0.071,
+     2.143
+    ],
+    "a_better": 2,
+    "ties": 6,
+    "a_worse": 6
+   },
+   "NABD-Pool_minus_seasonal-analog_mismatch": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "mismatch",
+    "n_country_seasons": 14,
+    "mean_a": 9.5,
+    "mean_b": 16.429,
+    "diff_per_season": -6.929,
+    "ci95": [
+     -9.571,
+     -4.357
+    ],
+    "a_better": 14,
+    "ties": 0,
+    "a_worse": 0,
+    "ci95_country_cluster": [
+     -9.571,
+     -4.357
+    ]
+   },
+   "NABD-Pool_minus_seasonal-analog_missed": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "missed",
+    "n_country_seasons": 14,
+    "mean_a": 1.857,
+    "mean_b": 6.714,
+    "diff_per_season": -4.857,
+    "ci95": [
+     -6.643,
+     -3.071
+    ],
+    "a_better": 12,
+    "ties": 2,
+    "a_worse": 0
+   },
+   "NABD-Pool_minus_seasonal-analog_wasted": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "wasted",
+    "n_country_seasons": 14,
+    "mean_a": 7.643,
+    "mean_b": 9.714,
+    "diff_per_season": -2.071,
+    "ci95": [
+     -5.5,
+     1.071
+    ],
+    "a_better": 8,
+    "ties": 1,
+    "a_worse": 5
+   }
+  },
+  "country_q75|p30|h1": {
+   "n_country_seasons": 36,
+   "n_countries": 18,
+   "totals": {
+    "NABD-Pool": {
+     "weeks": 1619,
+     "surge_weeks": 501,
+     "rostered": 669,
+     "missed": 77,
+     "wasted": 245,
+     "mismatch": 322
+    },
+    "NABD-UAE-v1": {
+     "weeks": 1619,
+     "surge_weeks": 501,
+     "rostered": 903,
+     "missed": 44,
+     "wasted": 446,
+     "mismatch": 490
+    },
+    "always-roster": {
+     "weeks": 1619,
+     "surge_weeks": 501,
+     "rostered": 1619,
+     "missed": 0,
+     "wasted": 1118,
+     "mismatch": 1118
+    },
+    "never-roster": {
+     "weeks": 1619,
+     "surge_weeks": 501,
+     "rostered": 0,
+     "missed": 501,
+     "wasted": 0,
+     "mismatch": 501
+    },
+    "perfect-foresight": {
+     "weeks": 1619,
+     "surge_weeks": 501,
+     "rostered": 501,
+     "missed": 0,
+     "wasted": 0,
+     "mismatch": 0
+    },
+    "persistence": {
+     "weeks": 1619,
+     "surge_weeks": 501,
+     "rostered": 715,
+     "missed": 55,
+     "wasted": 269,
+     "mismatch": 324
+    },
+    "seasonal-analog": {
+     "weeks": 1619,
+     "surge_weeks": 501,
+     "rostered": 601,
+     "missed": 254,
+     "wasted": 354,
+     "mismatch": 608
+    }
+   },
+   "per_season_mean": {
+    "NABD-Pool": {
+     "weeks": 44.97,
+     "surge_weeks": 13.92,
+     "rostered": 18.58,
+     "missed": 2.14,
+     "wasted": 6.81,
+     "mismatch": 8.94
+    },
+    "NABD-UAE-v1": {
+     "weeks": 44.97,
+     "surge_weeks": 13.92,
+     "rostered": 25.08,
+     "missed": 1.22,
+     "wasted": 12.39,
+     "mismatch": 13.61
+    },
+    "always-roster": {
+     "weeks": 44.97,
+     "surge_weeks": 13.92,
+     "rostered": 44.97,
+     "missed": 0.0,
+     "wasted": 31.06,
+     "mismatch": 31.06
+    },
+    "never-roster": {
+     "weeks": 44.97,
+     "surge_weeks": 13.92,
+     "rostered": 0.0,
+     "missed": 13.92,
+     "wasted": 0.0,
+     "mismatch": 13.92
+    },
+    "perfect-foresight": {
+     "weeks": 44.97,
+     "surge_weeks": 13.92,
+     "rostered": 13.92,
+     "missed": 0.0,
+     "wasted": 0.0,
+     "mismatch": 0.0
+    },
+    "persistence": {
+     "weeks": 44.97,
+     "surge_weeks": 13.92,
+     "rostered": 19.86,
+     "missed": 1.53,
+     "wasted": 7.47,
+     "mismatch": 9.0
+    },
+    "seasonal-analog": {
+     "weeks": 44.97,
+     "surge_weeks": 13.92,
+     "rostered": 16.69,
+     "missed": 7.06,
+     "wasted": 9.83,
+     "mismatch": 16.89
+    }
+   },
+   "brier": {
+    "NABD-Pool": 0.1114,
+    "NABD-UAE-v1": 0.1426,
+    "always-roster": 0.6881,
+    "never-roster": 0.3119,
+    "perfect-foresight": 0.0,
+    "persistence": 0.1147,
+    "seasonal-analog": 0.2287
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_mismatch": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "mismatch",
+    "n_country_seasons": 36,
+    "mean_a": 8.944,
+    "mean_b": 13.611,
+    "diff_per_season": -4.667,
+    "ci95": [
+     -7.278,
+     -2.277
+    ],
+    "a_better": 26,
+    "ties": 3,
+    "a_worse": 7,
+    "ci95_country_cluster": [
+     -7.345,
+     -2.579
+    ]
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_missed": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "missed",
+    "n_country_seasons": 36,
+    "mean_a": 2.139,
+    "mean_b": 1.222,
+    "diff_per_season": 0.917,
+    "ci95": [
+     0.361,
+     1.556
+    ],
+    "a_better": 6,
+    "ties": 13,
+    "a_worse": 17
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_wasted": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "wasted",
+    "n_country_seasons": 36,
+    "mean_a": 6.806,
+    "mean_b": 12.389,
+    "diff_per_season": -5.583,
+    "ci95": [
+     -8.444,
+     -3.0
+    ],
+    "a_better": 27,
+    "ties": 3,
+    "a_worse": 6
+   },
+   "NABD-Pool_minus_persistence_mismatch": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "mismatch",
+    "n_country_seasons": 36,
+    "mean_a": 8.944,
+    "mean_b": 9.0,
+    "diff_per_season": -0.056,
+    "ci95": [
+     -0.695,
+     0.611
+    ],
+    "a_better": 15,
+    "ties": 7,
+    "a_worse": 14,
+    "ci95_country_cluster": [
+     -0.5,
+     0.572
+    ]
+   },
+   "NABD-Pool_minus_persistence_missed": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "missed",
+    "n_country_seasons": 36,
+    "mean_a": 2.139,
+    "mean_b": 1.528,
+    "diff_per_season": 0.611,
+    "ci95": [
+     0.25,
+     1.0
+    ],
+    "a_better": 3,
+    "ties": 17,
+    "a_worse": 16
+   },
+   "NABD-Pool_minus_persistence_wasted": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "wasted",
+    "n_country_seasons": 36,
+    "mean_a": 6.806,
+    "mean_b": 7.472,
+    "diff_per_season": -0.667,
+    "ci95": [
+     -1.306,
+     0.0
+    ],
+    "a_better": 18,
+    "ties": 8,
+    "a_worse": 10
+   },
+   "NABD-Pool_minus_seasonal-analog_mismatch": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "mismatch",
+    "n_country_seasons": 36,
+    "mean_a": 8.944,
+    "mean_b": 16.889,
+    "diff_per_season": -7.944,
+    "ci95": [
+     -10.167,
+     -5.778
+    ],
+    "a_better": 32,
+    "ties": 1,
+    "a_worse": 3,
+    "ci95_country_cluster": [
+     -9.951,
+     -5.166
+    ]
+   },
+   "NABD-Pool_minus_seasonal-analog_missed": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "missed",
+    "n_country_seasons": 36,
+    "mean_a": 2.139,
+    "mean_b": 7.056,
+    "diff_per_season": -4.917,
+    "ci95": [
+     -6.444,
+     -3.583
+    ],
+    "a_better": 29,
+    "ties": 4,
+    "a_worse": 3
+   },
+   "NABD-Pool_minus_seasonal-analog_wasted": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "wasted",
+    "n_country_seasons": 36,
+    "mean_a": 6.806,
+    "mean_b": 9.833,
+    "diff_per_season": -3.028,
+    "ci95": [
+     -5.167,
+     -0.972
+    ],
+    "a_better": 22,
+    "ties": 1,
+    "a_worse": 13
+   }
+  },
+  "country_q75|p30|h1|short_history": {
+   "n_country_seasons": 14,
+   "n_countries": 14,
+   "totals": {
+    "NABD-Pool": {
+     "weeks": 592,
+     "surge_weeks": 190,
+     "rostered": 281,
+     "missed": 30,
+     "wasted": 121,
+     "mismatch": 151
+    },
+    "NABD-UAE-v1": {
+     "weeks": 592,
+     "surge_weeks": 190,
+     "rostered": 483,
+     "missed": 5,
+     "wasted": 298,
+     "mismatch": 303
+    },
+    "always-roster": {
+     "weeks": 592,
+     "surge_weeks": 190,
+     "rostered": 592,
+     "missed": 0,
+     "wasted": 402,
+     "mismatch": 402
+    },
+    "never-roster": {
+     "weeks": 592,
+     "surge_weeks": 190,
+     "rostered": 0,
+     "missed": 190,
+     "wasted": 0,
+     "mismatch": 190
+    },
+    "perfect-foresight": {
+     "weeks": 592,
+     "surge_weeks": 190,
+     "rostered": 190,
+     "missed": 0,
+     "wasted": 0,
+     "mismatch": 0
+    },
+    "persistence": {
+     "weeks": 592,
+     "surge_weeks": 190,
+     "rostered": 284,
+     "missed": 24,
+     "wasted": 118,
+     "mismatch": 142
+    },
+    "seasonal-analog": {
+     "weeks": 592,
+     "surge_weeks": 190,
+     "rostered": 231,
+     "missed": 91,
+     "wasted": 132,
+     "mismatch": 223
+    }
+   },
+   "per_season_mean": {
+    "NABD-Pool": {
+     "weeks": 42.29,
+     "surge_weeks": 13.57,
+     "rostered": 20.07,
+     "missed": 2.14,
+     "wasted": 8.64,
+     "mismatch": 10.79
+    },
+    "NABD-UAE-v1": {
+     "weeks": 42.29,
+     "surge_weeks": 13.57,
+     "rostered": 34.5,
+     "missed": 0.36,
+     "wasted": 21.29,
+     "mismatch": 21.64
+    },
+    "always-roster": {
+     "weeks": 42.29,
+     "surge_weeks": 13.57,
+     "rostered": 42.29,
+     "missed": 0.0,
+     "wasted": 28.71,
+     "mismatch": 28.71
+    },
+    "never-roster": {
+     "weeks": 42.29,
+     "surge_weeks": 13.57,
+     "rostered": 0.0,
+     "missed": 13.57,
+     "wasted": 0.0,
+     "mismatch": 13.57
+    },
+    "perfect-foresight": {
+     "weeks": 42.29,
+     "surge_weeks": 13.57,
+     "rostered": 13.57,
+     "missed": 0.0,
+     "wasted": 0.0,
+     "mismatch": 0.0
+    },
+    "persistence": {
+     "weeks": 42.29,
+     "surge_weeks": 13.57,
+     "rostered": 20.29,
+     "missed": 1.71,
+     "wasted": 8.43,
+     "mismatch": 10.14
+    },
+    "seasonal-analog": {
+     "weeks": 42.29,
+     "surge_weeks": 13.57,
+     "rostered": 16.5,
+     "missed": 6.5,
+     "wasted": 9.43,
+     "mismatch": 15.93
+    }
+   },
+   "brier": {
+    "NABD-Pool": 0.1318,
+    "NABD-UAE-v1": 0.1891,
+    "always-roster": 0.6771,
+    "never-roster": 0.3229,
+    "perfect-foresight": 0.0,
+    "persistence": 0.1355,
+    "seasonal-analog": 0.2417
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_mismatch": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "mismatch",
+    "n_country_seasons": 14,
+    "mean_a": 10.786,
+    "mean_b": 21.643,
+    "diff_per_season": -10.857,
+    "ci95": [
+     -15.857,
+     -6.5
+    ],
+    "a_better": 14,
+    "ties": 0,
+    "a_worse": 0,
+    "ci95_country_cluster": [
+     -15.857,
+     -6.5
+    ]
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_missed": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "missed",
+    "n_country_seasons": 14,
+    "mean_a": 2.143,
+    "mean_b": 0.357,
+    "diff_per_season": 1.786,
+    "ci95": [
+     0.714,
+     2.857
+    ],
+    "a_better": 1,
+    "ties": 4,
+    "a_worse": 9
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_wasted": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "wasted",
+    "n_country_seasons": 14,
+    "mean_a": 8.643,
+    "mean_b": 21.286,
+    "diff_per_season": -12.643,
+    "ci95": [
+     -17.571,
+     -8.143
+    ],
+    "a_better": 14,
+    "ties": 0,
+    "a_worse": 0
+   },
+   "NABD-Pool_minus_persistence_mismatch": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "mismatch",
+    "n_country_seasons": 14,
+    "mean_a": 10.786,
+    "mean_b": 10.143,
+    "diff_per_season": 0.643,
+    "ci95": [
+     -0.5,
+     1.857
+    ],
+    "a_better": 6,
+    "ties": 1,
+    "a_worse": 7,
+    "ci95_country_cluster": [
+     -0.5,
+     1.857
+    ]
+   },
+   "NABD-Pool_minus_persistence_missed": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "missed",
+    "n_country_seasons": 14,
+    "mean_a": 2.143,
+    "mean_b": 1.714,
+    "diff_per_season": 0.429,
+    "ci95": [
+     0.0,
+     0.859
+    ],
+    "a_better": 1,
+    "ties": 9,
+    "a_worse": 4
+   },
+   "NABD-Pool_minus_persistence_wasted": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "wasted",
+    "n_country_seasons": 14,
+    "mean_a": 8.643,
+    "mean_b": 8.429,
+    "diff_per_season": 0.214,
+    "ci95": [
+     -0.786,
+     1.286
+    ],
+    "a_better": 6,
+    "ties": 2,
+    "a_worse": 6
+   },
+   "NABD-Pool_minus_seasonal-analog_mismatch": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "mismatch",
+    "n_country_seasons": 14,
+    "mean_a": 10.786,
+    "mean_b": 15.929,
+    "diff_per_season": -5.143,
+    "ci95": [
+     -8.0,
+     -2.357
+    ],
+    "a_better": 11,
+    "ties": 1,
+    "a_worse": 2,
+    "ci95_country_cluster": [
+     -8.0,
+     -2.357
+    ]
+   },
+   "NABD-Pool_minus_seasonal-analog_missed": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "missed",
+    "n_country_seasons": 14,
+    "mean_a": 2.143,
+    "mean_b": 6.5,
+    "diff_per_season": -4.357,
+    "ci95": [
+     -6.429,
+     -2.571
+    ],
+    "a_better": 11,
+    "ties": 3,
+    "a_worse": 0
+   },
+   "NABD-Pool_minus_seasonal-analog_wasted": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "wasted",
+    "n_country_seasons": 14,
+    "mean_a": 8.643,
+    "mean_b": 9.429,
+    "diff_per_season": -0.786,
+    "ci95": [
+     -4.071,
+     2.214
+    ],
+    "a_better": 5,
+    "ties": 1,
+    "a_worse": 8
+   }
+  },
+  "country_q75|p30|h2": {
+   "n_country_seasons": 36,
+   "n_countries": 18,
+   "totals": {
+    "NABD-Pool": {
+     "weeks": 1585,
+     "surge_weeks": 488,
+     "rostered": 670,
+     "missed": 98,
+     "wasted": 280,
+     "mismatch": 378
+    },
+    "NABD-UAE-v1": {
+     "weeks": 1585,
+     "surge_weeks": 488,
+     "rostered": 769,
+     "missed": 81,
+     "wasted": 362,
+     "mismatch": 443
+    },
+    "always-roster": {
+     "weeks": 1585,
+     "surge_weeks": 488,
+     "rostered": 1585,
+     "missed": 0,
+     "wasted": 1097,
+     "mismatch": 1097
+    },
+    "never-roster": {
+     "weeks": 1585,
+     "surge_weeks": 488,
+     "rostered": 0,
+     "missed": 488,
+     "wasted": 0,
+     "mismatch": 488
+    },
+    "perfect-foresight": {
+     "weeks": 1585,
+     "surge_weeks": 488,
+     "rostered": 488,
+     "missed": 0,
+     "wasted": 0,
+     "mismatch": 0
+    },
+    "persistence": {
+     "weeks": 1585,
+     "surge_weeks": 488,
+     "rostered": 728,
+     "missed": 79,
+     "wasted": 319,
+     "mismatch": 398
+    },
+    "seasonal-analog": {
+     "weeks": 1585,
+     "surge_weeks": 488,
+     "rostered": 588,
+     "missed": 249,
+     "wasted": 349,
+     "mismatch": 598
+    }
+   },
+   "per_season_mean": {
+    "NABD-Pool": {
+     "weeks": 44.03,
+     "surge_weeks": 13.56,
+     "rostered": 18.61,
+     "missed": 2.72,
+     "wasted": 7.78,
+     "mismatch": 10.5
+    },
+    "NABD-UAE-v1": {
+     "weeks": 44.03,
+     "surge_weeks": 13.56,
+     "rostered": 21.36,
+     "missed": 2.25,
+     "wasted": 10.06,
+     "mismatch": 12.31
+    },
+    "always-roster": {
+     "weeks": 44.03,
+     "surge_weeks": 13.56,
+     "rostered": 44.03,
+     "missed": 0.0,
+     "wasted": 30.47,
+     "mismatch": 30.47
+    },
+    "never-roster": {
+     "weeks": 44.03,
+     "surge_weeks": 13.56,
+     "rostered": 0.0,
+     "missed": 13.56,
+     "wasted": 0.0,
+     "mismatch": 13.56
+    },
+    "perfect-foresight": {
+     "weeks": 44.03,
+     "surge_weeks": 13.56,
+     "rostered": 13.56,
+     "missed": 0.0,
+     "wasted": 0.0,
+     "mismatch": 0.0
+    },
+    "persistence": {
+     "weeks": 44.03,
+     "surge_weeks": 13.56,
+     "rostered": 20.22,
+     "missed": 2.19,
+     "wasted": 8.86,
+     "mismatch": 11.06
+    },
+    "seasonal-analog": {
+     "weeks": 44.03,
+     "surge_weeks": 13.56,
+     "rostered": 16.33,
+     "missed": 6.92,
+     "wasted": 9.69,
+     "mismatch": 16.61
+    }
+   },
+   "brier": {
+    "NABD-Pool": 0.1329,
+    "NABD-UAE-v1": 0.1545,
+    "always-roster": 0.69,
+    "never-roster": 0.31,
+    "perfect-foresight": 0.0,
+    "persistence": 0.1408,
+    "seasonal-analog": 0.2283
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_mismatch": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "mismatch",
+    "n_country_seasons": 36,
+    "mean_a": 10.5,
+    "mean_b": 12.306,
+    "diff_per_season": -1.806,
+    "ci95": [
+     -3.0,
+     -0.722
+    ],
+    "a_better": 23,
+    "ties": 6,
+    "a_worse": 7,
+    "ci95_country_cluster": [
+     -2.628,
+     -0.884
+    ]
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_missed": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "missed",
+    "n_country_seasons": 36,
+    "mean_a": 2.722,
+    "mean_b": 2.25,
+    "diff_per_season": 0.472,
+    "ci95": [
+     -0.111,
+     1.083
+    ],
+    "a_better": 6,
+    "ties": 16,
+    "a_worse": 14
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_wasted": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "wasted",
+    "n_country_seasons": 36,
+    "mean_a": 7.778,
+    "mean_b": 10.056,
+    "diff_per_season": -2.278,
+    "ci95": [
+     -3.528,
+     -1.167
+    ],
+    "a_better": 23,
+    "ties": 6,
+    "a_worse": 7
+   },
+   "NABD-Pool_minus_persistence_mismatch": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "mismatch",
+    "n_country_seasons": 36,
+    "mean_a": 10.5,
+    "mean_b": 11.056,
+    "diff_per_season": -0.556,
+    "ci95": [
+     -1.417,
+     0.306
+    ],
+    "a_better": 19,
+    "ties": 5,
+    "a_worse": 12,
+    "ci95_country_cluster": [
+     -1.334,
+     0.143
+    ]
+   },
+   "NABD-Pool_minus_persistence_missed": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "missed",
+    "n_country_seasons": 36,
+    "mean_a": 2.722,
+    "mean_b": 2.194,
+    "diff_per_season": 0.528,
+    "ci95": [
+     0.139,
+     0.944
+    ],
+    "a_better": 6,
+    "ties": 15,
+    "a_worse": 15
+   },
+   "NABD-Pool_minus_persistence_wasted": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "wasted",
+    "n_country_seasons": 36,
+    "mean_a": 7.778,
+    "mean_b": 8.861,
+    "diff_per_season": -1.083,
+    "ci95": [
+     -1.917,
+     -0.249
+    ],
+    "a_better": 21,
+    "ties": 7,
+    "a_worse": 8
+   },
+   "NABD-Pool_minus_seasonal-analog_mismatch": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "mismatch",
+    "n_country_seasons": 36,
+    "mean_a": 10.5,
+    "mean_b": 16.611,
+    "diff_per_season": -6.111,
+    "ci95": [
+     -8.251,
+     -4.056
+    ],
+    "a_better": 27,
+    "ties": 2,
+    "a_worse": 7,
+    "ci95_country_cluster": [
+     -7.905,
+     -3.37
+    ]
+   },
+   "NABD-Pool_minus_seasonal-analog_missed": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "missed",
+    "n_country_seasons": 36,
+    "mean_a": 2.722,
+    "mean_b": 6.917,
+    "diff_per_season": -4.194,
+    "ci95": [
+     -5.639,
+     -2.917
+    ],
+    "a_better": 27,
+    "ties": 6,
+    "a_worse": 3
+   },
+   "NABD-Pool_minus_seasonal-analog_wasted": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "wasted",
+    "n_country_seasons": 36,
+    "mean_a": 7.778,
+    "mean_b": 9.694,
+    "diff_per_season": -1.917,
+    "ci95": [
+     -3.972,
+     0.112
+    ],
+    "a_better": 22,
+    "ties": 2,
+    "a_worse": 12
+   }
+  },
+  "country_q75|p30|h2|short_history": {
+   "n_country_seasons": 14,
+   "n_countries": 14,
+   "totals": {
+    "NABD-Pool": {
+     "weeks": 579,
+     "surge_weeks": 184,
+     "rostered": 274,
+     "missed": 43,
+     "wasted": 133,
+     "mismatch": 176
+    },
+    "NABD-UAE-v1": {
+     "weeks": 579,
+     "surge_weeks": 184,
+     "rostered": 346,
+     "missed": 29,
+     "wasted": 191,
+     "mismatch": 220
+    },
+    "always-roster": {
+     "weeks": 579,
+     "surge_weeks": 184,
+     "rostered": 579,
+     "missed": 0,
+     "wasted": 395,
+     "mismatch": 395
+    },
+    "never-roster": {
+     "weeks": 579,
+     "surge_weeks": 184,
+     "rostered": 0,
+     "missed": 184,
+     "wasted": 0,
+     "mismatch": 184
+    },
+    "perfect-foresight": {
+     "weeks": 579,
+     "surge_weeks": 184,
+     "rostered": 184,
+     "missed": 0,
+     "wasted": 0,
+     "mismatch": 0
+    },
+    "persistence": {
+     "weeks": 579,
+     "surge_weeks": 184,
+     "rostered": 292,
+     "missed": 37,
+     "wasted": 145,
+     "mismatch": 182
+    },
+    "seasonal-analog": {
+     "weeks": 579,
+     "surge_weeks": 184,
+     "rostered": 225,
+     "missed": 88,
+     "wasted": 129,
+     "mismatch": 217
+    }
+   },
+   "per_season_mean": {
+    "NABD-Pool": {
+     "weeks": 41.36,
+     "surge_weeks": 13.14,
+     "rostered": 19.57,
+     "missed": 3.07,
+     "wasted": 9.5,
+     "mismatch": 12.57
+    },
+    "NABD-UAE-v1": {
+     "weeks": 41.36,
+     "surge_weeks": 13.14,
+     "rostered": 24.71,
+     "missed": 2.07,
+     "wasted": 13.64,
+     "mismatch": 15.71
+    },
+    "always-roster": {
+     "weeks": 41.36,
+     "surge_weeks": 13.14,
+     "rostered": 41.36,
+     "missed": 0.0,
+     "wasted": 28.21,
+     "mismatch": 28.21
+    },
+    "never-roster": {
+     "weeks": 41.36,
+     "surge_weeks": 13.14,
+     "rostered": 0.0,
+     "missed": 13.14,
+     "wasted": 0.0,
+     "mismatch": 13.14
+    },
+    "perfect-foresight": {
+     "weeks": 41.36,
+     "surge_weeks": 13.14,
+     "rostered": 13.14,
+     "missed": 0.0,
+     "wasted": 0.0,
+     "mismatch": 0.0
+    },
+    "persistence": {
+     "weeks": 41.36,
+     "surge_weeks": 13.14,
+     "rostered": 20.86,
+     "missed": 2.64,
+     "wasted": 10.36,
+     "mismatch": 13.0
+    },
+    "seasonal-analog": {
+     "weeks": 41.36,
+     "surge_weeks": 13.14,
+     "rostered": 16.07,
+     "missed": 6.29,
+     "wasted": 9.21,
+     "mismatch": 15.5
+    }
+   },
+   "brier": {
+    "NABD-Pool": 0.1602,
+    "NABD-UAE-v1": 0.1863,
+    "always-roster": 0.6812,
+    "never-roster": 0.3188,
+    "perfect-foresight": 0.0,
+    "persistence": 0.1692,
+    "seasonal-analog": 0.238
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_mismatch": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "mismatch",
+    "n_country_seasons": 14,
+    "mean_a": 12.571,
+    "mean_b": 15.714,
+    "diff_per_season": -3.143,
+    "ci95": [
+     -5.643,
+     -1.0
+    ],
+    "a_better": 10,
+    "ties": 1,
+    "a_worse": 3,
+    "ci95_country_cluster": [
+     -5.643,
+     -1.0
+    ]
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_missed": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "missed",
+    "n_country_seasons": 14,
+    "mean_a": 3.071,
+    "mean_b": 2.071,
+    "diff_per_season": 1.0,
+    "ci95": [
+     0.0,
+     2.214
+    ],
+    "a_better": 2,
+    "ties": 4,
+    "a_worse": 8
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_wasted": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "wasted",
+    "n_country_seasons": 14,
+    "mean_a": 9.5,
+    "mean_b": 13.643,
+    "diff_per_season": -4.143,
+    "ci95": [
+     -6.714,
+     -1.857
+    ],
+    "a_better": 10,
+    "ties": 0,
+    "a_worse": 4
+   },
+   "NABD-Pool_minus_persistence_mismatch": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "mismatch",
+    "n_country_seasons": 14,
+    "mean_a": 12.571,
+    "mean_b": 13.0,
+    "diff_per_season": -0.429,
+    "ci95": [
+     -2.143,
+     1.214
+    ],
+    "a_better": 8,
+    "ties": 0,
+    "a_worse": 6,
+    "ci95_country_cluster": [
+     -2.143,
+     1.214
+    ]
+   },
+   "NABD-Pool_minus_persistence_missed": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "missed",
+    "n_country_seasons": 14,
+    "mean_a": 3.071,
+    "mean_b": 2.643,
+    "diff_per_season": 0.429,
+    "ci95": [
+     -0.143,
+     1.071
+    ],
+    "a_better": 2,
+    "ties": 8,
+    "a_worse": 4
+   },
+   "NABD-Pool_minus_persistence_wasted": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "wasted",
+    "n_country_seasons": 14,
+    "mean_a": 9.5,
+    "mean_b": 10.357,
+    "diff_per_season": -0.857,
+    "ci95": [
+     -2.643,
+     0.786
+    ],
+    "a_better": 8,
+    "ties": 1,
+    "a_worse": 5
+   },
+   "NABD-Pool_minus_seasonal-analog_mismatch": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "mismatch",
+    "n_country_seasons": 14,
+    "mean_a": 12.571,
+    "mean_b": 15.5,
+    "diff_per_season": -2.929,
+    "ci95": [
+     -5.571,
+     -0.214
+    ],
+    "a_better": 9,
+    "ties": 1,
+    "a_worse": 4,
+    "ci95_country_cluster": [
+     -5.571,
+     -0.214
+    ]
+   },
+   "NABD-Pool_minus_seasonal-analog_missed": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "missed",
+    "n_country_seasons": 14,
+    "mean_a": 3.071,
+    "mean_b": 6.286,
+    "diff_per_season": -3.214,
+    "ci95": [
+     -4.714,
+     -1.786
+    ],
+    "a_better": 10,
+    "ties": 3,
+    "a_worse": 1
+   },
+   "NABD-Pool_minus_seasonal-analog_wasted": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "wasted",
+    "n_country_seasons": 14,
+    "mean_a": 9.5,
+    "mean_b": 9.214,
+    "diff_per_season": 0.286,
+    "ci95": [
+     -2.786,
+     3.286
+    ],
+    "a_better": 6,
+    "ties": 1,
+    "a_worse": 7
+   }
+  },
+  "country_q75|p30|h3": {
+   "n_country_seasons": 36,
+   "n_countries": 18,
+   "totals": {
+    "NABD-Pool": {
+     "weeks": 1550,
+     "surge_weeks": 475,
+     "rostered": 666,
+     "missed": 110,
+     "wasted": 301,
+     "mismatch": 411
+    },
+    "NABD-UAE-v1": {
+     "weeks": 1550,
+     "surge_weeks": 475,
+     "rostered": 763,
+     "missed": 93,
+     "wasted": 381,
+     "mismatch": 474
+    },
+    "always-roster": {
+     "weeks": 1550,
+     "surge_weeks": 475,
+     "rostered": 1550,
+     "missed": 0,
+     "wasted": 1075,
+     "mismatch": 1075
+    },
+    "never-roster": {
+     "weeks": 1550,
+     "surge_weeks": 475,
+     "rostered": 0,
+     "missed": 475,
+     "wasted": 0,
+     "mismatch": 475
+    },
+    "perfect-foresight": {
+     "weeks": 1550,
+     "surge_weeks": 475,
+     "rostered": 475,
+     "missed": 0,
+     "wasted": 0,
+     "mismatch": 0
+    },
+    "persistence": {
+     "weeks": 1550,
+     "surge_weeks": 475,
+     "rostered": 761,
+     "missed": 86,
+     "wasted": 372,
+     "mismatch": 458
+    },
+    "seasonal-analog": {
+     "weeks": 1550,
+     "surge_weeks": 475,
+     "rostered": 572,
+     "missed": 243,
+     "wasted": 340,
+     "mismatch": 583
+    }
+   },
+   "per_season_mean": {
+    "NABD-Pool": {
+     "weeks": 43.06,
+     "surge_weeks": 13.19,
+     "rostered": 18.5,
+     "missed": 3.06,
+     "wasted": 8.36,
+     "mismatch": 11.42
+    },
+    "NABD-UAE-v1": {
+     "weeks": 43.06,
+     "surge_weeks": 13.19,
+     "rostered": 21.19,
+     "missed": 2.58,
+     "wasted": 10.58,
+     "mismatch": 13.17
+    },
+    "always-roster": {
+     "weeks": 43.06,
+     "surge_weeks": 13.19,
+     "rostered": 43.06,
+     "missed": 0.0,
+     "wasted": 29.86,
+     "mismatch": 29.86
+    },
+    "never-roster": {
+     "weeks": 43.06,
+     "surge_weeks": 13.19,
+     "rostered": 0.0,
+     "missed": 13.19,
+     "wasted": 0.0,
+     "mismatch": 13.19
+    },
+    "perfect-foresight": {
+     "weeks": 43.06,
+     "surge_weeks": 13.19,
+     "rostered": 13.19,
+     "missed": 0.0,
+     "wasted": 0.0,
+     "mismatch": 0.0
+    },
+    "persistence": {
+     "weeks": 43.06,
+     "surge_weeks": 13.19,
+     "rostered": 21.14,
+     "missed": 2.39,
+     "wasted": 10.33,
+     "mismatch": 12.72
+    },
+    "seasonal-analog": {
+     "weeks": 43.06,
+     "surge_weeks": 13.19,
+     "rostered": 15.89,
+     "missed": 6.75,
+     "wasted": 9.44,
+     "mismatch": 16.19
+    }
+   },
+   "brier": {
+    "NABD-Pool": 0.1488,
+    "NABD-UAE-v1": 0.1663,
+    "always-roster": 0.6919,
+    "never-roster": 0.3081,
+    "perfect-foresight": 0.0,
+    "persistence": 0.1608,
+    "seasonal-analog": 0.2268
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_mismatch": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "mismatch",
+    "n_country_seasons": 36,
+    "mean_a": 11.417,
+    "mean_b": 13.167,
+    "diff_per_season": -1.75,
+    "ci95": [
+     -3.0,
+     -0.583
+    ],
+    "a_better": 22,
+    "ties": 6,
+    "a_worse": 8,
+    "ci95_country_cluster": [
+     -2.705,
+     -0.794
+    ]
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_missed": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "missed",
+    "n_country_seasons": 36,
+    "mean_a": 3.056,
+    "mean_b": 2.583,
+    "diff_per_season": 0.472,
+    "ci95": [
+     -0.222,
+     1.167
+    ],
+    "a_better": 12,
+    "ties": 10,
+    "a_worse": 14
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_wasted": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "wasted",
+    "n_country_seasons": 36,
+    "mean_a": 8.361,
+    "mean_b": 10.583,
+    "diff_per_season": -2.222,
+    "ci95": [
+     -3.5,
+     -1.0
+    ],
+    "a_better": 24,
+    "ties": 7,
+    "a_worse": 5
+   },
+   "NABD-Pool_minus_persistence_mismatch": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "mismatch",
+    "n_country_seasons": 36,
+    "mean_a": 11.417,
+    "mean_b": 12.722,
+    "diff_per_season": -1.306,
+    "ci95": [
+     -2.111,
+     -0.5
+    ],
+    "a_better": 21,
+    "ties": 8,
+    "a_worse": 7,
+    "ci95_country_cluster": [
+     -2.324,
+     -0.513
+    ]
+   },
+   "NABD-Pool_minus_persistence_missed": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "missed",
+    "n_country_seasons": 36,
+    "mean_a": 3.056,
+    "mean_b": 2.389,
+    "diff_per_season": 0.667,
+    "ci95": [
+     0.139,
+     1.223
+    ],
+    "a_better": 8,
+    "ties": 12,
+    "a_worse": 16
+   },
+   "NABD-Pool_minus_persistence_wasted": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "wasted",
+    "n_country_seasons": 36,
+    "mean_a": 8.361,
+    "mean_b": 10.333,
+    "diff_per_season": -1.972,
+    "ci95": [
+     -2.778,
+     -1.139
+    ],
+    "a_better": 25,
+    "ties": 5,
+    "a_worse": 6
+   },
+   "NABD-Pool_minus_seasonal-analog_mismatch": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "mismatch",
+    "n_country_seasons": 36,
+    "mean_a": 11.417,
+    "mean_b": 16.194,
+    "diff_per_season": -4.778,
+    "ci95": [
+     -6.889,
+     -2.861
+    ],
+    "a_better": 26,
+    "ties": 3,
+    "a_worse": 7,
+    "ci95_country_cluster": [
+     -6.395,
+     -2.333
+    ]
+   },
+   "NABD-Pool_minus_seasonal-analog_missed": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "missed",
+    "n_country_seasons": 36,
+    "mean_a": 3.056,
+    "mean_b": 6.75,
+    "diff_per_season": -3.694,
+    "ci95": [
+     -5.028,
+     -2.444
+    ],
+    "a_better": 26,
+    "ties": 6,
+    "a_worse": 4
+   },
+   "NABD-Pool_minus_seasonal-analog_wasted": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "wasted",
+    "n_country_seasons": 36,
+    "mean_a": 8.361,
+    "mean_b": 9.444,
+    "diff_per_season": -1.083,
+    "ci95": [
+     -3.112,
+     0.889
+    ],
+    "a_better": 17,
+    "ties": 3,
+    "a_worse": 16
+   }
+  },
+  "country_q75|p30|h3|short_history": {
+   "n_country_seasons": 14,
+   "n_countries": 14,
+   "totals": {
+    "NABD-Pool": {
+     "weeks": 566,
+     "surge_weeks": 178,
+     "rostered": 269,
+     "missed": 45,
+     "wasted": 136,
+     "mismatch": 181
+    },
+    "NABD-UAE-v1": {
+     "weeks": 566,
+     "surge_weeks": 178,
+     "rostered": 330,
+     "missed": 35,
+     "wasted": 187,
+     "mismatch": 222
+    },
+    "always-roster": {
+     "weeks": 566,
+     "surge_weeks": 178,
+     "rostered": 566,
+     "missed": 0,
+     "wasted": 388,
+     "mismatch": 388
+    },
+    "never-roster": {
+     "weeks": 566,
+     "surge_weeks": 178,
+     "rostered": 0,
+     "missed": 178,
+     "wasted": 0,
+     "mismatch": 178
+    },
+    "perfect-foresight": {
+     "weeks": 566,
+     "surge_weeks": 178,
+     "rostered": 178,
+     "missed": 0,
+     "wasted": 0,
+     "mismatch": 0
+    },
+    "persistence": {
+     "weeks": 566,
+     "surge_weeks": 178,
+     "rostered": 311,
+     "missed": 37,
+     "wasted": 170,
+     "mismatch": 207
+    },
+    "seasonal-analog": {
+     "weeks": 566,
+     "surge_weeks": 178,
+     "rostered": 217,
+     "missed": 84,
+     "wasted": 123,
+     "mismatch": 207
+    }
+   },
+   "per_season_mean": {
+    "NABD-Pool": {
+     "weeks": 40.43,
+     "surge_weeks": 12.71,
+     "rostered": 19.21,
+     "missed": 3.21,
+     "wasted": 9.71,
+     "mismatch": 12.93
+    },
+    "NABD-UAE-v1": {
+     "weeks": 40.43,
+     "surge_weeks": 12.71,
+     "rostered": 23.57,
+     "missed": 2.5,
+     "wasted": 13.36,
+     "mismatch": 15.86
+    },
+    "always-roster": {
+     "weeks": 40.43,
+     "surge_weeks": 12.71,
+     "rostered": 40.43,
+     "missed": 0.0,
+     "wasted": 27.71,
+     "mismatch": 27.71
+    },
+    "never-roster": {
+     "weeks": 40.43,
+     "surge_weeks": 12.71,
+     "rostered": 0.0,
+     "missed": 12.71,
+     "wasted": 0.0,
+     "mismatch": 12.71
+    },
+    "perfect-foresight": {
+     "weeks": 40.43,
+     "surge_weeks": 12.71,
+     "rostered": 12.71,
+     "missed": 0.0,
+     "wasted": 0.0,
+     "mismatch": 0.0
+    },
+    "persistence": {
+     "weeks": 40.43,
+     "surge_weeks": 12.71,
+     "rostered": 22.21,
+     "missed": 2.64,
+     "wasted": 12.14,
+     "mismatch": 14.79
+    },
+    "seasonal-analog": {
+     "weeks": 40.43,
+     "surge_weeks": 12.71,
+     "rostered": 15.5,
+     "missed": 6.0,
+     "wasted": 8.79,
+     "mismatch": 14.79
+    }
+   },
+   "brier": {
+    "NABD-Pool": 0.1745,
+    "NABD-UAE-v1": 0.1909,
+    "always-roster": 0.6855,
+    "never-roster": 0.3145,
+    "perfect-foresight": 0.0,
+    "persistence": 0.1913,
+    "seasonal-analog": 0.2323
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_mismatch": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "mismatch",
+    "n_country_seasons": 14,
+    "mean_a": 12.929,
+    "mean_b": 15.857,
+    "diff_per_season": -2.929,
+    "ci95": [
+     -5.571,
+     -0.643
+    ],
+    "a_better": 8,
+    "ties": 3,
+    "a_worse": 3,
+    "ci95_country_cluster": [
+     -5.571,
+     -0.643
+    ]
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_missed": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "missed",
+    "n_country_seasons": 14,
+    "mean_a": 3.214,
+    "mean_b": 2.5,
+    "diff_per_season": 0.714,
+    "ci95": [
+     -0.286,
+     1.786
+    ],
+    "a_better": 5,
+    "ties": 3,
+    "a_worse": 6
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_wasted": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "wasted",
+    "n_country_seasons": 14,
+    "mean_a": 9.714,
+    "mean_b": 13.357,
+    "diff_per_season": -3.643,
+    "ci95": [
+     -6.5,
+     -1.071
+    ],
+    "a_better": 9,
+    "ties": 2,
+    "a_worse": 3
+   },
+   "NABD-Pool_minus_persistence_mismatch": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "mismatch",
+    "n_country_seasons": 14,
+    "mean_a": 12.929,
+    "mean_b": 14.786,
+    "diff_per_season": -1.857,
+    "ci95": [
+     -3.214,
+     -0.357
+    ],
+    "a_better": 10,
+    "ties": 2,
+    "a_worse": 2,
+    "ci95_country_cluster": [
+     -3.214,
+     -0.357
+    ]
+   },
+   "NABD-Pool_minus_persistence_missed": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "missed",
+    "n_country_seasons": 14,
+    "mean_a": 3.214,
+    "mean_b": 2.643,
+    "diff_per_season": 0.571,
+    "ci95": [
+     -0.143,
+     1.357
+    ],
+    "a_better": 3,
+    "ties": 6,
+    "a_worse": 5
+   },
+   "NABD-Pool_minus_persistence_wasted": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "wasted",
+    "n_country_seasons": 14,
+    "mean_a": 9.714,
+    "mean_b": 12.143,
+    "diff_per_season": -2.429,
+    "ci95": [
+     -3.929,
+     -0.714
+    ],
+    "a_better": 10,
+    "ties": 1,
+    "a_worse": 3
+   },
+   "NABD-Pool_minus_seasonal-analog_mismatch": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "mismatch",
+    "n_country_seasons": 14,
+    "mean_a": 12.929,
+    "mean_b": 14.786,
+    "diff_per_season": -1.857,
+    "ci95": [
+     -4.357,
+     0.643
+    ],
+    "a_better": 10,
+    "ties": 0,
+    "a_worse": 4,
+    "ci95_country_cluster": [
+     -4.357,
+     0.643
+    ]
+   },
+   "NABD-Pool_minus_seasonal-analog_missed": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "missed",
+    "n_country_seasons": 14,
+    "mean_a": 3.214,
+    "mean_b": 6.0,
+    "diff_per_season": -2.786,
+    "ci95": [
+     -4.214,
+     -1.429
+    ],
+    "a_better": 10,
+    "ties": 3,
+    "a_worse": 1
+   },
+   "NABD-Pool_minus_seasonal-analog_wasted": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "wasted",
+    "n_country_seasons": 14,
+    "mean_a": 9.714,
+    "mean_b": 8.786,
+    "diff_per_season": 0.929,
+    "ci95": [
+     -2.0,
+     3.571
+    ],
+    "a_better": 4,
+    "ties": 2,
+    "a_worse": 8
+   }
+  },
+  "country_q75|p20|h0": {
+   "n_country_seasons": 36,
+   "n_countries": 18,
+   "totals": {
+    "NABD-Pool": {
+     "weeks": 1656,
+     "surge_weeks": 510,
+     "rostered": 779,
+     "missed": 36,
+     "wasted": 305,
+     "mismatch": 341
+    },
+    "NABD-UAE-v1": {
+     "weeks": 1656,
+     "surge_weeks": 510,
+     "rostered": 1043,
+     "missed": 23,
+     "wasted": 556,
+     "mismatch": 579
+    },
+    "always-roster": {
+     "weeks": 1656,
+     "surge_weeks": 510,
+     "rostered": 1656,
+     "missed": 0,
+     "wasted": 1146,
+     "mismatch": 1146
+    },
+    "never-roster": {
+     "weeks": 1656,
+     "surge_weeks": 510,
+     "rostered": 0,
+     "missed": 510,
+     "wasted": 0,
+     "mismatch": 510
+    },
+    "perfect-foresight": {
+     "weeks": 1656,
+     "surge_weeks": 510,
+     "rostered": 510,
+     "missed": 0,
+     "wasted": 0,
+     "mismatch": 0
+    },
+    "persistence": {
+     "weeks": 1656,
+     "surge_weeks": 510,
+     "rostered": 813,
+     "missed": 35,
+     "wasted": 338,
+     "mismatch": 373
+    },
+    "seasonal-analog": {
+     "weeks": 1656,
+     "surge_weeks": 510,
+     "rostered": 802,
+     "missed": 203,
+     "wasted": 495,
+     "mismatch": 698
+    }
+   },
+   "per_season_mean": {
+    "NABD-Pool": {
+     "weeks": 46.0,
+     "surge_weeks": 14.17,
+     "rostered": 21.64,
+     "missed": 1.0,
+     "wasted": 8.47,
+     "mismatch": 9.47
+    },
+    "NABD-UAE-v1": {
+     "weeks": 46.0,
+     "surge_weeks": 14.17,
+     "rostered": 28.97,
+     "missed": 0.64,
+     "wasted": 15.44,
+     "mismatch": 16.08
+    },
+    "always-roster": {
+     "weeks": 46.0,
+     "surge_weeks": 14.17,
+     "rostered": 46.0,
+     "missed": 0.0,
+     "wasted": 31.83,
+     "mismatch": 31.83
+    },
+    "never-roster": {
+     "weeks": 46.0,
+     "surge_weeks": 14.17,
+     "rostered": 0.0,
+     "missed": 14.17,
+     "wasted": 0.0,
+     "mismatch": 14.17
+    },
+    "perfect-foresight": {
+     "weeks": 46.0,
+     "surge_weeks": 14.17,
+     "rostered": 14.17,
+     "missed": 0.0,
+     "wasted": 0.0,
+     "mismatch": 0.0
+    },
+    "persistence": {
+     "weeks": 46.0,
+     "surge_weeks": 14.17,
+     "rostered": 22.58,
+     "missed": 0.97,
+     "wasted": 9.39,
+     "mismatch": 10.36
+    },
+    "seasonal-analog": {
+     "weeks": 46.0,
+     "surge_weeks": 14.17,
+     "rostered": 22.28,
+     "missed": 5.64,
+     "wasted": 13.75,
+     "mismatch": 19.39
+    }
+   },
+   "brier": {
+    "NABD-Pool": 0.0967,
+    "NABD-UAE-v1": 0.1299,
+    "always-roster": 0.6898,
+    "never-roster": 0.3102,
+    "perfect-foresight": 0.0,
+    "persistence": 0.1015,
+    "seasonal-analog": 0.2281
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_mismatch": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "mismatch",
+    "n_country_seasons": 36,
+    "mean_a": 9.472,
+    "mean_b": 16.083,
+    "diff_per_season": -6.611,
+    "ci95": [
+     -9.778,
+     -4.027
+    ],
+    "a_better": 31,
+    "ties": 3,
+    "a_worse": 2,
+    "ci95_country_cluster": [
+     -10.059,
+     -4.267
+    ]
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_missed": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "missed",
+    "n_country_seasons": 36,
+    "mean_a": 1.0,
+    "mean_b": 0.639,
+    "diff_per_season": 0.361,
+    "ci95": [
+     -0.056,
+     0.778
+    ],
+    "a_better": 4,
+    "ties": 20,
+    "a_worse": 12
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_wasted": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "wasted",
+    "n_country_seasons": 36,
+    "mean_a": 8.472,
+    "mean_b": 15.444,
+    "diff_per_season": -6.972,
+    "ci95": [
+     -10.111,
+     -4.36
+    ],
+    "a_better": 30,
+    "ties": 4,
+    "a_worse": 2
+   },
+   "NABD-Pool_minus_persistence_mismatch": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "mismatch",
+    "n_country_seasons": 36,
+    "mean_a": 9.472,
+    "mean_b": 10.361,
+    "diff_per_season": -0.889,
+    "ci95": [
+     -2.167,
+     0.389
+    ],
+    "a_better": 20,
+    "ties": 3,
+    "a_worse": 13,
+    "ci95_country_cluster": [
+     -2.425,
+     0.867
+    ]
+   },
+   "NABD-Pool_minus_persistence_missed": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "missed",
+    "n_country_seasons": 36,
+    "mean_a": 1.0,
+    "mean_b": 0.972,
+    "diff_per_season": 0.028,
+    "ci95": [
+     -0.194,
+     0.25
+    ],
+    "a_better": 6,
+    "ties": 23,
+    "a_worse": 7
+   },
+   "NABD-Pool_minus_persistence_wasted": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "wasted",
+    "n_country_seasons": 36,
+    "mean_a": 8.472,
+    "mean_b": 9.389,
+    "diff_per_season": -0.917,
+    "ci95": [
+     -2.25,
+     0.361
+    ],
+    "a_better": 20,
+    "ties": 1,
+    "a_worse": 15
+   },
+   "NABD-Pool_minus_seasonal-analog_mismatch": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "mismatch",
+    "n_country_seasons": 36,
+    "mean_a": 9.472,
+    "mean_b": 19.389,
+    "diff_per_season": -9.917,
+    "ci95": [
+     -12.778,
+     -7.25
+    ],
+    "a_better": 32,
+    "ties": 1,
+    "a_worse": 3,
+    "ci95_country_cluster": [
+     -12.579,
+     -6.128
+    ]
+   },
+   "NABD-Pool_minus_seasonal-analog_missed": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "missed",
+    "n_country_seasons": 36,
+    "mean_a": 1.0,
+    "mean_b": 5.639,
+    "diff_per_season": -4.639,
+    "ci95": [
+     -5.973,
+     -3.361
+    ],
+    "a_better": 29,
+    "ties": 5,
+    "a_worse": 2
+   },
+   "NABD-Pool_minus_seasonal-analog_wasted": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "wasted",
+    "n_country_seasons": 36,
+    "mean_a": 8.472,
+    "mean_b": 13.75,
+    "diff_per_season": -5.278,
+    "ci95": [
+     -8.167,
+     -2.528
+    ],
+    "a_better": 25,
+    "ties": 0,
+    "a_worse": 11
+   }
+  },
+  "country_q75|p20|h1": {
+   "n_country_seasons": 36,
+   "n_countries": 18,
+   "totals": {
+    "NABD-Pool": {
+     "weeks": 1619,
+     "surge_weeks": 501,
+     "rostered": 826,
+     "missed": 39,
+     "wasted": 364,
+     "mismatch": 403
+    },
+    "NABD-UAE-v1": {
+     "weeks": 1619,
+     "surge_weeks": 501,
+     "rostered": 1053,
+     "missed": 23,
+     "wasted": 575,
+     "mismatch": 598
+    },
+    "always-roster": {
+     "weeks": 1619,
+     "surge_weeks": 501,
+     "rostered": 1619,
+     "missed": 0,
+     "wasted": 1118,
+     "mismatch": 1118
+    },
+    "never-roster": {
+     "weeks": 1619,
+     "surge_weeks": 501,
+     "rostered": 0,
+     "missed": 501,
+     "wasted": 0,
+     "mismatch": 501
+    },
+    "perfect-foresight": {
+     "weeks": 1619,
+     "surge_weeks": 501,
+     "rostered": 501,
+     "missed": 0,
+     "wasted": 0,
+     "mismatch": 0
+    },
+    "persistence": {
+     "weeks": 1619,
+     "surge_weeks": 501,
+     "rostered": 846,
+     "missed": 34,
+     "wasted": 379,
+     "mismatch": 413
+    },
+    "seasonal-analog": {
+     "weeks": 1619,
+     "surge_weeks": 501,
+     "rostered": 779,
+     "missed": 200,
+     "wasted": 478,
+     "mismatch": 678
+    }
+   },
+   "per_season_mean": {
+    "NABD-Pool": {
+     "weeks": 44.97,
+     "surge_weeks": 13.92,
+     "rostered": 22.94,
+     "missed": 1.08,
+     "wasted": 10.11,
+     "mismatch": 11.19
+    },
+    "NABD-UAE-v1": {
+     "weeks": 44.97,
+     "surge_weeks": 13.92,
+     "rostered": 29.25,
+     "missed": 0.64,
+     "wasted": 15.97,
+     "mismatch": 16.61
+    },
+    "always-roster": {
+     "weeks": 44.97,
+     "surge_weeks": 13.92,
+     "rostered": 44.97,
+     "missed": 0.0,
+     "wasted": 31.06,
+     "mismatch": 31.06
+    },
+    "never-roster": {
+     "weeks": 44.97,
+     "surge_weeks": 13.92,
+     "rostered": 0.0,
+     "missed": 13.92,
+     "wasted": 0.0,
+     "mismatch": 13.92
+    },
+    "perfect-foresight": {
+     "weeks": 44.97,
+     "surge_weeks": 13.92,
+     "rostered": 13.92,
+     "missed": 0.0,
+     "wasted": 0.0,
+     "mismatch": 0.0
+    },
+    "persistence": {
+     "weeks": 44.97,
+     "surge_weeks": 13.92,
+     "rostered": 23.5,
+     "missed": 0.94,
+     "wasted": 10.53,
+     "mismatch": 11.47
+    },
+    "seasonal-analog": {
+     "weeks": 44.97,
+     "surge_weeks": 13.92,
+     "rostered": 21.64,
+     "missed": 5.56,
+     "wasted": 13.28,
+     "mismatch": 18.83
+    }
+   },
+   "brier": {
+    "NABD-Pool": 0.1114,
+    "NABD-UAE-v1": 0.1426,
+    "always-roster": 0.6881,
+    "never-roster": 0.3119,
+    "perfect-foresight": 0.0,
+    "persistence": 0.1147,
+    "seasonal-analog": 0.2287
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_mismatch": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "mismatch",
+    "n_country_seasons": 36,
+    "mean_a": 11.194,
+    "mean_b": 16.611,
+    "diff_per_season": -5.417,
+    "ci95": [
+     -7.972,
+     -3.25
+    ],
+    "a_better": 28,
+    "ties": 6,
+    "a_worse": 2,
+    "ci95_country_cluster": [
+     -8.25,
+     -3.5
+    ]
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_missed": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "missed",
+    "n_country_seasons": 36,
+    "mean_a": 1.083,
+    "mean_b": 0.639,
+    "diff_per_season": 0.444,
+    "ci95": [
+     0.083,
+     0.806
+    ],
+    "a_better": 5,
+    "ties": 17,
+    "a_worse": 14
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_wasted": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "wasted",
+    "n_country_seasons": 36,
+    "mean_a": 10.111,
+    "mean_b": 15.972,
+    "diff_per_season": -5.861,
+    "ci95": [
+     -8.473,
+     -3.667
+    ],
+    "a_better": 26,
+    "ties": 9,
+    "a_worse": 1
+   },
+   "NABD-Pool_minus_persistence_mismatch": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "mismatch",
+    "n_country_seasons": 36,
+    "mean_a": 11.194,
+    "mean_b": 11.472,
+    "diff_per_season": -0.278,
+    "ci95": [
+     -1.306,
+     0.75
+    ],
+    "a_better": 15,
+    "ties": 7,
+    "a_worse": 14,
+    "ci95_country_cluster": [
+     -1.419,
+     1.114
+    ]
+   },
+   "NABD-Pool_minus_persistence_missed": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "missed",
+    "n_country_seasons": 36,
+    "mean_a": 1.083,
+    "mean_b": 0.944,
+    "diff_per_season": 0.139,
+    "ci95": [
+     -0.139,
+     0.417
+    ],
+    "a_better": 4,
+    "ties": 24,
+    "a_worse": 8
+   },
+   "NABD-Pool_minus_persistence_wasted": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "wasted",
+    "n_country_seasons": 36,
+    "mean_a": 10.111,
+    "mean_b": 10.528,
+    "diff_per_season": -0.417,
+    "ci95": [
+     -1.472,
+     0.611
+    ],
+    "a_better": 17,
+    "ties": 6,
+    "a_worse": 13
+   },
+   "NABD-Pool_minus_seasonal-analog_mismatch": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "mismatch",
+    "n_country_seasons": 36,
+    "mean_a": 11.194,
+    "mean_b": 18.833,
+    "diff_per_season": -7.639,
+    "ci95": [
+     -10.25,
+     -5.249
+    ],
+    "a_better": 29,
+    "ties": 1,
+    "a_worse": 6,
+    "ci95_country_cluster": [
+     -10.143,
+     -4.125
+    ]
+   },
+   "NABD-Pool_minus_seasonal-analog_missed": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "missed",
+    "n_country_seasons": 36,
+    "mean_a": 1.083,
+    "mean_b": 5.556,
+    "diff_per_season": -4.472,
+    "ci95": [
+     -5.833,
+     -3.25
+    ],
+    "a_better": 28,
+    "ties": 4,
+    "a_worse": 4
+   },
+   "NABD-Pool_minus_seasonal-analog_wasted": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "wasted",
+    "n_country_seasons": 36,
+    "mean_a": 10.111,
+    "mean_b": 13.278,
+    "diff_per_season": -3.167,
+    "ci95": [
+     -5.834,
+     -0.583
+    ],
+    "a_better": 23,
+    "ties": 0,
+    "a_worse": 13
+   }
+  },
+  "country_q75|p20|h2": {
+   "n_country_seasons": 36,
+   "n_countries": 18,
+   "totals": {
+    "NABD-Pool": {
+     "weeks": 1585,
+     "surge_weeks": 488,
+     "rostered": 832,
+     "missed": 59,
+     "wasted": 403,
+     "mismatch": 462
+    },
+    "NABD-UAE-v1": {
+     "weeks": 1585,
+     "surge_weeks": 488,
+     "rostered": 981,
+     "missed": 46,
+     "wasted": 539,
+     "mismatch": 585
+    },
+    "always-roster": {
+     "weeks": 1585,
+     "surge_weeks": 488,
+     "rostered": 1585,
+     "missed": 0,
+     "wasted": 1097,
+     "mismatch": 1097
+    },
+    "never-roster": {
+     "weeks": 1585,
+     "surge_weeks": 488,
+     "rostered": 0,
+     "missed": 488,
+     "wasted": 0,
+     "mismatch": 488
+    },
+    "perfect-foresight": {
+     "weeks": 1585,
+     "surge_weeks": 488,
+     "rostered": 488,
+     "missed": 0,
+     "wasted": 0,
+     "mismatch": 0
+    },
+    "persistence": {
+     "weeks": 1585,
+     "surge_weeks": 488,
+     "rostered": 875,
+     "missed": 59,
+     "wasted": 446,
+     "mismatch": 505
+    },
+    "seasonal-analog": {
+     "weeks": 1585,
+     "surge_weeks": 488,
+     "rostered": 761,
+     "missed": 196,
+     "wasted": 469,
+     "mismatch": 665
+    }
+   },
+   "per_season_mean": {
+    "NABD-Pool": {
+     "weeks": 44.03,
+     "surge_weeks": 13.56,
+     "rostered": 23.11,
+     "missed": 1.64,
+     "wasted": 11.19,
+     "mismatch": 12.83
+    },
+    "NABD-UAE-v1": {
+     "weeks": 44.03,
+     "surge_weeks": 13.56,
+     "rostered": 27.25,
+     "missed": 1.28,
+     "wasted": 14.97,
+     "mismatch": 16.25
+    },
+    "always-roster": {
+     "weeks": 44.03,
+     "surge_weeks": 13.56,
+     "rostered": 44.03,
+     "missed": 0.0,
+     "wasted": 30.47,
+     "mismatch": 30.47
+    },
+    "never-roster": {
+     "weeks": 44.03,
+     "surge_weeks": 13.56,
+     "rostered": 0.0,
+     "missed": 13.56,
+     "wasted": 0.0,
+     "mismatch": 13.56
+    },
+    "perfect-foresight": {
+     "weeks": 44.03,
+     "surge_weeks": 13.56,
+     "rostered": 13.56,
+     "missed": 0.0,
+     "wasted": 0.0,
+     "mismatch": 0.0
+    },
+    "persistence": {
+     "weeks": 44.03,
+     "surge_weeks": 13.56,
+     "rostered": 24.31,
+     "missed": 1.64,
+     "wasted": 12.39,
+     "mismatch": 14.03
+    },
+    "seasonal-analog": {
+     "weeks": 44.03,
+     "surge_weeks": 13.56,
+     "rostered": 21.14,
+     "missed": 5.44,
+     "wasted": 13.03,
+     "mismatch": 18.47
+    }
+   },
+   "brier": {
+    "NABD-Pool": 0.1329,
+    "NABD-UAE-v1": 0.1545,
+    "always-roster": 0.69,
+    "never-roster": 0.31,
+    "perfect-foresight": 0.0,
+    "persistence": 0.1408,
+    "seasonal-analog": 0.2283
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_mismatch": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "mismatch",
+    "n_country_seasons": 36,
+    "mean_a": 12.833,
+    "mean_b": 16.25,
+    "diff_per_season": -3.417,
+    "ci95": [
+     -5.222,
+     -1.75
+    ],
+    "a_better": 27,
+    "ties": 3,
+    "a_worse": 6,
+    "ci95_country_cluster": [
+     -5.226,
+     -1.656
+    ]
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_missed": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "missed",
+    "n_country_seasons": 36,
+    "mean_a": 1.639,
+    "mean_b": 1.278,
+    "diff_per_season": 0.361,
+    "ci95": [
+     -0.25,
+     1.056
+    ],
+    "a_better": 8,
+    "ties": 15,
+    "a_worse": 13
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_wasted": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "wasted",
+    "n_country_seasons": 36,
+    "mean_a": 11.194,
+    "mean_b": 14.972,
+    "diff_per_season": -3.778,
+    "ci95": [
+     -5.583,
+     -2.139
+    ],
+    "a_better": 27,
+    "ties": 3,
+    "a_worse": 6
+   },
+   "NABD-Pool_minus_persistence_mismatch": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "mismatch",
+    "n_country_seasons": 36,
+    "mean_a": 12.833,
+    "mean_b": 14.028,
+    "diff_per_season": -1.194,
+    "ci95": [
+     -1.861,
+     -0.527
+    ],
+    "a_better": 24,
+    "ties": 2,
+    "a_worse": 10,
+    "ci95_country_cluster": [
+     -1.879,
+     -0.375
+    ]
+   },
+   "NABD-Pool_minus_persistence_missed": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "missed",
+    "n_country_seasons": 36,
+    "mean_a": 1.639,
+    "mean_b": 1.639,
+    "diff_per_season": 0.0,
+    "ci95": [
+     -0.389,
+     0.39
+    ],
+    "a_better": 9,
+    "ties": 18,
+    "a_worse": 9
+   },
+   "NABD-Pool_minus_persistence_wasted": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "wasted",
+    "n_country_seasons": 36,
+    "mean_a": 11.194,
+    "mean_b": 12.389,
+    "diff_per_season": -1.194,
+    "ci95": [
+     -1.806,
+     -0.556
+    ],
+    "a_better": 23,
+    "ties": 8,
+    "a_worse": 5
+   },
+   "NABD-Pool_minus_seasonal-analog_mismatch": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "mismatch",
+    "n_country_seasons": 36,
+    "mean_a": 12.833,
+    "mean_b": 18.472,
+    "diff_per_season": -5.639,
+    "ci95": [
+     -8.5,
+     -2.972
+    ],
+    "a_better": 25,
+    "ties": 0,
+    "a_worse": 11,
+    "ci95_country_cluster": [
+     -8.205,
+     -1.8
+    ]
+   },
+   "NABD-Pool_minus_seasonal-analog_missed": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "missed",
+    "n_country_seasons": 36,
+    "mean_a": 1.639,
+    "mean_b": 5.444,
+    "diff_per_season": -3.806,
+    "ci95": [
+     -5.194,
+     -2.583
+    ],
+    "a_better": 27,
+    "ties": 5,
+    "a_worse": 4
+   },
+   "NABD-Pool_minus_seasonal-analog_wasted": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "wasted",
+    "n_country_seasons": 36,
+    "mean_a": 11.194,
+    "mean_b": 13.028,
+    "diff_per_season": -1.833,
+    "ci95": [
+     -4.611,
+     0.833
+    ],
+    "a_better": 18,
+    "ties": 4,
+    "a_worse": 14
+   }
+  },
+  "country_q75|p20|h3": {
+   "n_country_seasons": 36,
+   "n_countries": 18,
+   "totals": {
+    "NABD-Pool": {
+     "weeks": 1550,
+     "surge_weeks": 475,
+     "rostered": 855,
+     "missed": 52,
+     "wasted": 432,
+     "mismatch": 484
+    },
+    "NABD-UAE-v1": {
+     "weeks": 1550,
+     "surge_weeks": 475,
+     "rostered": 979,
+     "missed": 52,
+     "wasted": 556,
+     "mismatch": 608
+    },
+    "always-roster": {
+     "weeks": 1550,
+     "surge_weeks": 475,
+     "rostered": 1550,
+     "missed": 0,
+     "wasted": 1075,
+     "mismatch": 1075
+    },
+    "never-roster": {
+     "weeks": 1550,
+     "surge_weeks": 475,
+     "rostered": 0,
+     "missed": 475,
+     "wasted": 0,
+     "mismatch": 475
+    },
+    "perfect-foresight": {
+     "weeks": 1550,
+     "surge_weeks": 475,
+     "rostered": 475,
+     "missed": 0,
+     "wasted": 0,
+     "mismatch": 0
+    },
+    "persistence": {
+     "weeks": 1550,
+     "surge_weeks": 475,
+     "rostered": 927,
+     "missed": 54,
+     "wasted": 506,
+     "mismatch": 560
+    },
+    "seasonal-analog": {
+     "weeks": 1550,
+     "surge_weeks": 475,
+     "rostered": 741,
+     "missed": 191,
+     "wasted": 457,
+     "mismatch": 648
+    }
+   },
+   "per_season_mean": {
+    "NABD-Pool": {
+     "weeks": 43.06,
+     "surge_weeks": 13.19,
+     "rostered": 23.75,
+     "missed": 1.44,
+     "wasted": 12.0,
+     "mismatch": 13.44
+    },
+    "NABD-UAE-v1": {
+     "weeks": 43.06,
+     "surge_weeks": 13.19,
+     "rostered": 27.19,
+     "missed": 1.44,
+     "wasted": 15.44,
+     "mismatch": 16.89
+    },
+    "always-roster": {
+     "weeks": 43.06,
+     "surge_weeks": 13.19,
+     "rostered": 43.06,
+     "missed": 0.0,
+     "wasted": 29.86,
+     "mismatch": 29.86
+    },
+    "never-roster": {
+     "weeks": 43.06,
+     "surge_weeks": 13.19,
+     "rostered": 0.0,
+     "missed": 13.19,
+     "wasted": 0.0,
+     "mismatch": 13.19
+    },
+    "perfect-foresight": {
+     "weeks": 43.06,
+     "surge_weeks": 13.19,
+     "rostered": 13.19,
+     "missed": 0.0,
+     "wasted": 0.0,
+     "mismatch": 0.0
+    },
+    "persistence": {
+     "weeks": 43.06,
+     "surge_weeks": 13.19,
+     "rostered": 25.75,
+     "missed": 1.5,
+     "wasted": 14.06,
+     "mismatch": 15.56
+    },
+    "seasonal-analog": {
+     "weeks": 43.06,
+     "surge_weeks": 13.19,
+     "rostered": 20.58,
+     "missed": 5.31,
+     "wasted": 12.69,
+     "mismatch": 18.0
+    }
+   },
+   "brier": {
+    "NABD-Pool": 0.1488,
+    "NABD-UAE-v1": 0.1663,
+    "always-roster": 0.6919,
+    "never-roster": 0.3081,
+    "perfect-foresight": 0.0,
+    "persistence": 0.1608,
+    "seasonal-analog": 0.2268
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_mismatch": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "mismatch",
+    "n_country_seasons": 36,
+    "mean_a": 13.444,
+    "mean_b": 16.889,
+    "diff_per_season": -3.444,
+    "ci95": [
+     -5.444,
+     -1.667
+    ],
+    "a_better": 28,
+    "ties": 2,
+    "a_worse": 6,
+    "ci95_country_cluster": [
+     -5.618,
+     -1.394
+    ]
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_missed": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "missed",
+    "n_country_seasons": 36,
+    "mean_a": 1.444,
+    "mean_b": 1.444,
+    "diff_per_season": 0.0,
+    "ci95": [
+     -0.5,
+     0.472
+    ],
+    "a_better": 12,
+    "ties": 13,
+    "a_worse": 11
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_wasted": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "wasted",
+    "n_country_seasons": 36,
+    "mean_a": 12.0,
+    "mean_b": 15.444,
+    "diff_per_season": -3.444,
+    "ci95": [
+     -5.473,
+     -1.638
+    ],
+    "a_better": 24,
+    "ties": 6,
+    "a_worse": 6
+   },
+   "NABD-Pool_minus_persistence_mismatch": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "mismatch",
+    "n_country_seasons": 36,
+    "mean_a": 13.444,
+    "mean_b": 15.556,
+    "diff_per_season": -2.111,
+    "ci95": [
+     -3.139,
+     -1.028
+    ],
+    "a_better": 24,
+    "ties": 5,
+    "a_worse": 7,
+    "ci95_country_cluster": [
+     -3.425,
+     -0.928
+    ]
+   },
+   "NABD-Pool_minus_persistence_missed": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "missed",
+    "n_country_seasons": 36,
+    "mean_a": 1.444,
+    "mean_b": 1.5,
+    "diff_per_season": -0.056,
+    "ci95": [
+     -0.472,
+     0.389
+    ],
+    "a_better": 11,
+    "ties": 17,
+    "a_worse": 8
+   },
+   "NABD-Pool_minus_persistence_wasted": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "wasted",
+    "n_country_seasons": 36,
+    "mean_a": 12.0,
+    "mean_b": 14.056,
+    "diff_per_season": -2.056,
+    "ci95": [
+     -3.056,
+     -1.028
+    ],
+    "a_better": 24,
+    "ties": 5,
+    "a_worse": 7
+   },
+   "NABD-Pool_minus_seasonal-analog_mismatch": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "mismatch",
+    "n_country_seasons": 36,
+    "mean_a": 13.444,
+    "mean_b": 18.0,
+    "diff_per_season": -4.556,
+    "ci95": [
+     -7.084,
+     -2.194
+    ],
+    "a_better": 22,
+    "ties": 2,
+    "a_worse": 12,
+    "ci95_country_cluster": [
+     -6.734,
+     -1.344
+    ]
+   },
+   "NABD-Pool_minus_seasonal-analog_missed": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "missed",
+    "n_country_seasons": 36,
+    "mean_a": 1.444,
+    "mean_b": 5.306,
+    "diff_per_season": -3.861,
+    "ci95": [
+     -5.139,
+     -2.667
+    ],
+    "a_better": 28,
+    "ties": 3,
+    "a_worse": 5
+   },
+   "NABD-Pool_minus_seasonal-analog_wasted": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "wasted",
+    "n_country_seasons": 36,
+    "mean_a": 12.0,
+    "mean_b": 12.694,
+    "diff_per_season": -0.694,
+    "ci95": [
+     -3.194,
+     1.667
+    ],
+    "a_better": 17,
+    "ties": 1,
+    "a_worse": 18
+   }
+  },
+  "country_q75|p50|h0": {
+   "n_country_seasons": 36,
+   "n_countries": 18,
+   "totals": {
+    "NABD-Pool": {
+     "weeks": 1656,
+     "surge_weeks": 510,
+     "rostered": 490,
+     "missed": 124,
+     "wasted": 104,
+     "mismatch": 228
+    },
+    "NABD-UAE-v1": {
+     "weeks": 1656,
+     "surge_weeks": 510,
+     "rostered": 503,
+     "missed": 142,
+     "wasted": 135,
+     "mismatch": 277
+    },
+    "always-roster": {
+     "weeks": 1656,
+     "surge_weeks": 510,
+     "rostered": 1656,
+     "missed": 0,
+     "wasted": 1146,
+     "mismatch": 1146
+    },
+    "never-roster": {
+     "weeks": 1656,
+     "surge_weeks": 510,
+     "rostered": 0,
+     "missed": 510,
+     "wasted": 0,
+     "mismatch": 510
+    },
+    "perfect-foresight": {
+     "weeks": 1656,
+     "surge_weeks": 510,
+     "rostered": 510,
+     "missed": 0,
+     "wasted": 0,
+     "mismatch": 0
+    },
+    "persistence": {
+     "weeks": 1656,
+     "surge_weeks": 510,
+     "rostered": 520,
+     "missed": 111,
+     "wasted": 121,
+     "mismatch": 232
+    },
+    "seasonal-analog": {
+     "weeks": 1656,
+     "surge_weeks": 510,
+     "rostered": 266,
+     "missed": 376,
+     "wasted": 132,
+     "mismatch": 508
+    }
+   },
+   "per_season_mean": {
+    "NABD-Pool": {
+     "weeks": 46.0,
+     "surge_weeks": 14.17,
+     "rostered": 13.61,
+     "missed": 3.44,
+     "wasted": 2.89,
+     "mismatch": 6.33
+    },
+    "NABD-UAE-v1": {
+     "weeks": 46.0,
+     "surge_weeks": 14.17,
+     "rostered": 13.97,
+     "missed": 3.94,
+     "wasted": 3.75,
+     "mismatch": 7.69
+    },
+    "always-roster": {
+     "weeks": 46.0,
+     "surge_weeks": 14.17,
+     "rostered": 46.0,
+     "missed": 0.0,
+     "wasted": 31.83,
+     "mismatch": 31.83
+    },
+    "never-roster": {
+     "weeks": 46.0,
+     "surge_weeks": 14.17,
+     "rostered": 0.0,
+     "missed": 14.17,
+     "wasted": 0.0,
+     "mismatch": 14.17
+    },
+    "perfect-foresight": {
+     "weeks": 46.0,
+     "surge_weeks": 14.17,
+     "rostered": 14.17,
+     "missed": 0.0,
+     "wasted": 0.0,
+     "mismatch": 0.0
+    },
+    "persistence": {
+     "weeks": 46.0,
+     "surge_weeks": 14.17,
+     "rostered": 14.44,
+     "missed": 3.08,
+     "wasted": 3.36,
+     "mismatch": 6.44
+    },
+    "seasonal-analog": {
+     "weeks": 46.0,
+     "surge_weeks": 14.17,
+     "rostered": 7.39,
+     "missed": 10.44,
+     "wasted": 3.67,
+     "mismatch": 14.11
+    }
+   },
+   "brier": {
+    "NABD-Pool": 0.0967,
+    "NABD-UAE-v1": 0.1299,
+    "always-roster": 0.6898,
+    "never-roster": 0.3102,
+    "perfect-foresight": 0.0,
+    "persistence": 0.1015,
+    "seasonal-analog": 0.2281
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_mismatch": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "mismatch",
+    "n_country_seasons": 36,
+    "mean_a": 6.333,
+    "mean_b": 7.694,
+    "diff_per_season": -1.361,
+    "ci95": [
+     -2.39,
+     -0.472
+    ],
+    "a_better": 22,
+    "ties": 9,
+    "a_worse": 5,
+    "ci95_country_cluster": [
+     -2.6,
+     -0.565
+    ]
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_missed": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "missed",
+    "n_country_seasons": 36,
+    "mean_a": 3.444,
+    "mean_b": 3.944,
+    "diff_per_season": -0.5,
+    "ci95": [
+     -1.25,
+     0.306
+    ],
+    "a_better": 16,
+    "ties": 14,
+    "a_worse": 6
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_wasted": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "wasted",
+    "n_country_seasons": 36,
+    "mean_a": 2.889,
+    "mean_b": 3.75,
+    "diff_per_season": -0.861,
+    "ci95": [
+     -1.806,
+     -0.056
+    ],
+    "a_better": 14,
+    "ties": 13,
+    "a_worse": 9
+   },
+   "NABD-Pool_minus_persistence_mismatch": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "mismatch",
+    "n_country_seasons": 36,
+    "mean_a": 6.333,
+    "mean_b": 6.444,
+    "diff_per_season": -0.111,
+    "ci95": [
+     -0.472,
+     0.306
+    ],
+    "a_better": 12,
+    "ties": 16,
+    "a_worse": 8,
+    "ci95_country_cluster": [
+     -0.567,
+     0.325
+    ]
+   },
+   "NABD-Pool_minus_persistence_missed": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "missed",
+    "n_country_seasons": 36,
+    "mean_a": 3.444,
+    "mean_b": 3.083,
+    "diff_per_season": 0.361,
+    "ci95": [
+     0.055,
+     0.694
+    ],
+    "a_better": 8,
+    "ties": 12,
+    "a_worse": 16
+   },
+   "NABD-Pool_minus_persistence_wasted": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "wasted",
+    "n_country_seasons": 36,
+    "mean_a": 2.889,
+    "mean_b": 3.361,
+    "diff_per_season": -0.472,
+    "ci95": [
+     -0.861,
+     -0.056
+    ],
+    "a_better": 16,
+    "ties": 15,
+    "a_worse": 5
+   },
+   "NABD-Pool_minus_seasonal-analog_mismatch": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "mismatch",
+    "n_country_seasons": 36,
+    "mean_a": 6.333,
+    "mean_b": 14.111,
+    "diff_per_season": -7.778,
+    "ci95": [
+     -9.639,
+     -5.889
+    ],
+    "a_better": 34,
+    "ties": 0,
+    "a_worse": 2,
+    "ci95_country_cluster": [
+     -9.971,
+     -5.65
+    ]
+   },
+   "NABD-Pool_minus_seasonal-analog_missed": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "missed",
+    "n_country_seasons": 36,
+    "mean_a": 3.444,
+    "mean_b": 10.444,
+    "diff_per_season": -7.0,
+    "ci95": [
+     -8.972,
+     -5.222
+    ],
+    "a_better": 32,
+    "ties": 2,
+    "a_worse": 2
+   },
+   "NABD-Pool_minus_seasonal-analog_wasted": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "wasted",
+    "n_country_seasons": 36,
+    "mean_a": 2.889,
+    "mean_b": 3.667,
+    "diff_per_season": -0.778,
+    "ci95": [
+     -2.028,
+     0.611
+    ],
+    "a_better": 17,
+    "ties": 4,
+    "a_worse": 15
+   }
+  },
+  "country_q75|p50|h1": {
+   "n_country_seasons": 36,
+   "n_countries": 18,
+   "totals": {
+    "NABD-Pool": {
+     "weeks": 1619,
+     "surge_weeks": 501,
+     "rostered": 469,
+     "missed": 139,
+     "wasted": 107,
+     "mismatch": 246
+    },
+    "NABD-UAE-v1": {
+     "weeks": 1619,
+     "surge_weeks": 501,
+     "rostered": 471,
+     "missed": 178,
+     "wasted": 148,
+     "mismatch": 326
+    },
+    "always-roster": {
+     "weeks": 1619,
+     "surge_weeks": 501,
+     "rostered": 1619,
+     "missed": 0,
+     "wasted": 1118,
+     "mismatch": 1118
+    },
+    "never-roster": {
+     "weeks": 1619,
+     "surge_weeks": 501,
+     "rostered": 0,
+     "missed": 501,
+     "wasted": 0,
+     "mismatch": 501
+    },
+    "perfect-foresight": {
+     "weeks": 1619,
+     "surge_weeks": 501,
+     "rostered": 501,
+     "missed": 0,
+     "wasted": 0,
+     "mismatch": 0
+    },
+    "persistence": {
+     "weeks": 1619,
+     "surge_weeks": 501,
+     "rostered": 512,
+     "missed": 129,
+     "wasted": 140,
+     "mismatch": 269
+    },
+    "seasonal-analog": {
+     "weeks": 1619,
+     "surge_weeks": 501,
+     "rostered": 258,
+     "missed": 370,
+     "wasted": 127,
+     "mismatch": 497
+    }
+   },
+   "per_season_mean": {
+    "NABD-Pool": {
+     "weeks": 44.97,
+     "surge_weeks": 13.92,
+     "rostered": 13.03,
+     "missed": 3.86,
+     "wasted": 2.97,
+     "mismatch": 6.83
+    },
+    "NABD-UAE-v1": {
+     "weeks": 44.97,
+     "surge_weeks": 13.92,
+     "rostered": 13.08,
+     "missed": 4.94,
+     "wasted": 4.11,
+     "mismatch": 9.06
+    },
+    "always-roster": {
+     "weeks": 44.97,
+     "surge_weeks": 13.92,
+     "rostered": 44.97,
+     "missed": 0.0,
+     "wasted": 31.06,
+     "mismatch": 31.06
+    },
+    "never-roster": {
+     "weeks": 44.97,
+     "surge_weeks": 13.92,
+     "rostered": 0.0,
+     "missed": 13.92,
+     "wasted": 0.0,
+     "mismatch": 13.92
+    },
+    "perfect-foresight": {
+     "weeks": 44.97,
+     "surge_weeks": 13.92,
+     "rostered": 13.92,
+     "missed": 0.0,
+     "wasted": 0.0,
+     "mismatch": 0.0
+    },
+    "persistence": {
+     "weeks": 44.97,
+     "surge_weeks": 13.92,
+     "rostered": 14.22,
+     "missed": 3.58,
+     "wasted": 3.89,
+     "mismatch": 7.47
+    },
+    "seasonal-analog": {
+     "weeks": 44.97,
+     "surge_weeks": 13.92,
+     "rostered": 7.17,
+     "missed": 10.28,
+     "wasted": 3.53,
+     "mismatch": 13.81
+    }
+   },
+   "brier": {
+    "NABD-Pool": 0.1114,
+    "NABD-UAE-v1": 0.1426,
+    "always-roster": 0.6881,
+    "never-roster": 0.3119,
+    "perfect-foresight": 0.0,
+    "persistence": 0.1147,
+    "seasonal-analog": 0.2287
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_mismatch": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "mismatch",
+    "n_country_seasons": 36,
+    "mean_a": 6.833,
+    "mean_b": 9.056,
+    "diff_per_season": -2.222,
+    "ci95": [
+     -3.084,
+     -1.361
+    ],
+    "a_better": 24,
+    "ties": 6,
+    "a_worse": 6,
+    "ci95_country_cluster": [
+     -3.457,
+     -1.171
+    ]
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_missed": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "missed",
+    "n_country_seasons": 36,
+    "mean_a": 3.861,
+    "mean_b": 4.944,
+    "diff_per_season": -1.083,
+    "ci95": [
+     -2.028,
+     -0.139
+    ],
+    "a_better": 19,
+    "ties": 11,
+    "a_worse": 6
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_wasted": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "wasted",
+    "n_country_seasons": 36,
+    "mean_a": 2.972,
+    "mean_b": 4.111,
+    "diff_per_season": -1.139,
+    "ci95": [
+     -2.222,
+     -0.222
+    ],
+    "a_better": 15,
+    "ties": 11,
+    "a_worse": 10
+   },
+   "NABD-Pool_minus_persistence_mismatch": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "mismatch",
+    "n_country_seasons": 36,
+    "mean_a": 6.833,
+    "mean_b": 7.472,
+    "diff_per_season": -0.639,
+    "ci95": [
+     -1.25,
+     -0.11
+    ],
+    "a_better": 16,
+    "ties": 13,
+    "a_worse": 7,
+    "ci95_country_cluster": [
+     -1.294,
+     -0.14
+    ]
+   },
+   "NABD-Pool_minus_persistence_missed": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "missed",
+    "n_country_seasons": 36,
+    "mean_a": 3.861,
+    "mean_b": 3.583,
+    "diff_per_season": 0.278,
+    "ci95": [
+     -0.194,
+     0.723
+    ],
+    "a_better": 9,
+    "ties": 13,
+    "a_worse": 14
+   },
+   "NABD-Pool_minus_persistence_wasted": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "wasted",
+    "n_country_seasons": 36,
+    "mean_a": 2.972,
+    "mean_b": 3.889,
+    "diff_per_season": -0.917,
+    "ci95": [
+     -1.361,
+     -0.5
+    ],
+    "a_better": 20,
+    "ties": 12,
+    "a_worse": 4
+   },
+   "NABD-Pool_minus_seasonal-analog_mismatch": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "mismatch",
+    "n_country_seasons": 36,
+    "mean_a": 6.833,
+    "mean_b": 13.806,
+    "diff_per_season": -6.972,
+    "ci95": [
+     -8.694,
+     -5.278
+    ],
+    "a_better": 32,
+    "ties": 2,
+    "a_worse": 2,
+    "ci95_country_cluster": [
+     -8.909,
+     -4.969
+    ]
+   },
+   "NABD-Pool_minus_seasonal-analog_missed": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "missed",
+    "n_country_seasons": 36,
+    "mean_a": 3.861,
+    "mean_b": 10.278,
+    "diff_per_season": -6.417,
+    "ci95": [
+     -8.223,
+     -4.722
+    ],
+    "a_better": 32,
+    "ties": 3,
+    "a_worse": 1
+   },
+   "NABD-Pool_minus_seasonal-analog_wasted": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "wasted",
+    "n_country_seasons": 36,
+    "mean_a": 2.972,
+    "mean_b": 3.528,
+    "diff_per_season": -0.556,
+    "ci95": [
+     -1.639,
+     0.583
+    ],
+    "a_better": 16,
+    "ties": 7,
+    "a_worse": 13
+   }
+  },
+  "country_q75|p50|h2": {
+   "n_country_seasons": 36,
+   "n_countries": 18,
+   "totals": {
+    "NABD-Pool": {
+     "weeks": 1585,
+     "surge_weeks": 488,
+     "rostered": 428,
+     "missed": 176,
+     "wasted": 116,
+     "mismatch": 292
+    },
+    "NABD-UAE-v1": {
+     "weeks": 1585,
+     "surge_weeks": 488,
+     "rostered": 409,
+     "missed": 220,
+     "wasted": 141,
+     "mismatch": 361
+    },
+    "always-roster": {
+     "weeks": 1585,
+     "surge_weeks": 488,
+     "rostered": 1585,
+     "missed": 0,
+     "wasted": 1097,
+     "mismatch": 1097
+    },
+    "never-roster": {
+     "weeks": 1585,
+     "surge_weeks": 488,
+     "rostered": 0,
+     "missed": 488,
+     "wasted": 0,
+     "mismatch": 488
+    },
+    "perfect-foresight": {
+     "weeks": 1585,
+     "surge_weeks": 488,
+     "rostered": 488,
+     "missed": 0,
+     "wasted": 0,
+     "mismatch": 0
+    },
+    "persistence": {
+     "weeks": 1585,
+     "surge_weeks": 488,
+     "rostered": 506,
+     "missed": 151,
+     "wasted": 169,
+     "mismatch": 320
+    },
+    "seasonal-analog": {
+     "weeks": 1585,
+     "surge_weeks": 488,
+     "rostered": 256,
+     "missed": 359,
+     "wasted": 127,
+     "mismatch": 486
+    }
+   },
+   "per_season_mean": {
+    "NABD-Pool": {
+     "weeks": 44.03,
+     "surge_weeks": 13.56,
+     "rostered": 11.89,
+     "missed": 4.89,
+     "wasted": 3.22,
+     "mismatch": 8.11
+    },
+    "NABD-UAE-v1": {
+     "weeks": 44.03,
+     "surge_weeks": 13.56,
+     "rostered": 11.36,
+     "missed": 6.11,
+     "wasted": 3.92,
+     "mismatch": 10.03
+    },
+    "always-roster": {
+     "weeks": 44.03,
+     "surge_weeks": 13.56,
+     "rostered": 44.03,
+     "missed": 0.0,
+     "wasted": 30.47,
+     "mismatch": 30.47
+    },
+    "never-roster": {
+     "weeks": 44.03,
+     "surge_weeks": 13.56,
+     "rostered": 0.0,
+     "missed": 13.56,
+     "wasted": 0.0,
+     "mismatch": 13.56
+    },
+    "perfect-foresight": {
+     "weeks": 44.03,
+     "surge_weeks": 13.56,
+     "rostered": 13.56,
+     "missed": 0.0,
+     "wasted": 0.0,
+     "mismatch": 0.0
+    },
+    "persistence": {
+     "weeks": 44.03,
+     "surge_weeks": 13.56,
+     "rostered": 14.06,
+     "missed": 4.19,
+     "wasted": 4.69,
+     "mismatch": 8.89
+    },
+    "seasonal-analog": {
+     "weeks": 44.03,
+     "surge_weeks": 13.56,
+     "rostered": 7.11,
+     "missed": 9.97,
+     "wasted": 3.53,
+     "mismatch": 13.5
+    }
+   },
+   "brier": {
+    "NABD-Pool": 0.1329,
+    "NABD-UAE-v1": 0.1545,
+    "always-roster": 0.69,
+    "never-roster": 0.31,
+    "perfect-foresight": 0.0,
+    "persistence": 0.1408,
+    "seasonal-analog": 0.2283
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_mismatch": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "mismatch",
+    "n_country_seasons": 36,
+    "mean_a": 8.111,
+    "mean_b": 10.028,
+    "diff_per_season": -1.917,
+    "ci95": [
+     -2.806,
+     -1.139
+    ],
+    "a_better": 25,
+    "ties": 6,
+    "a_worse": 5,
+    "ci95_country_cluster": [
+     -3.097,
+     -0.943
+    ]
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_missed": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "missed",
+    "n_country_seasons": 36,
+    "mean_a": 4.889,
+    "mean_b": 6.111,
+    "diff_per_season": -1.222,
+    "ci95": [
+     -1.889,
+     -0.556
+    ],
+    "a_better": 20,
+    "ties": 11,
+    "a_worse": 5
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_wasted": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "wasted",
+    "n_country_seasons": 36,
+    "mean_a": 3.222,
+    "mean_b": 3.917,
+    "diff_per_season": -0.694,
+    "ci95": [
+     -1.306,
+     -0.083
+    ],
+    "a_better": 14,
+    "ties": 13,
+    "a_worse": 9
+   },
+   "NABD-Pool_minus_persistence_mismatch": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "mismatch",
+    "n_country_seasons": 36,
+    "mean_a": 8.111,
+    "mean_b": 8.889,
+    "diff_per_season": -0.778,
+    "ci95": [
+     -1.417,
+     -0.139
+    ],
+    "a_better": 22,
+    "ties": 5,
+    "a_worse": 9,
+    "ci95_country_cluster": [
+     -1.37,
+     -0.257
+    ]
+   },
+   "NABD-Pool_minus_persistence_missed": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "missed",
+    "n_country_seasons": 36,
+    "mean_a": 4.889,
+    "mean_b": 4.194,
+    "diff_per_season": 0.694,
+    "ci95": [
+     0.083,
+     1.333
+    ],
+    "a_better": 8,
+    "ties": 12,
+    "a_worse": 16
+   },
+   "NABD-Pool_minus_persistence_wasted": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "wasted",
+    "n_country_seasons": 36,
+    "mean_a": 3.222,
+    "mean_b": 4.694,
+    "diff_per_season": -1.472,
+    "ci95": [
+     -2.001,
+     -0.944
+    ],
+    "a_better": 23,
+    "ties": 10,
+    "a_worse": 3
+   },
+   "NABD-Pool_minus_seasonal-analog_mismatch": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "mismatch",
+    "n_country_seasons": 36,
+    "mean_a": 8.111,
+    "mean_b": 13.5,
+    "diff_per_season": -5.389,
+    "ci95": [
+     -7.083,
+     -3.667
+    ],
+    "a_better": 32,
+    "ties": 3,
+    "a_worse": 1,
+    "ci95_country_cluster": [
+     -7.162,
+     -3.321
+    ]
+   },
+   "NABD-Pool_minus_seasonal-analog_missed": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "missed",
+    "n_country_seasons": 36,
+    "mean_a": 4.889,
+    "mean_b": 9.972,
+    "diff_per_season": -5.083,
+    "ci95": [
+     -6.89,
+     -3.444
+    ],
+    "a_better": 31,
+    "ties": 3,
+    "a_worse": 2
+   },
+   "NABD-Pool_minus_seasonal-analog_wasted": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "wasted",
+    "n_country_seasons": 36,
+    "mean_a": 3.222,
+    "mean_b": 3.528,
+    "diff_per_season": -0.306,
+    "ci95": [
+     -1.417,
+     0.944
+    ],
+    "a_better": 16,
+    "ties": 3,
+    "a_worse": 17
+   }
+  },
+  "country_q75|p50|h3": {
+   "n_country_seasons": 36,
+   "n_countries": 18,
+   "totals": {
+    "NABD-Pool": {
+     "weeks": 1550,
+     "surge_weeks": 475,
+     "rostered": 380,
+     "missed": 217,
+     "wasted": 122,
+     "mismatch": 339
+    },
+    "NABD-UAE-v1": {
+     "weeks": 1550,
+     "surge_weeks": 475,
+     "rostered": 369,
+     "missed": 244,
+     "wasted": 138,
+     "mismatch": 382
+    },
+    "always-roster": {
+     "weeks": 1550,
+     "surge_weeks": 475,
+     "rostered": 1550,
+     "missed": 0,
+     "wasted": 1075,
+     "mismatch": 1075
+    },
+    "never-roster": {
+     "weeks": 1550,
+     "surge_weeks": 475,
+     "rostered": 0,
+     "missed": 475,
+     "wasted": 0,
+     "mismatch": 475
+    },
+    "perfect-foresight": {
+     "weeks": 1550,
+     "surge_weeks": 475,
+     "rostered": 475,
+     "missed": 0,
+     "wasted": 0,
+     "mismatch": 0
+    },
+    "persistence": {
+     "weeks": 1550,
+     "surge_weeks": 475,
+     "rostered": 495,
+     "missed": 178,
+     "wasted": 198,
+     "mismatch": 376
+    },
+    "seasonal-analog": {
+     "weeks": 1550,
+     "surge_weeks": 475,
+     "rostered": 254,
+     "missed": 346,
+     "wasted": 125,
+     "mismatch": 471
+    }
+   },
+   "per_season_mean": {
+    "NABD-Pool": {
+     "weeks": 43.06,
+     "surge_weeks": 13.19,
+     "rostered": 10.56,
+     "missed": 6.03,
+     "wasted": 3.39,
+     "mismatch": 9.42
+    },
+    "NABD-UAE-v1": {
+     "weeks": 43.06,
+     "surge_weeks": 13.19,
+     "rostered": 10.25,
+     "missed": 6.78,
+     "wasted": 3.83,
+     "mismatch": 10.61
+    },
+    "always-roster": {
+     "weeks": 43.06,
+     "surge_weeks": 13.19,
+     "rostered": 43.06,
+     "missed": 0.0,
+     "wasted": 29.86,
+     "mismatch": 29.86
+    },
+    "never-roster": {
+     "weeks": 43.06,
+     "surge_weeks": 13.19,
+     "rostered": 0.0,
+     "missed": 13.19,
+     "wasted": 0.0,
+     "mismatch": 13.19
+    },
+    "perfect-foresight": {
+     "weeks": 43.06,
+     "surge_weeks": 13.19,
+     "rostered": 13.19,
+     "missed": 0.0,
+     "wasted": 0.0,
+     "mismatch": 0.0
+    },
+    "persistence": {
+     "weeks": 43.06,
+     "surge_weeks": 13.19,
+     "rostered": 13.75,
+     "missed": 4.94,
+     "wasted": 5.5,
+     "mismatch": 10.44
+    },
+    "seasonal-analog": {
+     "weeks": 43.06,
+     "surge_weeks": 13.19,
+     "rostered": 7.06,
+     "missed": 9.61,
+     "wasted": 3.47,
+     "mismatch": 13.08
+    }
+   },
+   "brier": {
+    "NABD-Pool": 0.1488,
+    "NABD-UAE-v1": 0.1663,
+    "always-roster": 0.6919,
+    "never-roster": 0.3081,
+    "perfect-foresight": 0.0,
+    "persistence": 0.1608,
+    "seasonal-analog": 0.2268
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_mismatch": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "mismatch",
+    "n_country_seasons": 36,
+    "mean_a": 9.417,
+    "mean_b": 10.611,
+    "diff_per_season": -1.194,
+    "ci95": [
+     -2.14,
+     -0.305
+    ],
+    "a_better": 21,
+    "ties": 7,
+    "a_worse": 8,
+    "ci95_country_cluster": [
+     -2.387,
+     -0.036
+    ]
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_missed": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "missed",
+    "n_country_seasons": 36,
+    "mean_a": 6.028,
+    "mean_b": 6.778,
+    "diff_per_season": -0.75,
+    "ci95": [
+     -1.445,
+     -0.111
+    ],
+    "a_better": 18,
+    "ties": 10,
+    "a_worse": 8
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_wasted": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "wasted",
+    "n_country_seasons": 36,
+    "mean_a": 3.389,
+    "mean_b": 3.833,
+    "diff_per_season": -0.444,
+    "ci95": [
+     -1.25,
+     0.361
+    ],
+    "a_better": 16,
+    "ties": 11,
+    "a_worse": 9
+   },
+   "NABD-Pool_minus_persistence_mismatch": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "mismatch",
+    "n_country_seasons": 36,
+    "mean_a": 9.417,
+    "mean_b": 10.444,
+    "diff_per_season": -1.028,
+    "ci95": [
+     -1.944,
+     -0.083
+    ],
+    "a_better": 22,
+    "ties": 3,
+    "a_worse": 11,
+    "ci95_country_cluster": [
+     -1.964,
+     -0.231
+    ]
+   },
+   "NABD-Pool_minus_persistence_missed": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "missed",
+    "n_country_seasons": 36,
+    "mean_a": 6.028,
+    "mean_b": 4.944,
+    "diff_per_season": 1.083,
+    "ci95": [
+     0.361,
+     1.833
+    ],
+    "a_better": 4,
+    "ties": 15,
+    "a_worse": 17
+   },
+   "NABD-Pool_minus_persistence_wasted": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "wasted",
+    "n_country_seasons": 36,
+    "mean_a": 3.389,
+    "mean_b": 5.5,
+    "diff_per_season": -2.111,
+    "ci95": [
+     -2.889,
+     -1.306
+    ],
+    "a_better": 23,
+    "ties": 8,
+    "a_worse": 5
+   },
+   "NABD-Pool_minus_seasonal-analog_mismatch": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "mismatch",
+    "n_country_seasons": 36,
+    "mean_a": 9.417,
+    "mean_b": 13.083,
+    "diff_per_season": -3.667,
+    "ci95": [
+     -5.25,
+     -2.222
+    ],
+    "a_better": 26,
+    "ties": 5,
+    "a_worse": 5,
+    "ci95_country_cluster": [
+     -5.175,
+     -1.965
+    ]
+   },
+   "NABD-Pool_minus_seasonal-analog_missed": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "missed",
+    "n_country_seasons": 36,
+    "mean_a": 6.028,
+    "mean_b": 9.611,
+    "diff_per_season": -3.583,
+    "ci95": [
+     -5.222,
+     -2.083
+    ],
+    "a_better": 26,
+    "ties": 5,
+    "a_worse": 5
+   },
+   "NABD-Pool_minus_seasonal-analog_wasted": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "wasted",
+    "n_country_seasons": 36,
+    "mean_a": 3.389,
+    "mean_b": 3.472,
+    "diff_per_season": -0.083,
+    "ci95": [
+     -1.222,
+     1.167
+    ],
+    "a_better": 15,
+    "ties": 4,
+    "a_worse": 17
+   }
+  },
+  "playbook|p30|h0": {
+   "n_country_seasons": 36,
+   "n_countries": 18,
+   "totals": {
+    "NABD-Pool": {
+     "weeks": 1656,
+     "surge_weeks": 638,
+     "rostered": 840,
+     "missed": 37,
+     "wasted": 239,
+     "mismatch": 276
+    },
+    "NABD-UAE-v1": {
+     "weeks": 1656,
+     "surge_weeks": 638,
+     "rostered": 1094,
+     "missed": 19,
+     "wasted": 475,
+     "mismatch": 494
+    },
+    "always-roster": {
+     "weeks": 1656,
+     "surge_weeks": 638,
+     "rostered": 1656,
+     "missed": 0,
+     "wasted": 1018,
+     "mismatch": 1018
+    },
+    "never-roster": {
+     "weeks": 1656,
+     "surge_weeks": 638,
+     "rostered": 0,
+     "missed": 638,
+     "wasted": 0,
+     "mismatch": 638
+    },
+    "perfect-foresight": {
+     "weeks": 1656,
+     "surge_weeks": 638,
+     "rostered": 638,
+     "missed": 0,
+     "wasted": 0,
+     "mismatch": 0
+    },
+    "persistence": {
+     "weeks": 1656,
+     "surge_weeks": 638,
+     "rostered": 844,
+     "missed": 44,
+     "wasted": 250,
+     "mismatch": 294
+    },
+    "seasonal-analog": {
+     "weeks": 1656,
+     "surge_weeks": 638,
+     "rostered": 819,
+     "missed": 188,
+     "wasted": 369,
+     "mismatch": 557
+    }
+   },
+   "per_season_mean": {
+    "NABD-Pool": {
+     "weeks": 46.0,
+     "surge_weeks": 17.72,
+     "rostered": 23.33,
+     "missed": 1.03,
+     "wasted": 6.64,
+     "mismatch": 7.67
+    },
+    "NABD-UAE-v1": {
+     "weeks": 46.0,
+     "surge_weeks": 17.72,
+     "rostered": 30.39,
+     "missed": 0.53,
+     "wasted": 13.19,
+     "mismatch": 13.72
+    },
+    "always-roster": {
+     "weeks": 46.0,
+     "surge_weeks": 17.72,
+     "rostered": 46.0,
+     "missed": 0.0,
+     "wasted": 28.28,
+     "mismatch": 28.28
+    },
+    "never-roster": {
+     "weeks": 46.0,
+     "surge_weeks": 17.72,
+     "rostered": 0.0,
+     "missed": 17.72,
+     "wasted": 0.0,
+     "mismatch": 17.72
+    },
+    "perfect-foresight": {
+     "weeks": 46.0,
+     "surge_weeks": 17.72,
+     "rostered": 17.72,
+     "missed": 0.0,
+     "wasted": 0.0,
+     "mismatch": 0.0
+    },
+    "persistence": {
+     "weeks": 46.0,
+     "surge_weeks": 17.72,
+     "rostered": 23.44,
+     "missed": 1.22,
+     "wasted": 6.94,
+     "mismatch": 8.17
+    },
+    "seasonal-analog": {
+     "weeks": 46.0,
+     "surge_weeks": 17.72,
+     "rostered": 22.75,
+     "missed": 5.22,
+     "wasted": 10.25,
+     "mismatch": 15.47
+    }
+   },
+   "brier": {
+    "NABD-Pool": 0.0917,
+    "NABD-UAE-v1": 0.1306,
+    "always-roster": 0.6112,
+    "never-roster": 0.3888,
+    "perfect-foresight": 0.0,
+    "persistence": 0.0977,
+    "seasonal-analog": 0.2202
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_mismatch": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "mismatch",
+    "n_country_seasons": 36,
+    "mean_a": 7.667,
+    "mean_b": 13.722,
+    "diff_per_season": -6.056,
+    "ci95": [
+     -8.973,
+     -3.389
+    ],
+    "a_better": 26,
+    "ties": 2,
+    "a_worse": 8,
+    "ci95_country_cluster": [
+     -9.226,
+     -3.652
+    ]
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_missed": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "missed",
+    "n_country_seasons": 36,
+    "mean_a": 1.028,
+    "mean_b": 0.528,
+    "diff_per_season": 0.5,
+    "ci95": [
+     0.167,
+     0.861
+    ],
+    "a_better": 2,
+    "ties": 20,
+    "a_worse": 14
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_wasted": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "wasted",
+    "n_country_seasons": 36,
+    "mean_a": 6.639,
+    "mean_b": 13.194,
+    "diff_per_season": -6.556,
+    "ci95": [
+     -9.695,
+     -3.694
+    ],
+    "a_better": 26,
+    "ties": 6,
+    "a_worse": 4
+   },
+   "NABD-Pool_minus_persistence_mismatch": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "mismatch",
+    "n_country_seasons": 36,
+    "mean_a": 7.667,
+    "mean_b": 8.167,
+    "diff_per_season": -0.5,
+    "ci95": [
+     -1.333,
+     0.278
+    ],
+    "a_better": 16,
+    "ties": 10,
+    "a_worse": 10,
+    "ci95_country_cluster": [
+     -1.318,
+     0.207
+    ]
+   },
+   "NABD-Pool_minus_persistence_missed": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "missed",
+    "n_country_seasons": 36,
+    "mean_a": 1.028,
+    "mean_b": 1.222,
+    "diff_per_season": -0.194,
+    "ci95": [
+     -0.528,
+     0.139
+    ],
+    "a_better": 9,
+    "ties": 21,
+    "a_worse": 6
+   },
+   "NABD-Pool_minus_persistence_wasted": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "wasted",
+    "n_country_seasons": 36,
+    "mean_a": 6.639,
+    "mean_b": 6.944,
+    "diff_per_season": -0.306,
+    "ci95": [
+     -1.139,
+     0.472
+    ],
+    "a_better": 15,
+    "ties": 7,
+    "a_worse": 14
+   },
+   "NABD-Pool_minus_seasonal-analog_mismatch": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "mismatch",
+    "n_country_seasons": 36,
+    "mean_a": 7.667,
+    "mean_b": 15.472,
+    "diff_per_season": -7.806,
+    "ci95": [
+     -10.472,
+     -5.388
+    ],
+    "a_better": 31,
+    "ties": 2,
+    "a_worse": 3,
+    "ci95_country_cluster": [
+     -11.775,
+     -4.473
+    ]
+   },
+   "NABD-Pool_minus_seasonal-analog_missed": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "missed",
+    "n_country_seasons": 36,
+    "mean_a": 1.028,
+    "mean_b": 5.222,
+    "diff_per_season": -4.194,
+    "ci95": [
+     -5.778,
+     -2.778
+    ],
+    "a_better": 26,
+    "ties": 5,
+    "a_worse": 5
+   },
+   "NABD-Pool_minus_seasonal-analog_wasted": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "wasted",
+    "n_country_seasons": 36,
+    "mean_a": 6.639,
+    "mean_b": 10.25,
+    "diff_per_season": -3.611,
+    "ci95": [
+     -5.861,
+     -1.5
+    ],
+    "a_better": 22,
+    "ties": 2,
+    "a_worse": 12
+   }
+  },
+  "playbook|p30|h0|short_history": {
+   "n_country_seasons": 14,
+   "n_countries": 14,
+   "totals": {
+    "NABD-Pool": {
+     "weeks": 607,
+     "surge_weeks": 212,
+     "rostered": 288,
+     "missed": 14,
+     "wasted": 90,
+     "mismatch": 104
+    },
+    "NABD-UAE-v1": {
+     "weeks": 607,
+     "surge_weeks": 212,
+     "rostered": 502,
+     "missed": 4,
+     "wasted": 294,
+     "mismatch": 298
+    },
+    "always-roster": {
+     "weeks": 607,
+     "surge_weeks": 212,
+     "rostered": 607,
+     "missed": 0,
+     "wasted": 395,
+     "mismatch": 395
+    },
+    "never-roster": {
+     "weeks": 607,
+     "surge_weeks": 212,
+     "rostered": 0,
+     "missed": 212,
+     "wasted": 0,
+     "mismatch": 212
+    },
+    "perfect-foresight": {
+     "weeks": 607,
+     "surge_weeks": 212,
+     "rostered": 212,
+     "missed": 0,
+     "wasted": 0,
+     "mismatch": 0
+    },
+    "persistence": {
+     "weeks": 607,
+     "surge_weeks": 212,
+     "rostered": 285,
+     "missed": 16,
+     "wasted": 89,
+     "mismatch": 105
+    },
+    "seasonal-analog": {
+     "weeks": 607,
+     "surge_weeks": 212,
+     "rostered": 283,
+     "missed": 57,
+     "wasted": 128,
+     "mismatch": 185
+    }
+   },
+   "per_season_mean": {
+    "NABD-Pool": {
+     "weeks": 43.36,
+     "surge_weeks": 15.14,
+     "rostered": 20.57,
+     "missed": 1.0,
+     "wasted": 6.43,
+     "mismatch": 7.43
+    },
+    "NABD-UAE-v1": {
+     "weeks": 43.36,
+     "surge_weeks": 15.14,
+     "rostered": 35.86,
+     "missed": 0.29,
+     "wasted": 21.0,
+     "mismatch": 21.29
+    },
+    "always-roster": {
+     "weeks": 43.36,
+     "surge_weeks": 15.14,
+     "rostered": 43.36,
+     "missed": 0.0,
+     "wasted": 28.21,
+     "mismatch": 28.21
+    },
+    "never-roster": {
+     "weeks": 43.36,
+     "surge_weeks": 15.14,
+     "rostered": 0.0,
+     "missed": 15.14,
+     "wasted": 0.0,
+     "mismatch": 15.14
+    },
+    "perfect-foresight": {
+     "weeks": 43.36,
+     "surge_weeks": 15.14,
+     "rostered": 15.14,
+     "missed": 0.0,
+     "wasted": 0.0,
+     "mismatch": 0.0
+    },
+    "persistence": {
+     "weeks": 43.36,
+     "surge_weeks": 15.14,
+     "rostered": 20.36,
+     "missed": 1.14,
+     "wasted": 6.36,
+     "mismatch": 7.5
+    },
+    "seasonal-analog": {
+     "weeks": 43.36,
+     "surge_weeks": 15.14,
+     "rostered": 20.21,
+     "missed": 4.07,
+     "wasted": 9.14,
+     "mismatch": 13.21
+    }
+   },
+   "brier": {
+    "NABD-Pool": 0.0912,
+    "NABD-UAE-v1": 0.1677,
+    "always-roster": 0.6433,
+    "never-roster": 0.3567,
+    "perfect-foresight": 0.0,
+    "persistence": 0.0975,
+    "seasonal-analog": 0.1887
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_mismatch": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "mismatch",
+    "n_country_seasons": 14,
+    "mean_a": 7.429,
+    "mean_b": 21.286,
+    "diff_per_season": -13.857,
+    "ci95": [
+     -18.286,
+     -9.571
+    ],
+    "a_better": 14,
+    "ties": 0,
+    "a_worse": 0,
+    "ci95_country_cluster": [
+     -18.286,
+     -9.571
+    ]
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_missed": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "missed",
+    "n_country_seasons": 14,
+    "mean_a": 1.0,
+    "mean_b": 0.286,
+    "diff_per_season": 0.714,
+    "ci95": [
+     0.0,
+     1.5
+    ],
+    "a_better": 1,
+    "ties": 7,
+    "a_worse": 6
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_wasted": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "wasted",
+    "n_country_seasons": 14,
+    "mean_a": 6.429,
+    "mean_b": 21.0,
+    "diff_per_season": -14.571,
+    "ci95": [
+     -19.286,
+     -9.927
+    ],
+    "a_better": 14,
+    "ties": 0,
+    "a_worse": 0
+   },
+   "NABD-Pool_minus_persistence_mismatch": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "mismatch",
+    "n_country_seasons": 14,
+    "mean_a": 7.429,
+    "mean_b": 7.5,
+    "diff_per_season": -0.071,
+    "ci95": [
+     -1.5,
+     1.286
+    ],
+    "a_better": 6,
+    "ties": 4,
+    "a_worse": 4,
+    "ci95_country_cluster": [
+     -1.5,
+     1.286
+    ]
+   },
+   "NABD-Pool_minus_persistence_missed": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "missed",
+    "n_country_seasons": 14,
+    "mean_a": 1.0,
+    "mean_b": 1.143,
+    "diff_per_season": -0.143,
+    "ci95": [
+     -0.571,
+     0.214
+    ],
+    "a_better": 3,
+    "ties": 9,
+    "a_worse": 2
+   },
+   "NABD-Pool_minus_persistence_wasted": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "wasted",
+    "n_country_seasons": 14,
+    "mean_a": 6.429,
+    "mean_b": 6.357,
+    "diff_per_season": 0.071,
+    "ci95": [
+     -1.357,
+     1.357
+    ],
+    "a_better": 5,
+    "ties": 3,
+    "a_worse": 6
+   },
+   "NABD-Pool_minus_seasonal-analog_mismatch": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "mismatch",
+    "n_country_seasons": 14,
+    "mean_a": 7.429,
+    "mean_b": 13.214,
+    "diff_per_season": -5.786,
+    "ci95": [
+     -8.357,
+     -3.284
+    ],
+    "a_better": 12,
+    "ties": 1,
+    "a_worse": 1,
+    "ci95_country_cluster": [
+     -8.357,
+     -3.284
+    ]
+   },
+   "NABD-Pool_minus_seasonal-analog_missed": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "missed",
+    "n_country_seasons": 14,
+    "mean_a": 1.0,
+    "mean_b": 4.071,
+    "diff_per_season": -3.071,
+    "ci95": [
+     -4.357,
+     -1.857
+    ],
+    "a_better": 10,
+    "ties": 4,
+    "a_worse": 0
+   },
+   "NABD-Pool_minus_seasonal-analog_wasted": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "wasted",
+    "n_country_seasons": 14,
+    "mean_a": 6.429,
+    "mean_b": 9.143,
+    "diff_per_season": -2.714,
+    "ci95": [
+     -6.002,
+     0.287
+    ],
+    "a_better": 9,
+    "ties": 0,
+    "a_worse": 5
+   }
+  },
+  "playbook|p30|h1": {
+   "n_country_seasons": 36,
+   "n_countries": 18,
+   "totals": {
+    "NABD-Pool": {
+     "weeks": 1619,
+     "surge_weeks": 621,
+     "rostered": 847,
+     "missed": 44,
+     "wasted": 270,
+     "mismatch": 314
+    },
+    "NABD-UAE-v1": {
+     "weeks": 1619,
+     "surge_weeks": 621,
+     "rostered": 1102,
+     "missed": 25,
+     "wasted": 506,
+     "mismatch": 531
+    },
+    "always-roster": {
+     "weeks": 1619,
+     "surge_weeks": 621,
+     "rostered": 1619,
+     "missed": 0,
+     "wasted": 998,
+     "mismatch": 998
+    },
+    "never-roster": {
+     "weeks": 1619,
+     "surge_weeks": 621,
+     "rostered": 0,
+     "missed": 621,
+     "wasted": 0,
+     "mismatch": 621
+    },
+    "perfect-foresight": {
+     "weeks": 1619,
+     "surge_weeks": 621,
+     "rostered": 621,
+     "missed": 0,
+     "wasted": 0,
+     "mismatch": 0
+    },
+    "persistence": {
+     "weeks": 1619,
+     "surge_weeks": 621,
+     "rostered": 859,
+     "missed": 48,
+     "wasted": 286,
+     "mismatch": 334
+    },
+    "seasonal-analog": {
+     "weeks": 1619,
+     "surge_weeks": 621,
+     "rostered": 799,
+     "missed": 184,
+     "wasted": 362,
+     "mismatch": 546
+    }
+   },
+   "per_season_mean": {
+    "NABD-Pool": {
+     "weeks": 44.97,
+     "surge_weeks": 17.25,
+     "rostered": 23.53,
+     "missed": 1.22,
+     "wasted": 7.5,
+     "mismatch": 8.72
+    },
+    "NABD-UAE-v1": {
+     "weeks": 44.97,
+     "surge_weeks": 17.25,
+     "rostered": 30.61,
+     "missed": 0.69,
+     "wasted": 14.06,
+     "mismatch": 14.75
+    },
+    "always-roster": {
+     "weeks": 44.97,
+     "surge_weeks": 17.25,
+     "rostered": 44.97,
+     "missed": 0.0,
+     "wasted": 27.72,
+     "mismatch": 27.72
+    },
+    "never-roster": {
+     "weeks": 44.97,
+     "surge_weeks": 17.25,
+     "rostered": 0.0,
+     "missed": 17.25,
+     "wasted": 0.0,
+     "mismatch": 17.25
+    },
+    "perfect-foresight": {
+     "weeks": 44.97,
+     "surge_weeks": 17.25,
+     "rostered": 17.25,
+     "missed": 0.0,
+     "wasted": 0.0,
+     "mismatch": 0.0
+    },
+    "persistence": {
+     "weeks": 44.97,
+     "surge_weeks": 17.25,
+     "rostered": 23.86,
+     "missed": 1.33,
+     "wasted": 7.94,
+     "mismatch": 9.28
+    },
+    "seasonal-analog": {
+     "weeks": 44.97,
+     "surge_weeks": 17.25,
+     "rostered": 22.19,
+     "missed": 5.11,
+     "wasted": 10.06,
+     "mismatch": 15.17
+    }
+   },
+   "brier": {
+    "NABD-Pool": 0.1071,
+    "NABD-UAE-v1": 0.1429,
+    "always-roster": 0.6126,
+    "never-roster": 0.3874,
+    "perfect-foresight": 0.0,
+    "persistence": 0.1127,
+    "seasonal-analog": 0.2205
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_mismatch": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "mismatch",
+    "n_country_seasons": 36,
+    "mean_a": 8.722,
+    "mean_b": 14.75,
+    "diff_per_season": -6.028,
+    "ci95": [
+     -9.028,
+     -3.306
+    ],
+    "a_better": 27,
+    "ties": 4,
+    "a_worse": 5,
+    "ci95_country_cluster": [
+     -9.031,
+     -3.721
+    ]
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_missed": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "missed",
+    "n_country_seasons": 36,
+    "mean_a": 1.222,
+    "mean_b": 0.694,
+    "diff_per_season": 0.528,
+    "ci95": [
+     0.111,
+     1.0
+    ],
+    "a_better": 3,
+    "ties": 21,
+    "a_worse": 12
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_wasted": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "wasted",
+    "n_country_seasons": 36,
+    "mean_a": 7.5,
+    "mean_b": 14.056,
+    "diff_per_season": -6.556,
+    "ci95": [
+     -9.806,
+     -3.583
+    ],
+    "a_better": 29,
+    "ties": 3,
+    "a_worse": 4
+   },
+   "NABD-Pool_minus_persistence_mismatch": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "mismatch",
+    "n_country_seasons": 36,
+    "mean_a": 8.722,
+    "mean_b": 9.278,
+    "diff_per_season": -0.556,
+    "ci95": [
+     -1.306,
+     0.194
+    ],
+    "a_better": 17,
+    "ties": 8,
+    "a_worse": 11,
+    "ci95_country_cluster": [
+     -1.138,
+     0.024
+    ]
+   },
+   "NABD-Pool_minus_persistence_missed": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "missed",
+    "n_country_seasons": 36,
+    "mean_a": 1.222,
+    "mean_b": 1.333,
+    "diff_per_season": -0.111,
+    "ci95": [
+     -0.444,
+     0.222
+    ],
+    "a_better": 9,
+    "ties": 21,
+    "a_worse": 6
+   },
+   "NABD-Pool_minus_persistence_wasted": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "wasted",
+    "n_country_seasons": 36,
+    "mean_a": 7.5,
+    "mean_b": 7.944,
+    "diff_per_season": -0.444,
+    "ci95": [
+     -1.194,
+     0.278
+    ],
+    "a_better": 14,
+    "ties": 8,
+    "a_worse": 14
+   },
+   "NABD-Pool_minus_seasonal-analog_mismatch": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "mismatch",
+    "n_country_seasons": 36,
+    "mean_a": 8.722,
+    "mean_b": 15.167,
+    "diff_per_season": -6.444,
+    "ci95": [
+     -9.001,
+     -4.139
+    ],
+    "a_better": 30,
+    "ties": 3,
+    "a_worse": 3,
+    "ci95_country_cluster": [
+     -9.848,
+     -3.263
+    ]
+   },
+   "NABD-Pool_minus_seasonal-analog_missed": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "missed",
+    "n_country_seasons": 36,
+    "mean_a": 1.222,
+    "mean_b": 5.111,
+    "diff_per_season": -3.889,
+    "ci95": [
+     -5.444,
+     -2.472
+    ],
+    "a_better": 25,
+    "ties": 7,
+    "a_worse": 4
+   },
+   "NABD-Pool_minus_seasonal-analog_wasted": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "wasted",
+    "n_country_seasons": 36,
+    "mean_a": 7.5,
+    "mean_b": 10.056,
+    "diff_per_season": -2.556,
+    "ci95": [
+     -4.667,
+     -0.583
+    ],
+    "a_better": 20,
+    "ties": 3,
+    "a_worse": 13
+   }
+  },
+  "playbook|p30|h1|short_history": {
+   "n_country_seasons": 14,
+   "n_countries": 14,
+   "totals": {
+    "NABD-Pool": {
+     "weeks": 592,
+     "surge_weeks": 206,
+     "rostered": 289,
+     "missed": 20,
+     "wasted": 103,
+     "mismatch": 123
+    },
+    "NABD-UAE-v1": {
+     "weeks": 592,
+     "surge_weeks": 206,
+     "rostered": 506,
+     "missed": 2,
+     "wasted": 302,
+     "mismatch": 304
+    },
+    "always-roster": {
+     "weeks": 592,
+     "surge_weeks": 206,
+     "rostered": 592,
+     "missed": 0,
+     "wasted": 386,
+     "mismatch": 386
+    },
+    "never-roster": {
+     "weeks": 592,
+     "surge_weeks": 206,
+     "rostered": 0,
+     "missed": 206,
+     "wasted": 0,
+     "mismatch": 206
+    },
+    "perfect-foresight": {
+     "weeks": 592,
+     "surge_weeks": 206,
+     "rostered": 206,
+     "missed": 0,
+     "wasted": 0,
+     "mismatch": 0
+    },
+    "persistence": {
+     "weeks": 592,
+     "surge_weeks": 206,
+     "rostered": 295,
+     "missed": 22,
+     "wasted": 111,
+     "mismatch": 133
+    },
+    "seasonal-analog": {
+     "weeks": 592,
+     "surge_weeks": 206,
+     "rostered": 277,
+     "missed": 55,
+     "wasted": 126,
+     "mismatch": 181
+    }
+   },
+   "per_season_mean": {
+    "NABD-Pool": {
+     "weeks": 42.29,
+     "surge_weeks": 14.71,
+     "rostered": 20.64,
+     "missed": 1.43,
+     "wasted": 7.36,
+     "mismatch": 8.79
+    },
+    "NABD-UAE-v1": {
+     "weeks": 42.29,
+     "surge_weeks": 14.71,
+     "rostered": 36.14,
+     "missed": 0.14,
+     "wasted": 21.57,
+     "mismatch": 21.71
+    },
+    "always-roster": {
+     "weeks": 42.29,
+     "surge_weeks": 14.71,
+     "rostered": 42.29,
+     "missed": 0.0,
+     "wasted": 27.57,
+     "mismatch": 27.57
+    },
+    "never-roster": {
+     "weeks": 42.29,
+     "surge_weeks": 14.71,
+     "rostered": 0.0,
+     "missed": 14.71,
+     "wasted": 0.0,
+     "mismatch": 14.71
+    },
+    "perfect-foresight": {
+     "weeks": 42.29,
+     "surge_weeks": 14.71,
+     "rostered": 14.71,
+     "missed": 0.0,
+     "wasted": 0.0,
+     "mismatch": 0.0
+    },
+    "persistence": {
+     "weeks": 42.29,
+     "surge_weeks": 14.71,
+     "rostered": 21.07,
+     "missed": 1.57,
+     "wasted": 7.93,
+     "mismatch": 9.5
+    },
+    "seasonal-analog": {
+     "weeks": 42.29,
+     "surge_weeks": 14.71,
+     "rostered": 19.79,
+     "missed": 3.93,
+     "wasted": 9.0,
+     "mismatch": 12.93
+    }
+   },
+   "brier": {
+    "NABD-Pool": 0.1082,
+    "NABD-UAE-v1": 0.1698,
+    "always-roster": 0.6437,
+    "never-roster": 0.3563,
+    "perfect-foresight": 0.0,
+    "persistence": 0.1147,
+    "seasonal-analog": 0.1894
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_mismatch": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "mismatch",
+    "n_country_seasons": 14,
+    "mean_a": 8.786,
+    "mean_b": 21.714,
+    "diff_per_season": -12.929,
+    "ci95": [
+     -18.071,
+     -8.214
+    ],
+    "a_better": 14,
+    "ties": 0,
+    "a_worse": 0,
+    "ci95_country_cluster": [
+     -18.071,
+     -8.214
+    ]
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_missed": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "missed",
+    "n_country_seasons": 14,
+    "mean_a": 1.429,
+    "mean_b": 0.143,
+    "diff_per_season": 1.286,
+    "ci95": [
+     0.5,
+     2.214
+    ],
+    "a_better": 0,
+    "ties": 7,
+    "a_worse": 7
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_wasted": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "wasted",
+    "n_country_seasons": 14,
+    "mean_a": 7.357,
+    "mean_b": 21.571,
+    "diff_per_season": -14.214,
+    "ci95": [
+     -19.502,
+     -9.214
+    ],
+    "a_better": 14,
+    "ties": 0,
+    "a_worse": 0
+   },
+   "NABD-Pool_minus_persistence_mismatch": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "mismatch",
+    "n_country_seasons": 14,
+    "mean_a": 8.786,
+    "mean_b": 9.5,
+    "diff_per_season": -0.714,
+    "ci95": [
+     -1.857,
+     0.571
+    ],
+    "a_better": 8,
+    "ties": 3,
+    "a_worse": 3,
+    "ci95_country_cluster": [
+     -1.857,
+     0.571
+    ]
+   },
+   "NABD-Pool_minus_persistence_missed": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "missed",
+    "n_country_seasons": 14,
+    "mean_a": 1.429,
+    "mean_b": 1.571,
+    "diff_per_season": -0.143,
+    "ci95": [
+     -0.643,
+     0.357
+    ],
+    "a_better": 4,
+    "ties": 8,
+    "a_worse": 2
+   },
+   "NABD-Pool_minus_persistence_wasted": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "wasted",
+    "n_country_seasons": 14,
+    "mean_a": 7.357,
+    "mean_b": 7.929,
+    "diff_per_season": -0.571,
+    "ci95": [
+     -1.714,
+     0.643
+    ],
+    "a_better": 5,
+    "ties": 4,
+    "a_worse": 5
+   },
+   "NABD-Pool_minus_seasonal-analog_mismatch": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "mismatch",
+    "n_country_seasons": 14,
+    "mean_a": 8.786,
+    "mean_b": 12.929,
+    "diff_per_season": -4.143,
+    "ci95": [
+     -6.571,
+     -1.571
+    ],
+    "a_better": 12,
+    "ties": 1,
+    "a_worse": 1,
+    "ci95_country_cluster": [
+     -6.571,
+     -1.571
+    ]
+   },
+   "NABD-Pool_minus_seasonal-analog_missed": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "missed",
+    "n_country_seasons": 14,
+    "mean_a": 1.429,
+    "mean_b": 3.929,
+    "diff_per_season": -2.5,
+    "ci95": [
+     -3.714,
+     -1.357
+    ],
+    "a_better": 10,
+    "ties": 3,
+    "a_worse": 1
+   },
+   "NABD-Pool_minus_seasonal-analog_wasted": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "wasted",
+    "n_country_seasons": 14,
+    "mean_a": 7.357,
+    "mean_b": 9.0,
+    "diff_per_season": -1.643,
+    "ci95": [
+     -4.643,
+     1.143
+    ],
+    "a_better": 7,
+    "ties": 1,
+    "a_worse": 6
+   }
+  },
+  "playbook|p30|h2": {
+   "n_country_seasons": 36,
+   "n_countries": 18,
+   "totals": {
+    "NABD-Pool": {
+     "weeks": 1585,
+     "surge_weeks": 603,
+     "rostered": 849,
+     "missed": 53,
+     "wasted": 299,
+     "mismatch": 352
+    },
+    "NABD-UAE-v1": {
+     "weeks": 1585,
+     "surge_weeks": 603,
+     "rostered": 959,
+     "missed": 54,
+     "wasted": 410,
+     "mismatch": 464
+    },
+    "always-roster": {
+     "weeks": 1585,
+     "surge_weeks": 603,
+     "rostered": 1585,
+     "missed": 0,
+     "wasted": 982,
+     "mismatch": 982
+    },
+    "never-roster": {
+     "weeks": 1585,
+     "surge_weeks": 603,
+     "rostered": 0,
+     "missed": 603,
+     "wasted": 0,
+     "mismatch": 603
+    },
+    "perfect-foresight": {
+     "weeks": 1585,
+     "surge_weeks": 603,
+     "rostered": 603,
+     "missed": 0,
+     "wasted": 0,
+     "mismatch": 0
+    },
+    "persistence": {
+     "weeks": 1585,
+     "surge_weeks": 603,
+     "rostered": 886,
+     "missed": 60,
+     "wasted": 343,
+     "mismatch": 403
+    },
+    "seasonal-analog": {
+     "weeks": 1585,
+     "surge_weeks": 603,
+     "rostered": 781,
+     "missed": 179,
+     "wasted": 357,
+     "mismatch": 536
+    }
+   },
+   "per_season_mean": {
+    "NABD-Pool": {
+     "weeks": 44.03,
+     "surge_weeks": 16.75,
+     "rostered": 23.58,
+     "missed": 1.47,
+     "wasted": 8.31,
+     "mismatch": 9.78
+    },
+    "NABD-UAE-v1": {
+     "weeks": 44.03,
+     "surge_weeks": 16.75,
+     "rostered": 26.64,
+     "missed": 1.5,
+     "wasted": 11.39,
+     "mismatch": 12.89
+    },
+    "always-roster": {
+     "weeks": 44.03,
+     "surge_weeks": 16.75,
+     "rostered": 44.03,
+     "missed": 0.0,
+     "wasted": 27.28,
+     "mismatch": 27.28
+    },
+    "never-roster": {
+     "weeks": 44.03,
+     "surge_weeks": 16.75,
+     "rostered": 0.0,
+     "missed": 16.75,
+     "wasted": 0.0,
+     "mismatch": 16.75
+    },
+    "perfect-foresight": {
+     "weeks": 44.03,
+     "surge_weeks": 16.75,
+     "rostered": 16.75,
+     "missed": 0.0,
+     "wasted": 0.0,
+     "mismatch": 0.0
+    },
+    "persistence": {
+     "weeks": 44.03,
+     "surge_weeks": 16.75,
+     "rostered": 24.61,
+     "missed": 1.67,
+     "wasted": 9.53,
+     "mismatch": 11.19
+    },
+    "seasonal-analog": {
+     "weeks": 44.03,
+     "surge_weeks": 16.75,
+     "rostered": 21.69,
+     "missed": 4.97,
+     "wasted": 9.92,
+     "mismatch": 14.89
+    }
+   },
+   "brier": {
+    "NABD-Pool": 0.1226,
+    "NABD-UAE-v1": 0.1468,
+    "always-roster": 0.617,
+    "never-roster": 0.383,
+    "perfect-foresight": 0.0,
+    "persistence": 0.1318,
+    "seasonal-analog": 0.22
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_mismatch": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "mismatch",
+    "n_country_seasons": 36,
+    "mean_a": 9.778,
+    "mean_b": 12.889,
+    "diff_per_season": -3.111,
+    "ci95": [
+     -4.667,
+     -1.722
+    ],
+    "a_better": 23,
+    "ties": 8,
+    "a_worse": 5,
+    "ci95_country_cluster": [
+     -4.893,
+     -1.6
+    ]
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_missed": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "missed",
+    "n_country_seasons": 36,
+    "mean_a": 1.472,
+    "mean_b": 1.5,
+    "diff_per_season": -0.028,
+    "ci95": [
+     -0.417,
+     0.333
+    ],
+    "a_better": 8,
+    "ties": 19,
+    "a_worse": 9
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_wasted": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "wasted",
+    "n_country_seasons": 36,
+    "mean_a": 8.306,
+    "mean_b": 11.389,
+    "diff_per_season": -3.083,
+    "ci95": [
+     -4.75,
+     -1.611
+    ],
+    "a_better": 22,
+    "ties": 10,
+    "a_worse": 4
+   },
+   "NABD-Pool_minus_persistence_mismatch": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "mismatch",
+    "n_country_seasons": 36,
+    "mean_a": 9.778,
+    "mean_b": 11.194,
+    "diff_per_season": -1.417,
+    "ci95": [
+     -2.528,
+     -0.416
+    ],
+    "a_better": 19,
+    "ties": 7,
+    "a_worse": 10,
+    "ci95_country_cluster": [
+     -2.5,
+     -0.689
+    ]
+   },
+   "NABD-Pool_minus_persistence_missed": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "missed",
+    "n_country_seasons": 36,
+    "mean_a": 1.472,
+    "mean_b": 1.667,
+    "diff_per_season": -0.194,
+    "ci95": [
+     -0.639,
+     0.222
+    ],
+    "a_better": 11,
+    "ties": 16,
+    "a_worse": 9
+   },
+   "NABD-Pool_minus_persistence_wasted": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "wasted",
+    "n_country_seasons": 36,
+    "mean_a": 8.306,
+    "mean_b": 9.528,
+    "diff_per_season": -1.222,
+    "ci95": [
+     -2.362,
+     -0.194
+    ],
+    "a_better": 15,
+    "ties": 9,
+    "a_worse": 12
+   },
+   "NABD-Pool_minus_seasonal-analog_mismatch": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "mismatch",
+    "n_country_seasons": 36,
+    "mean_a": 9.778,
+    "mean_b": 14.889,
+    "diff_per_season": -5.111,
+    "ci95": [
+     -7.444,
+     -3.083
+    ],
+    "a_better": 27,
+    "ties": 5,
+    "a_worse": 4,
+    "ci95_country_cluster": [
+     -7.976,
+     -2.387
+    ]
+   },
+   "NABD-Pool_minus_seasonal-analog_missed": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "missed",
+    "n_country_seasons": 36,
+    "mean_a": 1.472,
+    "mean_b": 4.972,
+    "diff_per_season": -3.5,
+    "ci95": [
+     -5.056,
+     -2.111
+    ],
+    "a_better": 25,
+    "ties": 6,
+    "a_worse": 5
+   },
+   "NABD-Pool_minus_seasonal-analog_wasted": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "wasted",
+    "n_country_seasons": 36,
+    "mean_a": 8.306,
+    "mean_b": 9.917,
+    "diff_per_season": -1.611,
+    "ci95": [
+     -3.583,
+     0.222
+    ],
+    "a_better": 15,
+    "ties": 8,
+    "a_worse": 13
+   }
+  },
+  "playbook|p30|h2|short_history": {
+   "n_country_seasons": 14,
+   "n_countries": 14,
+   "totals": {
+    "NABD-Pool": {
+     "weeks": 579,
+     "surge_weeks": 199,
+     "rostered": 278,
+     "missed": 26,
+     "wasted": 105,
+     "mismatch": 131
+    },
+    "NABD-UAE-v1": {
+     "weeks": 579,
+     "surge_weeks": 199,
+     "rostered": 363,
+     "missed": 21,
+     "wasted": 185,
+     "mismatch": 206
+    },
+    "always-roster": {
+     "weeks": 579,
+     "surge_weeks": 199,
+     "rostered": 579,
+     "missed": 0,
+     "wasted": 380,
+     "mismatch": 380
+    },
+    "never-roster": {
+     "weeks": 579,
+     "surge_weeks": 199,
+     "rostered": 0,
+     "missed": 199,
+     "wasted": 0,
+     "mismatch": 199
+    },
+    "perfect-foresight": {
+     "weeks": 579,
+     "surge_weeks": 199,
+     "rostered": 199,
+     "missed": 0,
+     "wasted": 0,
+     "mismatch": 0
+    },
+    "persistence": {
+     "weeks": 579,
+     "surge_weeks": 199,
+     "rostered": 313,
+     "missed": 30,
+     "wasted": 144,
+     "mismatch": 174
+    },
+    "seasonal-analog": {
+     "weeks": 579,
+     "surge_weeks": 199,
+     "rostered": 269,
+     "missed": 52,
+     "wasted": 122,
+     "mismatch": 174
+    }
+   },
+   "per_season_mean": {
+    "NABD-Pool": {
+     "weeks": 41.36,
+     "surge_weeks": 14.21,
+     "rostered": 19.86,
+     "missed": 1.86,
+     "wasted": 7.5,
+     "mismatch": 9.36
+    },
+    "NABD-UAE-v1": {
+     "weeks": 41.36,
+     "surge_weeks": 14.21,
+     "rostered": 25.93,
+     "missed": 1.5,
+     "wasted": 13.21,
+     "mismatch": 14.71
+    },
+    "always-roster": {
+     "weeks": 41.36,
+     "surge_weeks": 14.21,
+     "rostered": 41.36,
+     "missed": 0.0,
+     "wasted": 27.14,
+     "mismatch": 27.14
+    },
+    "never-roster": {
+     "weeks": 41.36,
+     "surge_weeks": 14.21,
+     "rostered": 0.0,
+     "missed": 14.21,
+     "wasted": 0.0,
+     "mismatch": 14.21
+    },
+    "perfect-foresight": {
+     "weeks": 41.36,
+     "surge_weeks": 14.21,
+     "rostered": 14.21,
+     "missed": 0.0,
+     "wasted": 0.0,
+     "mismatch": 0.0
+    },
+    "persistence": {
+     "weeks": 41.36,
+     "surge_weeks": 14.21,
+     "rostered": 22.36,
+     "missed": 2.14,
+     "wasted": 10.29,
+     "mismatch": 12.43
+    },
+    "seasonal-analog": {
+     "weeks": 41.36,
+     "surge_weeks": 14.21,
+     "rostered": 19.21,
+     "missed": 3.71,
+     "wasted": 8.71,
+     "mismatch": 12.43
+    }
+   },
+   "brier": {
+    "NABD-Pool": 0.1299,
+    "NABD-UAE-v1": 0.1547,
+    "always-roster": 0.65,
+    "never-roster": 0.35,
+    "perfect-foresight": 0.0,
+    "persistence": 0.1436,
+    "seasonal-analog": 0.1873
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_mismatch": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "mismatch",
+    "n_country_seasons": 14,
+    "mean_a": 9.357,
+    "mean_b": 14.714,
+    "diff_per_season": -5.357,
+    "ci95": [
+     -7.929,
+     -2.929
+    ],
+    "a_better": 12,
+    "ties": 0,
+    "a_worse": 2,
+    "ci95_country_cluster": [
+     -7.929,
+     -2.929
+    ]
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_missed": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "missed",
+    "n_country_seasons": 14,
+    "mean_a": 1.857,
+    "mean_b": 1.5,
+    "diff_per_season": 0.357,
+    "ci95": [
+     -0.071,
+     0.786
+    ],
+    "a_better": 3,
+    "ties": 4,
+    "a_worse": 7
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_wasted": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "wasted",
+    "n_country_seasons": 14,
+    "mean_a": 7.5,
+    "mean_b": 13.214,
+    "diff_per_season": -5.714,
+    "ci95": [
+     -8.571,
+     -3.0
+    ],
+    "a_better": 11,
+    "ties": 1,
+    "a_worse": 2
+   },
+   "NABD-Pool_minus_persistence_mismatch": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "mismatch",
+    "n_country_seasons": 14,
+    "mean_a": 9.357,
+    "mean_b": 12.429,
+    "diff_per_season": -3.071,
+    "ci95": [
+     -5.0,
+     -1.214
+    ],
+    "a_better": 10,
+    "ties": 2,
+    "a_worse": 2,
+    "ci95_country_cluster": [
+     -5.0,
+     -1.214
+    ]
+   },
+   "NABD-Pool_minus_persistence_missed": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "missed",
+    "n_country_seasons": 14,
+    "mean_a": 1.857,
+    "mean_b": 2.143,
+    "diff_per_season": -0.286,
+    "ci95": [
+     -0.929,
+     0.357
+    ],
+    "a_better": 4,
+    "ties": 7,
+    "a_worse": 3
+   },
+   "NABD-Pool_minus_persistence_wasted": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "wasted",
+    "n_country_seasons": 14,
+    "mean_a": 7.5,
+    "mean_b": 10.286,
+    "diff_per_season": -2.786,
+    "ci95": [
+     -4.786,
+     -0.857
+    ],
+    "a_better": 8,
+    "ties": 3,
+    "a_worse": 3
+   },
+   "NABD-Pool_minus_seasonal-analog_mismatch": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "mismatch",
+    "n_country_seasons": 14,
+    "mean_a": 9.357,
+    "mean_b": 12.429,
+    "diff_per_season": -3.071,
+    "ci95": [
+     -5.071,
+     -0.998
+    ],
+    "a_better": 12,
+    "ties": 0,
+    "a_worse": 2,
+    "ci95_country_cluster": [
+     -5.071,
+     -0.998
+    ]
+   },
+   "NABD-Pool_minus_seasonal-analog_missed": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "missed",
+    "n_country_seasons": 14,
+    "mean_a": 1.857,
+    "mean_b": 3.714,
+    "diff_per_season": -1.857,
+    "ci95": [
+     -3.071,
+     -0.643
+    ],
+    "a_better": 9,
+    "ties": 3,
+    "a_worse": 2
+   },
+   "NABD-Pool_minus_seasonal-analog_wasted": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "wasted",
+    "n_country_seasons": 14,
+    "mean_a": 7.5,
+    "mean_b": 8.714,
+    "diff_per_season": -1.214,
+    "ci95": [
+     -3.857,
+     1.143
+    ],
+    "a_better": 5,
+    "ties": 3,
+    "a_worse": 6
+   }
+  },
+  "playbook|p30|h3": {
+   "n_country_seasons": 36,
+   "n_countries": 18,
+   "totals": {
+    "NABD-Pool": {
+     "weeks": 1550,
+     "surge_weeks": 588,
+     "rostered": 855,
+     "missed": 58,
+     "wasted": 325,
+     "mismatch": 383
+    },
+    "NABD-UAE-v1": {
+     "weeks": 1550,
+     "surge_weeks": 588,
+     "rostered": 922,
+     "missed": 67,
+     "wasted": 401,
+     "mismatch": 468
+    },
+    "always-roster": {
+     "weeks": 1550,
+     "surge_weeks": 588,
+     "rostered": 1550,
+     "missed": 0,
+     "wasted": 962,
+     "mismatch": 962
+    },
+    "never-roster": {
+     "weeks": 1550,
+     "surge_weeks": 588,
+     "rostered": 0,
+     "missed": 588,
+     "wasted": 0,
+     "mismatch": 588
+    },
+    "perfect-foresight": {
+     "weeks": 1550,
+     "surge_weeks": 588,
+     "rostered": 588,
+     "missed": 0,
+     "wasted": 0,
+     "mismatch": 0
+    },
+    "persistence": {
+     "weeks": 1550,
+     "surge_weeks": 588,
+     "rostered": 901,
+     "missed": 55,
+     "wasted": 368,
+     "mismatch": 423
+    },
+    "seasonal-analog": {
+     "weeks": 1550,
+     "surge_weeks": 588,
+     "rostered": 761,
+     "missed": 175,
+     "wasted": 348,
+     "mismatch": 523
+    }
+   },
+   "per_season_mean": {
+    "NABD-Pool": {
+     "weeks": 43.06,
+     "surge_weeks": 16.33,
+     "rostered": 23.75,
+     "missed": 1.61,
+     "wasted": 9.03,
+     "mismatch": 10.64
+    },
+    "NABD-UAE-v1": {
+     "weeks": 43.06,
+     "surge_weeks": 16.33,
+     "rostered": 25.61,
+     "missed": 1.86,
+     "wasted": 11.14,
+     "mismatch": 13.0
+    },
+    "always-roster": {
+     "weeks": 43.06,
+     "surge_weeks": 16.33,
+     "rostered": 43.06,
+     "missed": 0.0,
+     "wasted": 26.72,
+     "mismatch": 26.72
+    },
+    "never-roster": {
+     "weeks": 43.06,
+     "surge_weeks": 16.33,
+     "rostered": 0.0,
+     "missed": 16.33,
+     "wasted": 0.0,
+     "mismatch": 16.33
+    },
+    "perfect-foresight": {
+     "weeks": 43.06,
+     "surge_weeks": 16.33,
+     "rostered": 16.33,
+     "missed": 0.0,
+     "wasted": 0.0,
+     "mismatch": 0.0
+    },
+    "persistence": {
+     "weeks": 43.06,
+     "surge_weeks": 16.33,
+     "rostered": 25.03,
+     "missed": 1.53,
+     "wasted": 10.22,
+     "mismatch": 11.75
+    },
+    "seasonal-analog": {
+     "weeks": 43.06,
+     "surge_weeks": 16.33,
+     "rostered": 21.14,
+     "missed": 4.86,
+     "wasted": 9.67,
+     "mismatch": 14.53
+    }
+   },
+   "brier": {
+    "NABD-Pool": 0.1362,
+    "NABD-UAE-v1": 0.159,
+    "always-roster": 0.6188,
+    "never-roster": 0.3812,
+    "perfect-foresight": 0.0,
+    "persistence": 0.1457,
+    "seasonal-analog": 0.2185
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_mismatch": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "mismatch",
+    "n_country_seasons": 36,
+    "mean_a": 10.639,
+    "mean_b": 13.0,
+    "diff_per_season": -2.361,
+    "ci95": [
+     -3.667,
+     -1.167
+    ],
+    "a_better": 22,
+    "ties": 6,
+    "a_worse": 8,
+    "ci95_country_cluster": [
+     -3.839,
+     -0.947
+    ]
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_missed": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "missed",
+    "n_country_seasons": 36,
+    "mean_a": 1.611,
+    "mean_b": 1.861,
+    "diff_per_season": -0.25,
+    "ci95": [
+     -0.778,
+     0.251
+    ],
+    "a_better": 13,
+    "ties": 18,
+    "a_worse": 5
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_wasted": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "wasted",
+    "n_country_seasons": 36,
+    "mean_a": 9.028,
+    "mean_b": 11.139,
+    "diff_per_season": -2.111,
+    "ci95": [
+     -3.417,
+     -0.806
+    ],
+    "a_better": 23,
+    "ties": 7,
+    "a_worse": 6
+   },
+   "NABD-Pool_minus_persistence_mismatch": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "mismatch",
+    "n_country_seasons": 36,
+    "mean_a": 10.639,
+    "mean_b": 11.75,
+    "diff_per_season": -1.111,
+    "ci95": [
+     -2.222,
+     -0.056
+    ],
+    "a_better": 16,
+    "ties": 9,
+    "a_worse": 11,
+    "ci95_country_cluster": [
+     -2.53,
+     0.189
+    ]
+   },
+   "NABD-Pool_minus_persistence_missed": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "missed",
+    "n_country_seasons": 36,
+    "mean_a": 1.611,
+    "mean_b": 1.528,
+    "diff_per_season": 0.083,
+    "ci95": [
+     -0.361,
+     0.528
+    ],
+    "a_better": 10,
+    "ties": 15,
+    "a_worse": 11
+   },
+   "NABD-Pool_minus_persistence_wasted": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "wasted",
+    "n_country_seasons": 36,
+    "mean_a": 9.028,
+    "mean_b": 10.222,
+    "diff_per_season": -1.194,
+    "ci95": [
+     -2.389,
+     -0.055
+    ],
+    "a_better": 20,
+    "ties": 5,
+    "a_worse": 11
+   },
+   "NABD-Pool_minus_seasonal-analog_mismatch": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "mismatch",
+    "n_country_seasons": 36,
+    "mean_a": 10.639,
+    "mean_b": 14.528,
+    "diff_per_season": -3.889,
+    "ci95": [
+     -6.056,
+     -2.0
+    ],
+    "a_better": 21,
+    "ties": 8,
+    "a_worse": 7,
+    "ci95_country_cluster": [
+     -6.29,
+     -1.499
+    ]
+   },
+   "NABD-Pool_minus_seasonal-analog_missed": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "missed",
+    "n_country_seasons": 36,
+    "mean_a": 1.611,
+    "mean_b": 4.861,
+    "diff_per_season": -3.25,
+    "ci95": [
+     -4.694,
+     -1.944
+    ],
+    "a_better": 25,
+    "ties": 7,
+    "a_worse": 4
+   },
+   "NABD-Pool_minus_seasonal-analog_wasted": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "wasted",
+    "n_country_seasons": 36,
+    "mean_a": 9.028,
+    "mean_b": 9.667,
+    "diff_per_season": -0.639,
+    "ci95": [
+     -2.444,
+     1.056
+    ],
+    "a_better": 13,
+    "ties": 7,
+    "a_worse": 16
+   }
+  },
+  "playbook|p30|h3|short_history": {
+   "n_country_seasons": 14,
+   "n_countries": 14,
+   "totals": {
+    "NABD-Pool": {
+     "weeks": 566,
+     "surge_weeks": 191,
+     "rostered": 282,
+     "missed": 28,
+     "wasted": 119,
+     "mismatch": 147
+    },
+    "NABD-UAE-v1": {
+     "weeks": 566,
+     "surge_weeks": 191,
+     "rostered": 328,
+     "missed": 27,
+     "wasted": 164,
+     "mismatch": 191
+    },
+    "always-roster": {
+     "weeks": 566,
+     "surge_weeks": 191,
+     "rostered": 566,
+     "missed": 0,
+     "wasted": 375,
+     "mismatch": 375
+    },
+    "never-roster": {
+     "weeks": 566,
+     "surge_weeks": 191,
+     "rostered": 0,
+     "missed": 191,
+     "wasted": 0,
+     "mismatch": 191
+    },
+    "perfect-foresight": {
+     "weeks": 566,
+     "surge_weeks": 191,
+     "rostered": 191,
+     "missed": 0,
+     "wasted": 0,
+     "mismatch": 0
+    },
+    "persistence": {
+     "weeks": 566,
+     "surge_weeks": 191,
+     "rostered": 322,
+     "missed": 29,
+     "wasted": 160,
+     "mismatch": 189
+    },
+    "seasonal-analog": {
+     "weeks": 566,
+     "surge_weeks": 191,
+     "rostered": 260,
+     "missed": 49,
+     "wasted": 118,
+     "mismatch": 167
+    }
+   },
+   "per_season_mean": {
+    "NABD-Pool": {
+     "weeks": 40.43,
+     "surge_weeks": 13.64,
+     "rostered": 20.14,
+     "missed": 2.0,
+     "wasted": 8.5,
+     "mismatch": 10.5
+    },
+    "NABD-UAE-v1": {
+     "weeks": 40.43,
+     "surge_weeks": 13.64,
+     "rostered": 23.43,
+     "missed": 1.93,
+     "wasted": 11.71,
+     "mismatch": 13.64
+    },
+    "always-roster": {
+     "weeks": 40.43,
+     "surge_weeks": 13.64,
+     "rostered": 40.43,
+     "missed": 0.0,
+     "wasted": 26.79,
+     "mismatch": 26.79
+    },
+    "never-roster": {
+     "weeks": 40.43,
+     "surge_weeks": 13.64,
+     "rostered": 0.0,
+     "missed": 13.64,
+     "wasted": 0.0,
+     "mismatch": 13.64
+    },
+    "perfect-foresight": {
+     "weeks": 40.43,
+     "surge_weeks": 13.64,
+     "rostered": 13.64,
+     "missed": 0.0,
+     "wasted": 0.0,
+     "mismatch": 0.0
+    },
+    "persistence": {
+     "weeks": 40.43,
+     "surge_weeks": 13.64,
+     "rostered": 23.0,
+     "missed": 2.07,
+     "wasted": 11.43,
+     "mismatch": 13.5
+    },
+    "seasonal-analog": {
+     "weeks": 40.43,
+     "surge_weeks": 13.64,
+     "rostered": 18.57,
+     "missed": 3.5,
+     "wasted": 8.43,
+     "mismatch": 11.93
+    }
+   },
+   "brier": {
+    "NABD-Pool": 0.1422,
+    "NABD-UAE-v1": 0.1564,
+    "always-roster": 0.6576,
+    "never-roster": 0.3424,
+    "perfect-foresight": 0.0,
+    "persistence": 0.1623,
+    "seasonal-analog": 0.1826
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_mismatch": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "mismatch",
+    "n_country_seasons": 14,
+    "mean_a": 10.5,
+    "mean_b": 13.643,
+    "diff_per_season": -3.143,
+    "ci95": [
+     -5.429,
+     -1.0
+    ],
+    "a_better": 8,
+    "ties": 2,
+    "a_worse": 4,
+    "ci95_country_cluster": [
+     -5.429,
+     -1.0
+    ]
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_missed": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "missed",
+    "n_country_seasons": 14,
+    "mean_a": 2.0,
+    "mean_b": 1.929,
+    "diff_per_season": 0.071,
+    "ci95": [
+     -0.5,
+     0.714
+    ],
+    "a_better": 4,
+    "ties": 7,
+    "a_worse": 3
+   },
+   "NABD-Pool_minus_NABD-UAE-v1_wasted": {
+    "a": "NABD-Pool",
+    "b": "NABD-UAE-v1",
+    "metric": "wasted",
+    "n_country_seasons": 14,
+    "mean_a": 8.5,
+    "mean_b": 11.714,
+    "diff_per_season": -3.214,
+    "ci95": [
+     -5.714,
+     -0.857
+    ],
+    "a_better": 9,
+    "ties": 2,
+    "a_worse": 3
+   },
+   "NABD-Pool_minus_persistence_mismatch": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "mismatch",
+    "n_country_seasons": 14,
+    "mean_a": 10.5,
+    "mean_b": 13.5,
+    "diff_per_season": -3.0,
+    "ci95": [
+     -4.929,
+     -1.0
+    ],
+    "a_better": 9,
+    "ties": 2,
+    "a_worse": 3,
+    "ci95_country_cluster": [
+     -4.929,
+     -1.0
+    ]
+   },
+   "NABD-Pool_minus_persistence_missed": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "missed",
+    "n_country_seasons": 14,
+    "mean_a": 2.0,
+    "mean_b": 2.071,
+    "diff_per_season": -0.071,
+    "ci95": [
+     -0.786,
+     0.571
+    ],
+    "a_better": 3,
+    "ties": 7,
+    "a_worse": 4
+   },
+   "NABD-Pool_minus_persistence_wasted": {
+    "a": "NABD-Pool",
+    "b": "persistence",
+    "metric": "wasted",
+    "n_country_seasons": 14,
+    "mean_a": 8.5,
+    "mean_b": 11.429,
+    "diff_per_season": -2.929,
+    "ci95": [
+     -4.929,
+     -0.927
+    ],
+    "a_better": 9,
+    "ties": 2,
+    "a_worse": 3
+   },
+   "NABD-Pool_minus_seasonal-analog_mismatch": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "mismatch",
+    "n_country_seasons": 14,
+    "mean_a": 10.5,
+    "mean_b": 11.929,
+    "diff_per_season": -1.429,
+    "ci95": [
+     -3.429,
+     0.5
+    ],
+    "a_better": 7,
+    "ties": 3,
+    "a_worse": 4,
+    "ci95_country_cluster": [
+     -3.429,
+     0.5
+    ]
+   },
+   "NABD-Pool_minus_seasonal-analog_missed": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "missed",
+    "n_country_seasons": 14,
+    "mean_a": 2.0,
+    "mean_b": 3.5,
+    "diff_per_season": -1.5,
+    "ci95": [
+     -2.571,
+     -0.357
+    ],
+    "a_better": 9,
+    "ties": 3,
+    "a_worse": 2
+   },
+   "NABD-Pool_minus_seasonal-analog_wasted": {
+    "a": "NABD-Pool",
+    "b": "seasonal-analog",
+    "metric": "wasted",
+    "n_country_seasons": 14,
+    "mean_a": 8.5,
+    "mean_b": 8.429,
+    "diff_per_season": 0.071,
+    "ci95": [
+     -2.287,
+     2.214
+    ],
+    "a_better": 5,
+    "ties": 0,
+    "a_worse": 9
+   }
+  }
+ }
+}

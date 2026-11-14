@@ -2,6 +2,7 @@
 
     python -m ledger.weekly --fetch      # live: pull WHO FluNet, score past rounds, issue a round only if new data
     python -m ledger.weekly --cached     # dry run on data/raw
+    python -m ledger.weekly --fetch --with-pool   # also hash the pooled challenger (NABD-Pool) in the new round
 
 Steps:
   1. Load FluNet UAE (live or cached).
@@ -49,7 +50,7 @@ def next_label(label):
     return f"R{int(label[1:]) + 1}"
 
 
-def run(mode="cached", allow_issue=True):
+def run(mode="cached", allow_issue=True, with_pool=False):
     sc, bad = scorer.score(mode)
     rnd, through = latest_round()
     pub = latest_published_week(mode)
@@ -57,7 +58,7 @@ def run(mode="cached", allow_issue=True):
            "latest_round_data_through": through, "latest_published_week": pub, "issued": None}
     if allow_issue and (through is None or pub > through):
         label = next_label(rnd)
-        written = issue(mode, label)
+        written = issue(mode, label, with_pool=with_pool)
         out["issued"] = label
         out["files"] = [str(p.relative_to(ROOT)) for p, _ in written]
     return out
@@ -69,8 +70,10 @@ def main():
     g.add_argument("--cached", action="store_true")
     g.add_argument("--fetch", action="store_true")
     ap.add_argument("--no-issue", action="store_true", help="score only; never issue a round")
+    ap.add_argument("--with-pool", action="store_true",
+                    help="also issue the NABD-Pool challenger with the round (docs/PREREG-POOL.md; v1 stays the headline)")
     a = ap.parse_args()
-    out = run("fetch" if a.fetch else "cached", allow_issue=not a.no_issue)
+    out = run("fetch" if a.fetch else "cached", allow_issue=not a.no_issue, with_pool=a.with_pool)
     print(json.dumps(out, indent=2))
     if out["issued"]:
         rd = sorted((LEDGER / "rounds").glob(f"*_{out['issued']}"))[-1]

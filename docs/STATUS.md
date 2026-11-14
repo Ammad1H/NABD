@@ -1,4 +1,23 @@
-# NABD status after build round 4 (ops & integrity), 2026-11-08
+# NABD status, 14 Nov 2026 (final stretch)
+
+**Where it stands.** The prototype runs end to end from a clean checkout: `pip install -r requirements-dev.txt`, `pytest -q` (145 tests pass, none skipped, with the CDC hub cloned by `python -m eval.run_all --fetch`), `streamlit run app/streamlit_app.py`. Submission is due 20 Nov.
+
+| Item | State on 14 Nov |
+|---|---|
+| S1 borrowed-strength test (the science) | **Done, primary MET**: pooled model vs own-record model 0.767 (0.681–0.832) on 18 held-out countries (`results/pool/SUMMARY.md`; TECHNICAL §6.4) |
+| S2 Gulf decision replay | Done, post hoc (`results/replay/SUMMARY.md`) |
+| S3 Start-here landing and Season Replay page | Done |
+| S4 decision replay of the pooled model on the held-out countries | Done, post hoc (DEVIATIONS V2; `results/replay/pool/SUMMARY.md`): better than the own-record model, not distinguishable from last week carried forward |
+| Live ledger | R0/R1 issued 8 Nov on data through 2026-W44. **WHO had not published W45 on 14 Nov** (official API checked), so 0 weeks are scored and no new round is due. Next: `python -m ledger.weekly --fetch --with-pool` once W45 appears |
+| Outside anchoring, public repo, deployed app | **Not done** (user-only steps below). Every lock and ledger time is still self-attested |
+| Deck (Slides artifact) and video | Not yet synced with S1/S4; `pitch/deck-script.md` slide 7b and `pitch/qa.md` carry the wording |
+| Portability fixes (14 Nov) | `scikit-learn` and the bulletin packages added to `requirements-dev.txt`; bulletin fonts fall back to matplotlib's DejaVu; deprecated pandas calls removed; leakage tests skip cleanly without the hub clone |
+
+The round-4 gate table and the user-only steps below are unchanged except where noted.
+
+---
+
+## Gate table after build round 4 (ops & integrity), 2026-11-08
 
 Gate verdicts take the R3 audit (docs/REVIEW-R3-audit.md) and apply the round-4 ops changes. Pitch and app work from the other round-4 workstreams may move G8 and G9 further; re-check them with `scripts/prepare_public_repo.sh` (banned-claim scan).
 

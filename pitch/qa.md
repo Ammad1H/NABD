@@ -131,6 +131,21 @@
 - **What makes it more than an ordinary back-test:** the countries were unseen and the plan was fixed before download.
 - **The truly prospective test** is the live ledger.
 
+## B2. Borrowed strength (S1) and the decision replays
+
+**"Your UAE result is only a tie. Why should we believe this works here?"**
+- On the UAE's own record it is a tie (1.002), and we say so. The UAE has four seasons of sentinel data, and the own-record method needs more.
+- So we tested the fix on countries we had never opened: a model pooled across countries' WHO histories vs each country's own-record model. **0.767 (95% CI 0.681–0.832), better in 18 of 18; 0.624 where the record was short** (`results/pool/SUMMARY.md`). Plan locked before download, model locked before extraction, scored once.
+- For the UAE itself the pooled model reads 0.87 vs the own-record model, but **that figure is non-confirmatory** (we had already seen UAE data). The confirmatory UAE evidence can only come from the live ledger, where the pooled model now runs as a challenger.
+
+**"18 of 36 countries. Did you drop the ones that looked bad?"**
+- No. The inclusion rules (reporting completeness, specimen volume, at least two earlier seasons) were fixed in the locked plan before any of those countries' data existed on our disk, and applied mechanically. The summary lists all 18 exclusions with the reason; most had no qualifying evaluation season.
+
+**"Does less forecast error change a decision?"**
+- Partly, and we show both sides. Replaying a fixed roster rule on the same held-out forecasts (post hoc): the pooled model had **10.5 mismatch weeks a season vs 12.3** for the own-record model (−1.81, 95% CI −3.00 to −0.72) and 16.6 for the past-season pattern.
+- But against simply carrying last week forward it was **not distinguishable** (11.1; −0.56, CI −1.42 to +0.31), and it missed slightly more surge weeks than the own-record model (2.7 vs 2.2 a season) while wasting fewer (`results/replay/pool/SUMMARY.md`).
+- That is why the pilot's exit criterion is set against the hospital's own census carried forward.
+
 ## C. The US stress test
 
 **18. "You didn't meet your own bar against the CDC. Why are you here?"**
