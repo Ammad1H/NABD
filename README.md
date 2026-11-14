@@ -1,6 +1,5 @@
 # NABD (نبض, "pulse"): open RSV and influenza forecasts for Abu Dhabi
 
-Prototype for the Future Health Digital Innovation Challenge 2026, Statement 06 (Population and Workforce Health Early Warning).
 
 NABD turns WHO FluNet surveillance into probabilistic weekly forecasts of RSV and influenza positivity, from a nowcast to about 2.5 weeks after issue. A bilingual (Arabic/English) card proposes a proportionate action for a named role, and only a person can approve, modify or dismiss it. Every decision goes into a hash-chained audit log. Each forecast round is hashed before its outcome exists.
 
