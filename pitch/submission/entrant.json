@@ -1,0 +1,17 @@
+{
+  "team_name": "NABD (نبض, \"pulse\")",
+  "name": "Ammad Hassan",
+  "country": "United Arab Emirates",
+  "organization": "MBZUAI",
+  "age_confirmation": "18 or older: confirmed",
+  "background": "I am a student at MBZUAI.",
+  "prototype_url": "https://ammad1h.github.io/NABD/",
+  "repo_url": "https://github.com/Ammad1H/NABD",
+  "ai_row": ["AI coding assistance (Claude Code) was used to write code and documents, including the helper kit in vendor/nabd_v2_kit; all of it was directed and reviewed by the entrant", "The entrant", "No third-party restriction on the outputs"],
+  "coi_paragraphs": [
+    ["Disclosure: the sole entrant is affiliated with MBZUAI, which is a co-creator of this challenge.", {"bold": true}],
+    ["I am a student at MBZUAI. I am not employed by or contracted to the Department of Health – Abu Dhabi, Future Health, Microsoft, Inception or Hack2skill.", {}],
+    ["I have no family or close personal relationship with any judge, organiser or collaborator staff member, no financial interest in any organisation running or judging the challenge, and I have had no access to non-public information about the challenge or its evaluation.", {}],
+    ["NABD was built independently for this challenge. No MBZUAI staff member contributed to or reviewed it.", {}]
+  ]
+}

@@ -267,6 +267,8 @@ Nothing below is claimed until it exists. `⟨…⟩` = placeholder filled by re
 
 ## 8. Pitch narrative (5 sentences) and 10-slide outline
 
+> **SUPERSEDED, do not quote.** The wording in this section predates the tests. "Calibrated", "publicly timestamped", signal "fusion" and the SEHA framing are on the stop list in `research/claims-ledger.md` section F. The current narrative is `pitch/story.md`.
+
 1. Every winter RSV and flu hit Abu Dhabi's hospitals together, but not on a calendar: the UAE RSV peak has landed anywhere from week 41 to week 47, and this year it is rising right behind a 40% flu peak.
 2. We tested what forecasting can and cannot do. A hospital's own census already tells it *when* a surge starts, but calibrated forecasts tell it *how big and how long*, cutting error by about a third against carrying today's count forward in the CDC's own archives.
 3. NABD fuses lab, ED, geospatial, environmental and administrative signals into calibrated RSV and flu forecasts with honest horizons, and turns them into staffing and bed actions that a named officer approves.

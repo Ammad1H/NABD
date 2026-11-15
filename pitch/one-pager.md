@@ -5,10 +5,10 @@
 ---
 
 **The Monday problem.** Every winter week, Abu Dhabi's paediatric bed managers and public-health officers plan the next three weeks of RSV and flu. Their defaults are last week's numbers and last year's pattern, but the timing and shape of UAE seasons change from year to year, and you can't know in advance which shape you'll get:
-- **Flu** peaked at **40.6% in October** 2025, after a **five-month plateau that peaked in February** the season before. The RSV peak moved between weeks 41 and 47 (WHO FluNet UAE, our computation).
+- **Flu** peaked at **40.6% in October** 2025, after a **five-month plateau that peaked in February** the season before. The RSV peak moved between weeks 41 and 47 (WHO FluNet UAE, NABD's computation).
 - **One Abu Dhabi hospital (Tawam, SEHA)** recorded **2,189 RSV admissions of children aged ≤5** in 2018–22, and infants under six months stayed **5.8 days** on average.
 - **Dubai claims data:** 22% of under-2s with RSV were hospitalised, and <2% had a known risk factor.
-- **No public data or forecast:** UAE flu case data is not public, and to our knowledge **no public respiratory forecast exists for the UAE**.
+- **No public data or forecast:** UAE flu case data is not public, and to the author's knowledge **no public respiratory forecast exists for the UAE**.
 
 **Who decides, and what a wrong call costs.**
 - **Hospital operations** (surge roster, beds, elective deferral): over-staffing as the wave turns, or boarding at the peak.
@@ -22,14 +22,14 @@
 - **Workforce:** a hospital view translates the wave into its own beds and staff, as a labelled SCENARIO (hospital winter planner: beds, nurse shifts at risk and cost in AED; staff absence follows flu and RSV). The employer-absence path is a secure-aggregation design (k ≥ 10), SIMULATED.
 - **Privacy:** aggregate data only. Person-level fields are rejected by design, with k ≥ 10 suppression for pilot data. No individual or employment use.
 
-**The evidence, all of it** (files in our repo):
+**The evidence, all of it** (files in the repository):
 
 | Test | Result |
 |---|---|
-| **Borrowed-strength test**: 18 countries we had never looked at; plan locked before download, model locked before their data were extracted; scored once | A model pooled across countries' WHO histories had **23% less influenza forecast error than a model fitted to each country's own record** (0.767, 95% CI 0.681–0.832, **pre-registered primary met**; better in 18 of 18), and **38% less where the record was short** (0.624), which is the UAE's position. It also beat last week carried forward in all 18 (0.879). |
+| **Borrowed-strength test**: 18 countries never examined before; plan locked before download, model locked before their data were extracted; scored once | A model pooled across countries' WHO histories had **23% less influenza forecast error than a model fitted to each country's own record** (0.767, 95% CI 0.681–0.832, **pre-registered primary met**; better in 18 of 18), and **38% less where the record was short** (0.624), which is the UAE's position. It also beat last week carried forward in all 18 (0.879). |
 | **Gulf out-of-sample test**: Oman, Qatar, Saudi Arabia; plan locked before their data were downloaded; forward in time | **Influenza: 46% less forecast error than planning from past-season patterns** (0.536, pre-registered secondary), and **9% less than last week carried forward** (0.914, 95% CI 0.843–0.983, **pre-registered primary met**). Won 9 of 12 country-seasons; losses shown. RSV is secondary and less robust. |
-| **US stress test vs the CDC FluSight ensemble** (frozen protocol) | **Missed our bar** (1.22 vs a 1.15 margin). Among individual CDC-hub models: **7th of 21** (2024/25) and **19th of 25** (2025/26). |
-| **UAE's own record** (forward in time) | Parity with last week (1.002). UAE sentinel data start in 2022; our post-hoc reading is that the method needs more seasons of history. Multi-signal v2 didn't help (1.059). |
+| **US stress test vs the CDC FluSight ensemble** (frozen protocol) | **Missed its bar** (1.22 vs a 1.15 margin). Among individual CDC-hub models: **7th of 21** (2024/25) and **19th of 25** (2025/26). |
+| **UAE's own record** (forward in time) | Parity with last week (1.002). UAE sentinel data start in 2022; the post-hoc reading is that the method needs more seasons of history. Multi-signal v2 didn't help (1.059). |
 | **Forecast ledger** | Every round is hashed before WHO publishes the target week. As of 14 Nov: one round (data through W44); WHO has not yet released W45, so 0 weeks are scored. ⟦IF DONE: public at ⟨URL⟩, anchored ⟨date⟩⟧ |
 
 *Retrospective analyses use revised WHO data. Locks are self-attested git commits until anchored by an outside service. Alert metrics are diagnostic. At the US primary threshold onset lead is 0 weeks, so NABD forecasts **size and duration**, not "earlier".*

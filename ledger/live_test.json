@@ -2,7 +2,7 @@
  "plan": "docs/PREREG-LIVE.md",
  "lock_root": "9bbcfa7ef769480a54bc99fcf4d73d5fe2a5aa9d00de0fc93b1f11a87cdfa2fb",
  "status": "INTERIM (descriptive only)",
- "as_of_utc": "2026-11-14T20:06:22+00:00",
+ "as_of_utc": "2026-11-15T09:40:18+00:00",
  "data_mode": "cached",
  "rounds_issued": [
   "R2"

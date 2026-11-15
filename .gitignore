@@ -4,3 +4,4 @@ __pycache__/
 external/
 app/audit/audit.jsonl
 .venv/
+.DS_Store

@@ -179,10 +179,10 @@
         <h1>${L("The UAE's record is too short to forecast from alone. So NABD <em>borrows the world's</em>.", "سجل الإمارات أقصر من أن يُبنى عليه التوقع وحده. لذلك <em>يستعين نبض بسجلات العالم</em>.")}</h1>
         <p class="lede">${L("One model learns how respiratory seasons rise, peak and fade across 46 countries' WHO surveillance records, then forecasts the UAE's next three weeks. Each week that becomes one proposed action, and a named person decides.",
           "نموذج واحد يتعلّم كيف تصعد المواسم التنفسية وتبلغ ذروتها وتنحسر من سجلات الرصد لدى منظمة الصحة العالمية في 46 دولة، ثم يتوقع الأسابيع الثلاثة المقبلة في الإمارات. وكل أسبوع يتحوّل ذلك إلى إجراء مقترح واحد يقرّره شخص مسمّى.")}</p>
-        <div class="cta"><a class="btn primary" href="#week">${L("See this week's card", "بطاقة هذا الأسبوع")}</a><a class="btn" href="#science">${L("How we tested it", "كيف اختبرناه")}</a></div>
+        <div class="cta"><a class="btn primary" href="#week">${L("See this week's card", "بطاقة هذا الأسبوع")}</a><a class="btn" href="#science">${L("How it was tested", "كيف اختُبر")}</a></div>
         <div class="trio">
           <div><div class="k num">${less(P.primary.rel_wis)}%</div><div class="l">${L("less influenza forecast error than a model built on each country's own record", "خطأ أقل في توقع الإنفلونزا من نموذج مبني على سجل كل دولة وحدها")}</div></div>
-          <div><div class="k num">${esc(P.primary.unit_wins.replace("/", L(" of ", " من ")))}</div><div class="l">${L("countries better, none of them examined before the test was locked", "دولة أفضل، ولم نطّلع على بيانات أيٍّ منها قبل تثبيت الاختبار")}</div></div>
+          <div><div class="k num">${esc(P.primary.unit_wins.replace("/", L(" of ", " من ")))}</div><div class="l">${L("countries better, with none of their data opened before the test was locked", "دولة أفضل، ولم تُفتح بيانات أيٍّ منها قبل تثبيت الاختبار")}</div></div>
           <div><div class="k num">${less(P.short.rel_wis)}%</div><div class="l">${L("less where the country's record is short, which is the UAE's position", "أقل حين يكون سجل الدولة قصيراً، وهو وضع الإمارات")}</div></div>
         </div></div>
         <aside class="now"><h3><span class="live-dot"></span>${L("This week in the UAE", "هذا الأسبوع في الإمارات")}</h3>
@@ -192,11 +192,23 @@
         </aside></div></section>`;
   }
 
+  function how() {
+    const steps = [
+      [L("Reads", "يقرأ"), L("Each week NABD reads the UAE's latest sentinel results from WHO FluNet: the share of samples positive for RSV and for influenza.", "كل أسبوع يقرأ نبض أحدث نتائج الرصد في الإمارات من WHO FluNet: نسبة العيّنات الإيجابية للفيروس المخلوي التنفسي وللإنفلونزا.")],
+      [L("Forecasts", "يتوقّع"), L("It forecasts the next three weeks as a range, and gives the chance of crossing each pressure threshold.", "يتوقّع الأسابيع الثلاثة المقبلة على هيئة نطاق، ويعطي احتمال تجاوز كل عتبة ضغط.")],
+      [L("Proposes", "يقترح"), L("The forecast becomes one proposed action per role. A named person approves, modifies or dismisses it, and the decision is logged.", "يتحوّل التوقع إلى إجراء مقترح واحد لكل دور. يعتمده شخص مسمّى أو يعدّله أو يرفضه، ويُسجَّل القرار.")],
+      [L("Seals", "يوثّق"), L("Each forecast file is fingerprinted before WHO publishes the week it covers, then scored against that week when it arrives.", "يحصل كل ملف توقع على بصمة رقمية قبل أن تنشر المنظمة بيانات أسبوعه، ثم يُقيَّم مقابل ذلك الأسبوع عند صدوره.")],
+    ];
+    return `<section id="how"><div class="wrap"><div class="sec-head"><div class="eyebrow">${L("How NABD works", "كيف يعمل نبض")}</div>
+      <h2>${L("From WHO's weekly numbers to one decision.", "من أرقام المنظمة الأسبوعية إلى قرار واحد.")}</h2></div>
+      <div class="grid g4">${steps.map((s, i) => `<div class="card flat"><div class="step-n num">${i + 1}</div><h3>${s[0]}</h3><p>${s[1]}</p></div>`).join("")}</div></div></section>`;
+  }
+
   function problem() {
     const u = ev.uae;
     return `<section class="alt" id="problem"><div class="wrap">
       <div class="sec-head"><div class="eyebrow">${L("The Monday decision", "قرار يوم الاثنين")}</div>
-        <h2>${L("No two UAE seasons share a shape, and four seasons are not enough to learn one.", "لا يتشابه موسمان في الإمارات، وأربعة مواسم لا تكفي لتعلّم شكل الموسم.")}</h2>
+        <h2>${L("UAE seasons change timing and shape from year to year, and four seasons are not enough to learn one.", "يتغيّر توقيت المواسم وشكلها في الإمارات من عام إلى عام، وأربعة مواسم لا تكفي لتعلّم شكل الموسم.")}</h2>
         <p>${L("Every winter week a bed manager, a public-health duty officer and an immunisation lead plan the next three weeks from last week's numbers and last year's pattern. The lines below are WHO's UAE sentinel record: each season peaks at a different time and height.",
           "في كل أسبوع شتوي يخطط مدير الأسرّة وضابط مناوبة الصحة العامة ومسؤول التطعيم للأسابيع الثلاثة المقبلة اعتماداً على أرقام الأسبوع الماضي ونمط العام الماضي. الخطوط أدناه هي سجل الرصد في الإمارات لدى منظمة الصحة العالمية: كل موسم يبلغ ذروته في توقيت وارتفاع مختلفين.")}</p></div>
       <div class="grid g-32"><div class="card"><div class="bar"><div class="seg" role="group">
@@ -205,11 +217,11 @@
           <div id="shape">${shapeChart(S.shape)}</div><div class="src">${L("Source: WHO FluNet, UAE sentinel sites. Bold line: this season.", "المصدر: WHO FluNet، مواقع الرصد في الإمارات. الخط العريض: الموسم الحالي.")}</div></div>
         <div class="grid" style="align-content:start">
           <div class="card flat"><div class="chips">${CH.retro()}</div><div class="kpi slate num">${f2(u.flu.rel_wis)}</div>
-            <p style="margin-top:8px">${L("Forecast error of a model built only on the UAE's own record, relative to simply repeating last week. 1.00 is a tie. On four seasons, that is what we measured.",
-              "خطأ توقع نموذج مبني على سجل الإمارات وحده، مقارنة بتكرار الأسبوع الماضي. القيمة 1.00 تعني التعادل. وهذا ما قسناه على أربعة مواسم.")}</p>
+            <p style="margin-top:8px">${L("Forecast error of a model built only on the UAE's own record, relative to simply repeating last week. 1.00 is a tie. On four seasons, that is the measured result.",
+              "خطأ توقع نموذج مبني على سجل الإمارات وحده، مقارنة بتكرار الأسبوع الماضي. القيمة 1.00 تعني التعادل. وهذه هي النتيجة المقيسة على أربعة مواسم.")}</p>
             <div class="src">results/uae/SUMMARY-v2.md · ${L("95% interval", "فاصل 95%")} ${ltr(f2(u.flu.ci95[0]) + "–" + f2(u.flu.ci95[1]))}</div></div>
-          <div class="note">${L("That tie is the reason for everything below. A short record cannot teach a model what a season looks like, so we stopped asking it to.",
-            "هذا التعادل هو سبب كل ما يلي. السجل القصير لا يعلّم النموذج شكل الموسم، فتوقفنا عن مطالبته بذلك.")}</div>
+          <div class="note">${L("That tie is why NABD borrows. A short record cannot teach a model what a season looks like, so the pooled model learns it from other countries.",
+            "هذا التعادل هو سبب استعانة نبض بسجلات الآخرين. السجل القصير لا يعلّم النموذج شكل الموسم، فيتعلّمه النموذج المجمَّع من دول أخرى.")}</div>
         </div></div></div></section>`;
   }
 
@@ -266,17 +278,17 @@
     const P = ev.pool, F = ev.fm;
     const steps = [
       [L("The obstacle", "العقبة"), L("UAE sentinel data start in 2022. A model fitted to four seasons only ties repeating last week. More local signals did not help.", "تبدأ بيانات الرصد في الإمارات عام 2022. نموذج مبني على أربعة مواسم يتعادل فقط مع تكرار الأسبوع الماضي، ولم تُفِد إضافة إشارات محلية.")],
-      [L("The idea: borrowed strength", "الفكرة: الاستعانة بسجلات الآخرين"), L("Train one model on how seasons behave across 46 countries. A country brings only its recent weeks and whatever history it has; the model supplies the rest.", "ندرّب نموذجاً واحداً على سلوك المواسم في 46 دولة. تأتي الدولة بأسابيعها الأخيرة وما لديها من سجل، ويكمل النموذج الباقي.")],
-      [L("The test, locked twice", "الاختبار، مثبّت مرتين"), L(`We named ${P.n_named} test countries and locked the plan before downloading any of their data, then locked the model before extracting a single row. ${P.n} met the pre-set data rules. Scored once.`, `سمّينا ${P.n_named} دولة للاختبار وثبّتنا الخطة قبل تنزيل أي من بياناتها، ثم ثبّتنا النموذج قبل استخراج أي صف. استوفت ${P.n} دولة قواعد البيانات المحددة مسبقاً. وأُجري التقييم مرة واحدة.`)],
+      [L("The idea: borrowed strength", "الفكرة: الاستعانة بسجلات الآخرين"), L("One model is trained on how seasons behave across 46 countries. A country brings only its recent weeks and whatever history it has; the model supplies the rest.", "يتدرّب نموذج واحد على سلوك المواسم في 46 دولة. تأتي الدولة بأسابيعها الأخيرة وما لديها من سجل، ويكمل النموذج الباقي.")],
+      [L("The test, locked twice", "الاختبار، مثبّت مرتين"), L(`${P.n_named} test countries were named and the plan locked before any of their data were downloaded. The model was then locked before a single row was extracted. ${P.n} met the pre-set data rules. Scored once.`, `سُمّيت ${P.n_named} دولة للاختبار وثُبّتت الخطة قبل تنزيل أي من بياناتها، ثم ثُبّت النموذج قبل استخراج أي صف. استوفت ${P.n} دولة قواعد البيانات المحددة مسبقاً. وأُجري التقييم مرة واحدة.`)],
     ];
     const kp = (d, lab, cls = "teal") => `<div class="card flat"><div class="kpi ${cls} num">${less(d.rel_wis)}%<small> ${L("less error", "خطأ أقل")}</small></div><p style="margin-top:6px">${lab}</p><div class="src num">${f3(d.rel_wis)} · ${L("95% interval", "فاصل 95%")} ${ci(d)} · ${ltr(esc(d.unit_wins))}</div></div>`;
     const fmItems = F ? Object.entries(F.mean_wis).sort((a, b) => a[1] - b[1]).map(([k, v]) => ({ v, hi: k === POOL || k.startsWith("Chronos"),
       label: { "NABD-Pool": L("NABD pooled model", "نموذج نبض المجمَّع"), "Chronos-2 (zero-shot)": L("Chronos-2, off the shelf", "Chronos-2 كما هو"), "Pool+FM": L("Average of the two", "متوسط الاثنين"),
                "NABD-UAE-v1": L("Own-record model", "نموذج سجل الدولة"), persistence: L("Repeat last week", "تكرار الأسبوع الماضي"), "seasonal-analog": L("Past-season pattern", "نمط المواسم السابقة") }[k] || k })) : [];
     return `<section class="alt" id="science"><div class="wrap"><div class="sec-head"><div class="eyebrow">${L("The science", "العلم")}</div>
-      <h2>${L("Borrowed strength, tested on 18 countries we had never opened.", "الاستعانة بسجلات الآخرين، مختبَرة على 18 دولة لم نفتح بياناتها قط.")}</h2>
-      <p>${L("If borrowing works, it should work on countries the model has never seen, against the model each of them would build from its own record. That is the test we registered.",
-        "إن كانت الاستعانة مجدية فيجب أن تنجح في دول لم يرها النموذج، في مواجهة النموذج الذي كانت كل دولة ستبنيه من سجلها. وهذا هو الاختبار الذي سجّلناه مسبقاً.")}</p></div>
+      <h2>${L("Borrowed strength, tested on 18 countries the model had never seen.", "الاستعانة بسجلات الآخرين، مختبَرة على 18 دولة لم يرها النموذج من قبل.")}</h2>
+      <p>${L("If borrowing works, it should work on countries the model has never seen, against the model each of them would build from its own record. That is the test NABD registered in advance.",
+        "إن كانت الاستعانة مجدية فيجب أن تنجح في دول لم يرها النموذج، في مواجهة النموذج الذي كانت كل دولة ستبنيه من سجلها. وهذا هو الاختبار المسجَّل مسبقاً.")}</p></div>
       <div class="grid g3">${steps.map((s, i) => `<div class="card flat"><div class="step-n num">${i + 1}</div><h3>${s[0]}</h3><p>${s[1]}</p></div>`).join("")}</div>
       <div class="grid g-32" style="margin-top:18px"><div class="card"><div class="chips">${CH.pre()}${P.verdict === "MET" ? CH.met() : CH.miss()}</div>
           <h3>${L("Forecast error of the pooled model relative to each country's own-record model", "خطأ توقع النموذج المجمَّع مقارنة بنموذج سجل كل دولة")}</h3>
@@ -291,11 +303,11 @@
           ${hbars(fmItems)}<div class="src">${L(`Mean forecast error (WIS, percentage points; lower is better) on ${F.n_cells.toLocaleString()} held-out forecasts. ${F.model}, revision ${F.revision}, no fine-tuning. Source: results/fm/SUMMARY.md.`,
             `متوسط خطأ التوقع (WIS بالنقاط المئوية؛ الأقل أفضل) على ${F.n_cells.toLocaleString()} توقعاً خارج العيّنة. ${F.model}، الإصدار ${F.revision}، بلا ضبط. المصدر: results/fm/SUMMARY.md.`)}</div></div>
         <div class="grid" style="align-content:start"><div class="card flat"><h3>${L("Two unrelated ways of borrowing, one answer", "طريقتان مختلفتان للاستعانة، وجواب واحد")}</h3>
-          <p>${L(`A 120-million-parameter model trained on other time series, used off the shelf, lands level with our small pooled model (${f2(F.fm_vs_pool.rel_wis)}, interval ${ci(F.fm_vs_pool)}) and shows the same gain over the own-record model (${less(F.fm_vs_local.rel_wis)}% less error). So the gain is not a quirk of our model.`,
-            `نموذج بـ120 مليون مُعامل مدرَّب على سلاسل زمنية أخرى، مستخدَم كما هو، يأتي على قدم المساواة مع نموذجنا المجمَّع الصغير (${f2(F.fm_vs_pool.rel_wis)}، الفاصل ${ci(F.fm_vs_pool)}) ويُظهر الكسب نفسه على نموذج سجل الدولة (خطأ أقل بـ${less(F.fm_vs_local.rel_wis)}%). فالكسب ليس خاصاً بنموذجنا.`)}</p>
-          <p style="margin-top:10px">${L(`We keep the small model live: every forecast decomposes exactly into its inputs and it runs in seconds on a laptop. Averaging the two is ${less(F.ens_vs_pool.rel_wis)}% better with an interval that includes no gain (${ci(F.ens_vs_pool)}): a hypothesis, not a claim.`,
-            `نُبقي النموذج الصغير في التشغيل: كل توقع يتفكك تماماً إلى مدخلاته ويعمل في ثوانٍ على حاسوب محمول. متوسط الاثنين أفضل بـ${less(F.ens_vs_pool.rel_wis)}% وفاصله يشمل انعدام الكسب (${ci(F.ens_vs_pool)}): فرضية لا ادعاء.`)}</p></div>
-          <div class="note warn">${L("Not a UAE result. UAE data had been seen before these tests, so the confirmatory UAE evidence can only come forward in time. That test is locked: see the ledger.", "ليست نتيجة عن الإمارات. فقد اطّلعنا على بيانات الإمارات قبل هذه الاختبارات، ولا يأتي الدليل المؤكِّد عنها إلا زمنياً إلى الأمام. وذلك الاختبار مثبّت: انظر السجل.")}</div></div></div>` : ""}
+          <p>${L(`A 120-million-parameter model trained on other time series, used off the shelf, lands level with NABD's small pooled model (${f2(F.fm_vs_pool.rel_wis)}, interval ${ci(F.fm_vs_pool)}) and shows the same gain over the own-record model (${less(F.fm_vs_local.rel_wis)}% less error). So the gain is not a quirk of one model.`,
+            `نموذج بـ120 مليون مُعامل مدرَّب على سلاسل زمنية أخرى، مستخدَم كما هو، يأتي على قدم المساواة مع نموذج نبض المجمَّع الصغير (${f2(F.fm_vs_pool.rel_wis)}، الفاصل ${ci(F.fm_vs_pool)}) ويُظهر الكسب نفسه على نموذج سجل الدولة (خطأ أقل بـ${less(F.fm_vs_local.rel_wis)}%). فالكسب ليس خاصاً بنموذج واحد.`)}</p>
+          <p style="margin-top:10px">${L(`NABD runs the small model: every forecast decomposes exactly into its inputs and it runs in seconds on a laptop. Averaging the two is ${less(F.ens_vs_pool.rel_wis)}% better with an interval that includes no gain (${ci(F.ens_vs_pool)}): a hypothesis, not a claim.`,
+            `يشغّل نبض النموذج الصغير: كل توقع يتفكك تماماً إلى مدخلاته ويعمل في ثوانٍ على حاسوب محمول. متوسط الاثنين أفضل بـ${less(F.ens_vs_pool.rel_wis)}% وفاصله يشمل انعدام الكسب (${ci(F.ens_vs_pool)}): فرضية لا ادعاء.`)}</p></div>
+          <div class="note warn">${L("Not a UAE result. UAE data had been seen before these tests, so the confirmatory UAE evidence can only come forward in time. That test is locked: see the ledger.", "ليست نتيجة عن الإمارات. فبيانات الإمارات كانت قد فُحصت قبل هذه الاختبارات، ولا يأتي الدليل المؤكِّد عنها إلا زمنياً إلى الأمام. وذلك الاختبار مثبّت: انظر السجل.")}</div></div></div>` : ""}
       </div></section>`;
   }
 
@@ -333,9 +345,9 @@
     const ps = R.per_season, items = [["NABD-Pool", "pool", true], ["NABD-UAE-v1", "local", false], ["persistence", "last", false], ["seasonal-analog", "pattern", false]]
       .map(([k, n, hi]) => ({ label: mname(n), a: ps[k].missed, b: ps[k].wasted, t: ps[k].mismatch, hi }));
     return `<section id="decisions"><div class="wrap"><div class="sec-head"><div class="eyebrow">${L("From accuracy to decisions", "من الدقة إلى القرار")}</div>
-      <h2>${L("Does a better forecast change a roster? Partly, and we show both sides.", "هل يغيّر التوقع الأفضل جدول المناوبات؟ جزئياً، ونعرض الوجهين.")}</h2>
-      <p>${L("We replayed one roster rule, fixed in advance, over every held-out season. A missed week is a surge with no extra staff; a wasted week is extra staff with no surge.",
-        "أعدنا تشغيل قاعدة مناوبات واحدة محددة مسبقاً على كل موسم خارج العيّنة. الأسبوع الفائت موجة بلا طاقة إضافية؛ والأسبوع المهدور طاقة إضافية بلا موجة.")}</p></div>
+      <h2>${L("Does a better forecast change a roster? Partly. Both sides are shown.", "هل يغيّر التوقع الأفضل جدول المناوبات؟ جزئياً. والوجهان معروضان.")}</h2>
+      <p>${L("One roster rule, fixed in advance, is replayed over every held-out season. A missed week is a surge with no extra staff; a wasted week is extra staff with no surge.",
+        "تُعاد قاعدة مناوبات واحدة محددة مسبقاً على كل موسم خارج العيّنة. الأسبوع الفائت موجة بلا طاقة إضافية؛ والأسبوع المهدور طاقة إضافية بلا موجة.")}</p></div>
       <div class="grid g-32"><div class="card"><div class="chips">${CH.post()}</div><h3>${L("Mis-rostered weeks per season, by what the rule was fed", "أسابيع الجدولة الخاطئة في الموسم بحسب مُدخل القاعدة")}</h3>
           ${hbars(items, { stack: true })}<div class="legend"><span><i class="rose" style="height:10px"></i>${L("missed surge weeks", "أسابيع موجة فائتة")}</span><span><i style="height:10px"></i>${L("wasted roster weeks", "أسابيع مناوبة مهدورة")}</span></div>
           <div class="src">${L(`Influenza, ${R.n} seasons in ${R.n_countries} countries. Source: results/replay/pool/SUMMARY.md.`, `الإنفلونزا، ${R.n} موسماً في ${R.n_countries} دولة. المصدر: results/replay/pool/SUMMARY.md.`)}</div></div>
@@ -359,18 +371,18 @@
       G && [CH.pre() + CH.met(), L("Gulf test: Oman, Qatar, Saudi Arabia", "الاختبار الخليجي: عُمان وقطر والسعودية"), `<span class="kpi teal num">${f3(G.vs_persistence.rel_wis)}</span>`,
         L(`Own-record model vs repeating last week, influenza. Interval ${ci(G.vs_persistence)}. Against past-season patterns: ${f2(G.vs_pattern.rel_wis)}.`, `نموذج سجل الدولة مقابل تكرار الأسبوع الماضي، الإنفلونزا. الفاصل ${ci(G.vs_persistence)}. ومقابل نمط المواسم السابقة: ${f2(G.vs_pattern.rel_wis)}.`), "results/gcc/SUMMARY.md"],
       U && [CH.pre() + CH.miss(), L("United States, against the CDC's combined forecast", "الولايات المتحدة، مقابل توقع CDC المجمَّع"), `<span class="kpi rose num">${f2(U.rel_wis)}</span>`,
-        L(`Our bar was ${U.margin}. We missed it (interval ${ltr(f2(U.ci95[0]) + "–" + f2(U.ci95[1]))}). Among single hub models: ${U.ranks.map(r => `${r.rank} of ${r.n} in ${r.season}`).join(", ")}.`, `كان هدفنا ${U.margin} ولم نبلغه (الفاصل ${ltr(f2(U.ci95[0]) + "–" + f2(U.ci95[1]))}). بين النماذج المنفردة: ${U.ranks.map(r => `${r.rank} من ${r.n} في ${r.season}`).join("، ")}.`), "results/SUMMARY.md"],
+        L(`The bar was ${U.margin}. NABD missed it (interval ${ltr(f2(U.ci95[0]) + "–" + f2(U.ci95[1]))}). Among single hub models: ${U.ranks.map(r => `${r.rank} of ${r.n} in ${r.season}`).join(", ")}.`, `كان الهدف ${U.margin} ولم يبلغه نبض (الفاصل ${ltr(f2(U.ci95[0]) + "–" + f2(U.ci95[1]))}). بين النماذج المنفردة: ${U.ranks.map(r => `${r.rank} من ${r.n} في ${r.season}`).join("، ")}.`), "results/SUMMARY.md"],
       A && [CH.retro(), L("The UAE's own four-season record", "سجل الإمارات نفسه (أربعة مواسم)"), `<span class="kpi slate num">${f2(A.flu.rel_wis)}</span>`,
         L("Own-record model vs repeating last week, forward in time: a tie for influenza and RSV. A multi-signal version did no better.", "نموذج سجل الدولة مقابل تكرار الأسبوع الماضي، زمنياً إلى الأمام: تعادل للإنفلونزا والفيروس المخلوي. ولم تكن النسخة المتعددة الإشارات أفضل."), "results/uae/SUMMARY-v2.md"],
       F && [CH.post(), L("Foundation model on the same forecasts", "نموذج أساس على التوقعات نفسها"), `<span class="kpi slate num">${f2(F.fm_vs_pool.rel_wis)}</span>`,
-        L(`Chronos-2 off the shelf vs our pooled model: level (interval ${ci(F.fm_vs_pool)}). Both beat the own-record model.`, `Chronos-2 كما هو مقابل نموذجنا المجمَّع: تعادل (الفاصل ${ci(F.fm_vs_pool)}). وكلاهما يتفوق على نموذج سجل الدولة.`), "results/fm/SUMMARY.md"],
+        L(`Chronos-2 off the shelf vs NABD's pooled model: level (interval ${ci(F.fm_vs_pool)}). Both beat the own-record model.`, `Chronos-2 كما هو مقابل نموذج نبض المجمَّع: تعادل (الفاصل ${ci(F.fm_vs_pool)}). وكلاهما يتفوق على نموذج سجل الدولة.`), "results/fm/SUMMARY.md"],
       [CH.post(), L("Roster rule replayed", "إعادة تشغيل قاعدة المناوبات"), `<span class="kpi slate num">${sgn(R.vs_local.diff_per_season)}</span>`,
         L(`Mis-rostered weeks a season, pooled minus own-record. Against repeating last week: ${sgn(R.vs_last_week.diff_per_season)}, not distinguishable.`, `أسابيع الجدولة الخاطئة في الموسم، المجمَّع ناقص نموذج سجل الدولة. ومقابل تكرار الأسبوع الماضي: ${sgn(R.vs_last_week.diff_per_season)}، غير قابل للتمييز.`), "results/replay/pool/SUMMARY.md"],
       [CH.pre() + CH.wait(), L("UAE, forward in real time", "الإمارات، زمنياً إلى الأمام"), `<span class="kpi slate num">${lt.rounds.length}<small> ${L("round issued", "جولة صادرة")}</small></span>`,
         L(`Pooled vs own-record model on the live ledger, season 2026/27. Locked before its first data point. Assessed once, on or after ${dfmt(lt.final_from, { day: "numeric", month: "long", year: "numeric" })}.`, `المجمَّع مقابل نموذج سجل الدولة في السجل الحي، موسم 2026/27. ثُبّت قبل أول نقطة بيانات. يُقيَّم مرة واحدة في ${dfmt(lt.final_from, { day: "numeric", month: "long", year: "numeric" })} أو بعده.`), "docs/PREREG-LIVE.md"],
     ].filter(Boolean);
     return `<section class="alt" id="results"><div class="wrap"><div class="sec-head"><div class="eyebrow">${L("All results", "كل النتائج")}</div>
-      <h2>${L("Everything we tested, including what we lost.", "كل ما اختبرناه، بما فيه ما خسرناه.")}</h2>
+      <h2>${L("Every test NABD has run, including the ones it lost.", "كل اختبار أجراه نبض، بما فيه ما خسره.")}</h2>
       <p>${L("Numbers are relative forecast error: below 1 is better than the comparator. Each card says whether the test was registered before the data were seen.", "الأرقام خطأ توقع نسبي: أقل من 1 يعني أفضل من المقارَن به. وتبيّن كل بطاقة هل سُجّل الاختبار قبل رؤية البيانات.")}</p></div>
       <div class="grid g3">${cards.map(c => `<div class="card"><div class="chips">${c[0]}</div><h3>${c[1]}</h3><div style="margin:10px 0 8px">${c[2]}</div><p>${c[3]}</p><div class="src mono">${c[4]}</div></div>`).join("")}</div></div></section>`;
   }
@@ -421,13 +433,13 @@
           <div class="roles">${out("rsv")}${out("flu")}</div>
           <div class="src">${L("This is surveillance information, not medical advice. Follow the Department of Health's guidance on vaccination and care.", "هذه معلومات رصد وليست نصيحة طبية. اتبع إرشادات دائرة الصحة بشأن التطعيم والرعاية.")}</div></div>
         <div class="card" style="border-color:var(--teal)"><div class="eyebrow">${L("The ask", "الطلب")}</div><h3 style="font-size:1.3rem;margin:8px 0">${L("One hospital. Twelve weeks. Aggregate counts. Shadow mode.", "مستشفى واحد. اثنا عشر أسبوعاً. أعداد مجمّعة. وضع المراقبة.")}</h3>
-          <p>${L("Give NABD one hospital's weekly aggregate paediatric respiratory counts, with no change to care. The exit test is set in advance: forecast error below 0.9 of the hospital's own census carried forward. If we miss it, you walk away and the record stays on file.", "أعطوا نبض الأعداد الأسبوعية المجمّعة لحالات الجهاز التنفسي للأطفال في مستشفى واحد، من دون أي تغيير في الرعاية. معيار النجاح محدد مسبقاً: خطأ توقع دون 0.9 من تكرار أعداد المستشفى نفسها. وإن لم نبلغه تنسحبون ويبقى السجل محفوظاً.")}</p>
+          <p>${L("Give NABD one hospital's weekly aggregate paediatric respiratory counts, with no change to care. The exit test is set in advance: forecast error below 0.9 of the hospital's own census carried forward. If NABD misses it, the hospital walks away and the record stays on file.", "أعطوا نبض الأعداد الأسبوعية المجمّعة لحالات الجهاز التنفسي للأطفال في مستشفى واحد، من دون أي تغيير في الرعاية. معيار النجاح محدد مسبقاً: خطأ توقع دون 0.9 من تكرار أعداد المستشفى نفسها. وإن لم يبلغه نبض ينسحب المستشفى ويبقى السجل محفوظاً.")}</p>
           <div class="src">${L("Aggregate data only: person-level fields are rejected by design and small cells are suppressed (k ≥ 10).", "بيانات مجمّعة فقط: تُرفض الحقول الفردية بحكم التصميم وتُحجب الخلايا الصغيرة (k ≥ 10).")} <span class="mono">docs/PILOT-DATA-SPEC.md</span></div></div>
       </div>
       <div class="grid g3" style="margin-top:18px">
         ${col(L("Real today", "حقيقي اليوم"), "pre", [L("WHO FluNet UAE surveillance data", "بيانات رصد الإمارات من WHO FluNet"), L("Weekly forecasts from two models, with ranges", "توقعات أسبوعية من نموذجين مع النطاقات"), L("The card, its consistency gate and the hash-chained approval log", "البطاقة وبوابة الاتساق وسجل الاعتماد المترابط بالتجزئة"), L("Three registered tests and the hashed ledger (local until pushed and timestamped)", "ثلاثة اختبارات مسجّلة والسجل الموثّق (محلي إلى أن يُنشر ويُختم زمنياً)")])}
         ${col(L("Scenario or illustrative", "سيناريو أو توضيحي"), "scn", [L("Bed-days and AED figures", "أرقام أيام الأسرّة والدرهم"), L("Playbook thresholds and action wording, not yet reviewed by a clinician", "عتبات دليل العمل وصياغة الإجراءات، لم يراجعها طبيب بعد"), L("The employer sickness-absence feed is simulated on synthetic data", "تغذية غياب الموظفين محاكاة على بيانات اصطناعية")])}
-        ${col(L("Not built, not claimed", "غير مبني وغير مدّعى"), "wait", [L("Any Abu Dhabi hospital, district or daily data", "أي بيانات مستشفيات أو مناطق أو بيانات يومية من أبوظبي"), L("Earlier warning of when a surge starts: we forecast size and duration", "إنذار أبكر ببداية الموجة: نتوقع الحجم والمدة"), L("A confirmatory UAE result for the pooled model: locked, due after April 2027", "نتيجة مؤكِّدة عن الإمارات للنموذج المجمَّع: مثبّتة، وموعدها بعد أبريل 2027")])}
+        ${col(L("Not built, not claimed", "غير مبني وغير مدّعى"), "wait", [L("Any Abu Dhabi hospital, district or daily data", "أي بيانات مستشفيات أو مناطق أو بيانات يومية من أبوظبي"), L("Earlier warning of when a surge starts: NABD forecasts size and duration", "إنذار أبكر ببداية الموجة: يتوقع نبض الحجم والمدة"), L("A confirmatory UAE result for the pooled model: locked, due after April 2027", "نتيجة مؤكِّدة عن الإمارات للنموذج المجمَّع: مثبّتة، وموعدها بعد أبريل 2027")])}
       </div></div></section>`;
   }
 
@@ -467,7 +479,7 @@
     document.documentElement.lang = S.lang; document.documentElement.dir = S.lang === "ar" ? "rtl" : "ltr";
     document.title = L("NABD نبض · Respiratory season forecasts for the UAE", "نبض NABD · توقعات المواسم التنفسية في الإمارات");
     $("nav").innerHTML = nav();
-    $("app").innerHTML = hero() + problem() + week() + science() + decisions() + results() + ledger() + impact() + footer();
+    $("app").innerHTML = hero() + how() + problem() + week() + science() + decisions() + results() + ledger() + impact() + footer();
   }
   const part = (id, html) => { const e = $(id); if (e) e.innerHTML = html; };
 

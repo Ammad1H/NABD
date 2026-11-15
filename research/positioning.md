@@ -178,7 +178,7 @@ Placement: after the UAE proof and before the forward plan (deck slide 7), per t
 ### 4.6 What NOT to claim (stop list)
 - **Do not say "early warning of onset".**
   - Median onset lead is 0 weeks for every rule, including the CDC's (results/).
-  - Say "how big and how long", and "fewer false alarms" (PPV), only as far as results/ supports it.
+  - Say "how big and how long". The alert-rule comparison did not support a false-alarm claim (claims ledger F15), so make none.
 - **Do not cite "21–36% less error than the census" as ours.** That figure is the CDC ensemble's gain over persistence.
   - NABD's US figure is 0.816 (CI 0.655–1.023) and is not significant.
 - **Do not claim fusion of ED, weather or geospatial signals** in any scored model until UAE v2 is scored.

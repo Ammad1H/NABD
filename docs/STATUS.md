@@ -1,5 +1,7 @@
 # NABD status, 14 Nov 2026 (final stretch)
 
+**Update, 15 Nov 2026.** Submission pack built (`pitch/submission/`: filled 16-slide template as PDF, form answers, test walkthrough, hosting steps). Public copy (web page, form answers, deck, story, one-pager) is now in product voice ("NABD does"), and the page gained a four-step "How NABD works" section. The page heading that said no two seasons share a shape was on the stop list and is reworded. A plain-language guide is at `pitch/NABD-in-plain-words.md`. WHO's API was checked on 15 Nov: the UAE's latest sentinel week is still 2026-W44, so no round is due and 0 weeks are scored. Still open, all user-only: sign in to GitHub and push, make the repository public, enable Pages, run `scripts/anchor_all.sh`, record the demo video, submit the form.
+
 **Where it stands.** The prototype runs end to end from a clean checkout: `pip install -r requirements-dev.txt`, `pytest -q` (157 tests pass, none skipped, with the CDC hub cloned by `python -m eval.run_all --fetch`), `streamlit run app/streamlit_app.py`. Submission is due 20 Nov.
 
 | Item | State on 14 Nov |
