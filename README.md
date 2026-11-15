@@ -1,6 +1,5 @@
 # NABD (نبض, "pulse"): open RSV and influenza forecasts for Abu Dhabi
 
-
 **New here?** Read [`pitch/NABD-in-plain-words.md`](pitch/NABD-in-plain-words.md) first: what NABD is, what the pooled model means and what it does not claim, without the statistics.
 
 NABD turns WHO FluNet surveillance into probabilistic weekly forecasts of RSV and influenza positivity, from a nowcast to about 2.5 weeks after issue. A bilingual (Arabic/English) card proposes a proportionate action for a named role, and only a person can approve, modify or dismiss it. Every decision goes into a hash-chained audit log. Each forecast round is hashed before its outcome exists.
