@@ -176,9 +176,9 @@
     return `<section class="hero" id="top"><svg class="pulse" viewBox="0 0 1440 180" preserveAspectRatio="none" aria-hidden="true"><path d="M0 120h260l22-14 18 30 24-92 26 118 20-56 16 14h190l18-10 16 22 22-70 24 92 18-44 14 10h230l20-12 18 26 22-84 26 108 18-50 16 12h366"/></svg>
       <div class="wrap hero-grid"><div>
         <div class="eyebrow">${L("RSV and influenza forecasts for the UAE", "توقعات الفيروس المخلوي التنفسي والإنفلونزا في الإمارات")}</div>
-        <h1>${L("The UAE's record is too short to forecast from alone. So NABD <em>borrows the world's</em>.", "سجل الإمارات أقصر من أن يُبنى عليه التوقع وحده. لذلك <em>يستعين نبض بسجلات العالم</em>.")}</h1>
-        <p class="lede">${L("One model learns how respiratory seasons rise, peak and fade across 46 countries' WHO surveillance records, then forecasts the UAE's next three weeks. Each week that becomes one proposed action, and a named person decides.",
-          "نموذج واحد يتعلّم كيف تصعد المواسم التنفسية وتبلغ ذروتها وتنحسر من سجلات الرصد لدى منظمة الصحة العالمية في 46 دولة، ثم يتوقع الأسابيع الثلاثة المقبلة في الإمارات. وكل أسبوع يتحوّل ذلك إلى إجراء مقترح واحد يقرّره شخص مسمّى.")}</p>
+        <h1>${L("Building resilience for the UAE's respiratory health, <em>to a world-class standard</em>.", "تعزيز صمود الإمارات أمام المواسم التنفسية، <em>بمعيار عالمي المستوى</em>.")}</h1>
+        <p class="lede">${L("NABD turns the UAE's own surveillance records into three-week forecasts of RSV and influenza, scored the way the CDC's FluSight hub scores forecasts. Each week becomes one proposed action, and a named person decides, supporting the national teams who protect children and communities.",
+          "يحوّل نبض سجلات الرصد الإماراتية إلى توقعات لثلاثة أسابيع للفيروس المخلوي التنفسي والإنفلونزا، تُقيَّم بالطريقة التي يقيّم بها مركز FluSight التابع لمراكز مكافحة الأمراض الأمريكية توقعاته. وكل أسبوع يتحوّل ذلك إلى إجراء مقترح واحد يقرّره شخص مسمّى، دعماً للفرق الوطنية التي تحمي الأطفال والمجتمع.")}</p>
         <div class="cta"><a class="btn primary" href="#week">${L("See this week's card", "بطاقة هذا الأسبوع")}</a><a class="btn" href="#science">${L("How it was tested", "كيف اختُبر")}</a></div>
         <div class="trio">
           <div><div class="k num">${less(P.primary.rel_wis)}%</div><div class="l">${L("less influenza forecast error than a model built on each country's own record", "خطأ أقل في توقع الإنفلونزا من نموذج مبني على سجل كل دولة وحدها")}</div></div>
@@ -220,8 +220,8 @@
             <p style="margin-top:8px">${L("Forecast error of a model built only on the UAE's own record, relative to simply repeating last week. 1.00 is a tie. On four seasons, that is the measured result.",
               "خطأ توقع نموذج مبني على سجل الإمارات وحده، مقارنة بتكرار الأسبوع الماضي. القيمة 1.00 تعني التعادل. وهذه هي النتيجة المقيسة على أربعة مواسم.")}</p>
             <div class="src">results/uae/SUMMARY-v2.md · ${L("95% interval", "فاصل 95%")} ${ltr(f2(u.flu.ci95[0]) + "–" + f2(u.flu.ci95[1]))}</div></div>
-          <div class="note">${L("That tie is why NABD borrows. A short record cannot teach a model what a season looks like, so the pooled model learns it from other countries.",
-            "هذا التعادل هو سبب استعانة نبض بسجلات الآخرين. السجل القصير لا يعلّم النموذج شكل الموسم، فيتعلّمه النموذج المجمَّع من دول أخرى.")}</div>
+          <div class="note">${L("That tie is why NABD also learns from how seasons unfold in 46 countries. A short record cannot teach a model what a season looks like, and the UAE's own record grows stronger every week it is kept.",
+            "هذا التعادل هو سبب تعلّم نبض أيضاً من مسار المواسم في 46 دولة. السجل القصير لا يعلّم النموذج شكل الموسم، وسجل الإمارات يزداد قوة مع كل أسبوع يُحفظ فيه.")}</div>
         </div></div></div></section>`;
   }
 
@@ -278,7 +278,7 @@
     const P = ev.pool, F = ev.fm;
     const steps = [
       [L("The obstacle", "العقبة"), L("UAE sentinel data start in 2022. A model fitted to four seasons only ties repeating last week. More local signals did not help.", "تبدأ بيانات الرصد في الإمارات عام 2022. نموذج مبني على أربعة مواسم يتعادل فقط مع تكرار الأسبوع الماضي، ولم تُفِد إضافة إشارات محلية.")],
-      [L("The idea: borrowed strength", "الفكرة: الاستعانة بسجلات الآخرين"), L("One model is trained on how seasons behave across 46 countries. A country brings only its recent weeks and whatever history it has; the model supplies the rest.", "يتدرّب نموذج واحد على سلوك المواسم في 46 دولة. تأتي الدولة بأسابيعها الأخيرة وما لديها من سجل، ويكمل النموذج الباقي.")],
+      [L("The idea: learn across many seasons", "الفكرة: التعلّم من مواسم كثيرة"), L("One model is trained on how seasons behave across 46 countries. A country brings only its recent weeks and whatever history it has; the model supplies the rest.", "يتدرّب نموذج واحد على سلوك المواسم في 46 دولة. تأتي الدولة بأسابيعها الأخيرة وما لديها من سجل، ويكمل النموذج الباقي.")],
       [L("The test, locked twice", "الاختبار، مثبّت مرتين"), L(`${P.n_named} test countries were named and the plan locked before any of their data were downloaded. The model was then locked before a single row was extracted. ${P.n} met the pre-set data rules. Scored once.`, `سُمّيت ${P.n_named} دولة للاختبار وثُبّتت الخطة قبل تنزيل أي من بياناتها، ثم ثُبّت النموذج قبل استخراج أي صف. استوفت ${P.n} دولة قواعد البيانات المحددة مسبقاً. وأُجري التقييم مرة واحدة.`)],
     ];
     const kp = (d, lab, cls = "teal") => `<div class="card flat"><div class="kpi ${cls} num">${less(d.rel_wis)}%<small> ${L("less error", "خطأ أقل")}</small></div><p style="margin-top:6px">${lab}</p><div class="src num">${f3(d.rel_wis)} · ${L("95% interval", "فاصل 95%")} ${ci(d)} · ${ltr(esc(d.unit_wins))}</div></div>`;
@@ -286,9 +286,9 @@
       label: { "NABD-Pool": L("NABD pooled model", "نموذج نبض المجمَّع"), "Chronos-2 (zero-shot)": L("Chronos-2, off the shelf", "Chronos-2 كما هو"), "Pool+FM": L("Average of the two", "متوسط الاثنين"),
                "NABD-UAE-v1": L("Own-record model", "نموذج سجل الدولة"), persistence: L("Repeat last week", "تكرار الأسبوع الماضي"), "seasonal-analog": L("Past-season pattern", "نمط المواسم السابقة") }[k] || k })) : [];
     return `<section class="alt" id="science"><div class="wrap"><div class="sec-head"><div class="eyebrow">${L("The science", "العلم")}</div>
-      <h2>${L("Borrowed strength, tested on 18 countries the model had never seen.", "الاستعانة بسجلات الآخرين، مختبَرة على 18 دولة لم يرها النموذج من قبل.")}</h2>
-      <p>${L("If borrowing works, it should work on countries the model has never seen, against the model each of them would build from its own record. That is the test NABD registered in advance.",
-        "إن كانت الاستعانة مجدية فيجب أن تنجح في دول لم يرها النموذج، في مواجهة النموذج الذي كانت كل دولة ستبنيه من سجلها. وهذا هو الاختبار المسجَّل مسبقاً.")}</p></div>
+      <h2>${L("Tested to a world standard: 18 countries the model had never seen.", "مختبَر بمعيار عالمي: 18 دولة لم يرها النموذج من قبل.")}</h2>
+      <p>${L("If learning across countries works, it should work on countries the model has never seen, against the model each of them would build from its own record. That is the test NABD registered in advance.",
+        "إن كان التعلّم عبر الدول مجدياً فيجب أن ينجح في دول لم يرها النموذج، في مواجهة النموذج الذي كانت كل دولة ستبنيه من سجلها. وهذا هو الاختبار المسجَّل مسبقاً.")}</p></div>
       <div class="grid g3">${steps.map((s, i) => `<div class="card flat"><div class="step-n num">${i + 1}</div><h3>${s[0]}</h3><p>${s[1]}</p></div>`).join("")}</div>
       <div class="grid g-32" style="margin-top:18px"><div class="card"><div class="chips">${CH.pre()}${P.verdict === "MET" ? CH.met() : CH.miss()}</div>
           <h3>${L("Forecast error of the pooled model relative to each country's own-record model", "خطأ توقع النموذج المجمَّع مقارنة بنموذج سجل كل دولة")}</h3>
@@ -302,7 +302,7 @@
       ${F ? `<div class="grid g-32" style="margin-top:18px"><div class="card"><div class="chips">${CH.post()}</div><h3>${L("Cross-check: a general foundation model on the same forecasts", "تحقّق إضافي: نموذج أساس عام على التوقعات نفسها")}</h3>
           ${hbars(fmItems)}<div class="src">${L(`Mean forecast error (WIS, percentage points; lower is better) on ${F.n_cells.toLocaleString()} held-out forecasts. ${F.model}, revision ${F.revision}, no fine-tuning. Source: results/fm/SUMMARY.md.`,
             `متوسط خطأ التوقع (WIS بالنقاط المئوية؛ الأقل أفضل) على ${F.n_cells.toLocaleString()} توقعاً خارج العيّنة. ${F.model}، الإصدار ${F.revision}، بلا ضبط. المصدر: results/fm/SUMMARY.md.`)}</div></div>
-        <div class="grid" style="align-content:start"><div class="card flat"><h3>${L("Two unrelated ways of borrowing, one answer", "طريقتان مختلفتان للاستعانة، وجواب واحد")}</h3>
+        <div class="grid" style="align-content:start"><div class="card flat"><h3>${L("Two unrelated methods, one answer", "طريقتان مختلفتان، وجواب واحد")}</h3>
           <p>${L(`A 120-million-parameter model trained on other time series, used off the shelf, lands level with NABD's small pooled model (${f2(F.fm_vs_pool.rel_wis)}, interval ${ci(F.fm_vs_pool)}) and shows the same gain over the own-record model (${less(F.fm_vs_local.rel_wis)}% less error). So the gain is not a quirk of one model.`,
             `نموذج بـ120 مليون مُعامل مدرَّب على سلاسل زمنية أخرى، مستخدَم كما هو، يأتي على قدم المساواة مع نموذج نبض المجمَّع الصغير (${f2(F.fm_vs_pool.rel_wis)}، الفاصل ${ci(F.fm_vs_pool)}) ويُظهر الكسب نفسه على نموذج سجل الدولة (خطأ أقل بـ${less(F.fm_vs_local.rel_wis)}%). فالكسب ليس خاصاً بنموذج واحد.`)}</p>
           <p style="margin-top:10px">${L(`NABD runs the small model: every forecast decomposes exactly into its inputs and it runs in seconds on a laptop. Averaging the two is ${less(F.ens_vs_pool.rel_wis)}% better with an interval that includes no gain (${ci(F.ens_vs_pool)}): a hypothesis, not a claim.`,
@@ -366,7 +366,7 @@
   function results() {
     const P = ev.pool, G = ev.gcc, U = ev.us, A = ev.uae, F = ev.fm, R = ev.replay_pool, lt = D.ledger.live_test;
     const cards = [
-      [CH.pre() + CH.met(), L("Borrowed strength, 18 held-out countries", "الاستعانة بسجلات الآخرين، 18 دولة"), `<span class="kpi teal num">${f3(P.primary.rel_wis)}</span>`,
+      [CH.pre() + CH.met(), L("Learning across countries, 18 held-out countries", "التعلّم عبر الدول، 18 دولة خارج العيّنة"), `<span class="kpi teal num">${f3(P.primary.rel_wis)}</span>`,
         L(`Pooled vs own-record model, influenza. Interval ${ci(P.primary)}. Better in ${P.primary.unit_wins}.`, `المجمَّع مقابل نموذج سجل الدولة، الإنفلونزا. الفاصل ${ci(P.primary)}. أفضل في ${P.primary.unit_wins}.`), "results/pool/SUMMARY.md"],
       G && [CH.pre() + CH.met(), L("Gulf test: Oman, Qatar, Saudi Arabia", "الاختبار الخليجي: عُمان وقطر والسعودية"), `<span class="kpi teal num">${f3(G.vs_persistence.rel_wis)}</span>`,
         L(`Own-record model vs repeating last week, influenza. Interval ${ci(G.vs_persistence)}. Against past-season patterns: ${f2(G.vs_pattern.rel_wis)}.`, `نموذج سجل الدولة مقابل تكرار الأسبوع الماضي، الإنفلونزا. الفاصل ${ci(G.vs_persistence)}. ومقابل نمط المواسم السابقة: ${f2(G.vs_pattern.rel_wis)}.`), "results/gcc/SUMMARY.md"],
@@ -421,7 +421,7 @@
     const col = (h, cls, items) => `<div class="card flat"><div class="chips">${chip(cls, h)}</div><ul style="margin:0;padding-inline-start:18px;color:var(--ink-2);font-size:.93rem">${items.map(i => `<li style="margin-bottom:6px">${i}</li>`).join("")}</ul></div>`;
     return `<section class="alt" id="impact"><div class="wrap"><div class="sec-head"><div class="eyebrow">${L("Impact", "الأثر")}</div>
       <h2>${L("What this is for: fewer surprises on children's wards.", "الغاية: مفاجآت أقل في أجنحة الأطفال.")}</h2>
-      <p>${L("The numbers below are published burden figures and labelled scenarios. NABD has no Abu Dhabi hospital data yet; the pilot is how that changes.", "الأرقام أدناه أرقام عبء منشورة وسيناريوهات موسومة. لا يملك نبض بيانات مستشفيات من أبوظبي بعد؛ والتجربة هي ما يغيّر ذلك.")}</p></div>
+      <p>${L("NABD is built to strengthen what the UAE already has: its surveillance records, its hospital and public-health systems, and the national teams who rely on them. The numbers below are published burden figures and labelled scenarios. NABD has no Abu Dhabi hospital data yet; the pilot is how that changes.", "يُبنى نبض لتعزيز ما تملكه الإمارات أصلاً: سجلات الرصد وأنظمة المستشفيات والصحة العامة والفرق الوطنية التي تعتمد عليها. الأرقام أدناه أرقام عبء منشورة وسيناريوهات موسومة. لا يملك نبض بيانات مستشفيات من أبوظبي بعد؛ والتجربة هي ما يغيّر ذلك.")}</p></div>
       <div class="grid g3">
         <div class="card"><div class="kpi teal num">2,189</div><p style="margin-top:8px">${L("RSV admissions of children aged five or under at one Abu Dhabi hospital (Tawam) in 2018 to 2022. Infants under six months stayed 5.8 days on average.", "حالة دخول بسبب الفيروس المخلوي لأطفال في سن الخامسة أو أقل في مستشفى واحد في أبوظبي (توام) بين 2018 و2022. وبلغ متوسط إقامة الرضّع دون ستة أشهر 5.8 يوم.")}</p><div class="src mono">research/burden.md</div></div>
         <div class="card"><div class="kpi teal num">22%</div><p style="margin-top:8px">${L("of under-twos with RSV were hospitalised in Dubai claims data, and fewer than 2% had a known risk factor. It reaches ordinary families.", "من الأطفال دون السنتين المصابين بالفيروس المخلوي أُدخلوا المستشفى بحسب بيانات مطالبات دبي، وأقل من 2% لديهم عامل خطر معروف. فهو يطال الأسر العادية.")}</p><div class="src mono">research/burden.md</div></div>
