@@ -58,5 +58,26 @@ def test_replay_units_and_bilingual_names(data):
 
 def test_page_sources_have_no_banned_wording():
     src = "\n".join((ROOT / "web" / "src" / f).read_text(encoding="utf-8") for f in ("app.js", "index.html")).lower()
-    for banned in ("blind test", "verified row-for-row", "fewer false alarms", "early warning of onset", "nobody publishes"):
+    for banned in ("blind test", "verified row-for-row", "fewer false alarms", "early warning of onset", "nobody publishes",
+                   "share a shape", "never repeat", "borrows the world"):
         assert banned not in src, banned
+
+
+def test_operational_validation_restates_the_replay_totals(data):
+    """DEVIATIONS V3: sensitivity and PPV on the page are arithmetic on the stored V2 totals, nothing else."""
+    ops = data["evidence"]["ops"]["replay"]
+    tot = json.loads((ROOT / "results" / "replay" / "pool" / "summary.json").read_text())["results"][ops["key"]]["totals"]
+    assert ops["key"] == "country_q75|p30|h2"
+    for k, m in ops["models"].items():
+        t = tot[k]
+        assert m["sens"] == round((t["surge_weeks"] - t["missed"]) / t["surge_weeks"], 3)
+        assert m["ppv"] == round((t["rostered"] - t["wasted"]) / t["rostered"], 3)
+    assert set(ops["models"]) == {"NABD-Pool", "NABD-UAE-v1", "persistence", "seasonal-analog"}
+
+
+def test_explanation_terms_cover_future_target_weeks(data):
+    cur = data["current"]
+    for series in ("rsv", "flu"):
+        rows = cur["explain"][series]
+        assert rows and all(r["te"] > cur["issue_date"] for r in rows)
+        assert all({t["f"] for t in r["terms"]} >= {"dy1", "anom", "dclim", "dlogspec"} for r in rows)

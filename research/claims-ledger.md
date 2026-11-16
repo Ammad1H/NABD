@@ -137,6 +137,8 @@ Numbers to remember: **2,189 · 46% · 7th of 21**.
 | H11 | "Borrowing works whichever model does it" | story, deck 7b, Q&A | H2 + H10 | R (interpretation; keep the post hoc label) |
 | H12 | A prospective UAE test of the pooled model is locked; its first round (R2) was hashed on 14 Nov before WHO published week 45; result due after 15 April 2027 | story, deck 12, Q&A, web | `docs/PREREG-LIVE.md`; `docs/LOCK-LIVE.json`; `ledger/rounds/2026-11-14T1947Z_R2/` | R (self-attested until committed, pushed and anchored; "no result yet") |
 | H13 | Any statement of a UAE result for the pooled model before final scoring | — | PREREG-LIVE section 8: interim numbers are descriptive only | X |
+| H14 | Fed by the pooled model, a fixed roster rule had sensitivity 80% and positive predictive value 58% at a two-week horizon on 36 held-out seasons (own-record model 83% / 53%; last week carried forward 84% / 56%; past-season pattern 49% / 41%) | web (The brief), deck 6, technical report | `results/replay/pool/summary.json` totals, `country_q75\|p30\|h2`; DEVIATIONS V3 | Q (post hoc restatement of the replay; always with the comparison rows; week-level decision metric, never an onset-detection or "fewer false alarms" claim) |
+| H15 | "World-class standard" (web headline) | web | Refers to the standard of evaluation (WIS, FluSight format, locked plans), not to performance | R (never "at par with the world's best" as a performance claim: the US bar was not met) |
 | H9 | "The pooled model is NABD's live UAE model" / any pooled-model claim about UAE hospital load | — | Pool is an opt-in ledger challenger; v1 is the hashed headline | X |
 
 ## F. Banned (X)

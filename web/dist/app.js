@@ -6,7 +6,7 @@
   const HEAD = "NABD-UAE-v1", POOL = "NABD-Pool", PERS = "persistence";
   const store = { get: k => { try { return localStorage.getItem(k); } catch { return null; } }, set: (k, v) => { try { localStorage.setItem(k, v); } catch { /* private mode */ } } };
   const S = { lang: store.get("nabd-lang") || "en", theme: store.get("nabd-theme"), series: "rsv", model: HEAD, shape: "flu",
-              decision: "APPROVE", log: [], rp: { src: "heldout", id: null, w: 0, model: null, timer: null }, verify: {} };
+              decision: "APPROVE", log: [], exw: 1, rp: { src: "heldout", id: null, w: 0, model: null, timer: null }, verify: {} };
   const L = (en, ar) => (S.lang === "ar" ? ar : en);
   const $ = id => document.getElementById(id);
   const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
@@ -156,7 +156,7 @@
   /* ---------------------------------------------------------------- sections */
   function nav() {
     const links = [["week", L("This week", "هذا الأسبوع")], ["science", L("The science", "العلم")], ["decisions", L("Decisions", "القرارات")],
-                   ["results", L("All results", "كل النتائج")], ["ledger", L("Ledger", "السجل")], ["impact", L("Impact", "الأثر")]];
+                   ["results", L("All results", "كل النتائج")], ["brief", L("The brief", "متطلبات التحدي")], ["ledger", L("Ledger", "السجل")], ["impact", L("Impact", "الأثر")]];
     return `<div class="wrap"><a class="brand" href="#top" aria-label="NABD"><svg viewBox="0 0 34 22"><path d="M1 12h7l3-8 5 15 4-11 2 4h11" fill="none" stroke="var(--teal)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>NABD</span><span class="ar">نبض</span></a>
       <nav>${links.map(([h, l]) => `<a href="#${h}">${l}</a>`).join("")}</nav>
       <div class="tools"><button class="iconbtn" data-act="lang" aria-label="Language">${S.lang === "en" ? "العربية" : "English"}</button>
@@ -266,12 +266,45 @@
           : `<div class="sub">${L("No decision recorded in this session.", "لم يُسجَّل قرار في هذه الجلسة.")}</div>`}</div></div></div>`;
   }
 
+  const feat = f => ({
+    dy1: [L("Momentum: change over the last week", "الزخم: التغيّر خلال الأسبوع الماضي"), L("sentinel positivity · last two weeks", "إيجابية الرصد · آخر أسبوعين")],
+    anom: [L("Distance from this week's usual level", "البعد عن المستوى المعتاد لهذا الأسبوع"), L("sentinel positivity · this week vs past seasons", "إيجابية الرصد · هذا الأسبوع مقابل المواسم السابقة")],
+    dclim: [L("Usual seasonal change to the target week", "التغيّر الموسمي المعتاد حتى الأسبوع المستهدف"), L("past seasons · now to the target week", "المواسم السابقة · من الآن إلى الأسبوع المستهدف")],
+    dlogspec: [L("Change in testing volume last week", "تغيّر حجم الفحوص في الأسبوع الماضي"), L("samples tested · last two weeks", "العيّنات المفحوصة · آخر أسبوعين")],
+    intercept: [L("Average week-to-week drift", "متوسط التغيّر من أسبوع إلى آخر"), L("all past seasons", "كل المواسم السابقة")],
+    residual_median_offset: [L("Correction for typical past error", "تصحيح الخطأ المعتاد سابقاً"), L("earlier forecasts", "التوقعات السابقة")],
+  }[f] || [f, ""]);
+  function whyChart(terms) {
+    const rows = terms.slice().sort((a, b) => Math.abs(b.pp) - Math.abs(a.pp)), W = 760, rh = 44, ml = 330, mr = 60, H = rows.length * rh + 26;
+    const mx = Math.max(0.5, ...rows.map(t => Math.abs(t.pp))) * 1.15, x = lin(-mx, mx, ml + 56, W - mr), x0 = x(0);
+    let g = `<line class="one" x1="${x0}" x2="${x0}" y1="4" y2="${H - 22}"/><text x="${x0}" y="${H - 6}" text-anchor="middle" class="lab">0</text>` +
+      `<text x="${ml + 56}" y="${H - 6}" class="lab">${L("← lowers the forecast", "← يخفض التوقع")}</text><text x="${W - mr}" y="${H - 6}" text-anchor="end" class="lab">${L("raises it →", "يرفعه →")}</text>`;
+    rows.forEach((t, i) => {
+      const yy = i * rh + 6, [name, tag] = feat(t.f), a = Math.min(x0, x(t.pp)), w = Math.abs(x(t.pp) - x0);
+      g += `<text x="${ml - 14}" y="${yy + 13}" text-anchor="end" class="lab" style="fill:var(--ink)">${esc(name)}</text><text x="${ml - 14}" y="${yy + 27}" text-anchor="end" style="font-size:10.5px">${esc(tag)}</text>` +
+        `<rect class="${t.pp >= 0 ? "barp" : "barm"}" x="${a}" y="${yy + 4}" width="${Math.max(w, 1)}" height="20" rx="3"/>` +
+        `<text x="${t.pp >= 0 ? x(t.pp) + 7 : x(t.pp) - 7}" y="${yy + 19}" text-anchor="${t.pp >= 0 ? "start" : "end"}" class="val">${(t.pp > 0 ? "+" : "") + f1(t.pp)}</text>`;
+    });
+    return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="${L("Contribution of each input to the forecast", "إسهام كل مُدخل في التوقع")}">${g}</svg>`;
+  }
+  function why() {
+    const ex = (cur.explain || {})[S.series]; if (!ex || !ex.length) return "";
+    S.exw = Math.min(S.exw, ex.length - 1); const e = ex[S.exw];
+    return `<div class="card" style="margin-top:18px"><div class="bar"><h3 style="margin:0">${L("Why the forecast says this", "لماذا يقول التوقع ذلك")}</h3>
+        <div class="seg sp" role="group">${ex.map((w, i) => `<button data-act="exw" data-v="${i}" aria-pressed="${i === S.exw}">${L("week ending", "الأسبوع المنتهي في")} ${dfmt(w.te)}</button>`).join("")}</div></div>
+      <p class="sub" style="margin:10px 0 6px">${L(`${sname(S.series)}, headline model: median ${f1(e.median)}% for the week ending ${dfmt(e.te)}. Each bar is the number of percentage points the forecast would move without that input, so the explanation is exact, not an approximation.`,
+        `${sname(S.series)}، النموذج الرئيسي: الوسيط ${f1(e.median)}% للأسبوع المنتهي في ${dfmt(e.te)}. كل شريط هو عدد النقاط المئوية التي كان التوقع سيتحركها من دون ذلك المُدخل، فالتفسير دقيق لا تقريبي.`)}</p>
+      <div style="overflow-x:auto"><div style="min-width:620px">${whyChart(e.terms)}</div></div>
+      <div class="src">${L("Under each input: the signal it comes from and the period it covers. Location: UAE national sentinel sites. WHO FluNet has no breakdown by emirate or district, so NABD cannot attribute a rise to a place until a hospital or emirate feed exists.",
+        "تحت كل مُدخل: الإشارة التي يأتي منها والفترة التي يغطيها. الموقع: مواقع الرصد الوطنية في الإمارات. لا تتضمن WHO FluNet تفصيلاً بحسب الإمارة أو المنطقة، فلا يستطيع نبض نسبة الارتفاع إلى مكان قبل توفر بيانات مستشفى أو إمارة.")} <span class="mono">results/uae/explain/</span></div></div>`;
+  }
+
   function week() {
     return `<section id="week"><div class="wrap"><div class="sec-head"><div class="eyebrow">${L("This week's card", "بطاقة هذا الأسبوع")}</div>
       <h2>${L("How high, how sure, and what to do about it.", "إلى أي مدى سترتفع، وما مدى الثقة، وما الذي ينبغي فعله.")}</h2>
       <p>${L("The forecast is a range, not a line. The card turns the range into the chance of crossing each pressure threshold, then into one proposed action per role. The forecast for each week is hashed before WHO publishes that week.",
         "التوقع نطاق لا خط. تحوّل البطاقة النطاق إلى احتمال تجاوز كل عتبة ضغط، ثم إلى إجراء مقترح واحد لكل دور. ويُوثَّق توقع كل أسبوع بالتجزئة قبل أن تنشر المنظمة بيانات ذلك الأسبوع.")}</p></div>
-      <div id="card-body">${cardBody()}</div><div id="approval">${approval()}</div></div></section>`;
+      <div id="card-body">${cardBody()}</div><div id="why" style="scroll-margin-top:80px">${why()}</div><div id="approval">${approval()}</div></div></section>`;
   }
 
   function science() {
@@ -387,6 +420,71 @@
       <div class="grid g3">${cards.map(c => `<div class="card"><div class="chips">${c[0]}</div><h3>${c[1]}</h3><div style="margin:10px 0 8px">${c[2]}</div><p>${c[3]}</p><div class="src mono">${c[4]}</div></div>`).join("")}</div></div></section>`;
   }
 
+  function brief() {
+    const O = ev.ops || {}, RP = O.replay, R = ev.replay_pool, P = ev.pool, fr = D.freshness, pct = v => Math.round(v * 100) + "%";
+    const ST = { met: () => chip("met", L("Met", "مستوفى")), part: () => chip("scn", L("Partly met", "مستوفى جزئياً")), sim: () => chip("wait", L("Scenario only", "سيناريو فقط")) };
+    const reqs = [
+      [ST.part(), L("Multi-signal surveillance", "رصد متعدد الإشارات"),
+        L("The headline model reads laboratory positivity and testing volume from one WHO surveillance stream. A challenger added non-sentinel laboratory data, school breaks and Ramadan; it did not improve the forecast, and that result is reported. Hospital counts and wastewater are pilot inputs, not built.",
+          "يقرأ النموذج الرئيسي نسبة الإيجابية المخبرية وحجم الفحوص من مسار رصد واحد لدى المنظمة. وأضاف نموذج منافس بيانات مخبرية غير رصدية والعطل المدرسية ورمضان؛ فلم يتحسن التوقع، وهذه النتيجة منشورة. أما أعداد المستشفيات ومياه الصرف فمدخلات للتجربة لم تُبنَ بعد."), "#results"],
+      [ST.part(), L("Explainable anomaly detection", "كشف قابل للتفسير"),
+        L("Every forecast decomposes exactly into its inputs, each tied to a signal and a time period, including how far this week sits from its usual level. Location is national only: WHO data carry no emirate or district detail.",
+          "يتفكك كل توقع تماماً إلى مدخلاته، وكل مُدخل مرتبط بإشارة وفترة زمنية، ومنها مدى ابتعاد هذا الأسبوع عن مستواه المعتاد. الموقع وطني فقط: بيانات المنظمة لا تتضمن تفصيلاً بحسب الإمارة أو المنطقة."), "#why"],
+      [ST.met(), L("Actionable decision support", "دعم قرار قابل للتنفيذ"),
+        L("One proportionate action per named role, shown with the chance behind it and the repeat-last-week forecast beside it. A named person approves, modifies or dismisses it with a reason. Thresholds and wording await clinical review.",
+          "إجراء متناسب واحد لكل دور مسمّى، يُعرض مع الاحتمال الذي يستند إليه وبجانبه توقع تكرار الأسبوع الماضي. يعتمده شخص مسمّى أو يعدّله أو يرفضه مع ذكر السبب. العتبات والصياغة بانتظار المراجعة السريرية."), "#week"],
+      [ST.part(), L("Privacy-preserving views", "عروض تحفظ الخصوصية"),
+        L("Weekly totals only. Person-level fields are rejected by schema, and the pilot connector suppresses any count below ten; both are tested. Actions are shown per role. Sign-in and role-based access are not built: this page is public and holds no restricted data.",
+          "مجاميع أسبوعية فقط. تُرفض الحقول الفردية بحكم المخطط، ويحجب موصل التجربة أي عدد دون العشرة؛ وكلاهما مختبَر. تُعرض الإجراءات بحسب الدور. أما تسجيل الدخول والصلاحيات بحسب الدور فلم تُبنَ: هذه الصفحة عامة ولا تحوي بيانات مقيَّدة."), "#impact"],
+      [ST.met(), L("Operational validation", "التحقق التشغيلي"),
+        L("Lead time, sensitivity, predictive value, wasted calls, data delay, missing-input behaviour and interval coverage are all reported in the table below, each with its status.",
+          "المهلة والحساسية والقيمة التنبؤية والقرارات المهدورة وتأخر البيانات وسلوك النظام عند نقص المدخلات وتغطية النطاقات، كلها في الجدول أدناه مع حالة كل منها."), "#ops"],
+      [ST.sim(), L("Health and resilience impact", "الأثر الصحي والمرونة"),
+        L("No outcome has been measured. The replay shows fewer mis-rostered weeks than a country's own-record model; bed and cost figures are labelled scenarios; the workforce-absence feed is simulated. A hospital pilot is how impact would be measured.",
+          "لم يُقَس أي أثر بعد. تُظهر إعادة التشغيل أسابيع جدولة خاطئة أقل من نموذج سجل الدولة؛ أرقام الأسرّة والتكلفة سيناريوهات موسومة؛ وتغذية غياب العاملين محاكاة. والتجربة في مستشفى هي طريق قياس الأثر."), "#impact"],
+    ];
+    const order = [["NABD-Pool", "pool"], ["NABD-UAE-v1", "local"], ["persistence", "last"], ["seasonal-analog", "pattern"]];
+    const rows = RP ? order.map(([k, n]) => { const m = RP.models[k], ps = R.per_season[k]; return `<tr><td>${k === "NABD-Pool" ? `<b>${mname(n)}</b>` : mname(n)}</td><td class="r num"><b>${pct(m.sens)}</b></td><td class="r num"><b>${pct(m.ppv)}</b></td><td class="r num">${f1(ps.missed)}</td><td class="r num">${f1(ps.wasted)}</td></tr>`; }).join("") : "";
+    const item = (h, t, c) => `<div class="role"><b>${h}</b>${t} ${c}</div>`;
+    return `<section id="brief"><div class="wrap"><div class="sec-head"><div class="eyebrow">${L("Against the brief", "مقابل متطلبات التحدي")}</div>
+      <h2>${L("The six things Statement 06 asks for, and where NABD stands on each.", "المتطلبات الستة في البيان 06، وموقع نبض من كل منها.")}</h2>
+      <p>${L("The headings are the organisers'. The status under each is NABD's own reading, including where it falls short.", "العناوين من صياغة المنظمين. والحالة تحت كل عنوان هي قراءة نبض نفسه، بما فيها مواضع القصور.")}</p></div>
+      <div class="grid g3">${reqs.map((q, i) => `<div class="card"><div class="chips">${q[0]}</div><h3>${i + 1}. ${q[1]}</h3><p>${q[2]}</p><div class="src"><a href="${q[3]}">${L("See the evidence", "انظر الدليل")} →</a></div></div>`).join("")}</div>
+      ${RP ? `<div class="grid g-32" style="margin-top:18px" id="ops"><div class="card"><div class="chips">${CH.post()}</div><h3>${L("Operational validation: the roster rule as an alert", "التحقق التشغيلي: قاعدة المناوبات بوصفها تنبيهاً")}</h3>
+          <div class="tablewrap"><table><thead><tr><th>${L("What the rule was fed", "مُدخل القاعدة")}</th><th class="r">${L("Sensitivity", "الحساسية")}</th><th class="r">${L("Predictive value", "القيمة التنبؤية")}</th><th class="r">${L("Missed / season", "فائتة / موسم")}</th><th class="r">${L("Wasted / season", "مهدورة / موسم")}</th></tr></thead><tbody>${rows}</tbody></table></div>
+          <div class="src">${L(`Influenza, ${RP.n} seasons in ${RP.n_countries} held-out countries, ${RP.models["NABD-Pool"].surge} surge weeks. Sensitivity: share of surge weeks that had been rostered two weeks ahead. Predictive value: share of rostered weeks that were surge weeks. The same counts as the replay above, restated; no new run. Source: results/replay/pool/summary.json, docs/DEVIATIONS.md V3.`,
+            `الإنفلونزا، ${RP.n} موسماً في ${RP.n_countries} دولة خارج العيّنة، ${RP.models["NABD-Pool"].surge} أسبوع موجة. الحساسية: نسبة أسابيع الموجة التي جُدولت قبل أسبوعين. القيمة التنبؤية: نسبة الأسابيع المجدولة التي كانت أسابيع موجة. الأعداد نفسها في إعادة التشغيل أعلاه بصياغة أخرى؛ بلا تشغيل جديد. المصدر: results/replay/pool/summary.json و docs/DEVIATIONS.md V3.`)}</div>
+          <p class="note warn" style="margin-top:14px">${L("Read it straight: the pooled model makes the fewest wasted calls and has the best predictive value, but it catches slightly fewer surge weeks than repeating last week.", "القراءة الصريحة: النموذج المجمَّع أقل القواعد هدراً وأعلاها قيمة تنبؤية، لكنه يلتقط أسابيع موجة أقل قليلاً من تكرار الأسبوع الماضي.")}</p></div>
+        <div class="card"><h3>${L("The rest of the checklist", "بقية القائمة")}</h3><div class="roles">
+          ${item(L("Lead time", "المهلة"), L("Roster calls are made two weeks before the target week. NABD does not warn earlier that a surge is starting.", "تُتخذ قرارات المناوبة قبل أسبوعين من الأسبوع المستهدف. ولا ينذر نبض أبكر ببدء الموجة."), CH.post())}
+          ${item(L("Data delay", "تأخر البيانات"), L(`WHO usually publishes a week about ${fr.expected_lag_days} days after it ends. The newest published week is ${fr.last_week}, ${fr.lag_days} days old today; the card always shows this.`, `تنشر المنظمة الأسبوع عادة بعد نحو ${fr.expected_lag_days} يوماً من نهايته. أحدث أسبوع منشور هو ${fr.last_week} وعمره اليوم ${fr.lag_days} يوماً؛ وتعرض البطاقة ذلك دائماً.`), chip("pre", L("Live", "حي")))}
+          ${O.dropout_us ? item(L("Missing inputs", "نقص المدخلات"), L(`In the US test, losing the latest input week multiplied forecast error by ${f2(O.dropout_us[1])}, and losing two by ${f2(O.dropout_us[2])}. A card whose forecast, direction and action disagree is blocked, not shown.`, `في الاختبار الأمريكي ضاعف فقدان أحدث أسبوع من المدخلات خطأ التوقع ${f2(O.dropout_us[1])} مرة، وفقدان أسبوعين ${f2(O.dropout_us[2])} مرة. والبطاقة التي يتعارض فيها التوقع والاتجاه والإجراء تُحجب ولا تُعرض.`), CH.retro()) : ""}
+          ${P && P.coverage ? item(L("Interval coverage", "تغطية النطاقات"), L(`On the held-out forecasts the pooled model's 95% ranges contained the outcome ${pct(P.coverage["NABD-Pool"].cov95)} of the time and its 50% ranges ${pct(P.coverage["NABD-Pool"].cov50)}.`, `في التوقعات خارج العيّنة احتوت نطاقات 95% للنموذج المجمَّع النتيجة في ${pct(P.coverage["NABD-Pool"].cov95)} من الحالات ونطاقات 50% في ${pct(P.coverage["NABD-Pool"].cov50)}.`), CH.pre()) : ""}
+        </div></div></div>` : ""}
+      </div></section>`;
+  }
+
+  function path() {
+    const ph = [
+      [L("Now · November 2026", "الآن · نوفمبر 2026"), L("Working prototype. Weekly forecast rounds sealed on WHO data. The forward UAE test is locked.", "نموذج أولي عامل. جولات توقع أسبوعية موثّقة على بيانات المنظمة. واختبار الإمارات المستقبلي مثبّت."), chip("met", L("Built", "مبني"))],
+      [L("December to February", "ديسمبر إلى فبراير"), L("A data-sharing note with one hospital. A clinician and a public-health officer review the playbook.", "مذكرة مشاركة بيانات مع مستشفى واحد. ومراجعة دليل العمل من طبيب ومسؤول صحة عامة."), chip("wait", L("Needs a partner", "يحتاج شريكاً"))],
+      [L("Twelve-week shadow pilot", "تجربة مراقبة لاثني عشر أسبوعاً"), L("Weekly totals of paediatric respiratory cases enter through the pilot connector. No change to care. The pass mark is fixed first.", "تدخل المجاميع الأسبوعية لحالات الجهاز التنفسي للأطفال عبر موصل التجربة. لا تغيير في الرعاية. ومعيار النجاح يُحدَّد أولاً."), chip("scn", L("Connector built", "الموصل مبني"))],
+      [L("April 2027 decision", "قرار أبريل 2027"), L("The pilot's exit test and the locked UAE test both report. Go or stop, on the record.", "تظهر نتيجة معيار التجربة واختبار الإمارات المثبّت معاً. استمرار أو توقف، والنتيجة موثّقة."), chip("wait", L("Planned", "مخطط"))],
+      [L("Scale", "التوسّع"), L("More hospitals, a read-only feed for public-health teams, then the Gulf, where the method has already been tested in three countries.", "مستشفيات أكثر، وتغذية للقراءة فقط لفرق الصحة العامة، ثم الخليج حيث اختُبرت الطريقة في ثلاث دول."), chip("wait", L("Planned", "مخطط"))],
+    ];
+    const run = [
+      [L("Data in", "دخول البيانات"), L("A weekly export of totals from the hospital or the health authority. The schema check rejects any person-level field and counts below ten are suppressed before anything is stored.", "تصدير أسبوعي للمجاميع من المستشفى أو الجهة الصحية. يرفض فحص المخطط أي حقل فردي وتُحجب الأعداد دون العشرة قبل أي تخزين.")],
+      [L("Model changes", "تغيير النماذج"), L("A new model first runs beside the headline model on the sealed ledger and is judged by a test locked in advance. The pooled model is in that position now. The proposed rule: the headline changes only if that test is met.", "يعمل أي نموذج جديد أولاً إلى جانب النموذج الرئيسي في السجل الموثّق ويُحكم عليه باختبار مثبّت مسبقاً. والنموذج المجمَّع في هذا الموضع الآن. القاعدة المقترحة: لا يتغير النموذج الرئيسي إلا إذا تحقق ذلك الاختبار.")],
+      [L("Monitoring", "المراقبة"), L("Every round is scored when its week is published, against repeating last week. Data age is shown on every card, and contradictory cards are blocked.", "تُقيَّم كل جولة عند نشر أسبوعها، مقابل تكرار الأسبوع الماضي. يظهر عمر البيانات على كل بطاقة، وتُحجب البطاقات المتعارضة.")],
+      [L("People", "الأشخاص"), L("NABD proposes; a named officer decides. Every decision is logged with a reason in a chained record. Nothing is sent automatically, and nothing concerns an individual patient or worker.", "نبض يقترح، ومسؤول مسمّى يقرّر. يُسجَّل كل قرار مع سببه في سجل مترابط. لا يُرسل شيء تلقائياً، ولا شيء يخص مريضاً أو عاملاً بعينه.")],
+    ];
+    return `<div class="card" style="margin-top:18px" id="path"><div class="chips">${chip("scn", L("Plan", "خطة"))}</div><h3>${L("From prototype to a service the UAE can rely on", "من نموذج أولي إلى خدمة تعتمد عليها الإمارات")}</h3>
+      <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(190px,1fr));margin-top:14px">${ph.map((x, i) => `<div class="card flat"><div class="step-n num">${i + 1}</div><h3>${x[0]}</h3><p>${x[1]}</p><div class="chips" style="margin-top:10px">${x[2]}</div></div>`).join("")}</div>
+      <h3 style="margin-top:22px">${L("How it would run once in service", "كيف يعمل بعد دخوله الخدمة")}</h3>
+      <div class="grid g2" style="margin-top:10px">${run.map(x => `<div class="role"><b>${x[0]}</b>${x[1]}</div>`).join("")}</div>
+      <div class="src">${L("The pilot connector, the suppression rule, the ledger, the consistency check and the decision log exist and are tested. Hospital integration, sign-in and the public-health feed are plans.", "موصل التجربة وقاعدة الحجب والسجل وفحص الاتساق وسجل القرارات موجودة ومختبَرة. أما الربط بالمستشفيات وتسجيل الدخول وتغذية الصحة العامة فخطط.")} <span class="mono">docs/DEPLOYMENT-PLAN.md</span></div></div>`;
+  }
+
   function ledger() {
     const Lg = D.ledger, lt = Lg.live_test, byRound = {};
     Lg.rounds.forEach(r => (byRound[r.round] ||= []).push(r));
@@ -436,6 +534,7 @@
           <p>${L("Give NABD one hospital's weekly aggregate paediatric respiratory counts, with no change to care. The exit test is set in advance: forecast error below 0.9 of the hospital's own census carried forward. If NABD misses it, the hospital walks away and the record stays on file.", "أعطوا نبض الأعداد الأسبوعية المجمّعة لحالات الجهاز التنفسي للأطفال في مستشفى واحد، من دون أي تغيير في الرعاية. معيار النجاح محدد مسبقاً: خطأ توقع دون 0.9 من تكرار أعداد المستشفى نفسها. وإن لم يبلغه نبض ينسحب المستشفى ويبقى السجل محفوظاً.")}</p>
           <div class="src">${L("Aggregate data only: person-level fields are rejected by design and small cells are suppressed (k ≥ 10).", "بيانات مجمّعة فقط: تُرفض الحقول الفردية بحكم التصميم وتُحجب الخلايا الصغيرة (k ≥ 10).")} <span class="mono">docs/PILOT-DATA-SPEC.md</span></div></div>
       </div>
+      ${path()}
       <div class="grid g3" style="margin-top:18px">
         ${col(L("Real today", "حقيقي اليوم"), "pre", [L("WHO FluNet UAE surveillance data", "بيانات رصد الإمارات من WHO FluNet"), L("Weekly forecasts from two models, with ranges", "توقعات أسبوعية من نموذجين مع النطاقات"), L("The card, its consistency gate and the hash-chained approval log", "البطاقة وبوابة الاتساق وسجل الاعتماد المترابط بالتجزئة"), L("Three registered tests and the hashed ledger (local until pushed and timestamped)", "ثلاثة اختبارات مسجّلة والسجل الموثّق (محلي إلى أن يُنشر ويُختم زمنياً)")])}
         ${col(L("Scenario or illustrative", "سيناريو أو توضيحي"), "scn", [L("Bed-days and AED figures", "أرقام أيام الأسرّة والدرهم"), L("Playbook thresholds and action wording, not yet reviewed by a clinician", "عتبات دليل العمل وصياغة الإجراءات، لم يراجعها طبيب بعد"), L("The employer sickness-absence feed is simulated on synthetic data", "تغذية غياب الموظفين محاكاة على بيانات اصطناعية")])}
@@ -479,7 +578,7 @@
     document.documentElement.lang = S.lang; document.documentElement.dir = S.lang === "ar" ? "rtl" : "ltr";
     document.title = L("NABD نبض · Respiratory season forecasts for the UAE", "نبض NABD · توقعات المواسم التنفسية في الإمارات");
     $("nav").innerHTML = nav();
-    $("app").innerHTML = hero() + how() + problem() + week() + science() + decisions() + results() + ledger() + impact() + footer();
+    $("app").innerHTML = hero() + how() + problem() + week() + science() + decisions() + results() + brief() + ledger() + impact() + footer();
   }
   const part = (id, html) => { const e = $(id); if (e) e.innerHTML = html; };
 
@@ -489,7 +588,8 @@
     if (a === "lang") { stopPlay(); S.lang = S.lang === "en" ? "ar" : "en"; store.set("nabd-lang", S.lang); S.log.length = 0; renderAll(); }
     else if (a === "theme") { const dark = S.theme ? S.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches; S.theme = dark ? "light" : "dark"; store.set("nabd-theme", S.theme); applyTheme(); }
     else if (a === "shape") { S.shape = v; part("problem", problem().replace(/^<section[^>]*>|<\/section>$/g, "")); }
-    else if (a === "series") { S.series = v; part("card-body", cardBody()); part("approval", approval()); }
+    else if (a === "series") { S.series = v; part("card-body", cardBody()); part("why", why()); part("approval", approval()); }
+    else if (a === "exw") { S.exw = Number(v); part("why", why()); }
     else if (a === "model") { S.model = v; part("card-body", cardBody()); }
     else if (a === "decision") { S.decision = v; b.parentElement.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", String(x === b))); }
     else if (a === "record") { await record(); }

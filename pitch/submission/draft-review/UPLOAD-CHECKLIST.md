@@ -6,7 +6,7 @@ The organisers will send review insights on **17 Nov 2026** to teams that upload
 
 | Asked for | File or link |
 |---|---|
-| Technical documentation | `NABD-technical-documentation.pdf` (5 pages, compiled from `NABD-technical-documentation.tex`) |
+| Technical documentation | `NABD-technical-documentation.pdf` (7 pages, compiled from `NABD-technical-documentation.tex`) |
 | Fuller documentation, if the portal takes a second file | `docs/TECHNICAL.md` |
 | Prototype link | `https://ammad1h.github.io/NABD/` (fallback: `https://github.com/Ammad1H/NABD`) |
 | Prototype file | `NABD-prototype-web.zip` |

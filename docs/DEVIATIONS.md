@@ -105,3 +105,13 @@
 | W1d | 2026-11-14 | Cells and scoring | The same common cells as S1 (all models present), the same WIS (`nabd_kit` via `pool.harness`) and the same country-clustered bootstrap (`pool.harness.rel`, B = 2000, seed 0). The four S1 models are rescored from the stored quantiles (3-decimal rounding); the rescored Pool vs local ratio must reproduce 0.767 to within 0.002 before any Chronos number is read. |
 | W1e | 2026-11-14 | Reported | Relative WIS of Chronos-2 vs NABD-Pool (**the headline of this benchmark**), vs local v1 and vs persistence, with CIs; by horizon; the short-history stratum; per-country ratios; 50% and 95% coverage. Also an **equal-weight quantile average of NABD-Pool and Chronos-2 ("Pool+FM")** vs NABD-Pool. Everything is reported whichever way it falls. |
 | W1f | 2026-11-14 | Use | Nothing here is a claim of superiority or a UAE result. If Pool+FM looks better, that is a hypothesis for a new locked test on countries not yet examined, not a finding. Limits to state: the model's pretraining data may include public epidemiological series; finalised FluNet data; accuracy of the S1 models on these cells was already known. |
+
+## Final stretch S6: the pooled replay restated as sensitivity and PPV (2026-11-16; declared BEFORE computing; earlier rows unchanged)
+
+**Status: POST HOC and EXPLORATORY, a restatement of V2.** No forecast, model, lock, threshold or rule changes, and nothing is re-run. The organisers' Statement 06 checklist asks for sensitivity and positive predictive value; the V2 replay reported the same counts as missed and wasted weeks.
+
+| ID | Date (UTC) | Item | Declaration |
+|---|---|---|---|
+| V3a | 2026-11-16 | Source | Only the totals already stored in `results/replay/pool/summary.json` for the V2 primary setting (`country_q75|p30|h2`: country-relative threshold, 30% rule, about two weeks after issue). No other setting is read for the headline; if another is shown it is labelled as the V2 secondary. |
+| V3b | 2026-11-16 | Definitions | Sensitivity = (surge weeks − missed) / surge weeks. PPV = (rostered weeks − wasted) / rostered weeks. Both pooled over all held-out country-seasons, for NABD-Pool, the own-record model, last week carried forward and the past-season pattern. No confidence intervals are computed; the V2 intervals on mismatch weeks remain the only inferential statement. |
+| V3c | 2026-11-16 | Use | Reported for all four inputs whichever way they fall, next to the V2 caveats. These are week-level decision metrics at a fixed two-week horizon, not onset-detection metrics: the claim "no earlier onset warning" (claims ledger F7) stands. |

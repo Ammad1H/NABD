@@ -40,6 +40,8 @@ def j(p):
 
 POOL, FM, GCC, US = j("results/pool/summary.json"), j("results/fm/summary.json"), j("results/gcc/summary.json"), j("results/summary.json")
 RP = j("results/replay/pool/summary.json")["results"]["country_q75|p30|h2"]
+_T = RP["totals"]["NABD-Pool"]
+SENS, PPV = (_T["surge_weeks"] - _T["missed"]) / _T["surge_weeks"], (_T["rostered"] - _T["wasted"]) / _T["rostered"]
 P, SH = POOL["PRIMARY_flu_pool_vs_local_v1"], POOL["secondary"]["short_history_pool_vs_v1"]
 PP = POOL["secondary"]["pool_vs_persistence"]
 GP, GA = GCC["results"]["PRIMARY_flu_v1_vs_persistence"], GCC["results"]["flu_NABD-UAE-v1_vs_seasonal-analog"]
@@ -285,7 +287,7 @@ def s6(s):
             ["UAE, forward in real time: pooled vs own-record model on the hashed ledger", "Ratio below 1 with the interval below 1; one assessment on or after 15 April 2027 (locked 14 Nov 2026)",
              "In progress: first round (R2) hashed on 14 Nov, 0 weeks scored yet. No UAE result is claimed"],
             ["Decision value: mis-rostered weeks per season under a fixed roster rule", "Fewer than the own-record model (post hoc replay)",
-             f"{RP['NABD-Pool_minus_NABD-UAE-v1_mismatch']['mean_a']:.1f} vs {RP['NABD-Pool_minus_NABD-UAE-v1_mismatch']['mean_b']:.1f}; not distinguishable from 'repeat last week' ({RP['NABD-Pool_minus_persistence_mismatch']['mean_b']:.1f})"],
+             f"{RP['NABD-Pool_minus_NABD-UAE-v1_mismatch']['mean_a']:.1f} vs {RP['NABD-Pool_minus_NABD-UAE-v1_mismatch']['mean_b']:.1f}; sensitivity {SENS:.0%}, predictive value {PPV:.0%}; not distinguishable from 'repeat last week' ({RP['NABD-Pool_minus_persistence_mismatch']['mean_b']:.1f})"],
             ["Hospital pilot (12 weeks, shadow mode)", "Error below 0.9 of the hospital's own census carried forward; 80% ranges cover 70–90% of weeks",
              "Not started: needs one hospital's aggregate weekly counts"],
             ["Process", "Every forecast hashed before WHO publishes its week; every action has a named approver and a reason",

@@ -1,5 +1,7 @@
 # NABD (نبض, "pulse"): open RSV and influenza forecasts for Abu Dhabi
 
+**Live page:** https://ammad1h.github.io/NABD/
+
 **New here?** Read [`pitch/NABD-in-plain-words.md`](pitch/NABD-in-plain-words.md) first: what NABD is, what the pooled model means and what it does not claim, without the statistics.
 
 NABD turns WHO FluNet surveillance into probabilistic weekly forecasts of RSV and influenza positivity, from a nowcast to about 2.5 weeks after issue. A bilingual (Arabic/English) card proposes a proportionate action for a named role, and only a person can approve, modify or dismiss it. Every decision goes into a hash-chained audit log. Each forecast round is hashed before its outcome exists.
@@ -41,6 +43,7 @@ python -m replay.run && python -m replay.pool_replay              # decision rep
 - `pool/`, `results/pool/`: the pooled model and its held-out test; `replay/`, `results/replay/`: decision replays
 - `ledger/`: hashed forecast rounds and scoring (`ledger/README.md`)
 - `docs/PILOT-DATA-SPEC.md`: what a hospital would share for a shadow pilot (aggregate, suppressed)
+- `docs/DEPLOYMENT-PLAN.md`: status against the six Statement 06 requirements, the pilot week by week, and how NABD would run in service
 - `docs/RUNBOOK.md`, `docs/PUBLISH.md`: weekly operations, publishing and anchoring
 
 ## Data and licence

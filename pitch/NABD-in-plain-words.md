@@ -109,6 +109,19 @@ Know these before a judge asks. Saying them yourself builds trust.
 - **Zero weeks are scored on the live ledger so far**, because WHO has not yet published the first target week.
 - **The seals are not yet independently dated.** Until the repository is public and the fingerprints are stamped by an outside timestamp service, the dates are the project's own word. Do not say "published" or "cannot be rewritten" before that is done.
 
+## If a judge goes through the six requirements
+
+The challenge brief lists six things. Here is the honest answer for each, in one line. The page has a section called "The brief" that shows the same.
+
+| They ask for | Your answer |
+|---|---|
+| Several kinds of signal | Partly. Today it reads lab results and testing volume. School breaks and Ramadan were tried and did not help, and that is reported. Hospital counts come with the pilot. |
+| Explainable detection | Partly. Every forecast shows exactly which input pushed it up or down and by how much. It cannot say which emirate, because WHO data are national. |
+| A clear action and a named role | Yes. One action per role, a named person approves, and the decision is logged. |
+| Privacy | Partly. Only weekly totals; anything about a person is rejected; small counts are hidden. Logins per role are not built yet. |
+| Proof it works in operation | Yes. Tested as an alert on 36 past seasons: it caught 80% of surge weeks two weeks ahead, and 58% of its calls were needed. Repeating last week caught a little more (84%) but wasted more calls. |
+| Health impact | Not measured yet. That is what the twelve-week hospital pilot is for. |
+
 ## The ask
 
 One hospital. Twelve weeks. Weekly totals only. Shadow mode, meaning NABD runs quietly beside normal practice and changes nothing in patient care. The pass mark is set in advance. If NABD misses it, the hospital walks away.

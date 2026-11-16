@@ -106,6 +106,47 @@ def current_round(obs: pd.DataFrame, pb: dict) -> dict:
         out["forecasts"][name] = {c: fan(f, data_io.UAE_TARGETS[c]) for c in ("rsv", "flu")}
         if name != PERS:
             out["cards"][name] = {c: card_block(pb, f, obs, issue, c) for c in ("rsv", "flu")}
+    out["explain"] = explain_block(issue)
+    return out
+
+
+def explain_block(issue: dt.date) -> dict:
+    """Exact per-term contributions of the headline forecast (results/uae/explain), in percentage points,
+    for the target weeks after the issue date. Empty when the explanation files are absent."""
+    ex, used = data_io.load_uae_explain(issue.isoformat())
+    out = {}
+    if used != issue.isoformat():
+        return out
+    for c, df in ex.items():
+        rows = []
+        for te, g in df.groupby("target_end_date", sort=True):
+            if dt.date.fromisoformat(str(te)) <= issue:
+                continue
+            terms = [dict(f=str(r.feature), pp=_r(r.pp_effect_loo, 2)) for r in g.itertuples()
+                     if r.feature not in ("last_observed_logit",) and pd.notna(r.pp_effect_loo)]
+            rows.append(dict(te=str(te), median=_r(g["median_pct"].iloc[0], 1), terms=terms))
+        if rows:
+            out[c] = rows
+    return out
+
+
+def ops_block() -> dict:
+    """Operational-validation numbers the Statement 06 brief asks for, restated from stored results only
+    (DEVIATIONS V3: sensitivity and PPV from the V2 replay totals; nothing is re-run)."""
+    out = {}
+    rs = _j(RES / "replay" / "pool" / "summary.json")
+    if rs:
+        key = "country_q75|p30|h2"
+        r = rs["results"][key]
+        out["replay"] = dict(key=key, n=r["n_country_seasons"], n_countries=r["n_countries"], models={
+            k: dict(surge=v["surge_weeks"], rostered=v["rostered"], missed=v["missed"], wasted=v["wasted"],
+                    sens=_r((v["surge_weeks"] - v["missed"]) / v["surge_weeks"], 3),
+                    ppv=_r((v["rostered"] - v["wasted"]) / v["rostered"], 3))
+            for k, v in r["totals"].items() if k in ("NABD-Pool", "NABD-UAE-v1", "persistence", "seasonal-analog")})
+    drop = RES / "tables" / "dropout_us.csv"
+    if drop.exists():
+        d = pd.read_csv(drop)
+        out["dropout_us"] = {int(r.dropped_weeks): _r(r.rel_to_no_dropout, 2) for r in d.itertuples()}
     return out
 
 
@@ -161,6 +202,9 @@ def evidence() -> dict:
     prh = data_io.pool_replay_headline(data_io.load_pool_replay()[0])
     if prh:
         ev["replay_pool"] = prh
+    ops = ops_block()
+    if ops:
+        ev["ops"] = ops
     return ev
 
 

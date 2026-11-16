@@ -142,6 +142,37 @@ Nothing is communicated automatically. A named approver chooses to approve, modi
 \item Forecasts are of laboratory positivity and inherit the reporting delays and revisions of the source.
 \end{itemize}
 
+\section{Against the Statement 06 requirements}
+
+Table~\ref{tab:brief} sets the organisers' six requirement headings against what NABD does today. The statuses are the project's own reading and include the shortfalls.
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{3.2cm}>{\raggedright\arraybackslash}p{1.9cm}Y@{}}
+\toprule
+Requirement & Status & Evidence and gap \\
+\midrule
+Multi-signal surveillance & Partly met & The headline model reads laboratory positivity and testing volume from one surveillance stream. A challenger with non-sentinel data, school breaks and Ramadan did not improve it, and that is reported. Hospital counts and wastewater are pilot inputs. \\
+Explainable anomaly detection & Partly met & Every forecast decomposes exactly into its inputs, each tied to a signal and a time period, including the distance from the usual level for the week. Location is national only, because WHO data carry no sub-national detail. \\
+Actionable decision support & Met & One proportionate action per named role, shown with the probability behind it; a named approver with a reason code; a hash-chained log. Thresholds await clinical review. \\
+Privacy-preserving views & Partly met & Weekly aggregates only; person-level fields rejected by schema; counts below ten suppressed with complementary suppression, all tested. Sign-in and role-based access are not built. \\
+Operational validation & Met & On 36 held-out seasons, a fixed roster rule fed by the pooled model had sensitivity 80\% and positive predictive value 58\% at a two-week horizon (own-record model 83\% and 53\%; repeating last week 84\% and 56\%; past-season pattern 49\% and 41\%). Post hoc restatement of the replay. Data delay, missing-input behaviour and interval coverage (95\% ranges contained the outcome 96\% of the time) are reported. \\
+Health and resilience impact & Scenario only & No outcome has been measured. Bed and cost figures are labelled scenarios, and the workforce-absence feed is simulated. A hospital pilot is how impact would be measured. \\
+\bottomrule
+\end{tabularx}
+\caption{The six Statement 06 requirements and NABD's status on each.}
+\label{tab:brief}
+\end{table}
+
+The operational figures deserve a plain reading. The pooled model makes the fewest wasted calls and has the best predictive value of the four inputs, but it catches slightly fewer surge weeks than simply repeating last week. These are week-level decision metrics at a fixed horizon, not onset-detection metrics.
+
+\section{Path to deployment}
+
+The route from prototype to service has four steps, set out in full in \texttt{docs/DEPLOYMENT-PLAN.md}. First, a data-sharing note with one hospital and a review of the playbook by a clinician and a public-health officer. Second, a twelve-week shadow pilot: each Monday the hospital exports the previous week's totals, the connector rejects any person-level column and suppresses small counts, forecasts are sealed before the next export exists, and each is scored against the count that later arrives. Nobody acts on the forecasts during the pilot. Third, one assessment against a pass mark fixed before any data are seen: forecast error below 0.9 of the hospital's own census carried forward, with 80\% ranges containing 70 to 90\% of outcomes. Fourth, if the mark is met, extension to more hospitals and a read-only feed for public-health teams, hosted inside the UAE.
+
+In service, a new model would first run beside the headline model on the sealed ledger and be judged by a test locked in advance, which is the position the pooled model is in now. Every round would be scored as its week is published, with error against repeating last week, interval coverage and data age tracked continuously. The connector, the suppression rules, the shadow scorer, the ledger and the decision log exist and are tested; hospital integration, sign-in and the public-health feed are plans.
+
 \section{Reproducing the work}
 
 The repository contains the code, the locked plans with their manifests, every result table and 157 automated tests covering adapters, leakage and future-perturbation checks, the locks, the card consistency check, the audit chain, the ledger and the web build. After \texttt{pip install -r requirements-dev.txt}, the command \texttt{pytest -q} runs the suite, \texttt{python -m web.build} regenerates the web page from the result files, \texttt{streamlit run app/streamlit\_app.py} starts the workbench, and \texttt{python -m ledger.weekly --fetch --with-pool} pulls new WHO data, scores past rounds and issues a new round when data are available. The longer technical description is \texttt{docs/TECHNICAL.md}, claims are governed by \texttt{research/claims-ledger.md}, and every deviation from a locked plan is in \texttt{docs/DEVIATIONS.md}.
