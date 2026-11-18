@@ -1,5 +1,7 @@
 # REVIEW R5: gap-finding panel. What would a top-3 Statement 06 entry show that NABD doesn't? (9 Nov 2026)
 
+> **What this file is.** A simulated review written by an AI assistant in a separate session, asked to act as a gap reviewer. No human reviewer, government official or company employee wrote, saw or endorsed it. It is kept because the fixes it prompted are traceable in `docs/DEVIATIONS.md`.
+
 **Panel.** J1 is a DoH/ADPHC public-health official. J2 is an AI scientist (Microsoft/G42/MBZUAI). J3 is a partnerships lead (PureHealth/M42). None of us built NABD.
 
 **Brief.** This is not another integrity audit. R2–R4 did that well, and round 5 closed most of R4's sweep items. This round asks one question: **against the entries most likely to finish top 3, where does NABD lose points?** We don't repeat R4 items except where a gap depends on them. Those are cross-referenced as "R4 §x".

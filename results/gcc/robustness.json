@@ -1,0 +1,42 @@
+{
+ "source": "results/gcc/tables/scores_long.csv",
+ "comparison": "NABD-UAE-v1 / persistence",
+ "flu": {
+  "cells": 2214,
+  "pooled": 0.914,
+  "leave_one_country_out": {
+   "OMN": 0.904,
+   "QAT": 0.907,
+   "SAU": 0.929
+  },
+  "two_stage_bootstrap_ci95": [
+   0.842,
+   0.984
+  ],
+  "by_horizon": {
+   "-1": 0.999,
+   "0": 0.958,
+   "1": 0.898,
+   "2": 0.855
+  }
+ },
+ "rsv": {
+  "cells": 1795,
+  "pooled": 0.798,
+  "leave_one_country_out": {
+   "OMN": 0.8,
+   "QAT": 0.862,
+   "SAU": 0.759
+  },
+  "two_stage_bootstrap_ci95": [
+   0.711,
+   1.088
+  ],
+  "by_horizon": {
+   "-1": 0.975,
+   "0": 0.868,
+   "1": 0.758,
+   "2": 0.692
+  }
+ }
+}

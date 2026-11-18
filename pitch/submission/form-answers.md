@@ -9,13 +9,13 @@ Select the option for **Statement 06: Population and Workforce Health Early Warn
 <!-- F:summary -->
 NABD (نبض, "pulse") forecasts how high RSV and influenza will go in the UAE over the next three weeks, and how sure it is, then turns each forecast into one proposed action that a named person must approve.
 
-The problem. Every winter week, hospital bed managers and public-health officers plan from last week's numbers and last year's pattern. But UAE seasons change timing and shape each year, and the UAE has only four seasons of sentinel data. A model built on that record alone only ties "repeat last week" (measured: 1.00).
+The problem. Every winter week, hospital bed managers and public-health officers plan from last week's numbers and last year's pattern. But UAE seasons change timing and shape each year, and a model built on the UAE's four seasons of sentinel data alone only ties "repeat last week" (1.00).
 
-The idea: borrowed strength. One model learns how respiratory seasons rise, peak and fade across 46 countries' WHO FluNet records; a country brings only its recent weeks. The test plan was locked, then the model, before the test data were opened. On 18 countries never examined before, the pooled model had 23% less influenza forecast error than each country's own-record model (0.767, 95% CI 0.681–0.832), better in 18 of 18, and 38% less where the record was short, which is the UAE's position. A general foundation model (Chronos-2), used off the shelf, lands level with it, so the gain is not a quirk of one model.
+The idea: borrowed strength. One model learns how respiratory seasons rise, peak and fade across 46 countries' WHO FluNet records; a country brings only its recent weeks. The test plan was locked, then the model, before the test data were opened. On 18 countries never examined before, the pooled model had 23% less influenza forecast error than each country's own-record model (0.767, 95% CI 0.681–0.832), better in 18 of 18. On the UAE's own last two seasons, forecast forward with the UAE left out of training, it beat "repeat last week" in both (0.77, 95% CI 0.70–0.86): a development check, not a confirmatory test. An off-the-shelf foundation model (Chronos-2) lands level with it on the held-out test.
 
 What the user sees. A bilingual Arabic/English weekly card: the chance of crossing each pressure threshold, one proposed action per role (hospital operations, ADPHC duty officer, occupational health), and an approval step that records a name and a reason in a hash-chained log. Every forecast file is hashed before WHO publishes the week it covers.
 
-What NABD does not claim. An Abu Dhabi hospital result, earlier detection of surge onset, or a confirmatory UAE result. In the US the bar was the CDC's combined forecast and NABD missed it (1.22 against 1.15); that is on the page. A forward UAE test is locked and reports after 15 April 2027. Aggregate data only; no personal data.
+What NABD does not claim. An Abu Dhabi hospital result, earlier detection of surge onset, or a confirmatory UAE result. In the US NABD missed its bar against the CDC's combined forecast (1.22 against 1.15). A forward UAE test is locked and reports after 15 April 2027. Aggregate data only.
 
 The ask. A 12-week shadow pilot on one hospital's aggregate weekly counts, with the exit test set in advance.
 <!-- /F -->
@@ -32,7 +32,7 @@ Built between 5 and 20 November 2026 by one person:
 - A forecast ledger: three rounds so far, each file with a SHA-256 and a Merkle manifest; scoring runs when WHO publishes.
 - The decision layer: thresholds, chance of exceedance, one proposed action per role, a gate that blocks contradictory cards, and a hash-chained approve / modify / dismiss log.
 - Two front-ends: a static Arabic/English web page generated from the result files (season replay, hash check in the browser) and a Streamlit workbench (hospital winter planner, PDF bulletin, every table), plus a FastAPI /forecast endpoint.
-- 157 automated tests, technical documentation, a deviations log, a claims ledger and a pilot data specification.
+- 163 automated tests, technical documentation, a deviations log, a claims ledger and a pilot data specification.
 Not built: any Abu Dhabi hospital data feed (pilot only). The employer-absence feed is simulated and labelled as such.
 <!-- /F -->
 

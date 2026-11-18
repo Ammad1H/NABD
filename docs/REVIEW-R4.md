@@ -1,5 +1,7 @@
 # REVIEW R4: final judge panel and integrity audit (9 Nov 2026)
 
+> **What this file is.** A simulated review written by an AI assistant in a separate session, asked to act as a panel of challenge judges and an integrity auditor (the personas J1–J3 and A are role-play, not real people). No human reviewer, government official or company employee wrote, saw or endorsed it. It is kept because the fixes it prompted are traceable in `docs/DEVIATIONS.md`.
+
 **Panel.** J1 is a senior public-health official (DoH/ADPHC). J2 is a principal AI scientist (Microsoft/G42/MBZUAI). J3 is a partnerships lead (PureHealth/M42). A is an independent integrity auditor. None of us built NABD. R3 scored it about 5.9 (docs/REVIEW-R3-judges.md, docs/REVIEW-R3-audit.md).
 
 **Inspected.**

@@ -58,8 +58,8 @@ Required by the Challenge submission rules (FAQ: a working prototype with "techn
    - It covers 3 countries with about 4 seasons each, on revised data.
    - The influenza bar was met: 0.914 (0.843–0.983).
    - It lost in 3 of 12 flu country-seasons and 1 of 10 RSV.
-   - RSV is a secondary outcome. Its country-clustered interval crosses 1 (0.712–1.026), and its intervals are too narrow outside the UAE (95% coverage 0.83).
-   - The influenza result survives dropping any one country (0.904–0.929) and a country-clustered bootstrap (0.841–0.984) (`docs/REVIEW-R3-audit.md` §0).
+   - RSV is a secondary outcome. Its country-clustered interval crosses 1 (0.711–1.088), and its intervals are too narrow outside the UAE (95% coverage 0.83).
+   - The influenza result survives dropping any one country (0.904–0.929) and a country-clustered bootstrap (0.842–0.984) (`results/gcc/ROBUSTNESS.md`, reproducible with `python -m eval.gcc_robustness`).
    - The lock is a local git commit, self-attested until anchored. We describe the test as "out-of-sample, plan locked before download", not "blind".
    - v1 was chosen as the primary method after the UAE v2 and forward-in-time results were known. This is disclosed (`docs/PREREG-GCC.md` §1).
 5. **No Abu Dhabi hospital, district or daily data.** NABD makes no Abu Dhabi operational claim.

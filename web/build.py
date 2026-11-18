@@ -190,6 +190,12 @@ def evidence() -> dict:
             ranks = [dict(season=r.season, rank=int(r.rank), n=int(r.n_models)) for r in nab.sort_values("season").itertuples()]
         ev["us"] = dict(verdict=us.get("primary_verdict"), rel_wis=_r(us["primary"]["rel_wis"], 2),
                         ci95=[_r(v, 2) for v in us["primary"]["ci95"]], margin=us["primary"]["margin"], ranks=ranks)
+    ud = _j(RES / "pool" / "uae_devcheck" / "summary.json")
+    if ud:
+        o = ud["overall"]
+        ev["uae_pool"] = dict(vs_persistence=o["NABD-Pool / persistence"], vs_local=o["NABD-Pool / NABD-UAE-v1"],
+                              local_vs_persistence=o["NABD-UAE-v1 / persistence"], seasons=ud["seasons"],
+                              by_season={k: v["NABD-Pool"] for k, v in ud["by_season"].items()}, cells=ud["cells"])
     fit = data_io.load_uae_forward_in_time()
     if fit:
         ev["uae"] = {k: dict(rel_wis=v["rel_wis"], ci95=v["ci95_date_cluster"]) for k, v in fit.items()}

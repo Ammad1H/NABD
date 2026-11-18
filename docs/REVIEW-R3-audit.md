@@ -1,5 +1,7 @@
 # REVIEW R3: Integrity and reproducibility audit (independent)
 
+> **What this file is.** A simulated review written by an AI assistant in a separate session, asked to act as an integrity and reproducibility auditor. No human reviewer, government official or company employee wrote, saw or endorsed it. It is kept because the fixes it prompted are traceable in `docs/DEVIATIONS.md`.
+
 Auditor: independent reviewer agent, 8 Nov 2026 (UTC). Repo HEAD audited: `6993236`. FluSight hub pin: `d03574028ece110013c6284d3012ac4bef03ded7`.
 This file is the only file written to the repo. All reruns were done in a scratch clone (`/tmp/r3`, hub symlinked). Audit scripts are in `/tmp/r3audit/` and were not committed.
 

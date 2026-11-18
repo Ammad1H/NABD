@@ -1,5 +1,7 @@
 # REVIEW R2: Integrity and reproducibility audit (independent)
 
+> **What this file is.** A simulated review written by an AI assistant in a separate session, asked to act as an integrity and reproducibility auditor. No human reviewer, government official or company employee wrote, saw or endorsed it. It is kept because the fixes it prompted are traceable in `docs/DEVIATIONS.md`.
+
 Auditor: independent reviewer agent, 8 Nov 2026 (UTC). Repo HEAD audited: `4675687`. Hub: `d03574028ece110013c6284d3012ac4bef03ded7`.
 Scope: freeze integrity, reproduction, leakage, scoring, gates G1–G11, overclaims. The only file written to the repo is this one. All reruns were done in scratch clones under /tmp.
 

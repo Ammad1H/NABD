@@ -1,5 +1,7 @@
 # NABD: Judge Panel Review, Round 2 (8 Nov 2026)
 
+> **What this file is.** A simulated review written by an AI assistant in a separate session, asked to act as a panel of challenge judges (public health, AI, partnerships). No human reviewer, government official or company employee wrote, saw or endorsed it. It is kept because the fixes it prompted are traceable in `docs/DEVIATIONS.md`.
+
 **Panel.** J1 is a senior public-health official (DoH/ADPHC). J2 is a principal AI/ML scientist (Microsoft/G42/MBZUAI). J3 is a partnerships and venture lead (PureHealth/M42). Each judge scored independently, and the views were then merged. None of us built NABD.
 
 **Inspected.** docs/SPEC.md, BUILD-SPEC.md, PROTOCOL.md, FREEZE.md, DEVIATIONS.md and BUILD-LOG.md; results/SUMMARY.md, summary.json, alerts_summary.json, tables/*, figures/* (all 3 PNGs viewed) and uae/*; app/screenshots/* (all 5 viewed) and app/README.md; research/burden.md, tc.md and competitors.md; pitch/registration.md, deck-script.md, demo-script.md and qa.md; and the code in models/, uae/, adapters/, playbook/ and ledger/, plus the git log.

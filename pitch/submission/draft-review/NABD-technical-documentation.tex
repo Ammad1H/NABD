@@ -34,12 +34,12 @@
 {\Huge\bfseries NABD}\\[0.3em]
 {\Large Technical documentation: probabilistic RSV and influenza forecasts for the UAE}\\[0.8em]
 {\small Future Health Digital Innovation Challenge 2026 \textperiodcentered{} Statement 06, Population and Workforce Health Early Warning\\
-Ammad Hassan (sole entrant), MBZUAI \textperiodcentered{} 15 November 2026\\
+Ammad Hassan (sole entrant), MBZUAI \textperiodcentered{} 18 November 2026\\
 Repository: \url{https://github.com/Ammad1H/NABD} \textperiodcentered{} Prototype: \url{https://ammad1h.github.io/NABD/}}
 \end{flushleft}
 
 \begin{abstract}
-\noindent NABD forecasts the weekly share of laboratory samples that test positive for RSV and for influenza in the United Arab Emirates, three weeks ahead, as probabilistic ranges rather than single numbers. Each forecast is turned into the chance of crossing a pressure threshold and into one proposed action for a named role, which a person approves, modifies or dismisses. The UAE's public surveillance record is only four seasons long, which is too short for a model built on it alone to beat the simple rule of repeating last week. NABD therefore trains one model on the WHO surveillance histories of many countries and applies it to a country that brings only its recent weeks. On eighteen countries that were held out under a pre-registered plan, this pooled model made 23\% less influenza forecast error than a model fitted to each country's own record. The work is a prototype on public data. No hospital has used it, and this document states what has and has not been shown.
+\noindent NABD forecasts the weekly share of laboratory samples that test positive for RSV and for influenza in the United Arab Emirates, three weeks ahead, as probabilistic ranges rather than single numbers. Each forecast is turned into the chance of crossing a pressure threshold and into one proposed action for a named role, which a person approves, modifies or dismisses. The UAE's public surveillance record is only four seasons long, which is too short for a model built on it alone to beat the simple rule of repeating last week. NABD therefore trains one model on the WHO surveillance histories of many countries and applies it to a country that brings only its recent weeks. On eighteen countries that were held out under a pre-registered plan, this pooled model made 23\% less influenza forecast error than a model fitted to each country's own record. On the UAE's own two most recent seasons, forecast forward in time without the UAE in its training, it had less error than repeating last week in both (relative error 0.77); this is a development check, and a locked forward test will give the confirmatory UAE result. The work is a prototype on public data. No hospital has used it, and this document states what has and has not been shown.
 \end{abstract}
 
 \section{Problem and scope}
@@ -108,6 +108,7 @@ Eighteen held-out countries, influenza & Pooled model against each country's own
 Gulf: Oman, Qatar, Saudi Arabia & Own-record model against last week: 0.914 (0.843--0.983); against past-season pattern: 0.536 & Pre-registered; primary criterion met \\
 United States against the CDC FluSight ensemble & 1.22 (1.01--1.52) against a pre-set bar of 1.15; seventh of 21 and nineteenth of 25 single models in the two seasons & Pre-registered; \textbf{not met} \\
 UAE's own record, forward in time & Own-record model against last week: 1.002, a tie, on four seasons & Retrospective \\
+UAE's own seasons, pooled model & Forward in time, UAE left out of the pooled fit, 2024/25--2025/26: against last week 0.772 (0.698--0.861), better in both seasons (0.84, 0.71); against the own-record model 0.868 (0.752--0.996), which won 2025/26 & Post hoc; development check, not confirmatory \\
 Foundation model, same forecasts & Chronos-2 zero-shot against the pooled model: 1.026 (0.993--1.055); against own-record model: 0.787 & Post hoc \\
 Roster-rule replay & Mis-rostered weeks per season: pooled 10.5, own-record 12.3, last week 11.1, past pattern 16.6; pooled against last week not distinguishable & Post hoc \\
 Live UAE test & Pooled against own-record model, season 2026/27; no result before April 2027 & Pre-registered; pending \\
@@ -117,7 +118,7 @@ Live UAE test & Pooled against own-record model, season 2026/27; no result befor
 \label{tab:results}
 \end{table}
 
-Two readings deserve emphasis. The pooled model's advantage over the own-record model is large, consistent across countries and largest where the record is short, which is the UAE's position. But the evidence comes from other countries; UAE data had been examined before these tests, so a confirmatory UAE result can only come forward in time. And the gain does not carry cleanly into decisions: in the roster replay the pooled model is better than the own-record model and much better than planning from past seasons, but it is not distinguishable from repeating last week at that horizon.
+Two readings deserve emphasis. The pooled model's advantage over the own-record model is large, consistent across countries and largest where the record is short, which is the UAE's position. The confirmatory evidence comes from other countries. On the UAE's own two most recent seasons the pooled model, fitted without the UAE and forward in time, had less error than repeating last week in both; but UAE data helped choose the model, so this is a development check, and a confirmatory UAE result can only come from the locked forward test. And the gain does not carry cleanly into decisions: in the roster replay the pooled model is better than the own-record model and much better than planning from past seasons, but it is not distinguishable from repeating last week at that horizon.
 
 \section{Decision layer and governance}
 
@@ -175,7 +176,7 @@ In service, a new model would first run beside the headline model on the sealed 
 
 \section{Reproducing the work}
 
-The repository contains the code, the locked plans with their manifests, every result table and 157 automated tests covering adapters, leakage and future-perturbation checks, the locks, the card consistency check, the audit chain, the ledger and the web build. After \texttt{pip install -r requirements-dev.txt}, the command \texttt{pytest -q} runs the suite, \texttt{python -m web.build} regenerates the web page from the result files, \texttt{streamlit run app/streamlit\_app.py} starts the workbench, and \texttt{python -m ledger.weekly --fetch --with-pool} pulls new WHO data, scores past rounds and issues a new round when data are available. The longer technical description is \texttt{docs/TECHNICAL.md}, claims are governed by \texttt{research/claims-ledger.md}, and every deviation from a locked plan is in \texttt{docs/DEVIATIONS.md}.
+The repository contains the code, the locked plans with their manifests, every result table and 163 automated tests covering adapters, leakage and future-perturbation checks, the locks, the card consistency check, the audit chain, the ledger and the web build. After \texttt{pip install -r requirements-dev.txt}, the command \texttt{pytest -q} runs the suite, \texttt{python -m web.build} regenerates the web page from the result files, \texttt{streamlit run app/streamlit\_app.py} starts the workbench, and \texttt{python -m ledger.weekly --fetch --with-pool} pulls new WHO data, scores past rounds and issues a new round when data are available. The longer technical description is \texttt{docs/TECHNICAL.md}, claims are governed by \texttt{research/claims-ledger.md}, and every deviation from a locked plan is in \texttt{docs/DEVIATIONS.md}.
 
 \section{Where architectural feedback would help}
 

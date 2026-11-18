@@ -47,6 +47,7 @@ PP = POOL["secondary"]["pool_vs_persistence"]
 GP, GA = GCC["results"]["PRIMARY_flu_v1_vs_persistence"], GCC["results"]["flu_NABD-UAE-v1_vs_seasonal-analog"]
 FMP = FM["results"]["Chronos-2 (zero-shot)"]["vs_NABD-Pool"]
 UP = US["primary"]
+UD = j("results/pool/uae_devcheck/summary.json")["overall"]["NABD-Pool / persistence"]
 N_ROUNDS = len({json.loads(m.read_text())["round"] for m in (ROOT / "ledger").glob("*.meta.json")})
 
 
@@ -218,7 +219,7 @@ def s3(s):
     body = (f"NABD is a solo entry. {E['background']} During the challenge I designed, built and evaluated the whole system: "
             "data adapters for WHO FluNet and the CDC FluSight hub; four forecasting models; four evaluations whose plans were "
             "locked by hash before the test data were opened, plus a locked forward test; a hashed forecast ledger; a bilingual decision card with an audited "
-            "approval log; two front-ends; 157 automated tests. The repository shows the skills this needs: probabilistic "
+            "approval log; two front-ends; 163 automated tests. The repository shows the skills this needs: probabilistic "
             "forecasting and scoring, pre-registration discipline, reproducible Python engineering, and Arabic/English interface "
             "work. Gaps, stated plainly: I am not a clinician, the playbook has not yet been reviewed by a clinician or a "
             "public-health officer, and I have no hospital data-sharing agreement. The pilot plan exists to close all three.")
@@ -301,13 +302,15 @@ def s7(s):
     text(s, x, 1.6, w, 3.4, [
         ([("Held-out test, plan locked before download. ", {"bold": True}), (f"Pooled model vs own-record model, influenza, 18 countries: {r3(P)}, "
           f"better in {P['unit_wins']}. Where the record was short (≤ 2 seasons, the UAE's position): {SH['rel_wis']:.3f}. vs 'repeat last week': {PP['rel_wis']:.3f}.", {})], {"bullet": True}),
+        ([("UAE's own seasons (development check, not confirmatory). ", {"bold": True}), ("The own-record model only ties 'repeat last week' over four seasons (1.00). The pooled model, forecasting "
+          f"2024/25 and 2025/26 forward with the UAE left out of its fit: {r3(UD)} vs 'repeat last week', better in both seasons. "
+          "UAE data helped choose the model, so the confirmatory UAE test is locked and runs live.", {})], {"bullet": True}),
         ([("Gulf test, plan locked before download. ", {"bold": True}), (f"Own-record model vs 'repeat last week' in Oman, Qatar and Saudi Arabia: {r3(GP)}; "
           f"vs past-season patterns {GA['rel_wis']:.3f}.", {})], {"bullet": True}),
         ([("US benchmark, the result NABD lost. ", {"bold": True}), (f"vs the CDC FluSight ensemble {UP['rel_wis']:.2f} against a bar of {UP['margin']}: not met. "
           "7th of 21 single hub models in 2024/25, 19th of 25 in 2025/26.", {})], {"bullet": True}),
         ([("Foundation-model cross-check (post hoc). ", {"bold": True}), (f"Chronos-2 used off the shelf on the same forecasts is level with the pooled model: {r3(FMP)}. "
           "Both beat the own-record model, so the gain is not a quirk of one model.", {})], {"bullet": True}),
-        ([("UAE's own four seasons. ", {"bold": True}), ("The own-record model only ties 'repeat last week' (1.00). That is why the pooled model exists, and why a forward UAE test is locked.", {})], {"bullet": True}),
     ], size=8.8, space=4)
     text(s, X0, 4.86, W0, 0.6, [(
         "Sources: WHO FluNet (GISRS); CDC FluSight Forecast Hub (github.com/cdcepi/FluSight-forecast-hub); Alamiri et al., J Infect Public Health 2025;18(12):103007 "
@@ -350,7 +353,7 @@ def s9(s):
 def s10(s):
     text(s, X0, 1.75, W0, 1.6, [("Not applicable: NABD is software only.", {"bold": True, "size": 13}),
                                ("No wearable, sensor or connected device. It runs on an ordinary laptop CPU with no GPU: a weekly forecast round and the full "
-                                "157-test suite each take under a minute. The web page is static files and can be hosted anywhere.", {"size": 10.5})], space=8)
+                                "163-test suite each take under a minute. The web page is static files and can be hosted anywhere.", {"size": 10.5})], space=8)
 
 
 def s11(s):

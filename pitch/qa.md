@@ -74,7 +74,7 @@
 - **What the record shows:**
   - the Gulf plan lock (`91005ce`, 12:08:47 UTC) precedes the data commit (`d013228`, 12:10:18 UTC);
   - the scorer refuses to run if any locked file changed (`assert_locked`);
-  - an independent audit found no Gulf data anywhere in the workspace before the lock, and no leakage in the scorer (`docs/REVIEW-R3-audit.md` §0).
+  - a separate audit pass (an AI review agent run in a fresh session, not a human or external reviewer) found no Gulf data anywhere in the workspace before the lock, and no leakage in the scorer (`docs/REVIEW-R3-audit.md` §0).
 - ⟦IF DONE⟧ **The manifests were anchored on ⟨date⟩, after the result.** We say "after" because it is.
 - **From now on, the live ledger is anchored before WHO publishes each target week.**
 
@@ -102,7 +102,7 @@
 - **Influenza results:**
   - primary, vs persistence: 0.914 (0.843–0.983), **met**;
   - secondary, vs seasonal analog: 0.536.
-- **Robustness:** leave-one-country-out gives 0.904–0.929; a country-clustered bootstrap gives 0.841–0.984 (`docs/REVIEW-R3-audit.md` §0).
+- **Robustness:** leave-one-country-out gives 0.904–0.929; a country-clustered bootstrap gives 0.842–0.984 (`results/gcc/ROBUSTNESS.md`; `python -m eval.gcc_robustness`).
 
 **12. "Where did it lose?"**
 - **Influenza:** Oman 2022/23 and 2024/25, and a tie in Qatar 2023/24.
@@ -110,7 +110,7 @@
 
 **13. "And RSV?"**
 - **It is a secondary outcome:** 0.798 vs persistence on the registered country-season bootstrap.
-- **Clustered by country, its interval crosses 1** (0.712–1.026), and its 95% interval coverage is 0.83, which is too narrow (`docs/REVIEW-R3-audit.md` finding 9; `results/gcc/SUMMARY.md`).
+- **Clustered by country, its interval crosses 1** (0.711–1.088), and its 95% interval coverage is 0.83, which is too narrow (`docs/REVIEW-R3-audit.md` finding 9; `results/gcc/SUMMARY.md`).
 - **So we don't headline it.**
 
 **14. "Why only three countries?"**
@@ -119,7 +119,7 @@
 
 **15. "Was it really blind? You chose v1 after seeing the UAE results."**
 - **True, and disclosed** (`docs/PREREG-GCC.md` §1). We call it *out-of-sample with the plan locked before download*, not "blind".
-- **Our records show the author had not used the Gulf countries' data before.** An independent filesystem and git search found none (`docs/REVIEW-R3-audit.md` §0).
+- **Our records show the author had not used the Gulf countries' data before.** A filesystem and git search by that separate AI review agent found none (`docs/REVIEW-R3-audit.md` §0).
 
 **16. "The data came from a GitHub mirror?"**
 - **What it is:** WHO's full FluNet export (3 Oct 2026), obtained through a public mirror.
@@ -136,7 +136,10 @@
 **"Your UAE result is only a tie. Why should we believe this works here?"**
 - On the UAE's own record it is a tie (1.002), and we say so. The UAE has four seasons of sentinel data, and the own-record method needs more.
 - So we tested the fix on countries we had never opened: a model pooled across countries' WHO histories vs each country's own-record model. **0.767 (95% CI 0.681–0.832), better in 18 of 18; 0.624 where the record was short** (`results/pool/SUMMARY.md`). Plan locked before download, model locked before extraction, scored once.
-- For the UAE itself the pooled model reads 0.87 vs the own-record model, but **that figure is non-confirmatory** (we had already seen UAE data). The confirmatory UAE evidence can only come from the live ledger, where the pooled model now runs as a challenger.
+- For the UAE itself, forecasting 2024/25 and 2025/26 forward in time with the UAE left out of the pooled fit: **0.77 vs last week carried forward (95% CI 0.70–0.86), better in both seasons**, and 0.87 vs the own-record model (which won 2025/26). **That is a development check, not a confirmatory test**: UAE data helped choose the model (`results/pool/uae_devcheck/SUMMARY.md`, DEVIATIONS S7). The confirmatory UAE evidence can only come from the live ledger, where the pooled model now runs as a challenger.
+
+**"Then why not lead with the UAE number?"**
+- Because it is the one result where we had seen the data. It goes on the slide with its label, never first, and never as "proven in the UAE". The held-out test is the evidence; the UAE check says the same pattern shows up at home.
 
 **"18 of 36 countries. Did you drop the ones that looked bad?"**
 - No. The inclusion rules (reporting completeness, specimen volume, at least two earlier seasons) were fixed in the locked plan before any of those countries' data existed on our disk, and applied mechanically. The summary lists all 18 exclusions with the reason; most had no qualifying evaluation season.
@@ -181,7 +184,7 @@
 **22. "How do you know nothing leaks?"**
 - **US vintage rule:** each forecast uses only the hub data version available at the Wednesday deadline. A test injects future data and must fail (`tests/test_vintage.py`).
 - **UAE:** the leakage test caught and fixed a real boundary leak in our first build (`results/uae/SUMMARY.md`).
-- **Gulf scorer:** an independent audit perturbed every post-origin value in 2,112 cases, and 0 forecasts changed (`docs/REVIEW-R3-audit.md` §0).
+- **Gulf scorer:** a separate AI audit pass perturbed every post-origin value in 2,112 cases, and 0 forecasts changed (`docs/REVIEW-R3-audit.md` §0; the same idea is now a committed test, `tests/test_gcc_future_perturbation.py`).
 - **Scorer cross-check:** our WIS equals an independent implementation exactly (D9).
 
 **23. "Are your intervals calibrated?"**

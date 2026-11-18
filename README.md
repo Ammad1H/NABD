@@ -1,10 +1,20 @@
-# NABD (نبض, "pulse"): open RSV and influenza forecasts for Abu Dhabi
+# NABD (نبض, "pulse"): the next three weeks of RSV and flu for Abu Dhabi, with a human sign-off
 
-**Live page:** https://ammad1h.github.io/NABD/
+**Statement 06 · Population and Workforce Health Early Warning** · [Live page](https://ammad1h.github.io/NABD/) (no login) · [NABD in plain words](pitch/NABD-in-plain-words.md)
 
-**New here?** Read [`pitch/NABD-in-plain-words.md`](pitch/NABD-in-plain-words.md) first: what NABD is, what the pooled model means and what it does not claim, without the statistics.
+**Who uses it.** A hospital bed and roster manager, a public-health duty officer or an immunisation lead, each week of the respiratory season.
 
-NABD turns WHO FluNet surveillance into probabilistic weekly forecasts of RSV and influenza positivity, from a nowcast to about 2.5 weeks after issue. A bilingual (Arabic/English) card proposes a proportionate action for a named role, and only a person can approve, modify or dismiss it. Every decision goes into a hash-chained audit log. Each forecast round is hashed before its outcome exists.
+**What they get.** One Arabic/English card: the chance that RSV and influenza positivity cross each pressure threshold, from a nowcast to about 2.5 weeks after issue, and one proposed action per role. A named person approves, modifies or dismisses it with a reason, and every decision goes into a hash-chained log.
+
+**Why it matters.** UAE influenza peaked in October one season and in February the season before. One Abu Dhabi hospital (Tawam) admitted 2,189 children aged five or under with RSV in 2018–22. Planning from last week's numbers or last year's pattern misses those shifts.
+
+**Why trust it.**
+- **18 held-out countries, plan locked before their data were downloaded:** a model trained across countries' WHO records had 23% less influenza forecast error than each country's own-record model (0.767, 95% CI 0.681–0.832), better in all 18.
+- **The UAE's own seasons (development check, not a confirmatory test):** the same pooled model, forward in time with the UAE left out of its fit, had a relative error of 0.77 against repeating last week (95% CI 0.70–0.86), better in both scored seasons. The UAE's own-record model only ties last week over four seasons (1.00). [`results/pool/uae_devcheck/`](results/pool/uae_devcheck/SUMMARY.md)
+- **Where it falls short, it says so.** Against the CDC's combined forecast in the US it missed its own pre-set bar (1.22 against 1.15). In a two-week roster decision it cannot yet be told apart from "repeat last week".
+- **The confirmatory UAE test runs forward.** Each forecast file is hashed before WHO publishes the week it covers, and the test that will judge the pooled model on the UAE was locked on 14 Nov 2026 (self-attested in git until anchored; see Timestamps below).
+
+**The ask.** One hospital, 12 weeks, aggregate weekly counts, shadow mode, with the exit test set in advance ([`docs/PILOT-DATA-SPEC.md`](docs/PILOT-DATA-SPEC.md)).
 
 ## Evidence, reported in full (numbers from `results/`)
 
@@ -16,10 +26,13 @@ NABD turns WHO FluNet surveillance into probabilistic weekly forecasts of RSV an
 | Test of the frozen UAE method on Oman, Qatar and Saudi Arabia (`docs/PREREG-GCC.md`, locked in git before their data were downloaded) | Influenza relative WIS vs last-week persistence **0.914 (95% CI 0.843–0.983)**: primary criterion met. vs a past-season (analog) baseline: 0.536 (secondary). RSV vs persistence: 0.798 (secondary; not robust to country clustering, see docs/REVIEW-R3-audit.md #9) | `results/gcc/SUMMARY.md`; deviations G1, G1b, C2, C3 in `docs/DEVIATIONS.md` |
 | US benchmark against the CDC FluSight ensemble (`docs/PROTOCOL.md`, frozen before test-season scoring) | Relative WIS **1.22 (95% CI 1.01–1.52)**: **non-inferiority NOT MET**. Among individual hub models: 7th of 21 (2024/25), 19th of 25 (2025/26) | `results/SUMMARY.md` |
 | UAE's own record, forward-in-time check | v1 vs persistence ≈ 1.00 (parity) on a short four-season record | `results/uae/SUMMARY.md` |
+| UAE development check, pooled model (post hoc, NON-CONFIRMATORY: UAE was a development country) | Forward in time, UAE left out of the pooled fit, influenza 2024/25–2025/26: vs persistence **0.772 (95% CI 0.698–0.861)**, better in both seasons (0.84, 0.71); vs UAE own-record v1 0.868 (0.752–0.996), v1 better in 2025/26 | `results/pool/uae_devcheck/SUMMARY.md`; deviation S7 |
 | Decision replays (post hoc, exploratory): a pre-declared roster rule applied to the frozen forecasts | Gulf influenza: 8.0 mismatch weeks a season vs 20.8 for the past-season pattern; a tie with last week (8.0). Held-out countries, pooled model: 10.5 vs 12.3 for the own-record model (difference −1.81, 95% CI −3.00 to −0.72); not distinguishable from last week (11.1) | `results/replay/SUMMARY.md`; `results/replay/pool/SUMMARY.md`; deviations V1, V2 |
 | UAE v2 multi-signal challenger (`docs/PROTOCOL-UAE-v2.md`, locked before scoring) | No improvement over v1 (1.06) | `results/uae/SUMMARY.md` |
 
 **Timestamps.** All locks, freezes and ledger rounds are git commits made by the author (a solo entrant), so they are self-attested **until they are anchored by an outside service** (OpenTimestamps / RFC 3161 / Zenodo). Anchoring status: see `anchors/`. If that folder is absent, nothing has been anchored yet. How to anchor: `docs/PUBLISH.md`.
+
+**How this was built.** One entrant, with AI coding assistance (Claude Code) for code and documents, all directed and reviewed by the entrant. Files named `docs/REVIEW-*` and the two reviewer notes in `research/` are simulated reviews written by an AI assistant in separate sessions; each says so at the top. No human or external party has reviewed NABD yet.
 
 ## Quick start
 ```bash
@@ -30,6 +43,7 @@ pytest -q                                     # full test suite
 python -m eval.run_all --fetch                # US back-test (clones the CDC hub at the pinned commit)
 python -m uae.backtest_v2 --cached && python -m uae.gcc --score   # UAE v2 and GCC (GCC refuses to score unless the lock verifies)
 python -m replay.run && python -m replay.pool_replay              # decision replays (post hoc; read-only on the locked forecasts)
+python -m pool.uae_devcheck && python -m eval.gcc_robustness      # UAE development check (S7) and GCC robustness, from committed scores
 ```
 
 ## Where things are

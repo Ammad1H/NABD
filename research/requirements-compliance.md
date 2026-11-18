@@ -1,4 +1,6 @@
-# Statement 06 requirements: compliance review of NABD (independent reviewer, 9 Nov 2026)
+# Statement 06 requirements: compliance review of NABD (written by an AI reviewer agent in a separate session, 9 Nov 2026; not a human or external review)
+
+> **What this file is.** A simulated review written by an AI assistant in a separate session, asked to act as a requirements-compliance reviewer. No human reviewer, government official or company employee wrote, saw or endorsed it. It is kept because the fixes it prompted are traceable in `docs/DEVIATIONS.md`.
 
 **Scope.** This file maps every official Statement 06 requirement, the cross-cutting asks in the statement text, and the FAQ/T&C submission rules to concrete evidence in this repo. Each gets a verdict (**MET / PARTIAL / UNMET**) and the smallest change that would make it fully MET. The reviewer did not build NABD.
 

@@ -1,5 +1,7 @@
 # NABD: Judge Panel Review, Round 3 (8 Nov 2026)
 
+> **What this file is.** A simulated review written by an AI assistant in a separate session, asked to act as a panel of challenge judges (public health, AI, partnerships). No human reviewer, government official or company employee wrote, saw or endorsed it. It is kept because the fixes it prompted are traceable in `docs/DEVIATIONS.md`.
+
 **Panel.** J1 is a senior public-health official (DoH/ADPHC). J2 is a principal AI/ML scientist (Microsoft/G42/MBZUAI). J3 is a partnerships and venture lead (PureHealth/M42). Each judge scored independently; the scores were then merged. None of us built NABD. Round 2 (docs/REVIEW-R2-judges.md) scored an earlier version at about 5.3/10.
 
 **Inspected.**

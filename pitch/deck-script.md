@@ -76,7 +76,7 @@
 - **Title:** *"We froze the method, locked the test plan, then downloaded Oman, Qatar and Saudi data."*
 - **On slide (two bars per comparison, influenza):**
   - **vs planning from past-season patterns:** **46% less forecast error.** Relative WIS 0.536 (95% CI 0.464–0.616); below 0.6 in each of the three countries. *Pre-registered secondary.*
-  - **vs last-week carry-forward (persistence):** **9% less error.** 0.914 (95% CI 0.843–0.983). *Pre-registered primary: MET.* It survives dropping any one country (0.904–0.929) and a country-clustered bootstrap (0.841–0.984) (`docs/REVIEW-R3-audit.md` §0).
+  - **vs last-week carry-forward (persistence):** **9% less error.** 0.914 (95% CI 0.843–0.983). *Pre-registered primary: MET.* It survives dropping any one country (0.904–0.929) and a country-clustered bootstrap (0.842–0.984) (`results/gcc/ROBUSTNESS.md`).
   - **Wins and losses:** won 9 of 12 flu country-seasons. **Losses shown:** Oman 2022/23 and 2024/25; Qatar 2023/24 a tie.
 - **Small print, same size:**
   - retrospective on revised WHO data;

@@ -212,9 +212,9 @@ Idea ("borrowed strength"): a country with a short surveillance record is foreca
 
 **95% coverage:** flu 0.96, RSV 0.83 (RSV intervals are too narrow outside the UAE).
 
-**Robustness** (independent audit reruns, `docs/REVIEW-R3-audit.md` §0):
-- Influenza: leave-one-country-out 0.904–0.929; country-clustered bootstrap 0.841–0.984; within-country-season moving block (L = 4) 0.855–0.985. **The influenza verdict is robust.**
-- RSV: the country-clustered bootstrap crosses 1 (0.712–1.026), so **RSV is a secondary, non-robust result** and is never headlined.
+**Robustness** (`results/gcc/ROBUSTNESS.md`, reproducible with `python -m eval.gcc_robustness`; first run by an AI review agent, `docs/REVIEW-R3-audit.md` §0):
+- Influenza: leave-one-country-out 0.904–0.929; country-clustered (two-stage) bootstrap 0.842–0.984; by horizon 0.999 / 0.958 / 0.898 / 0.855 (−1 to +2). **The influenza verdict is robust.**
+- RSV: the country-clustered bootstrap crosses 1 (0.711–1.088), so **RSV is a secondary, non-robust result** and is never headlined.
 - Leak test: 2,112 future-perturbation cases, 0 forecasts changed.
 
 **How we phrase it:**
@@ -330,7 +330,7 @@ Plan and country lists locked before any new data were downloaded (lock #1); mod
 - **By horizon** (pooled vs local): 0.649, 0.699, 0.849, 0.877 for 1–4 data weeks. The gain is largest for the nearest weeks.
 - **Coverage** (50% / 95% intervals): pooled 0.54 / 0.96; local v1 0.65 / 0.96; persistence 0.55 / 0.95; past-season pattern 0.37 / 0.65.
 - **EMRO only:** 0.640 (0.565–0.822), 3 countries (EGY, IRN, PAK). **RSV (secondary, 13 countries):** 0.789 (0.705–0.860) vs local, 0.845 (0.811–0.888) vs persistence.
-- **Already-seen countries, NON-CONFIRMATORY** (development cross-fitting, country left out of the pooled fit): UAE 0.87 vs local v1 and 0.77 vs persistence; Oman 0.95, Qatar 0.94, Saudi Arabia 0.94 vs local v1. These are not evidence for the hypothesis.
+- **Already-seen countries, NON-CONFIRMATORY** (development cross-fitting, forward in time, country left out of the pooled fit): UAE 0.87 vs local v1 and 0.77 vs persistence (95% CI 0.70–0.86, better in both scored seasons; restated with intervals in `results/pool/uae_devcheck/SUMMARY.md`, DEVIATIONS S7); Oman 0.95, Qatar 0.94, Saudi Arabia 0.94 vs local v1. These are not evidence for the hypothesis.
 - **What it shows:** on countries nobody on the project had looked at, the pooled model had 23% less influenza forecast error than a model fitted to the country's own record, and 38% less where that record was short, which is the UAE's position. It also beat last-week persistence in all 18 countries, where the local method did not (1.145).
 - **What it doesn't show:** nothing confirmatory about the UAE (its data were seen; the UAE figure above is non-confirmatory). Positivity, not hospital load. The week-27 season boundary is a northern-hemisphere convention applied to every country and every model alike.
 

@@ -1,4 +1,6 @@
-# NABD: Abu Dhabi impact case (independent reviewer, 9 Nov 2026)
+# NABD: Abu Dhabi impact case (written by an AI reviewer agent in a separate session, 9 Nov 2026; not a human or external review)
+
+> **What this file is.** A simulated review written by an AI assistant in a separate session, asked to act as an impact-case reviewer. No human reviewer, government official or company employee wrote, saw or endorsed it. It is kept because the fixes it prompted are traceable in `docs/DEVIATIONS.md`.
 
 **Purpose.** This note sets out a defensible, conservatively quantified answer to one question: *what changes if NABD runs for one winter season in Abu Dhabi?* It also tests the pain-point framing and maps stakeholder pull. The reviewer did not build NABD.
 

@@ -176,7 +176,7 @@
     return `<section class="hero" id="top"><svg class="pulse" viewBox="0 0 1440 180" preserveAspectRatio="none" aria-hidden="true"><path d="M0 120h260l22-14 18 30 24-92 26 118 20-56 16 14h190l18-10 16 22 22-70 24 92 18-44 14 10h230l20-12 18 26 22-84 26 108 18-50 16 12h366"/></svg>
       <div class="wrap hero-grid"><div>
         <div class="eyebrow">${L("RSV and influenza forecasts for the UAE", "توقعات الفيروس المخلوي التنفسي والإنفلونزا في الإمارات")}</div>
-        <h1>${L("Building resilience for the UAE's respiratory health, <em>to a world-class standard</em>.", "تعزيز صمود الإمارات أمام المواسم التنفسية، <em>بمعيار عالمي المستوى</em>.")}</h1>
+        <h1>${L("Building the UAE's resilience to respiratory seasons, <em>one checkable forecast a week</em>.", "تعزيز صمود الإمارات أمام المواسم التنفسية، <em>بتوقّع أسبوعي يمكن التحقق منه</em>.")}</h1>
         <p class="lede">${L("NABD turns the UAE's own surveillance records into three-week forecasts of RSV and influenza, scored the way the CDC's FluSight hub scores forecasts. Each week becomes one proposed action, and a named person decides, supporting the national teams who protect children and communities.",
           "يحوّل نبض سجلات الرصد الإماراتية إلى توقعات لثلاثة أسابيع للفيروس المخلوي التنفسي والإنفلونزا، تُقيَّم بالطريقة التي يقيّم بها مركز FluSight التابع لمراكز مكافحة الأمراض الأمريكية توقعاته. وكل أسبوع يتحوّل ذلك إلى إجراء مقترح واحد يقرّره شخص مسمّى، دعماً للفرق الوطنية التي تحمي الأطفال والمجتمع.")}</p>
         <div class="cta"><a class="btn primary" href="#week">${L("See this week's card", "بطاقة هذا الأسبوع")}</a><a class="btn" href="#science">${L("How it was tested", "كيف اختُبر")}</a></div>
@@ -319,7 +319,7 @@
       label: { "NABD-Pool": L("NABD pooled model", "نموذج نبض المجمَّع"), "Chronos-2 (zero-shot)": L("Chronos-2, off the shelf", "Chronos-2 كما هو"), "Pool+FM": L("Average of the two", "متوسط الاثنين"),
                "NABD-UAE-v1": L("Own-record model", "نموذج سجل الدولة"), persistence: L("Repeat last week", "تكرار الأسبوع الماضي"), "seasonal-analog": L("Past-season pattern", "نمط المواسم السابقة") }[k] || k })) : [];
     return `<section class="alt" id="science"><div class="wrap"><div class="sec-head"><div class="eyebrow">${L("The science", "العلم")}</div>
-      <h2>${L("Tested to a world standard: 18 countries the model had never seen.", "مختبَر بمعيار عالمي: 18 دولة لم يرها النموذج من قبل.")}</h2>
+      <h2>${L("Tested under a plan locked in advance: 18 countries the model had never seen.", "مختبَر وفق خطة ثُبّتت مسبقاً: 18 دولة لم يرها النموذج من قبل.")}</h2>
       <p>${L("If learning across countries works, it should work on countries the model has never seen, against the model each of them would build from its own record. That is the test NABD registered in advance.",
         "إن كان التعلّم عبر الدول مجدياً فيجب أن ينجح في دول لم يرها النموذج، في مواجهة النموذج الذي كانت كل دولة ستبنيه من سجلها. وهذا هو الاختبار المسجَّل مسبقاً.")}</p></div>
       <div class="grid g3">${steps.map((s, i) => `<div class="card flat"><div class="step-n num">${i + 1}</div><h3>${s[0]}</h3><p>${s[1]}</p></div>`).join("")}</div>
@@ -397,7 +397,8 @@
   }
 
   function results() {
-    const P = ev.pool, G = ev.gcc, U = ev.us, A = ev.uae, F = ev.fm, R = ev.replay_pool, lt = D.ledger.live_test;
+    const P = ev.pool, G = ev.gcc, U = ev.us, A = ev.uae, F = ev.fm, R = ev.replay_pool, lt = D.ledger.live_test, UP = ev.uae_pool;
+    const yy = s => `${s}/${String((Number(s) + 1) % 100).padStart(2, "0")}`;
     const cards = [
       [CH.pre() + CH.met(), L("Learning across countries, 18 held-out countries", "التعلّم عبر الدول، 18 دولة خارج العيّنة"), `<span class="kpi teal num">${f3(P.primary.rel_wis)}</span>`,
         L(`Pooled vs own-record model, influenza. Interval ${ci(P.primary)}. Better in ${P.primary.unit_wins}.`, `المجمَّع مقابل نموذج سجل الدولة، الإنفلونزا. الفاصل ${ci(P.primary)}. أفضل في ${P.primary.unit_wins}.`), "results/pool/SUMMARY.md"],
@@ -407,6 +408,9 @@
         L(`The bar was ${U.margin}. NABD missed it (interval ${ltr(f2(U.ci95[0]) + "–" + f2(U.ci95[1]))}). Among single hub models: ${U.ranks.map(r => `${r.rank} of ${r.n} in ${r.season}`).join(", ")}.`, `كان الهدف ${U.margin} ولم يبلغه نبض (الفاصل ${ltr(f2(U.ci95[0]) + "–" + f2(U.ci95[1]))}). بين النماذج المنفردة: ${U.ranks.map(r => `${r.rank} من ${r.n} في ${r.season}`).join("، ")}.`), "results/SUMMARY.md"],
       A && [CH.retro(), L("The UAE's own four-season record", "سجل الإمارات نفسه (أربعة مواسم)"), `<span class="kpi slate num">${f2(A.flu.rel_wis)}</span>`,
         L("Own-record model vs repeating last week, forward in time: a tie for influenza and RSV. A multi-signal version did no better.", "نموذج سجل الدولة مقابل تكرار الأسبوع الماضي، زمنياً إلى الأمام: تعادل للإنفلونزا والفيروس المخلوي. ولم تكن النسخة المتعددة الإشارات أفضل."), "results/uae/SUMMARY-v2.md"],
+      UP && [CH.post(), L("The UAE's own seasons, pooled model (development check)", "مواسم الإمارات نفسها، النموذج المجمَّع (فحص تطويري)"), `<span class="kpi teal num">${f2(UP.vs_persistence.rel_wis)}</span>`,
+        L(`Pooled model vs repeating last week, influenza, forward in time with the UAE left out of the fit (interval ${ci(UP.vs_persistence)}). Better in both scored seasons (${Object.entries(UP.by_season).map(([s, v]) => `${yy(s)}: ${f2(v)}`).join(", ")}). Not a confirmatory test: UAE data helped choose the model. The confirmatory UAE test runs live.`,
+          `النموذج المجمَّع مقابل تكرار الأسبوع الماضي، الإنفلونزا، زمنياً إلى الأمام مع استبعاد الإمارات من التدريب (الفاصل ${ci(UP.vs_persistence)}). أفضل في الموسمين المقيَّمين (${Object.entries(UP.by_season).map(([s, v]) => `${yy(s)}: ${f2(v)}`).join("، ")}). ليس اختباراً تأكيدياً: أسهمت بيانات الإمارات في اختيار النموذج. والاختبار التأكيدي للإمارات يجري حيّاً.`), "results/pool/uae_devcheck/SUMMARY.md"],
       F && [CH.post(), L("Foundation model on the same forecasts", "نموذج أساس على التوقعات نفسها"), `<span class="kpi slate num">${f2(F.fm_vs_pool.rel_wis)}</span>`,
         L(`Chronos-2 off the shelf vs NABD's pooled model: level (interval ${ci(F.fm_vs_pool)}). Both beat the own-record model.`, `Chronos-2 كما هو مقابل نموذج نبض المجمَّع: تعادل (الفاصل ${ci(F.fm_vs_pool)}). وكلاهما يتفوق على نموذج سجل الدولة.`), "results/fm/SUMMARY.md"],
       [CH.post(), L("Roster rule replayed", "إعادة تشغيل قاعدة المناوبات"), `<span class="kpi slate num">${sgn(R.vs_local.diff_per_season)}</span>`,

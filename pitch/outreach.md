@@ -69,6 +69,18 @@ Thank you,
 
 ---
 
+## A4. 48-hour quote request (18–20 Nov 2026): one sentence from a clinician or bed manager
+
+**Who.** A paediatric, emergency, infection-control or bed-management lead at an Abu Dhabi hospital (SEHA, SSMC, Cleveland Clinic Abu Dhabi, Tawam, Danat Al Emarat, NMC, Burjeel), reached by LinkedIn message, WhatsApp or email. **Prefer someone outside MBZUAI:** the deck's conflict-of-interest slide says no MBZUAI staff member contributed to or reviewed NABD; a quote from MBZUAI staff would make that sentence untrue, so change slide 14 (`pitch/submission/entrant.json`, `coi_paragraphs`) first if you use one.
+
+**Message (LinkedIn or WhatsApp, 91 words):**
+
+> Dear Dr ⟨Name⟩, I'm an MBZUAI student entering the Future Health challenge (DoH Abu Dhabi, deadline 20 Nov). My entry, NABD, forecasts UAE RSV and flu test positivity about two to three weeks ahead, with ranges, from WHO data: ⟨https://ammad1h.github.io/NABD/⟩. One question, answerable in a sentence: would a weekly heads-up like this change any staffing, bed or cohorting decision you make in the respiratory season, and if so which? May I quote your answer with your name and role (or role only)? A "no, because…" is equally useful. Thank you, Ammad
+
+**If you get a quote:** paste it, with the person's permission and wording exactly as given, into (1) the README under "Why it matters", (2) deck slide 5 under "Who benefits" (`pitch/submission/build_deck.py`, `s5`), and (3) the form summary in place of the sentence "An off-the-shelf foundation model (Chronos-2) lands level with it on the held-out test." (re-run `python pitch/submission/count.py`; the limit is 2,000 characters). Add a claims-ledger row (status V, source: "personal communication, ⟨date⟩"). Never edit the wording, and never imply that the person or their hospital endorses NABD.
+
+---
+
 ## B. Playbook review: ADPHC / DoH communicable-disease surveillance
 
 **Who and why:**

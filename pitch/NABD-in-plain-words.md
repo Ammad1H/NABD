@@ -60,6 +60,8 @@ The result:
 - **38% less error where the country had little history.** That is the UAE's situation.
 - It also beat "repeat last week" in all 18 countries, by 12%.
 
+Back home: the same pooled model was also run on the UAE's last two winters, forecasting each week forward with the UAE left out of its training. It had less error than "repeat last week" in both winters (relative error 0.77, where 1 is a tie). This is a **development check, not proof**: UAE data were used while choosing the model, so it cannot count as the UAE's real test (that one is sealed and runs this winter). It does show the same pattern at home.
+
 A second check: a large general-purpose AI forecasting model from Amazon (Chronos-2), used as it comes, scored about the same as NABD's small model. Two different methods agreeing is a good sign that the gain is real.
 
 ## What the user sees each week
@@ -101,7 +103,7 @@ As far as the research for this project found, there is no public RSV or flu for
 
 Know these before a judge asks. Saying them yourself builds trust.
 
-- **There is no UAE proof for the pooled model yet.** The 18-country result is strong evidence that the method works for short-record countries. The UAE's own proof can only come from this winter's sealed test. Until it reports, the official weekly forecast still comes from the own-record model, and the pooled model runs beside it as the challenger.
+- **There is no UAE proof for the pooled model yet.** The 18-country result is strong evidence that the method works for short-record countries, and the UAE development check points the same way, but UAE data helped choose the model. The UAE's own proof can only come from this winter's sealed test. Until it reports, the official weekly forecast still comes from the own-record model, and the pooled model runs beside it as the challenger.
 - **It does not warn earlier that a wave is starting.** It forecasts how high and how long.
 - **It forecasts lab test results** (the share of samples that test positive), not hospital beds directly. Turning that into beds needs a hospital's own counts, which is what the pilot is for.
 - **For staffing decisions, it is not clearly better than "repeat last week".** It is better than the own-record model and much better than planning from last year's pattern.
