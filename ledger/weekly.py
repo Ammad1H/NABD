@@ -15,6 +15,7 @@ Steps:
 """
 import argparse
 import json
+from contextlib import contextmanager
 from pathlib import Path
 
 from adapters import flunet
@@ -23,6 +24,35 @@ from ledger.issue import issue
 
 ROOT = Path(__file__).resolve().parents[1]
 LEDGER = ROOT / "ledger"
+# What WHO served on the last --fetch. The app, web page and bulletin read observed values from here, so the
+# page shows the same weeks the newest round was issued from. data/raw/flunet_are.csv is pinned by the UAE-v2
+# lock (docs/lock_uae_v2) and is never rewritten.
+LIVE = ROOT / "data" / "raw" / "flunet_are_live.csv"
+
+
+@contextmanager
+def cached_source():
+    """Cached mode reads the newest saved WHO data (LIVE) when it exists, else the locked snapshot.
+
+    ledger/score.py and ledger/issue.py are pinned by docs/LOCK-LIVE.json, so they are not edited: they read
+    adapters.flunet.CACHED at call time, and this points it at LIVE for the duration of one cached run. Without
+    it, `ledger.weekly --cached` (and the test suite) would re-score against the 8 Nov snapshot and reset the
+    published scoreboard to zero."""
+    old = flunet.CACHED
+    if LIVE.exists():
+        flunet.CACHED = LIVE
+    try:
+        yield flunet.CACHED
+    finally:
+        flunet.CACHED = old
+
+
+def save_live_snapshot():
+    import pandas as pd
+    raw = pd.read_csv(flunet.URL)
+    flunet._tidy(raw)  # same schema and person-level checks as every other load
+    raw.to_csv(LIVE, index=False)
+    return LIVE
 
 
 def latest_round():
@@ -51,6 +81,14 @@ def next_label(label):
 
 
 def run(mode="cached", allow_issue=True, with_pool=False):
+    if mode == "fetch":
+        save_live_snapshot()
+        return _run(mode, allow_issue, with_pool)
+    with cached_source():
+        return _run(mode, allow_issue, with_pool)
+
+
+def _run(mode, allow_issue, with_pool):
     sc, bad = scorer.score(mode)
     rnd, through = latest_round()
     pub = latest_published_week(mode)

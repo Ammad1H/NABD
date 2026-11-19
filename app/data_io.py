@@ -19,7 +19,8 @@ import pandas as pd
 from app import demo_data
 
 ROOT = Path(__file__).resolve().parents[1]
-RAW_FLUNET_CANDIDATES = [ROOT / "data" / "raw" / "flunet_are.csv",            # refreshed by the data workstream
+RAW_FLUNET_CANDIDATES = [ROOT / "data" / "raw" / "flunet_are_live.csv",       # written by `ledger.weekly --fetch`
+                         ROOT / "data" / "raw" / "flunet_are.csv",            # snapshot pinned by the UAE-v2 lock: never rewrite
                          ROOT / "data" / "raw" / "flunet_are_webfetch.csv"]    # original 5 Nov copy
 RAW_FLUNET = next((p for p in RAW_FLUNET_CANDIDATES if p.exists()), RAW_FLUNET_CANDIDATES[-1])
 RESULTS = ROOT / "results"
