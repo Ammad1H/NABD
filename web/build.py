@@ -264,16 +264,33 @@ def ledger_block() -> dict:
         if mj:
             manifests.append(dict(round=d.name.split("_")[-1], dir=d.name, merkle_root=mj["merkle_root"], n_files=len(mj["files"])))
     scores = LEDGER / "scores.csv"
-    n_scored = 0
+    n_scored, receipt = 0, None
     if scores.exists():
         try:
             sc = pd.read_csv(scores)
-            n_scored = int(sc["realised"].notna().sum()) if "realised" in sc else 0
+            if len(sc) and {"target_end_date", "model", "file"} <= set(sc.columns):
+                n_scored = int(sc.target_end_date.nunique())          # distinct target weeks WHO has published
+                # The receipt: the headline own-record model only (claims ledger H13: no interim pooled UAE
+                # numbers), newest scored week, from the earliest round that forecast it.
+                v1 = sc[sc.model == "NABD-UAE-v1"].sort_values("file")
+                if len(v1):
+                    te = v1.target_end_date.max()
+                    first = v1[v1.target_end_date == te].drop_duplicates("target")
+                    iy, iw, _ = pd.Timestamp(te).isocalendar()
+                    receipt = dict(week=f"{iy}-W{iw:02d}", week_end=str(te), issued=str(first.file.iloc[0])[:10],
+                                   rows={("rsv" if "rsv" in r.target else "flu"):
+                                         dict(observed=_r(r.observed, 1), median=_r(r.median, 1),
+                                              in50=bool(r.in50), in95=bool(r.in95)) for r in first.itertuples()})
         except Exception:  # noqa: BLE001
-            n_scored = 0
+            n_scored, receipt = 0, None
+    anchors = []
+    for d in sorted((ROOT / "anchors").glob("*_all")) if (ROOT / "anchors").exists() else []:
+        tsr = d / "manifest.tsr"
+        anchors.append(dict(stamp=d.name.split("_")[0], ots=any(d.glob("*.ots")),
+                            tsr=tsr.exists() and tsr.stat().st_size > 0))
     live = _j(LEDGER / "live_test.json") or {}
     lock = _j(ROOT / "docs" / "LOCK-LIVE.json") or {}
-    return dict(rounds=rounds, files=files, manifests=manifests, n_scored=n_scored,
+    return dict(rounds=rounds, files=files, manifests=manifests, n_scored=n_scored, receipt=receipt, anchors=anchors,
                 live_test=dict(rounds=live.get("rounds_issued", []), scored=live.get("scored_cells_per_model", 0),
                                status=live.get("status"), lock_root=(lock.get("digest") or {}).get("root"),
                                locked_utc=lock.get("locked_utc_self_attested"), final_from="2027-04-15",

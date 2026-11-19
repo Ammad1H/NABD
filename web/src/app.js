@@ -21,6 +21,22 @@
   const ci = d => ltr(`${f2(d.ci95[0])}–${f2(d.ci95[1])}`);
   const sgn = x => ltr((x > 0 ? "+" : "") + f2(x));
   const date = s => new Date(s + "T00:00:00Z");
+  const anchorDay = Lg => { const s = (Lg.anchors || []).slice(-1)[0]?.stamp || ""; return s.length >= 10 ? s.slice(0, 10) : null; };
+  const anchorTxt = Lg => (Lg.anchors || []).length
+    ? L(`Status: the repository is public on GitHub. On ${dfmt(anchorDay(Lg), { day: "numeric", month: "long", year: "numeric" })} the fingerprints of every lock and ledger round were sent for outside timestamps (FreeTSA, RFC 3161; OpenTimestamps on Bitcoin, which confirms within hours). The receipts are in anchors/. A timestamp proves a file existed by that time; it cannot backdate anything.`,
+        `الحالة: المستودع منشور على GitHub. وفي ${dfmt(anchorDay(Lg), { day: "numeric", month: "long", year: "numeric" })} أُرسلت بصمات جميع الأقفال وجولات السجل لختمها زمنياً من جهات خارجية (FreeTSA وفق RFC 3161، وOpenTimestamps على بيتكوين ويكتمل خلال ساعات). والإيصالات في المجلد anchors/. يثبت الختم الزمني أن الملف كان موجوداً بحلول ذلك الوقت، ولا يمكنه أن ينسب إلى أي ملف تاريخاً أسبق.`)
+    : L("Status: the repository is public on GitHub, which records when each commit was pushed. The fingerprints are not yet timestamped by an outside service.",
+        "الحالة: المستودع منشور على GitHub الذي يسجّل وقت رفع كل تعديل. ولم تُختم البصمات زمنياً من جهة خارجية بعد.");
+  const receiptTxt = Lg => {
+    const R = Lg.receipt, o = R.rows, n = Lg.n_scored;
+    const v = (k, en) => { const x = o[k]; if (!x) return ""; return en
+      ? `${k === "rsv" ? "RSV" : "influenza"} ${x.in50 ? "inside its 50% range" : x.in95 ? "inside its 95% range, outside its 50% range" : "outside its 95% range"}`
+      : `${k === "rsv" ? "الفيروس المخلوي التنفسي" : "الإنفلونزا"} ${x.in50 ? "داخل نطاق 50%" : x.in95 ? "داخل نطاق 95% وخارج نطاق 50%" : "خارج نطاق 95%"}`; };
+    const we = dfmt(R.week_end, { day: "numeric", month: "short" }), is = dfmt(R.issued, { day: "numeric", month: "short" });
+    const f = (k, p) => (o[k] ? `${Number(o[k][p]).toFixed(1)}%` : "–");
+    return L(`${n} forecast week${n === 1 ? "" : "s"} scored so far. ${R.week} (ending ${we}): WHO published RSV ${f("rsv", "observed")} and influenza ${f("flu", "observed")}. The own-record forecast hashed on ${is} had medians of ${f("rsv", "median")} and ${f("flu", "median")}: ${[v("rsv", 1), v("flu", 1)].filter(Boolean).join("; ")}. One week is a receipt, not evidence. Merkle root of the newest round: `,
+      `عدد الأسابيع المقيَّمة حتى الآن ${n}. الأسبوع ${R.week} (المنتهي في ${we}): نشرت المنظمة ${f("rsv", "observed")} للفيروس المخلوي التنفسي و${f("flu", "observed")} للإنفلونزا. وكان وسيط توقع نموذج سجل الدولة الموثَّق في ${is} ‏${f("rsv", "median")} و${f("flu", "median")}: ${[v("rsv", 0), v("flu", 0)].filter(Boolean).join("؛ ")}. أسبوع واحد إيصالٌ لا دليل. جذر ميركل لأحدث جولة: `);
+  };
   const dfmt = (s, o = { day: "numeric", month: "short" }) => new Intl.DateTimeFormat(S.lang === "ar" ? "ar-AE-u-nu-latn" : "en-GB", { ...o, timeZone: "UTC" }).format(date(s));
   const cname = c => (D.countries[c] ? D.countries[c][S.lang] : c);
   const season = s => `${s}/${String((s + 1) % 100).padStart(2, "0")}`;
@@ -506,13 +522,13 @@
         "التوقع الذي يمكن تعديله لاحقاً لا يثبت شيئاً. تحصل ملفات كل جولة على بصمة SHA-256 عند الإصدار. اضغط «تحقّق» ليعيد متصفحك حساب البصمة من ملف التوقع نفسه.")}</p></div>
       <div class="grid g-32"><div class="card"><div class="bar"><h3 style="margin:0">${L("Issued rounds", "الجولات الصادرة")}</h3><button class="btn sm sp" data-act="verify-all">${L("Verify all", "تحقّق من الكل")}</button></div>
           <div class="tablewrap"><table><thead><tr><th>${L("Round", "الجولة")}</th><th>${L("Forecast", "التوقع")}</th><th>SHA-256</th><th class="r">${L("Check", "التحقق")}</th></tr></thead><tbody>${rows}</tbody></table></div>
-          <div class="src">${L(`${Lg.n_scored} forecast weeks scored so far: WHO has not yet published a target week of any round. Merkle root of the newest round: `, `عدد الأسابيع المقيَّمة حتى الآن ${Lg.n_scored}: لم تنشر المنظمة بعدُ أي أسبوع مستهدف. جذر ميركل لأحدث جولة: `)}<span class="hash">${(Lg.manifests[Lg.manifests.length - 1] || {}).merkle_root?.slice(0, 32) || ""}…</span></div></div>
+          <div class="src">${Lg.receipt ? receiptTxt(Lg) : L(`${Lg.n_scored} forecast weeks scored so far: WHO has not yet published a target week of any round. Merkle root of the newest round: `, `عدد الأسابيع المقيَّمة حتى الآن ${Lg.n_scored}: لم تنشر المنظمة بعدُ أي أسبوع مستهدف. جذر ميركل لأحدث جولة: `)}<span class="hash">${(Lg.manifests[Lg.manifests.length - 1] || {}).merkle_root?.slice(0, 32) || ""}…</span></div></div>
         <div class="grid" style="align-content:start">
           <div class="card"><div class="chips">${CH.pre()}${CH.wait()}</div><h3>${L("The UAE test is already locked", "اختبار الإمارات مثبّت سلفاً")}</h3>
             <p>${L(`Pooled model against own-record model, every weekly round of this season, scored against WHO's published values, target weeks to ${dfmt(lt.last_target, { day: "numeric", month: "long", year: "numeric" })}. One assessment, on or after ${dfmt(lt.final_from, { day: "numeric", month: "long", year: "numeric" })}. Weekly numbers until then are descriptive only.`,
               `النموذج المجمَّع مقابل نموذج سجل الدولة في كل جولة أسبوعية هذا الموسم، مقيَّماً مقابل القيم المنشورة من المنظمة، للأسابيع المستهدفة حتى ${dfmt(lt.last_target, { day: "numeric", month: "long", year: "numeric" })}. تقييم واحد في ${dfmt(lt.final_from, { day: "numeric", month: "long", year: "numeric" })} أو بعده. والأرقام الأسبوعية حتى ذلك الحين وصفية فقط.`)}</p>
             <div class="src">docs/PREREG-LIVE.md · ${L("lock", "القفل")} <span class="hash">${(lt.lock_root || "").slice(0, 20)}…</span></div></div>
-          <div class="note warn">${L("Honest status: the ledger and all locks are local git records, self-attested until the repository is pushed and the fingerprints are timestamped by an outside service.", "الحالة بصراحة: السجل وجميع الأقفال قيود git محلية، بإقرار ذاتي إلى أن يُنشر المستودع وتُختم البصمات زمنياً من جهة خارجية.")}</div>
+          <div class="note warn">${anchorTxt(Lg)}</div>
         </div></div></div></section>`;
   }
 
@@ -540,7 +556,7 @@
       </div>
       ${path()}
       <div class="grid g3" style="margin-top:18px">
-        ${col(L("Real today", "حقيقي اليوم"), "pre", [L("WHO FluNet UAE surveillance data", "بيانات رصد الإمارات من WHO FluNet"), L("Weekly forecasts from two models, with ranges", "توقعات أسبوعية من نموذجين مع النطاقات"), L("The card, its consistency gate and the hash-chained approval log", "البطاقة وبوابة الاتساق وسجل الاعتماد المترابط بالتجزئة"), L("Three registered tests and the hashed ledger (local until pushed and timestamped)", "ثلاثة اختبارات مسجّلة والسجل الموثّق (محلي إلى أن يُنشر ويُختم زمنياً)")])}
+        ${col(L("Real today", "حقيقي اليوم"), "pre", [L("WHO FluNet UAE surveillance data", "بيانات رصد الإمارات من WHO FluNet"), L("Weekly forecasts from two models, with ranges", "توقعات أسبوعية من نموذجين مع النطاقات"), L("The card, its consistency gate and the hash-chained approval log", "البطاقة وبوابة الاتساق وسجل الاعتماد المترابط بالتجزئة"), (D.ledger.anchors || []).length ? L(`Three registered tests and the hashed ledger (public; sent for outside timestamps ${dfmt(anchorDay(D.ledger), { day: "numeric", month: "short" })})`, `ثلاثة اختبارات مسجّلة والسجل الموثّق (منشور؛ أُرسل للختم الزمني الخارجي في ${dfmt(anchorDay(D.ledger), { day: "numeric", month: "short" })})`) : L("Three registered tests and the hashed ledger (public; outside timestamps still to do)", "ثلاثة اختبارات مسجّلة والسجل الموثّق (منشور؛ الختم الزمني الخارجي لم يُنجز بعد)")])}
         ${col(L("Scenario or illustrative", "سيناريو أو توضيحي"), "scn", [L("Bed-days and AED figures", "أرقام أيام الأسرّة والدرهم"), L("Playbook thresholds and action wording, not yet reviewed by a clinician", "عتبات دليل العمل وصياغة الإجراءات، لم يراجعها طبيب بعد"), L("The employer sickness-absence feed is simulated on synthetic data", "تغذية غياب الموظفين محاكاة على بيانات اصطناعية")])}
         ${col(L("Not built, not claimed", "غير مبني وغير مدّعى"), "wait", [L("Any Abu Dhabi hospital, district or daily data", "أي بيانات مستشفيات أو مناطق أو بيانات يومية من أبوظبي"), L("Earlier warning of when a surge starts: NABD forecasts size and duration", "إنذار أبكر ببداية الموجة: يتوقع نبض الحجم والمدة"), L("A confirmatory UAE result for the pooled model: locked, due after April 2027", "نتيجة مؤكِّدة عن الإمارات للنموذج المجمَّع: مثبّتة، وموعدها بعد أبريل 2027")])}
       </div></div></section>`;
