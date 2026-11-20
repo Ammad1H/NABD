@@ -1,0 +1,72 @@
+{
+ "base_dir": ".",
+ "created_utc": "2026-11-20T16:22:26.658660+00:00",
+ "files": [
+  {
+   "bytes": 15486,
+   "path": "ledger/2026-11-20T1621Z_NABD-Pool.csv",
+   "sha256": "512085dafe259e9d598187ed0c30f795ff845565a706d8469a489d51257c71b7"
+  },
+  {
+   "bytes": 4742,
+   "path": "ledger/2026-11-20T1621Z_NABD-Pool.meta.json",
+   "sha256": "59d6f5f698f3c086c6d5b1a73693a1b77ddbab0abe591ded799b3d0697319a37"
+  },
+  {
+   "bytes": 97,
+   "path": "ledger/2026-11-20T1621Z_NABD-Pool.sha256",
+   "sha256": "862dd23b093f0fac2fdb1a4c4693326de646a33f8414891e15aae6d5621fee93"
+  },
+  {
+   "bytes": 15842,
+   "path": "ledger/2026-11-20T1621Z_NABD-UAE-v1.csv",
+   "sha256": "7676cc8b9c12ed3b579ca7b1920ca94644507a2b4ed89911a25386de9be29aae"
+  },
+  {
+   "bytes": 4692,
+   "path": "ledger/2026-11-20T1621Z_NABD-UAE-v1.meta.json",
+   "sha256": "4006cbcc174dced93042d6069c78b9e8b2fd8f0e6cfa0223c8ee68992fbccf05"
+  },
+  {
+   "bytes": 99,
+   "path": "ledger/2026-11-20T1621Z_NABD-UAE-v1.sha256",
+   "sha256": "2f3a8ea1081543f2eb55c7635d9d8b689550e929bd36a3a6cc55cd22c16bc491"
+  },
+  {
+   "bytes": 15840,
+   "path": "ledger/2026-11-20T1621Z_NABD-UAE-v2.csv",
+   "sha256": "1d8fd87fb39d61e0bc80b6b601ee7eb50b546d8eedbe9a76d3fe0b0065e3de4e"
+  },
+  {
+   "bytes": 4691,
+   "path": "ledger/2026-11-20T1621Z_NABD-UAE-v2.meta.json",
+   "sha256": "bb86199386e6f407d6315b94e593da466a9301938cf1aeb5e26ecf33b7aca0c9"
+  },
+  {
+   "bytes": 99,
+   "path": "ledger/2026-11-20T1621Z_NABD-UAE-v2.sha256",
+   "sha256": "65d1182598a34469226192aafba467a010a7bc9f9f317db2c2d278c529a17658"
+  },
+  {
+   "bytes": 15851,
+   "path": "ledger/2026-11-20T1621Z_persistence.csv",
+   "sha256": "a46837c45013c56f60b34be68774a288eae75098a9d56f048536e4e0a6e80a7b"
+  },
+  {
+   "bytes": 4657,
+   "path": "ledger/2026-11-20T1621Z_persistence.meta.json",
+   "sha256": "3b7610ca5f9b908abfc42618f2b12af4356ffc4d2d96d54d35e3a822261c3601"
+  },
+  {
+   "bytes": 99,
+   "path": "ledger/2026-11-20T1621Z_persistence.sha256",
+   "sha256": "5d8a94b16639a452a128c9c34b0a0121d1fd75804d28d9c9553bcfc5f9ba5ff9"
+  }
+ ],
+ "merkle_root": "5fa6bb14990d1b5950842c59d25151be4e28008d21546a9d7fb76ed871954e0c",
+ "meta": {
+  "issued_utc": "2026-11-20T16:21:40+00:00",
+  "round": "R3"
+ },
+ "schema": "nabd-ledger/1"
+}

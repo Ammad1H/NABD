@@ -1,0 +1,96 @@
+{
+  "round": "R3",
+  "issued_utc": "2026-11-20T16:21:40+00:00",
+  "model": "NABD-UAE-v2",
+  "data_source": "WHO FluNet xMart live",
+  "data_through_week": {
+    "wk flu pos pct sentinel": "2026-W45",
+    "wk rsv pos pct sentinel": "2026-W45"
+  },
+  "designation": "challenger (locked, docs/LOCK-UAE-v2.json)",
+  "sha256": "1d8fd87fb39d61e0bc80b6b601ee7eb50b546d8eedbe9a76d3fe0b0065e3de4e",
+  "horizons": [
+    {
+      "model": "NABD-UAE-v2",
+      "target": "wk flu pos pct sentinel",
+      "horizon": -1,
+      "target_end_date": "2026-11-15",
+      "weeks_ahead_of_issue": 0,
+      "weeks_to_target_week_end": -0.71,
+      "horizon_label": "nowcast",
+      "horizon_convention": "whole weeks from the issue date to the END of the target week (0 = nowcast); same as app/data_io.horizon_weeks and the hashed R0/R1 rounds: nowcast, +1, +2, +3 wk after issue. The primary display label is the target week-ending date."
+    },
+    {
+      "model": "NABD-UAE-v2",
+      "target": "wk flu pos pct sentinel",
+      "horizon": 0,
+      "target_end_date": "2026-11-22",
+      "weeks_ahead_of_issue": 0,
+      "weeks_to_target_week_end": 0.29,
+      "horizon_label": "nowcast",
+      "horizon_convention": "whole weeks from the issue date to the END of the target week (0 = nowcast); same as app/data_io.horizon_weeks and the hashed R0/R1 rounds: nowcast, +1, +2, +3 wk after issue. The primary display label is the target week-ending date."
+    },
+    {
+      "model": "NABD-UAE-v2",
+      "target": "wk flu pos pct sentinel",
+      "horizon": 1,
+      "target_end_date": "2026-11-29",
+      "weeks_ahead_of_issue": 1,
+      "weeks_to_target_week_end": 1.29,
+      "horizon_label": "+1 wk after issue",
+      "horizon_convention": "whole weeks from the issue date to the END of the target week (0 = nowcast); same as app/data_io.horizon_weeks and the hashed R0/R1 rounds: nowcast, +1, +2, +3 wk after issue. The primary display label is the target week-ending date."
+    },
+    {
+      "model": "NABD-UAE-v2",
+      "target": "wk flu pos pct sentinel",
+      "horizon": 2,
+      "target_end_date": "2026-12-06",
+      "weeks_ahead_of_issue": 2,
+      "weeks_to_target_week_end": 2.29,
+      "horizon_label": "+2 wk after issue",
+      "horizon_convention": "whole weeks from the issue date to the END of the target week (0 = nowcast); same as app/data_io.horizon_weeks and the hashed R0/R1 rounds: nowcast, +1, +2, +3 wk after issue. The primary display label is the target week-ending date."
+    },
+    {
+      "model": "NABD-UAE-v2",
+      "target": "wk rsv pos pct sentinel",
+      "horizon": -1,
+      "target_end_date": "2026-11-15",
+      "weeks_ahead_of_issue": 0,
+      "weeks_to_target_week_end": -0.71,
+      "horizon_label": "nowcast",
+      "horizon_convention": "whole weeks from the issue date to the END of the target week (0 = nowcast); same as app/data_io.horizon_weeks and the hashed R0/R1 rounds: nowcast, +1, +2, +3 wk after issue. The primary display label is the target week-ending date."
+    },
+    {
+      "model": "NABD-UAE-v2",
+      "target": "wk rsv pos pct sentinel",
+      "horizon": 0,
+      "target_end_date": "2026-11-22",
+      "weeks_ahead_of_issue": 0,
+      "weeks_to_target_week_end": 0.29,
+      "horizon_label": "nowcast",
+      "horizon_convention": "whole weeks from the issue date to the END of the target week (0 = nowcast); same as app/data_io.horizon_weeks and the hashed R0/R1 rounds: nowcast, +1, +2, +3 wk after issue. The primary display label is the target week-ending date."
+    },
+    {
+      "model": "NABD-UAE-v2",
+      "target": "wk rsv pos pct sentinel",
+      "horizon": 1,
+      "target_end_date": "2026-11-29",
+      "weeks_ahead_of_issue": 1,
+      "weeks_to_target_week_end": 1.29,
+      "horizon_label": "+1 wk after issue",
+      "horizon_convention": "whole weeks from the issue date to the END of the target week (0 = nowcast); same as app/data_io.horizon_weeks and the hashed R0/R1 rounds: nowcast, +1, +2, +3 wk after issue. The primary display label is the target week-ending date."
+    },
+    {
+      "model": "NABD-UAE-v2",
+      "target": "wk rsv pos pct sentinel",
+      "horizon": 2,
+      "target_end_date": "2026-12-06",
+      "weeks_ahead_of_issue": 2,
+      "weeks_to_target_week_end": 2.29,
+      "horizon_label": "+2 wk after issue",
+      "horizon_convention": "whole weeks from the issue date to the END of the target week (0 = nowcast); same as app/data_io.horizon_weeks and the hashed R0/R1 rounds: nowcast, +1, +2, +3 wk after issue. The primary display label is the target week-ending date."
+    }
+  ],
+  "public": false,
+  "note": "Not public until committed, pushed to a public repo, and the hash is posted."
+}

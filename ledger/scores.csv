@@ -1,1 +1,19 @@
-
+file,model,target,horizon,target_end_date,observed,median,wis,in50,in95
+2026-11-08T0651Z_NABD-UAE-v1.csv,NABD-UAE-v1,wk flu pos pct sentinel,-1,2026-11-08,20.32,26.906,3.485,False,True
+2026-11-08T0651Z_NABD-UAE-v1.csv,NABD-UAE-v1,wk rsv pos pct sentinel,-1,2026-11-08,23.02,12.3573,5.678,False,True
+2026-11-08T0651Z_persistence.csv,persistence,wk flu pos pct sentinel,-1,2026-11-08,20.32,26.9679,3.716,False,True
+2026-11-08T0651Z_persistence.csv,persistence,wk rsv pos pct sentinel,-1,2026-11-08,23.02,10.6414,7.086,False,True
+2026-11-08T1212Z_NABD-UAE-v1.csv,NABD-UAE-v1,wk flu pos pct sentinel,-1,2026-11-08,20.32,26.906,3.485,False,True
+2026-11-08T1212Z_NABD-UAE-v1.csv,NABD-UAE-v1,wk rsv pos pct sentinel,-1,2026-11-08,23.02,12.3573,5.678,False,True
+2026-11-08T1212Z_NABD-UAE-v2.csv,NABD-UAE-v2,wk flu pos pct sentinel,-1,2026-11-08,20.32,28.0228,4.175,False,True
+2026-11-08T1212Z_NABD-UAE-v2.csv,NABD-UAE-v2,wk rsv pos pct sentinel,-1,2026-11-08,23.02,11.0516,6.647,False,True
+2026-11-08T1212Z_persistence.csv,persistence,wk flu pos pct sentinel,-1,2026-11-08,20.32,26.9679,3.716,False,True
+2026-11-08T1212Z_persistence.csv,persistence,wk rsv pos pct sentinel,-1,2026-11-08,23.02,10.6414,7.086,False,True
+2026-11-14T1947Z_NABD-Pool.csv,NABD-Pool,wk flu pos pct sentinel,-1,2026-11-08,20.32,25.4774,2.851,False,True
+2026-11-14T1947Z_NABD-Pool.csv,NABD-Pool,wk rsv pos pct sentinel,-1,2026-11-08,23.02,11.3245,6.974,False,True
+2026-11-14T1947Z_NABD-UAE-v1.csv,NABD-UAE-v1,wk flu pos pct sentinel,-1,2026-11-08,20.32,26.906,3.485,False,True
+2026-11-14T1947Z_NABD-UAE-v1.csv,NABD-UAE-v1,wk rsv pos pct sentinel,-1,2026-11-08,23.02,12.3573,5.678,False,True
+2026-11-14T1947Z_NABD-UAE-v2.csv,NABD-UAE-v2,wk flu pos pct sentinel,-1,2026-11-08,20.32,28.0228,4.175,False,True
+2026-11-14T1947Z_NABD-UAE-v2.csv,NABD-UAE-v2,wk rsv pos pct sentinel,-1,2026-11-08,23.02,11.0516,6.647,False,True
+2026-11-14T1947Z_persistence.csv,persistence,wk flu pos pct sentinel,-1,2026-11-08,20.32,26.9679,3.716,False,True
+2026-11-14T1947Z_persistence.csv,persistence,wk rsv pos pct sentinel,-1,2026-11-08,23.02,10.6414,7.086,False,True
